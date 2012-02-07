@@ -1,0 +1,18 @@
+# Bootstrap data described using the YAML notation
+
+# Leider funktionieren die JSON Zuweisung noch nicht wie gewünscht
+# siehe http://stackoverflow.com/questions/9026017/is-it-possible-to-assign-a-json-value-inside-a-yaml-definition
+
+ContentType(articles):
+    slug: articles
+    displayName: Article
+    description: Simple content type for an text article
+    jsonFormFromFile: conf/content-types/article-schema.json
+
+ContentType(images):
+    slug: images
+    displayName: Image
+    description: Image container referencing an photo for example
+    jsonFormFromFile: conf/content-types/image-schema.json
+
+# Bilderstrecke ...

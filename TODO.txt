@@ -1,0 +1,47 @@
+---------------
+Offene Punkte
+---------------
+
+* Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
+
+* Verwende Routen für Verlinkung der Seiten
+
+* error Handling in ajax Callbacks verbessern (und in Controllern gegenprüfen)
+
+
+---------------
+Modellierung
+---------------
+
+For ContentType
+
+* no special / white chars allowed as part of name
+* RegExp validation auf dem Namensfeld
+
+
+For ContentNode
+
+* jsonForm has to be valid JSON
+  (custom validator?)
+
+
+
+---------------
+Forms
+---------------
+
+* Submit Button sollte nicht als Teil der Form mit abgelegt werden...
+
+
+
+---------------
+Restekiste
+---------------
+
+    /*
+            dbObj.put("action", '/' + name + (contentId != null ? '/'+contentId : ""));
+            //dbObj.put("action", "javascript:submitForm()");
+            dbObj.put("method", "post");
+            // Do not expose ID to clients using only the form
+            dbObj.removeField("_id");
+    */

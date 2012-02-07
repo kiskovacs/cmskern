@@ -1,0 +1,25 @@
+{
+    "elements" :
+    [
+        {
+            "type" : "p",
+            "html" : "Simple Article"
+        },
+        {
+            "name"    : "headline",
+            "caption" : "Headline",
+            "type"    : "text",
+            "placeholder" : "E.g. foo bar ..."
+        },
+        {
+            "name"    : "body",
+            "caption" : "Body",
+            "type"    : "textarea",
+            "placeholder": ""
+        },
+        {
+            "type"  : "submit",
+            "value" : "Save"
+        }
+    ]
+}

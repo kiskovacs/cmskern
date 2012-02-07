@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'Welcome to cmskern' /}
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var origColor = $("tr.highlight > td").css('background-color');
+        $("tr.highlight > td").animate({backgroundColor: '#33ff33'});
+        $("tr.highlight > td").animate({backgroundColor: origColor});
+    });
+</script>
+
+
+<h2>Available content</h2>
+
+#{list items:content.entrySet(), as:'entry'}
+
+<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit" class="btn primary small">+</a> </small></h3>
+
+#{if entry.value}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Last Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        #{list items:entry.value, as:'node'}
+        <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
+            <td>
+                ${node.id}
+                <a href="/${node.type}/${node.id}" class="btn secondary small">view</a>
+                <a href="/${node.type}/${node.id}/edit" class="btn secondary small">edit</a>
+            </td>
+            <td>
+                ${node.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+            </td>
+        </tr>
+        #{/list}
+    </tbody>
+</table>
+#{/if}
+
+
+#{/list}
+

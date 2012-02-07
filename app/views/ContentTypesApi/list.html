@@ -1,0 +1,20 @@
+#{extends 'main.html' /}
+#{set title:'Content Types' /}
+
+
+#{if types}
+    <h2>Available content types</h2>
+
+    #{list items: types, as:'type'}
+        <div class="well" style="padding: 5px 20px;">
+            <h3> <a class="btn small secondary" href="/schema/${type.id}/edit">Create new content</a> ${type.slug} <small>${type.description}</small></h3>
+
+        </div>
+    #{/list}
+#{/if}
+
+
+
+<a class="btn primary" href="/admin/contenttypes/new">Create new content type</a>
+
+

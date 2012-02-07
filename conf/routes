@@ -1,0 +1,34 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Home page
+GET     /                                       Application.index
+
+# ~~ REST API for (content) types
+GET     /schema/{name}/form.json                ContentTypesApi.asFormDescriptor
+GET     /schema/{id}/edit                       ContentTypesApi.edit
+GET     /schema/{id}                            ContentTypesApi.get
+PUT     /schema/{id}                            ContentTypesApi.update
+GET     /schema                                 ContentTypesApi.list
+POST    /schema                                 ContentTypesApi.create
+DELETE  /schema/{id}                            ContentTypesApi.delete
+
+# ~~ Import CRUD routes
+*       /admin                                  module:crud
+
+
+# ~~ REST API for content
+GET     /{type}/{id}/edit                       ContentNodes.edit
+GET     /{type}/edit                            ContentNodes.blank
+GET     /{type}/{id}                            ContentApi.get
+PUT     /{type}/{id}                            ContentApi.update
+# GET     /{type}                                 ContentApi.list
+POST    /{type}                                 ContentApi.create
+# DELETE  /{type}/{id}                            ContentApi.delete
+
+# ~~ Ignore favicon requests
+GET     /favicon.ico                            404
+
+# ~~ Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public

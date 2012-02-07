@@ -1,0 +1,20 @@
+[
+    { "name": "titel", "label": "Titel"},
+    { "name": "online", "label": "Online?", "type": "checkbox"},
+    { "name": "teasers", "label": "Teaser",
+        "children": [
+            { "name": "spitzmarke", "label": "Spitzmarke" },
+            { "name": "ueberschrift", "label": "Überschrift" },
+            { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
+            { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
+            { "name": "zip",   "size": 5, "ng:validate": "number" }
+        ]
+    },
+    { "name": "contacts",
+        "children": [
+            { "name": "type" },
+            { "name": "value" }
+        ]
+    },
+    { "name": "notes", "label": "Notizen", "type": "textarea"}
+]

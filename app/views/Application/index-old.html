@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+
+<script type="text/javascript">
+
+    function submitForm() {
+        var formData = form2object('myForm', '.', false,
+            function(node) {
+                if (node.id && node.id.match(/callbackTest/)) {
+                    return { name: node.id, value: node.innerHTML };
+                }
+            });
+        document.getElementById('outArea').innerHTML = JSON.stringify(formData, null, '\t');
+    }
+
+    $(document).ready(function() {
+        $("#myForm").buildForm("/types/simple/form.json");
+
+        $("#myForm").submit(function() {
+            var formData = form2object('myForm', '.', false,
+                    function(node) {
+                        if (node.id && node.id.match(/callbackTest/)) {
+                            return { name: node.id, value: node.innerHTML };
+                        }
+                    });
+            $.post("/content", JSON.stringify(formData, null, '\t'), function() {
+                alert("Success");
+            });
+            return false;
+        });
+    });
+</script>
+
+
+<h2>Artikel erstellen</h2>
+
+    <form id="myForm"></form>
+
+<h3>Ergebnis</h3>
+
+    <div id="outArea">
+    </div>

@@ -1,0 +1,15 @@
+syntax: regexp
+.*\.swp
+.*\.swo
+.*\.swn
+.*\.swm
+eclipse
+
+\.DS_Store
+^precompiled
+^tmp
+^modules
+^test-result
+.*\.iws
+.*\.iml
+.*\.ipr
