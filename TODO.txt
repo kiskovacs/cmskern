@@ -1,13 +1,17 @@
-
 ---------------
 Offene Punkte
 ---------------
 
 * Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
+  sollte es besser von BasicDBObject erben?
 
 * Verwende Routen für Verlinkung der Seiten
 
 * error Handling in ajax Callbacks verbessern (und in Controllern gegenprüfen)
+
+* Validierung
+              { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
+              { "name": "zip",   "size": 5, "ng:validate": "number" }
 
 
 ---------------

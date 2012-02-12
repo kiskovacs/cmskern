@@ -1,20 +1,12 @@
 [
-    { "name": "titel", "label": "Titel"},
+    { "name": "titel", "label": "Titel", "type": "text"},
     { "name": "online", "label": "Online?", "type": "checkbox"},
-    { "name": "teasers", "label": "Teaser",
+    { "name": "teasers", "label": "Teaser", "type": "repeatable",
+        "min": "1",
         "children": [
             { "name": "spitzmarke", "label": "Spitzmarke" },
             { "name": "ueberschrift", "label": "Überschrift" },
-            { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
-            { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
-            { "name": "zip",   "size": 5, "ng:validate": "number" }
+            { "name": "teasertext", "label": "Teasertext", "type": "textarea" }
         ]
-    },
-    { "name": "contacts",
-        "children": [
-            { "name": "type" },
-            { "name": "value" }
-        ]
-    },
-    { "name": "notes", "label": "Notizen", "type": "textarea"}
+    }
 ]

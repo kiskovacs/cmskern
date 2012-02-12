@@ -12,23 +12,27 @@ angular.widget('my:form', function(element) {
 
         var scope = this,
             schema = scope.$eval(element.attr('schema')),
-            model = element.attr('data'),
+            data = element.attr('data'),
             fieldset = angular.element('<fieldset></fieldset>');
 
+        // process every field as specified in the JSON schema definition
         angular.forEach(schema, function processField(field) {
-            var name = this.model + '.' + field.name,
+            var fullyQualifiedName = this.parentName + '.' + field.name,
                 fieldElStr;
-            console.log("----> field: " + name);
+            console.log("----> field: " + field.name);
 
             // has hierarchical subforms?
             if (field.children) {
-                console.log("      ----> children: " + field.name);
-                var subfieldset = angular.element('<fieldset></fieldset>');
+                console.log("      ----> (schema) children: " + fullyQualifiedName);
+                var contentChilds = scope.$eval(fullyQualifiedName);
+                console.log("      ----> (content) childs:  " + contentChilds[0].spitzmarke);
+                var childElem = field.name + 'Elem';
+                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + fullyQualifiedName + '"></fieldset>');  // TODO: auf dieser Ebene ng:repeat fuer kinder
                 var legend = angular.element('<legend>' + field.name + '</legend>');
                 subfieldset.append(legend);
-                var addButton = angular.element('<a href="" ng:click="' + model + '.'+ field.name + '.$add()">add</a>');
+                var addButton = angular.element('<a href="" ng:click="' + fullyQualifiedName + '.$add()">add</a>');
                 subfieldset.append(addButton);
-                angular.forEach(field.children, processField, {model: name, curDOMParent: subfieldset});
+                angular.forEach(field.children, processField, {parentName: childElem, curDOMParent: subfieldset});
                 fieldset.append(subfieldset);
                 return;
             }
@@ -37,7 +41,7 @@ angular.widget('my:form', function(element) {
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {
-                    fieldElStr = '<input name="' + name + '" ';
+                    fieldElStr = '<input name="' + fullyQualifiedName + '" ';
 
                     angular.forEach(field, function(value, attribute) {
                         if (attribute != 'tag') {
@@ -49,7 +53,7 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'textarea': {
-                    fieldElStr = '<textarea name="' + name + '" ';
+                    fieldElStr = '<textarea name="' + fullyQualifiedName + '" ';
 
                     angular.forEach(field, function(attribute) {
                         fieldElStr += attribute + '="' + field[attribute] + '" ';
@@ -62,13 +66,13 @@ angular.widget('my:form', function(element) {
 
             var controlGroup = angular.element('<div class="control-group"></div>');
 
-            controlGroup.append(angular.element('<label class="control-label" for="' + name + '">' + field.label + '</label>'));
+            controlGroup.append(angular.element('<label class="control-label" for="' + fullyQualifiedName + '">' + field.label + '</label>'));
             var controlElem = angular.element('<div class="controls">');
             controlElem.append(fieldElStr);
             controlGroup.append(controlElem);
             this.curDOMParent.append(controlGroup);
 
-        }, {model: model, curDOMParent: fieldset});
+        }, {parentName: data, curDOMParent: fieldset});
         angular.compile(fieldset)(scope);
         element.append(fieldset);
     };

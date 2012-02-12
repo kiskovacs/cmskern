@@ -2,117 +2,48 @@
 #{set title: 'Edit Content Node' /}
 
 #{set 'moreScripts'}
-<!--suppress XmlUnboundNsPrefix -->
-<script type="text/javascript" src="@{'/public/javascripts/angular-0.9.19.min.js'}" ng:autobind></script>
+    <!--suppress XmlUnboundNsPrefix -->
+    <script type="text/javascript" src="@{'/public/javascripts/angular/angular.js'}" ng:autobind></script>
+    <!-- script type="text/javascript" src="@{'/public/javascripts/services.js'}"></script -->
+    <script type="text/javascript" src="@{'/public/javascripts/controllers.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/filters.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/widgets.js'}"></script>
 #{/set}
 
 <script type="text/javascript">
 
-    DynFormCtrl.$inject = ['$resource'];
+    var globalContentType   = "${contentType.slug}";
+    var globalContentSchema =  ${contentType.jsonForm.raw()};
 
-    function DynFormCtrl($resource) {
-        this.ContentNode = $resource('/${contentType.slug}');
-
-        // define data we are working with
-        this.addresses = ${contentNode.pureJson.raw()};
-
-        // define schema for the data (each attribute except for 'children' translates to
-        // DOM element attribute of the same name).
-        // if 'type' is undefined, it is considered to be 'text'
-        this.addressSchema = ${contentType.jsonForm.raw()};
-
-        this.validatorRegExps = {
-            state: /[A-Z]{2}/
-        }
-
-        this.cancel();
-    }
-
-    DynFormCtrl.prototype = {
-        cancel: function() {
-            this.form = angular.copy(this.addresses);
-        },
-
-        save: function(addresses) {
-
-            this.ContentNode.save({data: addresses});
-
-            this.addresses = this.form;
-            this.cancel();
-        }
-    };
-
-    angular.widget('my:form', function(element) {
-        this.directives(true);
-        return function(element) {
-
-            var scope = this,
-                schema = scope.$eval(element.attr('schema')),
-                model = element.attr('data'),
-                fieldset = angular.element('<fieldset></fieldset>');
-
-            angular.forEach(schema, function processField(field) {
-                var name = this.model + '.' + field.name,
-                    fieldElStr;
-
-                if (field.children) {
-                    angular.forEach(field.children, processField, {model: name});
-                    return;
-                }
-
-                switch (field.type || 'text') {
-                    case 'checkbox':; //fallthrough
-                    case 'password':; //fallthrough
-                    case 'text': {
-                        fieldElStr = '<input name="' + name + '" ';
-
-                        angular.forEach(field, function(value, attribute) {
-                            if (attribute != 'tag') fieldElStr += attribute + '="' + value + '" ';
-                        });
-
-                        fieldElStr += '>';
-                        break;
-                    }
-                    case 'textarea': {
-                        fieldElStr = '<textarea name="' + name + '" ';
-
-                        angular.forEach(field, function(attribute) {
-                            fieldElStr += attribute + '="' + field[attribute] + '" ';
-                        });
-
-                        fieldElStr += '></textarea>';
-                        break;
-                    }
-                }
-
-                fieldset.append(angular.element('<label for="' + name + '">' + field.name + ':</label>'));
-                fieldset.append(fieldElStr);
-                fieldset.append('<br>');
-            }, {model: model});
-            angular.compile(fieldset)(scope);
-            element.append(fieldset);
-        };
-    });
+    // define data we are working with
+    var globalContentNodeId = "${contentNode.id}";
+    var globalContentNode   =  { "contacts" : [{ "type" : "" , "value" : "klödg"}] ,
+          "notes" : "" , "online" : false ,
+          "teasers" : [ { "spitzmarke" : "Nr. 1"}] ,
+          "titel" : "Start & Hugö schön"};
 
 
 </script>
-
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <h2>Edit content</h2>
 
-<div ng:controller="DynFormCtrl">
+<div ng:controller="EditContentNodeCtrl">
 
-    <!-- class="form-horizontal" -->
-    <my:form ng:repeat="address in addresses" schema="addressSchema" data="address"></my:form>
+    <form class="form-horizontal" ng:submit="submit()">
+        <my:form schema="contentSchema" data="contentNode"></my:form>
 
-    <button ng:click="save(addresses)">Save</button>
+        <div class="form-actions">
+            <button class="btn btn-primary">Save</button>
+            <button ng:click="reset()" class="btn">Cancel</button>
+        </div>
+    </form>
 
     <hr>
 
     <div id="model">
-        addresses = <pre>{{addresses}}</pre>
+        contentNode = <pre>{{contentNode}}</pre>
     </div>
 
 </div>

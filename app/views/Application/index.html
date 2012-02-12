@@ -1,6 +1,10 @@
 #{extends 'main.html' /}
 #{set title:'Welcome to cmskern' /}
 
+#{set 'moreScripts'}
+    <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.17.custom.min.js'}"></script>
+#{/set}
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -15,7 +19,7 @@
 
 #{list items:content.entrySet(), as:'entry'}
 
-<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit" class="btn primary small">+</a> </small></h3>
+<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit" class="btn-primary btn-small">+</a> </small></h3>
 
 #{if entry.value}
 <table class="table table-striped">
@@ -30,8 +34,11 @@
         <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
             <td>
                 ${node.id}
-                <a href="/${node.type}/${node.id}" class="btn secondary small">view</a>
-                <a href="/${node.type}/${node.id}/edit" class="btn secondary small">edit</a>
+                &nbsp; &nbsp;
+                <a href="/${node.type}/${node.id}"        class="btn btn-small">View Content</a>
+                <a href="/${node.type}/${node.id}/full"   class="btn btn-small">View JSON</a>
+                <a href="/${node.type}/${node.id}/edit"   class="btn btn-primary btn-small">Edit</a>
+                <a href="/${node.type}/${node.id}/delete" class="btn btn-small">Delete</a>
             </td>
             <td>
                 ${node.modified.format('yyyy-MM-dd (HH:mm:ss)')}

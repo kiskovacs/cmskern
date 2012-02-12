@@ -37,7 +37,7 @@ public final class MongoDbUtils {
         object.removeField(""); // TODO: schon höher lösen
         Logger.info("~~ Update mongoDB with values: %s", object.toString());
         DBCollection dbColl = getDBCollection(collectionName);
-        WriteResult res = dbColl.update(queryById(id), new BasicDBObject("$set", object), true, false);
+        WriteResult res = dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_DATA, object)), true, false);
         Logger.info("~~ Update values, result %s", res.getLastError());
         dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_MODIFIED, System.currentTimeMillis())));
     }

@@ -23,7 +23,7 @@ public class JsonUtils {
 
         ObjectNode root = mapper.readValue(contentType.jsonForm, ObjectNode.class);
 
-        Map<String, Object> values = mapper.readValue(contentNode.getAsJson(), Map.class);
+        Map<String, Object> values = mapper.readValue(contentNode.getJsonContent(), Map.class);
 
         enrichFormWithValues(root, 0, values);
         return root;

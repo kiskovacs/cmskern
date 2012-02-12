@@ -28,6 +28,16 @@ public class ContentNodes extends Controller {
         render(contentNode, contentType);
     }
 
+    public static void delete(String type, String id) {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(contentType, "Unknown type: " + type);
+        ContentNode contentNode = ContentNode.findById(id);
+        notFoundIfNull(contentNode, "Unknown node ID: " + id);
+
+        contentNode.delete();
+        redirect("Application.index");
+    }
+
     public static void list(String type) {
         List<ContentNode> nodes = ContentNode.findByType(type);
         render(nodes);

@@ -5,12 +5,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 import play.Logger;
 import utils.MongoDbUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +42,9 @@ public class ContentNode {
     }
     
     public void create() {
-        DBObject dbObj = MongoDbUtils.convert(jsonContent);
+        DBObject dbObj = new BasicDBObject();
+        DBObject contentObj = MongoDbUtils.convert(jsonContent);
+        dbObj.put(ATTR_DATA, contentObj);
         // add some metadata
         dbObj.put(ATTR_TYPE, type);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
@@ -75,6 +74,16 @@ public class ContentNode {
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
+    public static DBObject findByIdAsNative(String id) {
+        DBObject dbObj = null;
+        try {
+            dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
+        } catch (IllegalArgumentException e) {
+            Logger.info("Invalid ID specified: %s", e.getMessage());
+        }
+        return (dbObj != null ? dbObj : null);
+    }
+
     public static List<ContentNode> findByType(String type) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
@@ -97,7 +106,7 @@ public class ContentNode {
         //dbObj.removeField("_created");
         Long modified = (Long) dbObj.get(ATTR_MODIFIED);
         //dbObj.removeField("_modified");
-        String jsonContent = dbObj.toString();
+        String jsonContent = dbObj.get(ATTR_DATA).toString();
         // ~~
         ContentNode node = new ContentNode(type, jsonContent);
         node.id = id;
@@ -112,15 +121,8 @@ public class ContentNode {
     /**
      * Returns the pure JSON body without the metadata.
      */
-    public String getAsJson() {
+    public String getJsonContent() {
         return jsonContent;
-    }
-
-    public String getPureJson() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode root = mapper.readValue(jsonContent, ObjectNode.class);
-
-        return root.get(ATTR_DATA).toString();
     }
 
     public String getId() {

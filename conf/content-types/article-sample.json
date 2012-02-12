@@ -1,0 +1,8 @@
+{
+    "titel": "Start",
+    "online": false,
+    "teasers": [
+        { "spitzmarke": "Nr. 1", "ueberschrift": "bla fasel ..." },
+        { "spitzmarke": "Nr. 2", "ueberschrift": "und so weiter ..." }
+    ]
+}
