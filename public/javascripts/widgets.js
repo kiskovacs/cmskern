@@ -30,8 +30,13 @@ angular.widget('my:form', function(element) {
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + fullyQualifiedName + '"></fieldset>');  // TODO: auf dieser Ebene ng:repeat fuer kinder
                 var legend = angular.element('<legend>' + field.name + '</legend>');
                 subfieldset.append(legend);
-                var addButton = angular.element('<a href="" ng:click="' + fullyQualifiedName + '.$add()">add</a>');
+                // ~~ add
+                var addButton = angular.element('<a class="btn btn-small" href="" ng:click="' + fullyQualifiedName + '.$add()">add</a>');
                 subfieldset.append(addButton);
+                // ~~ remove
+                var removeButton = angular.element('<a class="btn btn-small" href="" ng:click="' + fullyQualifiedName + '.$remove(' + childElem + ')">remove</a>');
+                subfieldset.append(removeButton);
+                // ~~
                 angular.forEach(field.children, processField, {parentName: childElem, curDOMParent: subfieldset});
                 fieldset.append(subfieldset);
                 return;

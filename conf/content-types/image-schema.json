@@ -1,4 +1,4 @@
 [
-    { "name": "name"},
-    { "name": "url"}
+    { "name": "name", "label": "Name", "type": "text"},
+    { "name": "url", "label": "URL", "type": "text"}
 ]

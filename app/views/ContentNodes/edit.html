@@ -17,10 +17,7 @@
 
     // define data we are working with
     var globalContentNodeId = "${contentNode.id}";
-    var globalContentNode   =  { "contacts" : [{ "type" : "" , "value" : "klödg"}] ,
-          "notes" : "" , "online" : false ,
-          "teasers" : [ { "spitzmarke" : "Nr. 1"}] ,
-          "titel" : "Start & Hugö schön"};
+    var globalContentNode   =  ${contentNode.jsonContent.raw()};
 
 
 </script>
