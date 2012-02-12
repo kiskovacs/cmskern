@@ -1,4 +1,5 @@
 [
     { "name": "name", "label": "Name", "type": "text"},
+    { "name": "type", "label": "Type", "type": "reference", "callout": "/callouts/selectType"},
     { "name": "url", "label": "URL", "type": "text"}
 ]

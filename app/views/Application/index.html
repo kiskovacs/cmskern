@@ -19,14 +19,15 @@
 
 #{list items:content.entrySet(), as:'entry'}
 
-<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit" class="btn-primary btn-small">+</a> </small></h3>
+<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit"><i class="icon-plus"></i></a> </small></h3>
 
 #{if entry.value}
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Last Modified</th>
+            <th width="33%">ID</th>
+            <th width="33%">Actions</th>
+            <th width="33%">Last Modified</th>
         </tr>
     </thead>
     <tbody>
@@ -34,11 +35,12 @@
         <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
             <td>
                 ${node.id}
-                &nbsp; &nbsp;
-                <a href="/${node.type}/${node.id}"        class="btn btn-small">View Content</a>
-                <a href="/${node.type}/${node.id}/full"   class="btn btn-small">View JSON</a>
-                <a href="/${node.type}/${node.id}/edit"   class="btn btn-primary btn-small">Edit</a>
-                <a href="/${node.type}/${node.id}/delete" class="btn btn-small">Delete</a>
+            </td>
+            <td>
+                <a href="/${node.type}/${node.id}"        ><i class="icon-eye-open" title="View Content JSON"></i></a>
+                <a href="/${node.type}/${node.id}/full"   ><i class="icon-info-sign" title="View Complete JSON"></i></a>
+                <a href="/${node.type}/${node.id}/edit"   ><i class="icon-pencil" title="Edit"></i></a>
+                <a href="/${node.type}/${node.id}/delete" ><i class="icon-trash" title="Delete"></i></a>
             </td>
             <td>
                 ${node.modified.format('yyyy-MM-dd (HH:mm:ss)')}

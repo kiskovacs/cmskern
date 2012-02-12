@@ -2,6 +2,10 @@
 Offene Punkte
 ---------------
 
+* Einlesen von ContentNode Testdaten, angetriggert von
+
+* Richtext Editor integrieren (z.B. tinyMCE ...)
+
 * Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
   sollte es besser von BasicDBObject erben?
 

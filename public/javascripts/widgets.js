@@ -28,14 +28,14 @@ angular.widget('my:form', function(element) {
                 console.log("      ----> (content) childs:  " + contentChilds[0].spitzmarke);
                 var childElem = field.name + 'Elem';
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + fullyQualifiedName + '"></fieldset>');  // TODO: auf dieser Ebene ng:repeat fuer kinder
-                var legend = angular.element('<legend>' + field.name + '</legend>');
-                subfieldset.append(legend);
+                var legend = angular.element('<legend>' + field.label + '</legend>');
                 // ~~ add
-                var addButton = angular.element('<a class="btn btn-small" href="" ng:click="' + fullyQualifiedName + '.$add()">add</a>');
-                subfieldset.append(addButton);
+                var addButton = angular.element('<a href="#" ng:click="' + fullyQualifiedName + '.$add()"><i class="icon-plus" title="Add"></i></a>');
+                legend.append(addButton);
                 // ~~ remove
-                var removeButton = angular.element('<a class="btn btn-small" href="" ng:click="' + fullyQualifiedName + '.$remove(' + childElem + ')">remove</a>');
-                subfieldset.append(removeButton);
+                var removeButton = angular.element('<a href="#" ng:click="' + fullyQualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove"></i></a>');
+                legend.append(removeButton);
+                subfieldset.append(legend);
                 // ~~
                 angular.forEach(field.children, processField, {parentName: childElem, curDOMParent: subfieldset});
                 fieldset.append(subfieldset);
@@ -45,6 +45,18 @@ angular.widget('my:form', function(element) {
             switch (field.type || 'text') {
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
+                case 'reference': {
+                    fieldElStr = '<input disabled name="' + fullyQualifiedName + '" ';
+
+                    angular.forEach(field, function(value, attribute) {
+                        if (attribute != 'tag') {
+                            fieldElStr += attribute + '="' + value + '" ';
+                        }
+                    });
+
+                    fieldElStr += '><a href="#" class="dialog">Select</a>';
+                    break;
+                }
                 case 'text': {
                     fieldElStr = '<input name="' + fullyQualifiedName + '" ';
 

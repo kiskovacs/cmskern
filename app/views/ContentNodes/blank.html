@@ -8,6 +8,7 @@
     <script type="text/javascript" src="@{'/public/javascripts/controllers.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/filters.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/widgets.js'}"></script>
+
 #{/set}
 
 <script type="text/javascript">
@@ -20,14 +21,31 @@
 
     var globalContentSchema = ${contentType.jsonForm.raw()};
 
+    $(function() {
+        $("a").click(function (e) {
+            console.log("got it!!!");
+            e.preventDefault();
+            bootbox.dialog("Dialog to choose dependent content", {
+                "label":"Select",
+                "class":"btn-success",
+                "callback":function () {
+                    console.log("selected");
+                }
+            });
+        });
+    });
+
 </script>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <h2>Create ${contentType.displayName}</h2>
 
+<a href="#" class="dialog">Select</a>
+
 <div ng:controller="CreateContentNodeCtrl">
 
+    <!-- Main form entry -->
     <form class="form-horizontal" ng:submit="submit()">
         <my:form schema="contentSchema" data="contentNode"></my:form>
 
@@ -35,6 +53,7 @@
             <button class="btn btn-primary">Save</button>
             <button ng:click="reset()" class="btn">Cancel</button>
         </div>
+
     </form>
 
     <hr>
