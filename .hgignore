@@ -4,8 +4,10 @@ syntax: regexp
 .*\.swn
 .*\.swm
 eclipse
-
+\.classpath
+\.project
 \.DS_Store
+.*\.orig
 ^precompiled
 ^tmp
 ^modules
