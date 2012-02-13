@@ -29,35 +29,36 @@ angular.widget('my:form', function(element) {
                 if (!contentChilds) {
                     var propName = fullyQualifiedName.substr('contentNode'.length + 1);
                     console.log("WARN:  No content childs for " + propName);
-                    // var propNameArr = propName.split('.');
+                    var propNameArr = propName.split('.');
+                    if (propNameArr.length == 1) {
+                        globalContentNode[propNameArr[0]] = [{}];
+                    } else if (propNameArr.length == 2) {
+                        var parent = scope.$parent;
+                        parent[propNameArr[1]] = [{}];
+                    } else {
+                        console.log("*** ERROR Unsupported nesting of arrays: " + propNameArr);
+                    }
                 } else {
                     console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
                     // Nesting of ng:repeat must use relative variable reference names
                 }
                 // ~~~~~~ construct subform
-                var subfieldset = angular.element('<fieldset></fieldset>');
-                var legend = angular.element('<legend>' + field.label + '</legend>');
-                // ~~ add button (should be available anytime)
-                var addButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$add()"><i class="icon-plus" title="Add"></i></a>');
-                legend.append(addButton);
-                subfieldset.append(legend);
-                //
-                var childGroup = angular.element('<div ng:repeat="' + childElem + ' in ' + qualifiedName + '"></div>');
+                var subform = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
+                var legendChild = angular.element('<legend>' + field.label + '</legend>');
                 // ~~ remove (per individual child group)
-                var removeButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove"></i></a>');
-                childGroup.append(removeButton);
-                subfieldset.append(childGroup);
+                var removeButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
+                legendChild.append(removeButton);
+                subform.append(legendChild);
                 // ~~
-                this.curDOMParent.append(subfieldset);
-                angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset});
+                this.curDOMParent.append(subform);
+                angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subform});
+
+                // ~~ add button (should be available anytime)
+                var addButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$add()"><i class="icon-plus" title="Add"></i>' + field.label + '</a>');
+                this.curDOMParent.append(addButton);
+
                 console.log("~~ after add children   -> " + qualifiedName);
-                if (qualifiedName == 'teasersElem.childteasers') {
-                    console.log("childteasers finished: " + this.curDOMParent);
-                    // this.curDOMParent.append(fieldset);
-                } else if (qualifiedName == 'contentNode.teasers') {
-                    console.log("teasers finished: " + this.curDOMParent);
-                    // this.curDOMParent.append(fieldset);
-                }
+
                 return;
             }
 
