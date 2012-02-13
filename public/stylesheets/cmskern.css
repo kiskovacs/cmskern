@@ -26,11 +26,14 @@ h3.contentTypeName {
     margin-top: 25px;
 }
 
+/* ~~ Form elements ~~ */
+
 fieldset {
     margin-left: 25px;
 }
 
 legend {
+    color: #808080;
     font-size: 16px;
     margin-bottom: 0px;
 }
@@ -38,6 +41,13 @@ legend {
 legend .ng-directive {
     margin-left: 12px;
 }
+
+.form-horizontal .control-group {
+    margin-bottom: 4px;
+}
+
+
+/* ~~ Table elements ~~ */
 
 th {
     color: #b0c4de;
