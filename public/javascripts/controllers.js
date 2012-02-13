@@ -42,7 +42,7 @@ function CreateContentNodeCtrl($xhr) {
     scope.save_value = function(doc_data) {
         scope.doc = doc_data;
         // scope.$eval(function(scope) { scope.doc = doc_data; });
-        scope.$apply();
+        // scope.$apply();
     };
 
 }

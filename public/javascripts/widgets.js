@@ -25,7 +25,6 @@ angular.widget('my:form', function(element) {
             if (field.children) {
                 console.log("      ----> (schema) children: " + fullyQualifiedName);
                 var contentChilds = scope.$eval(fullyQualifiedName);
-                console.log("      ----> (content) childs:  " + contentChilds[0].spitzmarke);
                 var childElem = field.name + 'Elem';
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + fullyQualifiedName + '"></fieldset>');  // TODO: auf dieser Ebene ng:repeat fuer kinder
                 var legend = angular.element('<legend>' + field.label + '</legend>');
@@ -43,8 +42,6 @@ angular.widget('my:form', function(element) {
             }
 
             switch (field.type || 'text') {
-                case 'checkbox':; //fallthrough
-                case 'password':; //fallthrough
                 case 'reference': {
                     fieldElStr = '<input disabled name="' + fullyQualifiedName + '" ';
 
@@ -58,6 +55,8 @@ angular.widget('my:form', function(element) {
 
                     break;
                 }
+                case 'checkbox':; //fallthrough
+                case 'password':; //fallthrough
                 case 'text': {
                     fieldElStr = '<input name="' + fullyQualifiedName + '" ';
 
