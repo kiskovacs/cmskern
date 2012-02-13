@@ -54,7 +54,8 @@ angular.widget('my:form', function(element) {
                         }
                     });
 
-                    fieldElStr += '><a href="#" class="dialog">Select</a>';
+                    fieldElStr += '><a href="#" ng:click="select_value({\'key\':\'ref\'})">Select</a>';
+
                     break;
                 }
                 case 'text': {

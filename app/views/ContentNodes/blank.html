@@ -21,20 +21,6 @@
 
     var globalContentSchema = ${contentType.jsonForm.raw()};
 
-    $(function() {
-        $("a").click(function (e) {
-            console.log("got it!!!");
-            e.preventDefault();
-            bootbox.dialog("Dialog to choose dependent content", {
-                "label":"Select",
-                "class":"btn-success",
-                "callback":function () {
-                    console.log("selected");
-                }
-            });
-        });
-    });
-
 </script>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
