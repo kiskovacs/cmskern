@@ -26,6 +26,14 @@ h3.contentTypeName {
     margin-top: 25px;
 }
 
+fieldset {
+    margin-left: 25px;
+}
+
+legend {
+    font-size: 16px;
+}
+
 th {
     color: #b0c4de;
 }

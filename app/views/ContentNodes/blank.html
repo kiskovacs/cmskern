@@ -16,7 +16,9 @@
     var globalContentType = "${contentType.slug}";
     var globalContentNode = {
         titel: "",
-        teasers: [ {spitzmarke: ""}]
+        teasers: [ {spitzmarke: "",
+                    childteasers: [{spB: "huhu"}]
+                   }]
     };
 
     var globalContentSchema = ${contentType.jsonForm.raw()};
@@ -26,8 +28,6 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <h2>Create ${contentType.displayName}</h2>
-
-<a href="#" class="dialog">Select</a>
 
 <div ng:controller="CreateContentNodeCtrl">
 
@@ -43,7 +43,6 @@
     </form>
 
     <hr>
-
     <div id="model">
         contentNode = <pre>{{contentNode}}</pre>
     </div>

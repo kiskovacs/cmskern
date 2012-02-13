@@ -6,7 +6,15 @@
         "children": [
             { "name": "spitzmarke", "label": "Spitzmarke" },
             { "name": "ueberschrift", "label": "Überschrift" },
-            { "name": "teasertext", "label": "Teasertext", "type": "textarea" }
+            { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
+
+            { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
+                "min": "1",
+                "children": [
+                    { "name": "spB", "label": "Sub-Spitzmarke" },
+                    { "name": "ttB", "label": "Sub.Teasertext", "type": "textarea" }
+                ]
+            }
         ]
     }
 ]
