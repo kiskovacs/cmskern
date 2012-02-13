@@ -4,15 +4,15 @@
     { "name": "teasers", "label": "Teaser", "type": "repeatable",
         "min": "1",
         "children": [
-            { "name": "spitzmarke", "label": "Spitzmarke" },
-            { "name": "ueberschrift", "label": "Überschrift" },
+            { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
+            { "name": "ueberschrift", "label": "Überschrift", "type": "text" },
             { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
 
             { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
                 "min": "1",
                 "children": [
-                    { "name": "spB", "label": "Sub-Spitzmarke" },
-                    { "name": "ttB", "label": "Sub.Teasertext", "type": "textarea" }
+                    { "name": "spB", "label": "Sub-Spitzmarke", "type": "text" },
+                    { "name": "ttB", "label": "Sub-Teasertext", "type": "textarea" }
                 ]
             }
         ]

@@ -13,15 +13,11 @@
 
 <script type="text/javascript">
 
-    var globalContentType = "${contentType.slug}";
-    var globalContentNode = {
-        titel: "",
-        teasers: [ {spitzmarke: "",
-                    childteasers: [{spB: "huhu"}]
-                   }]
-    };
-
+    var globalContentType   = "${contentType.slug}";
     var globalContentSchema = ${contentType.jsonForm.raw()};
+
+    // ~~ Initialize Data
+    var globalContentNode = { };
 
 </script>
 

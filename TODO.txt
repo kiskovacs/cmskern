@@ -1,8 +1,12 @@
 ---------------
-Offene Punkte
+Wishlist
 ---------------
 
-* Einlesen von ContentNode Testdaten, angetriggert von
+* Up/Down Buttons for "repeatable" Types, um die Reihenfolge von Kindern zu manipulieren
+
+* Startanzahl von Kindern bei "repeatable" Typen über das Schema steuerbar machen.
+
+* Einlesen von ContentNode Testdaten, angetriggert von Bootstraper
 
 * Richtext Editor integrieren (z.B. tinyMCE ...)
 
@@ -33,24 +37,3 @@ For ContentNode
 * jsonForm has to be valid JSON
   (custom validator?)
 
-
-
----------------
-Forms
----------------
-
-* Submit Button sollte nicht als Teil der Form mit abgelegt werden...
-
-
-
----------------
-Restekiste
----------------
-
-    /*
-            dbObj.put("action", '/' + name + (contentId != null ? '/'+contentId : ""));
-            //dbObj.put("action", "javascript:submitForm()");
-            dbObj.put("method", "post");
-            // Do not expose ID to clients using only the form
-            dbObj.removeField("_id");
-    */
