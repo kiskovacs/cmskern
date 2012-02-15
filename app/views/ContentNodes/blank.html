@@ -14,10 +14,14 @@
 <script type="text/javascript">
 
     var globalContentType   = "${contentType.slug}";
-    var globalContentSchema = ${contentType.jsonForm.raw()};
+    var globalContentSchema =  ${contentType.jsonForm.raw()};
 
     // ~~ Initialize Data
-    var globalContentNode = { };
+    var globalContentNode = {
+        "teasers": [
+            { childteasers: [{}] }
+        ]
+    };
 
 </script>
 
