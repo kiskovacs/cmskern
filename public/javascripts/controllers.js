@@ -25,6 +25,7 @@ function CreateContentNodeCtrl($xhr) {
     };
 
     scope.helper = new CalloutDialogHelper();
+
     scope.select_value = function(data) {
         return bootbox.dialog(scope.helper.selection_form(data), [
             {
@@ -39,10 +40,23 @@ function CreateContentNodeCtrl($xhr) {
             }
         ]);
     };
+
     scope.save_value = function(doc_data) {
         scope.doc = doc_data;
         // scope.$eval(function(scope) { scope.doc = doc_data; });
         // scope.$apply();
+    };
+
+    scope.addChild = function(ctx) {
+        if (ctx.child) {
+            ctx.child.push({});
+        } else {
+            ctx.parent[ctx.childname] = [{}];
+        }
+    };
+
+    scope.removeChild = function(childToRemove) {
+        angular.Array.remove(this.contentNode.teasers, childToRemove);
     };
 
 }

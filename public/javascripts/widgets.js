@@ -24,28 +24,30 @@ angular.widget('my:form', function(element) {
 
             // has hierarchical subforms?
             if (field.children) {
-                var contentChilds = scope.$eval(qualifiedName);
                 var childElem = field.name + 'Elem';
+
+                // ~~~~ FIXME: IMPROVE start
+                var contentChilds = scope.$eval(qualifiedName);
                 if (!contentChilds) {
                     var propName = fullyQualifiedName.substr('contentNode'.length + 1);
                     console.log("WARN:  No content childs for " + propName);
                     var propNameArr = propName.split('.');
                     if (propNameArr.length == 1) {
                         globalContentNode[propNameArr[0]] = [{}];
-                    } else if (propNameArr.length == 2) {
-                        var parent = scope.$parent;
-                        parent[propNameArr[1]] = [{}];
                     } else {
-                        console.log("*** ERROR Unsupported nesting of arrays: " + propNameArr);
+                        console.log("*** WARN Unsupported nesting of arrays: " + propNameArr);
                     }
                 } else {
                     console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
                     // Nesting of ng:repeat must use relative variable reference names
                 }
+                // ~~~~ FIXME: IMPROVE ends
+
                 // ~~~~~~ construct subform
                 var subform = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
                 var legendChild = angular.element('<legend>' + field.label + '</legend>');
                 // ~~ remove (per individual child group)
+                //var removeButton = angular.element('<a href="#" ng:click="removeChild(' + qualifiedName + ', ' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 var removeButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 legendChild.append(removeButton);
                 subform.append(legendChild);
@@ -54,11 +56,10 @@ angular.widget('my:form', function(element) {
                 angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subform});
 
                 // ~~ add button (should be available anytime)
-                var addButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$add()"><i class="icon-plus" title="Add"></i>' + field.label + '</a>');
+                var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + field.name + '\'})"><i class="icon-plus" title="Add"></i>' + field.label + '</a></div>');
                 this.curDOMParent.append(addButton);
 
                 console.log("~~ after add children   -> " + qualifiedName);
-
                 return;
             }
 
