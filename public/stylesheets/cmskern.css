@@ -46,6 +46,11 @@ legend .ng-directive {
     margin-bottom: 4px;
 }
 
+div.btn_add {
+    width: 100%;
+    text-align: right;
+}
+
 
 /* ~~ Table elements ~~ */
 
