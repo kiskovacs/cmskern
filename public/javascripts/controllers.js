@@ -26,8 +26,8 @@ function CreateContentNodeCtrl($xhr) {
 
     scope.helper = new CalloutDialogHelper();
 
-    scope.select_value = function(data) {
-        return bootbox.dialog(scope.helper.selection_form(data), [
+    scope.select_value = function(fieldname) {
+        return bootbox.dialog(scope.helper.selection_form(fieldname), [
             {
                 'label': 'Cancel'
             },
@@ -35,16 +35,17 @@ function CreateContentNodeCtrl($xhr) {
                 'label': 'Save',
                 'class': 'success',
                 'callback': function() {
-                    return scope.save_value(scope.helper.form_data_to_object());
+                    return scope.save_value(fieldname, scope.helper.form_data_to_object());
                 }
             }
         ]);
     };
 
-    scope.save_value = function(doc_data) {
-        scope.doc = doc_data;
-        // scope.$eval(function(scope) { scope.doc = doc_data; });
-        // scope.$apply();
+    scope.save_value = function(fieldname, doc_data) {
+        scope.$set(fieldname, doc_data.value);
+        scope.$eval(); // force model update
+        //scope.$eval(function(scope) { scope.contentNode = doc_data; });
+        //  scope.$apply();
     };
 
     scope.addChild = function(ctx) {
@@ -97,29 +98,22 @@ EditContentNodeCtrl.$inject = ['$xhr'];
 
 CalloutDialogHelper = (function() {
 
-    CalloutDialogHelper.url = null;
-
     function CalloutDialogHelper() {}
 
     CalloutDialogHelper.prototype.selection_form = function(selected_data) {
         var html;
-        this.url = selected_data.url;
         html  = '<div id="selection_form">';
-        html += "<img src=\"" + this.url + "\" alt=\"preview\" />";
+        html += "<h5>Select ...</h5>";
         html += '<form class="form-stacked">';
-        html += '<label for="asset-title">Title</label>';
-        html += '<input type="text" id="asset-title" name="title" value="" />';
-        html += '<label for="asset-description">Description</label>';
-        html += '<textarea id="asset-description" name="description"></textarea>';
+        html += '<label for="select-value">Value</label>';
+        html += '<input type="text" id="select-value" name="value" value="" />';
         html += '</form>';
         return html += '</div>';
     };
 
     CalloutDialogHelper.prototype.form_data_to_object = function() {
         return {
-            url: this.url,
-            title: $('#selection_form #asset-title').val(),
-            description: $('#selection_form #asset-description').val()
+            value: $('#selection_form #select-value').val()
         };
     };
 
