@@ -49,10 +49,10 @@ angular.widget('my:form', function(element) {
 
                 var legendChild = angular.element('<legend>' + field.label + '</legend>'); // Position: {{$index}}
 
-                // ~~ up button (TODO: only if not first element)
+                // ~~ up button (only if not first element, see CSS selector)
                 var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
                 legendChild.append(moveUpButton);
-                // ~~ down button (TODO: only if not last element)
+                // ~~ down button (only if not last element, see CSS selector)
                 var moveDownButton = angular.element('<a class="move_down" href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
                 legendChild.append(moveDownButton);
 
