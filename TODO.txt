@@ -2,9 +2,13 @@
 Wishlist
 ---------------
 
-* Up/Down Buttons for "repeatable" Types, um die Reihenfolge von Kindern zu manipulieren
+* Beispiel für drop-down mit fest vorbelegten Werten
+  => http://docs-next.angularjs.org/api/angular.widget.select
 
-* Startanzahl von Kindern bei "repeatable" Typen über das Schema steuerbar machen.
+* Unterschiedliche Textlängen für Input Fields unterstützen (z.B. min, small, medium)
+  => Textklassen, die dann von Bootstrap ausgewertet werden
+
+* Startanzahl von Kindern bei "repeatable" Typen über das Schema steuerbar machen
 
 * Einlesen von ContentNode Testdaten, angetriggert von Bootstraper
 
@@ -18,8 +22,8 @@ Wishlist
 * error Handling in ajax Callbacks verbessern (und in Controllern gegenprüfen)
 
 * Validierung
-              { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
-              { "name": "zip",   "size": 5, "ng:validate": "number" }
+      { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
+      { "name": "zip",   "size": 5, "ng:validate": "number" }
 
 
 ---------------
@@ -36,4 +40,13 @@ For ContentNode
 
 * jsonForm has to be valid JSON
   (custom validator?)
+
+
+---------------
+DONE
+---------------
+
+* Up/Down Buttons for "repeatable" Types, um die Reihenfolge von Kindern zu manipulieren
+
+
 

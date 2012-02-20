@@ -51,7 +51,7 @@ div.btn_add {
     text-align: right;
 }
 
-
+/* Hide out Move up/down buttons in positions it does not make sense */
 div.subform > fieldset:first-child > legend > a.move_up {
     display: none;
 }
@@ -59,6 +59,16 @@ div.subform > fieldset:first-child > legend > a.move_up {
 div.subform > fieldset:last-child > legend > a.move_down {
     display: none;
 }
+
+.reference input[disabled] {
+    background-color: #fafad2;
+    /* cursor: pointer; */
+}
+
+.reference span.add-on {
+    cursor: pointer;
+}
+
 
 
 /* ~~ Table elements ~~ */

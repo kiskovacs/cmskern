@@ -62,16 +62,18 @@ function EditContentNodeCtrl($xhr) {
 
     scope.helper = new CalloutDialogHelper();
 
-    scope.select_value = function(callout_url, fieldname) {
-        return bootbox.dialog(scope.helper.selection_form(callout_url, fieldname), [
+    scope.select_value = function(callout_url, field_name) {
+        var field_value = scope.$get(field_name);
+        // Create Bootbox with external selection form loaded from callout URL
+        return bootbox.dialog(scope.helper.selection_form(callout_url, field_name, field_value), [
             {
                 'label': 'Cancel'
             },
             {
                 'label': 'Save',
-                'class': 'success',
+                'class': 'btn-primary success',
                 'callback': function() {
-                    return scope.save_value(fieldname, scope.helper.form_data_to_object());
+                    return scope.save_value(field_name, calloutGetSelectedValue());
                 }
             }
         ], {
@@ -94,24 +96,15 @@ CalloutDialogHelper = (function() {
 
     function CalloutDialogHelper() {}
 
-    CalloutDialogHelper.prototype.selection_form = function(callout_url, field_name, selected_data) {
-        var html;
-        // TODO: if value already exists display it (selected_data)
-        // TODO: allow flexible callout references
+    CalloutDialogHelper.prototype.selection_form = function(callout_url, field_name, field_value) {
+        // callout_url is specified
         setTimeout(function() {
-            $.get(callout_url, function(data) {
-                $('#selection_form').html(data);
-            });
-        }, 1);
-        return '<div id="selection_form"></div>';
-    };
-
-    CalloutDialogHelper.prototype.form_data_to_object = function() {
-        var selectedValue = $('#hugo5').val();
-        alert("Selected: " + selectedValue);
-        return {
-            value: selectedValue
-        };
+            $.get(callout_url, {value: field_value},  // TODO: if value already exists, append field_value
+                function(data) {
+                    $("#selection_form").html(data);
+                });
+        }, 1); // small delay to ensure form ID is available
+        return '<form id="selection_form" class="form-stacked"></form>';
     };
 
     return CalloutDialogHelper;

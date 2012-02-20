@@ -1,8 +1,22 @@
-<div>
-    <h5>Select Asset</h5>
+<h5>Select Asset</h5>
 
-    <form class="form-stacked">
-        <label for="select-value">Value</label>
-        <input type="text" id="select-value" name="value" value=""/>
-    </form>
-</div>
+<fieldset>
+    <label for="select-value">Value</label>
+    <input type="text" id="select-value" name="value" value="${params.value}"/>
+</fieldset>
+
+<script type="text/javascript">
+    var selectedValue = "";
+
+    $("#select-value").on("change", function(event) {
+        selectedValue = $(this).val();
+        event.preventDefault();
+    });
+
+    // Contract between Caller and Callout
+    function calloutGetSelectedValue() {
+        return {
+            value: selectedValue
+        };
+    }
+</script>

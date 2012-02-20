@@ -57,7 +57,6 @@ angular.widget('my:form', function(element) {
                 legendChild.append(moveDownButton);
 
                 // ~~ remove (per individual child group)
-                //var removeButton = angular.element('<a href="#" ng:click="removeChild(' + qualifiedName + ', ' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
@@ -78,7 +77,9 @@ angular.widget('my:form', function(element) {
             // ~~ Render Field Types
             switch (field.type || 'text') {
                 case 'reference': {
-                    fieldElStr = '<input disabled name="' + qualifiedName + '" ';
+
+                    fieldElStr  = '<div class="reference input-append">';
+                    fieldElStr += '<input disabled class="span2" name="' + qualifiedName + '" ';
 
                     angular.forEach(field, function(value, attribute) {
                         if (attribute != 'tag') {
@@ -86,13 +87,13 @@ angular.widget('my:form', function(element) {
                         }
                     });
 
-                    fieldElStr += '><a class="btn" href="#" ng:click="select_value(\'' + field.callout + '\',\'' + qualifiedName + '\')">Select</a>';
+                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + qualifiedName + '\')"><i class="icon-edit"></i></span></div>';
                     break;
                 }
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {
-                    fieldElStr = '<input name="' + qualifiedName + '" ';
+                    fieldElStr = '<input class="input-medium" name="' + qualifiedName + '" ';
 
                     angular.forEach(field, function(value, attribute) {
                         if (attribute != 'tag') {
@@ -129,4 +130,3 @@ angular.widget('my:form', function(element) {
         element.append(fieldset);
     };
 });
-

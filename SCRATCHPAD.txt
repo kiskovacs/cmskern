@@ -2,6 +2,18 @@
 Restekiste
 ---------------
 
+Focus on first input element in form:
+
+    $(function () {
+        $('form :input:visible:first').focus();
+    });
+
+
+// -- from widget.js (20-Feb-2012)
+
+var removeButton = angular.element('<a href="#" ng:click="removeChild(' + qualifiedName + ', ' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
+
+
 // -- from controller.js (20-Feb-2012)
 
     scope.save_value = function(fieldname, doc_data) {
