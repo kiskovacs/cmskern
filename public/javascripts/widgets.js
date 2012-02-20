@@ -86,7 +86,7 @@ angular.widget('my:form', function(element) {
                         }
                     });
 
-                    fieldElStr += '><a class="btn" href="#" ng:click="select_value(\'' + qualifiedName + '\')">Select</a>';
+                    fieldElStr += '><a class="btn" href="#" ng:click="select_value(\'' + field.callout + '\',\'' + qualifiedName + '\')">Select</a>';
                     break;
                 }
                 case 'checkbox':; //fallthrough

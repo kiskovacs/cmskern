@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title: 'Create New Content Node' /}
+#{set title: 'Create ' + contentType.displayName /}
 
 #{set 'moreScripts'}
     <!--suppress XmlUnboundNsPrefix -->
@@ -16,15 +16,13 @@
     var globalContentType   = "${contentType.slug}";
     var globalContentSchema =  ${contentType.jsonForm.raw()};
 
-    // ~~ Initialize Data
+    // ~~ initialize data
     var globalContentNodeId = -1;
-    var globalContentNode   = { };
+    var globalContentNode   = {};
 
 </script>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-<h2>Create ${contentType.displayName}</h2>
 
 <div ng:controller="EditContentNodeCtrl">
 

@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title: 'Edit Content Node' /}
+#{set title: 'Edit ' + contentType.displayName /}
 
 #{set 'moreScripts'}
     <!--suppress XmlUnboundNsPrefix -->
@@ -23,8 +23,6 @@
 </script>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-<h2>Edit content</h2>
 
 <div ng:controller="EditContentNodeCtrl">
 

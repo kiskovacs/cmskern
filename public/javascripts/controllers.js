@@ -8,7 +8,7 @@ function EditContentNodeCtrl($xhr) {
     this.contentType   = globalContentType;
     this.contentSchema = globalContentSchema;
     this.contentNode   = globalContentNode;      // will probably be empty
-    this.contentNodeId = globalContentNodeId;  // -1 if not yet saved
+    this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
 
 
     this.submit = function() {
@@ -38,10 +38,32 @@ function EditContentNodeCtrl($xhr) {
         this.form = angular.copy(this.contentNode);
     };
 
+    scope.addChild = function(ctx) {
+        if (ctx.child) {
+            ctx.child.push({});
+        } else {
+            ctx.parent[ctx.childname] = [{}];
+        }
+    };
+
+    scope.moveDown = function(arr) {
+        var curPos = this.$index;
+        var tmp = arr[curPos+1];
+        arr[curPos+1] = arr[curPos];
+        arr[curPos] = tmp;
+    };
+
+    scope.moveUp = function(arr) {
+        var curPos = this.$index;
+        var tmp = arr[curPos-1];
+        arr[curPos-1] = arr[curPos];
+        arr[curPos] = tmp;
+    };
+
     scope.helper = new CalloutDialogHelper();
 
-    scope.select_value = function(fieldname) {
-        return bootbox.dialog(scope.helper.selection_form(fieldname), [
+    scope.select_value = function(callout_url, fieldname) {
+        return bootbox.dialog(scope.helper.selection_form(callout_url, fieldname), [
             {
                 'label': 'Cancel'
             },
@@ -52,7 +74,6 @@ function EditContentNodeCtrl($xhr) {
                     return scope.save_value(fieldname, scope.helper.form_data_to_object());
                 }
             }
-
         ], {
             "animate": false
         });
@@ -61,64 +82,35 @@ function EditContentNodeCtrl($xhr) {
     scope.save_value = function(fieldname, doc_data) {
         scope.$set(fieldname, doc_data.value);
         scope.$eval(); // force model update
-        //scope.$eval(function(scope) { scope.contentNode = doc_data; });
-        //  scope.$apply();
     };
-
-    scope.addChild = function(ctx) {
-        if (ctx.child) {
-            ctx.child.push({});
-        } else {
-            ctx.parent[ctx.childname] = [{}];
-        }
-    };
-
-    //scope.removeChild = function(childToRemove) {
-    //    angular.Array.remove(this.contentNode.teasers, childToRemove);
-    //};
-
-    scope.moveDown = function(arr) {
-        var curPos = this.$index;
-        var tmp = arr[curPos+1];
-        arr[curPos+1] = arr[curPos];
-        arr[curPos] = tmp;
-    }
-
-    scope.moveUp = function(arr) {
-        var curPos = this.$index;
-        var tmp = arr[curPos-1];
-        arr[curPos-1] = arr[curPos];
-        arr[curPos] = tmp;
-    }
-
 
 }
-
 EditContentNodeCtrl.$inject = ['$xhr'];
 
 
-// ~~~
+// ~~~ ~~~ ~~~ Utilities ~~~ ~~~ ~~~
 
 CalloutDialogHelper = (function() {
 
     function CalloutDialogHelper() {}
 
-    CalloutDialogHelper.prototype.selection_form = function(selected_data) {
+    CalloutDialogHelper.prototype.selection_form = function(callout_url, field_name, selected_data) {
         var html;
-        // TODO: if value already exists display it
+        // TODO: if value already exists display it (selected_data)
         // TODO: allow flexible callout references
-        html  = '<div id="selection_form">';
-        html += "<h5>Select ...</h5>";
-        html += '<form class="form-stacked">';
-        html += '<label for="select-value">Value</label>';
-        html += '<input type="text" id="select-value" name="value" value="" />';
-        html += '</form>';
-        return html += '</div>';
+        setTimeout(function() {
+            $.get(callout_url, function(data) {
+                $('#selection_form').html(data);
+            });
+        }, 1);
+        return '<div id="selection_form"></div>';
     };
 
     CalloutDialogHelper.prototype.form_data_to_object = function() {
+        var selectedValue = $('#hugo5').val();
+        alert("Selected: " + selectedValue);
         return {
-            value: $('#selection_form #select-value').val()
+            value: selectedValue
         };
     };
 

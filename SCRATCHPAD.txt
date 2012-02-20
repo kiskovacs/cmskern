@@ -2,6 +2,21 @@
 Restekiste
 ---------------
 
+// -- from controller.js (20-Feb-2012)
+
+    scope.save_value = function(fieldname, doc_data) {
+        scope.$set(fieldname, doc_data.value);
+        scope.$eval(); // force model update
+        //scope.$eval(function(scope) { scope.contentNode = doc_data; });
+        //  scope.$apply();
+    };
+
+    //scope.removeChild = function(childToRemove) {
+    //    angular.Array.remove(this.contentNode.teasers, childToRemove);
+    //};
+
+// --
+
 <script type="text/javascript">
     $(function () {
         $("a").click(function (e) {
