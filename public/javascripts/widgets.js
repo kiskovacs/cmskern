@@ -13,7 +13,7 @@ angular.widget('my:form', function(element) {
         var scope = this,
             schema = scope.$eval(element.attr('schema')),
             data = element.attr('data'),
-            fieldset = angular.element('<fieldset></fieldset>');
+            fieldset = angular.element('<fieldset class="root"></fieldset>');
 
         // process every field as specified in the JSON schema definition
         angular.forEach(schema, function processField(field) {
@@ -44,24 +44,28 @@ angular.widget('my:form', function(element) {
                 // ~~~~ FIXME: end (init array top-level)
 
                 // ~~~~~~ construct subform
-                var subform = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
+                var subform = angular.element('<div class="subform"></div>');
+                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
+
                 var legendChild = angular.element('<legend>' + field.label + '</legend>'); // Position: {{$index}}
 
                 // ~~ up button (TODO: only if not first element)
-                var moveUpButton = angular.element('<a href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
+                var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
                 legendChild.append(moveUpButton);
                 // ~~ down button (TODO: only if not last element)
-                var moveDownButton = angular.element('<a href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
+                var moveDownButton = angular.element('<a class="move_down" href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
                 legendChild.append(moveDownButton);
 
                 // ~~ remove (per individual child group)
                 //var removeButton = angular.element('<a href="#" ng:click="removeChild(' + qualifiedName + ', ' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
-                var removeButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
+                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 legendChild.append(removeButton);
-                subform.append(legendChild);
+                subfieldset.append(legendChild);
+                subform.append(subfieldset);
+
                 // ~~
                 this.curDOMParent.append(subform);
-                angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subform});
+                angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset});
 
                 // ~~ add button (should be available anytime)
                 var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + field.name + '\'})"><i class="icon-plus" title="Add"></i>' + field.label + '</a></div>');

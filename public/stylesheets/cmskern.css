@@ -52,6 +52,15 @@ div.btn_add {
 }
 
 
+div.subform > fieldset:first-child > legend > a.move_up {
+    display: none;
+}
+
+div.subform > fieldset:last-child > legend > a.move_down {
+    display: none;
+}
+
+
 /* ~~ Table elements ~~ */
 
 th {
