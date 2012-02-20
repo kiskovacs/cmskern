@@ -5,6 +5,7 @@ body {
 
 #crud #crudHeader h1,
 #crudBreadcrumb,
+.crudFlash,
 #crudContent,
 #crudFooter {
     width: 820px;
