@@ -7,7 +7,6 @@ import play.Logger;
 import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.data.validation.Unique;
 import play.modules.morphia.Model;
 
 import java.io.File;
@@ -27,8 +26,7 @@ import java.io.IOException;
 public class ContentType extends Model {
 
     @Required
-    @Indexed
-    @Unique
+    @Indexed(unique = true)
     public String slug;
 
     @Required
