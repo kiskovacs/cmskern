@@ -45,7 +45,7 @@ angular.widget('my:form', function(element) {
 
                 // ~~~~~~ construct subform
                 var subform = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
-                var legendChild = angular.element('<legend class="pos_{{$position}}">' + field.label + '</legend>'); // Position: {{$index}}
+                var legendChild = angular.element('<legend>' + field.label + '</legend>'); // Position: {{$index}}
 
                 // ~~ up button (TODO: only if not first element)
                 var moveUpButton = angular.element('<a href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
