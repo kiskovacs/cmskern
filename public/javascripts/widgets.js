@@ -26,7 +26,7 @@ angular.widget('my:form', function(element) {
             if (field.children) {
                 var childElem = field.name + 'Elem';
 
-                // ~~~~ FIXME: IMPROVE start
+                // ~~~~ FIXME: start (init array top-level)
                 var contentChilds = scope.$eval(qualifiedName);
                 if (!contentChilds) {
                     var propName = fullyQualifiedName.substr('contentNode'.length + 1);
@@ -41,11 +41,19 @@ angular.widget('my:form', function(element) {
                     console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
                     // Nesting of ng:repeat must use relative variable reference names
                 }
-                // ~~~~ FIXME: IMPROVE ends
+                // ~~~~ FIXME: end (init array top-level)
 
                 // ~~~~~~ construct subform
                 var subform = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
-                var legendChild = angular.element('<legend>' + field.label + '</legend>');
+                var legendChild = angular.element('<legend class="pos_{{$position}}">' + field.label + '</legend>'); // Position: {{$index}}
+
+                // ~~ up button (TODO: only if not first element)
+                var moveUpButton = angular.element('<a href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
+                legendChild.append(moveUpButton);
+                // ~~ down button (TODO: only if not last element)
+                var moveDownButton = angular.element('<a href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
+                legendChild.append(moveDownButton);
+
                 // ~~ remove (per individual child group)
                 //var removeButton = angular.element('<a href="#" ng:click="removeChild(' + qualifiedName + ', ' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
                 var removeButton = angular.element('<a href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');

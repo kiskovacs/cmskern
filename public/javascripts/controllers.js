@@ -56,9 +56,24 @@ function CreateContentNodeCtrl($xhr) {
         }
     };
 
-    scope.removeChild = function(childToRemove) {
-        angular.Array.remove(this.contentNode.teasers, childToRemove);
-    };
+    //scope.removeChild = function(childToRemove) {
+    //    angular.Array.remove(this.contentNode.teasers, childToRemove);
+    //};
+
+    scope.moveDown = function(arr) {
+        var curPos = this.$index;
+        var tmp = arr[curPos+1];
+        arr[curPos+1] = arr[curPos];
+        arr[curPos] = tmp;
+    }
+
+    scope.moveUp = function(arr) {
+        var curPos = this.$index;
+        var tmp = arr[curPos-1];
+        arr[curPos-1] = arr[curPos];
+        arr[curPos] = tmp;
+    }
+
 
 }
 
