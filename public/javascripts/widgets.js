@@ -75,6 +75,7 @@ angular.widget('my:form', function(element) {
                 return;
             }
 
+            // ~~ Render Field Types
             switch (field.type || 'text') {
                 case 'reference': {
                     fieldElStr = '<input disabled name="' + qualifiedName + '" ';
@@ -86,7 +87,6 @@ angular.widget('my:form', function(element) {
                     });
 
                     fieldElStr += '><a class="btn" href="#" ng:click="select_value(\'' + qualifiedName + '\')">Select</a>';
-
                     break;
                 }
                 case 'checkbox':; //fallthrough
@@ -116,7 +116,6 @@ angular.widget('my:form', function(element) {
             }
 
             var controlGroup = angular.element('<div class="control-group"></div>');
-
             controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.label + '</label>'));
             var controlElem = angular.element('<div class="controls">');
             controlElem.append(fieldElStr);

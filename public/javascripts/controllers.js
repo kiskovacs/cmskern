@@ -1,13 +1,13 @@
 /* App Controllers */
 
-function CreateContentNodeCtrl($xhr) {
+function EditContentNodeCtrl($xhr) {
     var scope;
     scope = this;
 
     // define data we are working with
-    this.contentType = globalContentType;
+    this.contentType   = globalContentType;
     this.contentSchema = globalContentSchema;
-    this.contentNode = globalContentNode;      // will probably be empty
+    this.contentNode   = globalContentNode;      // will probably be empty
     this.contentNodeId = globalContentNodeId;  // -1 if not yet saved
 
 
@@ -91,7 +91,7 @@ function CreateContentNodeCtrl($xhr) {
 
 }
 
-CreateContentNodeCtrl.$inject = ['$xhr'];
+EditContentNodeCtrl.$inject = ['$xhr'];
 
 
 // ~~~
@@ -102,6 +102,8 @@ CalloutDialogHelper = (function() {
 
     CalloutDialogHelper.prototype.selection_form = function(selected_data) {
         var html;
+        // TODO: if value already exists display it
+        // TODO: allow flexible callout references
         html  = '<div id="selection_form">';
         html += "<h5>Select ...</h5>";
         html += '<form class="form-stacked">';
