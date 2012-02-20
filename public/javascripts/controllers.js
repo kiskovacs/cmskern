@@ -52,7 +52,10 @@ function EditContentNodeCtrl($xhr) {
                     return scope.save_value(fieldname, scope.helper.form_data_to_object());
                 }
             }
-        ]);
+
+        ], {
+            "animate": false
+        });
     };
 
     scope.save_value = function(fieldname, doc_data) {
