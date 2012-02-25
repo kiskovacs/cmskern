@@ -1,0 +1,39 @@
+<h5>Search for Photo</h5>
+
+<!--
+ Flow:
+   1) Suchfeld Eingabe,
+   2) Suche bei Flickr auslösen,
+   3) Ergebnis anzeigen
+   4) eines der Ergebnisbilder auswählen
+-->
+
+<fieldset>
+    <label for="select-value">Value</label>
+    <input type="text" id="select-value" name="value" value="${params.value}"/>
+    
+    <ul>
+    #{list items: photos, as:'photo'}
+    <li>
+        <img src="${photo.url}" alt="${photo.title}">
+    </li>
+    #{/list}
+    </ul>
+    
+</fieldset>
+
+<script type="text/javascript">
+    var selectedValue = "";
+
+    $("#select-value").on("change", function(event) {
+        selectedValue = $(this).val();
+        event.preventDefault();
+    });
+
+    // Contract between Caller and Callout
+    function calloutGetSelectedValue() {
+        return {
+            value: selectedValue
+        };
+    }
+</script>
