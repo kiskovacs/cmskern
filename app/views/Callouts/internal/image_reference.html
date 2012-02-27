@@ -11,8 +11,8 @@
     var selectedValue = "";
 
     $("#select-value").on("change", function(event) {
-        selectedValue = $(this).val();
         event.preventDefault();
+        selectedValue = $(this).val();
     });
 
     // Contract between Caller and Callout

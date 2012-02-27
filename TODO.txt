@@ -37,6 +37,8 @@ TO-DO List
       { "name": "state", "size": 2, "ng:validate": "regexp:validatorRegExps.state" },
       { "name": "zip",   "size": 5, "ng:validate": "number" }
 
+* Wenn URL in flickr gesetzt, dann könnte ein Preview beim Öffnen des Dialogs angezeigt werden
+
 
 ---------------
 Modellierung
@@ -53,6 +55,15 @@ For ContentNode
 * jsonForm has to be valid JSON
   (custom validator?)
 
+
+---------------
+IDEAS
+---------------
+
+* More elegant Upload of files (jQuery File Upload Plugin)
+  https://github.com/blueimp/jQuery-File-Upload/wiki
+  oder http://www.uploadify.com/
+  oder http://valums.com/ajax-upload/
 
 ---------------
 DONE
