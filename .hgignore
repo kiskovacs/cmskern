@@ -12,6 +12,7 @@ eclipse
 ^tmp
 ^modules
 ^test-result
+^logs
 .*\.iws
 .*\.iml
 .*\.ipr
