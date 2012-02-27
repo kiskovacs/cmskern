@@ -1,17 +1,17 @@
 package controllers;
 
-import com.google.code.morphia.Datastore;
-import com.mongodb.DB;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
+import jobs.Thumbnailer;
+import org.bson.types.ObjectId;
 import play.Logger;
-import play.Play;
 import play.libs.MimeTypes;
-import play.modules.morphia.MorphiaPlugin;
 import play.mvc.Controller;
+import utils.MongoDbUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +28,7 @@ public class BlobAccess extends Controller {
     public static void upload(String qqfile) {
         Logger.info("Starting to upload %s ...", qqfile);
 
-        GridFS gfs = getGridFS();
+        GridFS gfs = MongoDbUtils.getGridFS();
         GridFSInputFile dbFile = gfs.createFile(request.body);
         dbFile.setFilename(qqfile);
         // guess content type from file name extension
@@ -40,6 +40,8 @@ public class BlobAccess extends Controller {
             // Valid content type: try to store it
             dbFile.setContentType(contentType);
             dbFile.save();
+            // Start to generate thumbnailing job asynchronously
+            new Thumbnailer((ObjectId) dbFile.getId()).now();
             renderJSON("{\"success\":true}");
         }
     }
@@ -47,7 +49,7 @@ public class BlobAccess extends Controller {
     public static void list() {
         Logger.info("Listing assets ...");
 
-        GridFS gfs = getGridFS();
+        GridFS gfs = MongoDbUtils.getGridFS();
         DBCursor cursor = gfs.getFileList();
         Collection<String> fileList = new ArrayList<String>();
         while (cursor.hasNext()) {
@@ -57,9 +59,25 @@ public class BlobAccess extends Controller {
         }
         renderText(fileList);
     }
-    
+
+    public static void listAssets() {
+        Logger.info("Listing assets ...");
+
+        GridFS gfs = MongoDbUtils.getGridFS();
+        DBCursor cursor = gfs.getFileList(new BasicDBObject("metadata.thumb_ref", new BasicDBObject("$exists", 1)));
+        Collection<Asset> assets = new ArrayList<Asset>();
+        while (cursor.hasNext()) {
+            DBObject dbObj = cursor.next();
+            Logger.info(" * found %s", dbObj);
+            DBObject metadata = (DBObject) dbObj.get("metadata");
+            String thumbUrl = "/blobs/" + metadata.get("thumb_ref");
+            assets.add(new Asset((ObjectId) dbObj.get("_id"), thumbUrl, (String) dbObj.get("filename")));
+        }
+        render(assets);
+    }
+
     public static void getByName(String name) {
-        GridFS gfs = getGridFS();
+        GridFS gfs = MongoDbUtils.getGridFS();
         GridFSDBFile dbFile = gfs.findOne(name);
         notFoundIfNull(dbFile);
         Logger.info("Deliver GridFS file: %s", dbFile.getFilename());
@@ -68,16 +86,28 @@ public class BlobAccess extends Controller {
         renderBinary(dbFile.getInputStream());
     }
 
-    // TODO: we probably need also a getById retriever ...
+    public static void getById(String id) {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        GridFSDBFile dbFile = gfs.findOne(new ObjectId(id));
+        notFoundIfNull(dbFile);
+        Logger.info("Deliver GridFS file: %s", dbFile.getFilename());
+
+        response.contentType = dbFile.getContentType();
+        renderBinary(dbFile.getInputStream());
+    }
 
     // ~~ 
-    
-    private static GridFS getGridFS() {
-        Datastore datastore = MorphiaPlugin.ds();
-        DB db = datastore.getDB();
-        // name of bucket to store assets in
-        String collectionName = Play.configuration.getProperty("morphia.collection.upload", "uploads");
-        return new GridFS(db, collectionName);
+
+    private static class Asset {
+        
+        public final ObjectId id;
+        public final String thumbUrl;
+        public final String filename;
+        
+        public Asset(ObjectId id, String thumbUrl, String filename) {
+            this.id = id;
+            this.thumbUrl = thumbUrl;
+            this.filename = filename;
+        }
     }
-    
 }

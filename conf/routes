@@ -19,9 +19,10 @@ GET     /callouts/{<.*>name}                    Callouts.get
 
 # ~~ Helper for choosing references (call-out)
 GET     /helper/{action}                        ExternalAccess.{action}
-GET     /blobs                                  BlobAccess.list
+GET     /blobs                                  BlobAccess.listAssets
 GET     /blob/get/{name}                        BlobAccess.getByName
-POST    /blob/upload                            BlobAccess.upload
+GET     /blobs/{id}                             BlobAccess.getById
+POST    /blobs                                  BlobAccess.upload
 
 
 # ~~ Import CRUD routes (for admin area)

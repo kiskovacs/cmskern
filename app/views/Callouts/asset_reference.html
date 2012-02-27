@@ -3,12 +3,9 @@
 <h3>Select Asset</h3>
 
 <fieldset>
-    <!-- label for="file-uploader">Upload File</label>
-         enctype:'multipart/form-data'
-    <input id="file_upload" type="file" name="upload">
-    <button id="start_upload" class="btn">Upload</button -->
     <div id="file-uploader">
     </div>
+    <div id="asset_list"></div>
 </fieldset>
 
 
@@ -36,25 +33,33 @@
     // ~~
 
     var uploader = new qq.FileUploader({
-        // pass the dom node (ex. $(selector)[0] for jQuery users)
+        // pass the DOM node (ex. $(selector)[0] for jQuery users)
         element: document.getElementById('file-uploader'),
-        // path to server-side upload script
-        action: '/blob/upload'
+        // path to server-side upload
+        action: '/blobs',
+        onComplete: function(id, fileName, responseJSON){
+            setTimeout(function(){
+                refreshList();
+            }, 300);
+
+        }
     });
 
-    $("#start_upload").click(function(event) {
-        event.preventDefault();
-        var file_upload = $("#file_upload").val();
-        console.log("Start to upload " + file_upload);
-
-        var file = event.dataTransfer.files[0];
-        var request = new XMLHttpRequest();
-
-        request.open("POST", "/blob/upload", true); // open asynchronous post request
-        request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        request.send(file);
-
+    $(document).ready(function() {
+        refreshList();
     });
 
+    function refreshList() {
+        $.get('/blobs', function(data) {
+            $('#asset_list').html(data);
+            console.log('List was retrieved.');
+            $("a.thumbnail").on("click", function(event) {
+                event.preventDefault();
+                selectedValue = $("img:first-child", this).data("objectid");
+                console.log('Set value to ' + selectedValue);
+                $("#select-value").val(selectedValue);
+            });
+        });
+    }
 
 </script>

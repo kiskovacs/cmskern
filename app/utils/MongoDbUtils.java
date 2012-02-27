@@ -2,9 +2,11 @@ package utils;
 
 import com.google.code.morphia.Datastore;
 import com.mongodb.*;
+import com.mongodb.gridfs.GridFS;
 import models.ContentNode;
 import org.bson.types.ObjectId;
 import play.Logger;
+import play.Play;
 import play.modules.morphia.MorphiaPlugin;
 
 /**
@@ -63,6 +65,14 @@ public final class MongoDbUtils {
         Datastore datastore = MorphiaPlugin.ds();
         DB db = datastore.getDB();
         return db.getCollection(collectionName);
+    }
+
+    public static GridFS getGridFS() {
+        Datastore datastore = MorphiaPlugin.ds();
+        DB db = datastore.getDB();
+        // name of bucket to store assets in
+        String collectionName = Play.configuration.getProperty("morphia.collection.upload", "uploads");
+        return new GridFS(db, collectionName);
     }
     
 }
