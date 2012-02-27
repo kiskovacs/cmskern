@@ -84,6 +84,7 @@ function EditContentNodeCtrl($xhr) {
     scope.save_value = function(fieldname, doc_data) {
         scope.$set(fieldname, doc_data.value);
         scope.$eval(); // force model update
+        console.log("Updated " + fieldname + ": " + doc_data.value);
     };
 
 }
