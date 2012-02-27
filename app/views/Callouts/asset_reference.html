@@ -3,7 +3,18 @@
 <h3>Select Asset</h3>
 
 <fieldset>
-    <label for="select-value">Value</label>
+    <!-- label for="file-uploader">Upload File</label>
+         enctype:'multipart/form-data'
+    <input id="file_upload" type="file" name="upload">
+    <button id="start_upload" class="btn">Upload</button -->
+    <div id="file-uploader">
+    </div>
+</fieldset>
+
+
+
+<fieldset>
+    <label for="select-value">Asset Reference</label>
     <input type="text" id="select-value" name="value" value="${params.value}"/>
 </fieldset>
 
@@ -11,8 +22,8 @@
     var selectedValue = "";
 
     $("#select-value").on("change", function(event) {
-        selectedValue = $(this).val();
         event.preventDefault();
+        selectedValue = $(this).val();
     });
 
     // Contract between Caller and Callout
@@ -21,4 +32,29 @@
             value: selectedValue
         };
     }
+
+    // ~~
+
+    var uploader = new qq.FileUploader({
+        // pass the dom node (ex. $(selector)[0] for jQuery users)
+        element: document.getElementById('file-uploader'),
+        // path to server-side upload script
+        action: '/blob/upload'
+    });
+
+    $("#start_upload").click(function(event) {
+        event.preventDefault();
+        var file_upload = $("#file_upload").val();
+        console.log("Start to upload " + file_upload);
+
+        var file = event.dataTransfer.files[0];
+        var request = new XMLHttpRequest();
+
+        request.open("POST", "/blob/upload", true); // open asynchronous post request
+        request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        request.send(file);
+
+    });
+
+
 </script>
