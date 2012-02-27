@@ -24,6 +24,7 @@ TO-DO List
 
 * Innerhalb eines Callouts erlauben auch ein neues Element ("on-the-fly" anzulegen)
 
+* Date Felder zu den erlaubten Typen aufnehmen
 
 * Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
   sollte es besser von BasicDBObject erben?

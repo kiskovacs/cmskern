@@ -7,6 +7,8 @@
             { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
             { "name": "ueberschrift", "label": "Überschrift", "type": "text" },
             { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
+            { "name": "teaserbild_intern", "label": "Teaserbild (Image intern)",
+                                           "type": "reference", "callout": "/callouts/internal/image_reference" },
 
             { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
                 "min": "1",
