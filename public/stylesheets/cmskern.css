@@ -28,7 +28,7 @@ h3.contentTypeName {
 
 /* ~~ Form elements ~~ */
 
-fieldset {
+.content fieldset {
     margin-left: 25px;
 }
 
@@ -60,7 +60,7 @@ div.subform > fieldset:last-child > legend > a.move_down {
     display: none;
 }
 
-.reference input[disabled] {
+.reference input {
     background-color: #fafad2;
     /* cursor: pointer; */
 }
@@ -69,7 +69,9 @@ div.subform > fieldset:last-child > legend > a.move_down {
     cursor: pointer;
 }
 
-
+#search_results {
+    margin-top: 20px;
+}
 
 /* ~~ Table elements ~~ */
 

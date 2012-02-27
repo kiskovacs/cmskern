@@ -105,7 +105,7 @@ CalloutDialogHelper = (function() {
                     $("#selection_form").html(data);
                 });
         }, 1); // small delay to ensure form ID is available
-        return '<form id="selection_form" class="form-stacked"></form>';
+        return '<form id="selection_form" class="form-horizontal"></form>';
     };
 
     return CalloutDialogHelper;

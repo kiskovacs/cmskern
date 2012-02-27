@@ -14,10 +14,14 @@ GET     /schema                                 ContentTypesApi.list
 POST    /schema                                 ContentTypesApi.create
 DELETE  /schema/{id}                            ContentTypesApi.delete
 
+# ~~ Call-Outs (for dialog content)
 GET     /callouts/{<.*>name}                    Callouts.get
 
+# ~~ Helper for choosing references (call-out)
+GET     /helper/{action}                        ExternalAccess.{action}
 
-# ~~ Import CRUD routes
+
+# ~~ Import CRUD routes (for admin area)
 *       /admin                                  module:crud
 
 

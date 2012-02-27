@@ -30,15 +30,15 @@ angular.widget('my:form', function(element) {
                 var contentChilds = scope.$eval(qualifiedName);
                 if (!contentChilds) {
                     var propName = fullyQualifiedName.substr('contentNode'.length + 1);
-                    console.log("WARN:  No content childs for " + propName);
+                    //console.log("WARN:  No content childs for " + propName);
                     var propNameArr = propName.split('.');
                     if (propNameArr.length == 1) {
                         globalContentNode[propNameArr[0]] = [{}];
                     } else {
-                        console.log("*** WARN Unsupported nesting of arrays: " + propNameArr);
+                        //console.log("*** WARN Unsupported nesting of arrays: " + propNameArr);
                     }
                 } else {
-                    console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
+                    //console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
                     // Nesting of ng:repeat must use relative variable reference names
                 }
                 // ~~~~ FIXME: end (init array top-level)
@@ -70,16 +70,22 @@ angular.widget('my:form', function(element) {
                 var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + field.name + '\'})"><i class="icon-plus" title="Add"></i>' + field.label + '</a></div>');
                 this.curDOMParent.append(addButton);
 
-                console.log("~~ after add children   -> " + qualifiedName);
+                //console.log("~~ after add children   -> " + qualifiedName);
                 return;
             }
 
             // ~~ Render Field Types
+            var typeLength = "medium";
+            if (field.len) {
+                typeLength = field.len;
+            }
+            var lengthClassName = 'input-' + typeLength;
+
             switch (field.type || 'text') {
                 case 'reference': {
 
                     fieldElStr  = '<div class="reference input-append">';
-                    fieldElStr += '<input disabled class="span2" name="' + qualifiedName + '" ';
+                    fieldElStr += '<input class="span2" name="' + qualifiedName + '" ';
 
                     angular.forEach(field, function(value, attribute) {
                         if (attribute != 'tag') {
@@ -93,7 +99,7 @@ angular.widget('my:form', function(element) {
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {
-                    fieldElStr = '<input class="input-medium" name="' + qualifiedName + '" ';
+                    fieldElStr = '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
 
                     angular.forEach(field, function(value, attribute) {
                         if (attribute != 'tag') {
@@ -120,8 +126,12 @@ angular.widget('my:form', function(element) {
             controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.label + '</label>'));
             var controlElem = angular.element('<div class="controls">');
             controlElem.append(fieldElStr);
+            if (field.helptext) {
+                controlElem.append('<p class="help-block">' + field.helptext + '</p>');
+            }
+
             controlGroup.append(controlElem);
-            console.log("****** append to " + qualifiedName);
+            //console.log("****** append to " + qualifiedName);
             this.curDOMParent.append(controlGroup);
 
         }, {parentName: data, fqName: data, curDOMParent: fieldset});

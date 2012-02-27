@@ -1,25 +1,24 @@
-<h5>Search for Photo</h5>
+<h3>Flickr Photo</h3>
 
 <!--
  Flow:
-   1) Suchfeld Eingabe,
-   2) Suche bei Flickr auslösen,
+   1) Suchfeld Eingabe
+   2) Suche bei Flickr auslösen
    3) Ergebnis anzeigen
    4) eines der Ergebnisbilder auswählen
 -->
 
 <fieldset>
-    <label for="select-value">Value</label>
+    <label for="search_term">Search Keyword</label>
+    <input type="text" id="search_term" name="search_term" value=""/>
+    <button id="search_flickr" class="btn">Flickr, Go!</button>
+    <div id="search_results"></div>
+</fieldset>
+
+
+<fieldset>
+    <label for="select-value">Selected Photo</label>
     <input type="text" id="select-value" name="value" value="${params.value}"/>
-    
-    <ul>
-    #{list items: photos, as:'photo'}
-    <li>
-        <img src="${photo.url}" alt="${photo.title}">
-    </li>
-    #{/list}
-    </ul>
-    
 </fieldset>
 
 <script type="text/javascript">
@@ -36,4 +35,23 @@
             value: selectedValue
         };
     }
+
+    //
+    $("#search_flickr").click(function(event) {
+        var search_term = $("#search_term").val();
+        console.log("Search for " + search_term);
+        $.get('/helper/searchFlickr', {query: search_term}, function(data) {
+            $('#search_results').html(data);
+            console.log('Results were retrieved.');
+            $("a.thumbnail").on("click", function(event) {
+                console.log('Retrieved click on thumbnail...' + $(this));
+                selectedValue = $("img:first-child", this).attr("src");
+                $("#select-value").val(selectedValue);
+                console.log('Set value to ' + selectedValue);
+                event.preventDefault();
+            });
+        });
+        event.preventDefault();
+    });
+
 </script>

@@ -1,0 +1,70 @@
+(required) Attribute: "name"
+
+The name of the field as it is for reference in the JSON data structure.
+
+
+(required) Attribute: "label"
+
+The label is used as display name to indicate the user what this field
+can be used for (short description).
+
+
+(optional) Attribute: "helptext"
+
+A text which is displayed to give the user some context / hints on
+what this field is supposed to hold information (long description).
+
+
+(optional) Attribute: "type" (Default value: "text")
+
+The data type of the field.
+Supported types are:
+* text
+* textarea
+* checkbox
+* reference (a "callout" attribute has to be specified)
+* repeatable (a "children" attribute has to be specified)
+
+
+(optional, required if type == "reference") Attribute: "callout"
+
+The URL to the page which returns the HTML form fragment
+as displayed by the modal dialog to choose a value from.
+
+
+(optional) Attribute: "len"  (Default value: "medium")
+
+Describes the length of the input area.
+Allowed values:
+
+* mini    (w:  60px)
+* small   (w:  90px)
+* medium  (w: 150px)
+* large   (w: 210px)
+* xlarge  (w: 270px)
+* xxlarge (w: 530px)
+
+
+(optional) Attribute: "children"
+
+Specify sub-document structure with a collection of fields
+following the same definition structure (name, label, type etc.).
+
+
+TODO: The following elements are not yet supported, but might be used in the future
+
+(optional) Attribute: "min"
+
+The minimum number of children
+TODO: we might want to use min also as part of the validator (for minimum string length)
+
+(optional) Attribute: "max"
+
+The maximum number of children
+TODO: we might want to use min also as part of the validator (for maximum string length)
+
+
+(optional) Attribute: "validator"
+
+A regular expression or a rule / function ensuring that the user specified value
+is validated against on the client-side before the user can submit the form.
