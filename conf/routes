@@ -14,7 +14,7 @@ GET     /schema                                 ContentTypesApi.list
 POST    /schema                                 ContentTypesApi.create
 DELETE  /schema/{id}                            ContentTypesApi.delete
 
-GET     /callouts/{name}                        Callouts.get
+GET     /callouts/{<.*>name}                    Callouts.get
 
 
 # ~~ Import CRUD routes

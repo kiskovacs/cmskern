@@ -1,5 +1,6 @@
 package controllers;
 
+import play.Logger;
 import play.mvc.Controller;
 
 /**
@@ -13,7 +14,9 @@ import play.mvc.Controller;
 public class Callouts extends Controller {
     
     public static void get(String name) {
-        renderTemplate("Callouts/" + name + ".html");
+        String templateName = "Callouts/" + name + ".html";
+        Logger.info("Going to render %s ...", templateName);
+        renderTemplate(templateName);
     }
     
 }
