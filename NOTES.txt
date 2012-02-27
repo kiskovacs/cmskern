@@ -1,3 +1,9 @@
+[niko, 27-Feb-2012]
+
+Manipulation of array elements seems not possible that easy:
+https://groups.google.com/group/angular/browse_thread/thread/88461b4cc4bfb4d5
+
+
 [niko, 29-Jan-2012]
 
 Derzeit werden noch leere Strings in MongoDB abgelegt (json2 Serialisierung?)

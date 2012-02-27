@@ -1,14 +1,20 @@
 [
     { "name": "titel", "label": "Titel", "type": "text"},
     { "name": "online", "label": "Online?", "type": "checkbox"},
+
+
+    { "name": "teaserbild_intern_ref", "label": "Teaserbild (Image intern)",
+        "type": "reference", "callout": "/callouts/internal/image_reference" },
+    { "name": "teaserbild_flickr_url", "label": "Teaserbild (from flickr)",
+        "type": "reference", "callout": "/callouts/flickr_photo_reference" },
+
+
     { "name": "teasers", "label": "Teaser", "type": "repeatable",
         "min": "1",
         "children": [
             { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
             { "name": "ueberschrift", "label": "Überschrift", "type": "text" },
             { "name": "teasertext", "label": "Teasertext", "type": "textarea" },
-            { "name": "teaserbild_intern", "label": "Teaserbild (Image intern)",
-                                           "type": "reference", "callout": "/callouts/internal/image_reference" },
 
             { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
                 "min": "1",
