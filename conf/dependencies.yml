@@ -4,6 +4,7 @@ require:
     - play
     - play -> morphia [1.2.4d]
     - play -> crud
+    - play -> jelastic 0.1
 
     # ~~ .less Files werden leider nicht übersetzt (2012-01-22)
     # play -> less [0.3]
