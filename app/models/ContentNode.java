@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ContentNode {
 
-    public static final String COLLECTION_NAME = "content";
+    public static final String COLLECTION_NAME         = "content";
     public static final String VERSION_COLLECTION_NAME = "versions";
 
     public static final String ATTR_ID         = "_id";
@@ -80,7 +80,7 @@ public class ContentNode {
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
-    public static DBObject findByIdAsNative(String id) {
+    public static DBObject rawFindById(String id) {
         DBObject dbObj = null;
         try {
             dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
@@ -90,6 +90,9 @@ public class ContentNode {
         return (dbObj != null ? dbObj : null);
     }
 
+    /**
+     * Returns lately modified content nodes of the speicified type.
+     */
     public static List<ContentNode> findByType(String type, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
@@ -101,6 +104,9 @@ public class ContentNode {
         return nodes;
     }
 
+    /**
+     * Returns the most recent revisions related to this origin content node.
+     */
     public static List<ContentNode> findVersionsForId(String id) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME);
@@ -115,6 +121,8 @@ public class ContentNode {
     // ~~
 
     public static void createIndexes() {
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
+        // Also indexes for the version collection
         MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
         // create also compound key
         MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF, ATTR_VERSION);
