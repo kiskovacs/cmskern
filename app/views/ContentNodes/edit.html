@@ -23,6 +23,10 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class="metaInfo">
+    Current Version: ${contentNode.version}, last edited on ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+</div>
+
 <div ng:controller="EditContentNodeCtrl">
 
     <form class="form-horizontal" ng:submit="submit()">

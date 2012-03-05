@@ -27,11 +27,13 @@ public class ContentNode {
     public static final String ATTR_TYPE       = "_type";
     public static final String ATTR_CREATED    = "_created";
     public static final String ATTR_MODIFIED   = "_modified";
+    public static final String ATTR_VERSION    = "_version";
     public static final String ATTR_DATA       = "data";
 
     private ObjectId id;
     private Long modified;
     private Long created;
+    private Integer version;
     private String type;
     private String jsonContent;
     
@@ -47,6 +49,7 @@ public class ContentNode {
         dbObj.put(ATTR_DATA, contentObj);
         // add some metadata
         dbObj.put(ATTR_TYPE, type);
+        dbObj.put(ATTR_VERSION, 1);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
@@ -54,8 +57,9 @@ public class ContentNode {
     }
 
     public void update(String jsonContent) {
-        DBObject dbObj = MongoDbUtils.convert(jsonContent);
-        MongoDbUtils.updateValues(COLLECTION_NAME, getId(), dbObj);
+        DBObject contentData = MongoDbUtils.convert(jsonContent);
+        MongoDbUtils.updateWithMetadata(COLLECTION_NAME, getId(), contentData);   // TODO <-----
+
     }
 
     public void delete() {
@@ -102,6 +106,7 @@ public class ContentNode {
         //dbObj.removeField("_id");
         String type = (String) dbObj.get(ATTR_TYPE);
         //dbObj.removeField("_type");
+        Integer version = (Integer) dbObj.get(ATTR_VERSION);
         Long created = (Long) dbObj.get(ATTR_CREATED);
         //dbObj.removeField("_created");
         Long modified = (Long) dbObj.get(ATTR_MODIFIED);
@@ -110,6 +115,8 @@ public class ContentNode {
         // ~~
         ContentNode node = new ContentNode(type, jsonContent);
         node.id = id;
+        node.type = type;
+        node.version = version;
         node.modified = modified;
         node.created = created;
         return node;
@@ -137,4 +144,11 @@ public class ContentNode {
         return new Date(created);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
 }

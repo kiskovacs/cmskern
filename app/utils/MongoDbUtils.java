@@ -35,13 +35,24 @@ public final class MongoDbUtils {
         dbColl.update(queryById(id), object);
     }
 
-    public static void updateValues(String collectionName, String id, DBObject object) {
-        object.removeField(""); // TODO: schon höher lösen
-        Logger.info("~~ Update mongoDB with values: %s", object.toString());
+    public static void updateWithMetadata(String collectionName, String id, DBObject contentData) {
+        contentData.removeField(""); // TODO: schon höher lösen
+        // Logger.debug("~~ Update mongoDB with values: %s", contentData.toString());
         DBCollection dbColl = getDBCollection(collectionName);
-        WriteResult res = dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_DATA, object)), true, false);
+
+        // ~~ Get current version
+        DBObject verObj = dbColl.findOne(queryById(id));
+        verObj.removeField("_id");
+        verObj.put("_ref", id);
+        getDBCollection("versions").save(verObj);
+
+        // ~~ Update existing object
+        WriteResult res = dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_DATA, contentData)), true, false);
         Logger.info("~~ Update values, result %s", res.getLastError());
+        // Update last modified date
         dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_MODIFIED, System.currentTimeMillis())));
+        // Increment version number
+        dbColl.update(queryById(id), new BasicDBObject("$inc", new BasicDBObject(ContentNode.ATTR_VERSION, 1)));
     }
 
     public static void delete(String collectionName, String id) {

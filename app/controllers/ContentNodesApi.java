@@ -11,14 +11,14 @@ public class ContentNodesApi extends Controller {
     public static void getBody(String type, String id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
-        Logger.info("Retrieved %s with ID: %s", type, contentNode.getId());
+        Logger.info("Deliver %s body with ID: %s", type, contentNode.getId());
         renderJSON(contentNode.getJsonContent());
     }
 
     public static void getFull(String type, String id) {
         DBObject obj = ContentNode.findByIdAsNative(id);
         notFoundIfNull(obj, "Unknown content ID: " + id);
-        Logger.info("Retrieved %s for ID: %s", type, id);
+        Logger.info("Deliver full %s for ID: %s", type, id);
         renderJSON(obj.toString());
     }
 
