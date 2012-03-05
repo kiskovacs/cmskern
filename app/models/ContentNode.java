@@ -22,18 +22,20 @@ import java.util.List;
 public class ContentNode {
 
     public static final String COLLECTION_NAME = "content";
+    public static final String VERSION_COLLECTION_NAME = "versions";
 
     public static final String ATTR_ID         = "_id";
     public static final String ATTR_TYPE       = "_type";
     public static final String ATTR_CREATED    = "_created";
     public static final String ATTR_MODIFIED   = "_modified";
     public static final String ATTR_VERSION    = "_version";
+    public static final String ATTR_IDREF      = "_ref";
     public static final String ATTR_DATA       = "data";
 
     private ObjectId id;
     private Long modified;
     private Long created;
-    private Integer version;
+    private Integer version = 1;
     private String type;
     private String jsonContent;
     
@@ -58,7 +60,7 @@ public class ContentNode {
 
     public void update(String jsonContent) {
         DBObject contentData = MongoDbUtils.convert(jsonContent);
-        MongoDbUtils.updateWithMetadata(COLLECTION_NAME, getId(), contentData);   // TODO <-----
+        MongoDbUtils.updateWithMetadata(COLLECTION_NAME, VERSION_COLLECTION_NAME, getId(), contentData);
 
     }
 
@@ -88,15 +90,34 @@ public class ContentNode {
         return (dbObj != null ? dbObj : null);
     }
 
-    public static List<ContentNode> findByType(String type) {
+    public static List<ContentNode> findByType(String type, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(100);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
         }
         return nodes;
+    }
+
+    public static List<ContentNode> findVersionsForId(String id) {
+        List<ContentNode> nodes = new ArrayList<ContentNode>();
+        DBCollection dbColl = MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_IDREF, id)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(20);
+        while (dbCur.hasNext()) {
+            DBObject dbObj = dbCur.next();
+            nodes.add(convert(dbObj));
+        }
+        return nodes;
+    }
+
+    // ~~
+
+    public static void createIndexes() {
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
+        // create also compound key
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF, ATTR_VERSION);
     }
 
     // ~~
@@ -149,6 +170,7 @@ public class ContentNode {
     }
 
     public Integer getVersion() {
-        return version;
+        return version != null ? version : 1;
     }
+
 }

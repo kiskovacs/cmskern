@@ -11,20 +11,20 @@ public class ContentNodesApi extends Controller {
     public static void getBody(String type, String id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
-        Logger.info("Deliver %s body with ID: %s", type, contentNode.getId());
+        Logger.info("Deliver body with ID: %s (%s)", contentNode.getId(), type);
         renderJSON(contentNode.getJsonContent());
     }
 
     public static void getFull(String type, String id) {
         DBObject obj = ContentNode.findByIdAsNative(id);
         notFoundIfNull(obj, "Unknown content ID: " + id);
-        Logger.info("Deliver full %s for ID: %s", type, id);
+        Logger.info("Deliver full %s for ID: %s (%s)", id, type);
         renderJSON(obj.toString());
     }
 
 
     public static void create(String type, String body) {
-        Logger.info("Going to create %s ... ", body);
+        Logger.debug("Going to create %s ... ", body);
         ContentNode contentNode = new ContentNode(type, body);
         contentNode.create();
         // deliver back location of new content resource

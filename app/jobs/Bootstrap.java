@@ -1,5 +1,6 @@
 package jobs;
 
+import models.ContentNode;
 import models.ContentType;
 import play.Logger;
 import play.Play;
@@ -26,6 +27,9 @@ public class Bootstrap extends Job {
             Fixtures.load("bootstrap-data.yml");
         }
 
+        // ~~
+        Logger.info("Ensure MongoDB indexes are set ...");
+        ContentNode.createIndexes();
     }
 
 }

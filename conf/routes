@@ -38,6 +38,7 @@ PUT     /{type}/{id}                            ContentNodesApi.update
 # GET     /{type}                                 ContentNodesApi.list
 POST    /{type}                                 ContentNodesApi.create
 # DELETE  /{type}/{id}                            ContentNodesApi.delete
+GET     /{type}/{id}/versions                     ContentNodes.showVersions
 GET     /{type}/{id}/delete                       ContentNodes.delete
 
 

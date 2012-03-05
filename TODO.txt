@@ -60,6 +60,9 @@ For ContentNode
 IDEAS
 ---------------
 
+* Visualize JSON Differences
+  for example using jsondiff: http://tlrobinson.net/projects/js/jsondiff/
+
 * More elegant Upload of files (jQuery File Upload Plugin)
   https://github.com/blueimp/jQuery-File-Upload/wiki
   oder http://www.uploadify.com/

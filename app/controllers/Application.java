@@ -17,7 +17,7 @@ public class Application extends Controller {
 
         Map<ContentType, List<ContentNode>> content = new HashMap<ContentType, List<ContentNode>>();
         for (ContentType type : types) {
-            List<ContentNode> nodes = ContentNode.findByType(type.slug);
+            List<ContentNode> nodes = ContentNode.findByType(type.slug, 50);
             content.put(type, nodes);
         }
         

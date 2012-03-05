@@ -38,8 +38,16 @@ public class ContentNodes extends Controller {
         redirect("Application.index");
     }
 
+    public static void showVersions(String type, String id) {
+        ContentNode contentNode = ContentNode.findById(id);
+        notFoundIfNull(contentNode, "Unknown node ID: " + id);
+        List<ContentNode> versions = ContentNode.findVersionsForId(id);
+        render(contentNode, versions);
+    }
+
+
     public static void list(String type) {
-        List<ContentNode> nodes = ContentNode.findByType(type);
+        List<ContentNode> nodes = ContentNode.findByType(type, 50);
         render(nodes);
     }
 
