@@ -1,6 +1,7 @@
 [
     { "name": "titel", "label": "Titel", "type": "text", "len": "xlarge"},
     { "name": "online", "label": "Online?", "type": "checkbox"},
+    { "name": "online_datum", "label": "Online-Datum", "type": "date"},
 
     { "name": "teasers", "label": "Teaser", "type": "repeatable",
         "min": "1",

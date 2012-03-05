@@ -96,6 +96,11 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span></div>';
                     break;
                 }
+                case 'date': {
+                    fieldElStr  = '<input type="text" class="datepicker ' + lengthClassName + '"';
+                    fieldElStr += '       ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'dd/mm/yy\'}">';
+                    break;
+                }
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {

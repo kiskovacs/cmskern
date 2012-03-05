@@ -3,8 +3,18 @@
 
 #{set 'moreScripts'}
     <!--suppress XmlUnboundNsPrefix -->
+    <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
+
+    <!-- Angular Core Library -->
     <script type="text/javascript" src="@{'/public/javascripts/angular/angular.js'}" ng:autobind></script>
-    <!-- script type="text/javascript" src="@{'/public/javascripts/services.js'}"></script -->
+
+    <!-- Angular Add-Ons -->
+    <script type="text/javascript" src="@{'/public/javascripts/misc/date.format.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/misc/underscore-min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/angular/addons/angular-widgets.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/angular/addons/angular-formatters.js'}"></script>
+
+    <!-- Custom Angular Scripts for cmskern -->
     <script type="text/javascript" src="@{'/public/javascripts/controllers.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/filters.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/widgets.js'}"></script>
