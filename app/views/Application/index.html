@@ -19,7 +19,7 @@
 
 #{list items:content.entrySet(), as:'entry'}
 
-<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="/${entry.key.slug}/edit"><i class="icon-plus"></i></a> </small></h3>
+<h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}   <a href="@{ContentNodes.blank(entry.key.slug)}"><i class="icon-plus"></i></a> </small></h3>
 
 #{if entry.value}
 <table class="table table-striped">
@@ -34,13 +34,13 @@
         #{list items:entry.value, as:'node'}
         <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
             <td>
-                ${node.id}
+                <a href="@{ContentNodes.edit(node.type, node.id)}">${node.id}</a>
             </td>
             <td>
-                <a href="/${node.type}/${node.id}"        ><i class="icon-eye-open" title="View Content JSON"></i></a>
-                <a href="/${node.type}/${node.id}/full"   ><i class="icon-info-sign" title="View Complete JSON"></i></a>
-                <a href="/${node.type}/${node.id}/edit"   ><i class="icon-pencil" title="Edit"></i></a>
-                <a href="/${node.type}/${node.id}/delete" ><i class="icon-trash" title="Delete"></i></a>
+                <a href="@{ContentNodesApi.getBody(node.type, node.id)}"><i class="icon-eye-open" title="View Content JSON"></i></a>
+                <a href="@{ContentNodesApi.getFull(node.type, node.id)}"><i class="icon-info-sign" title="View Complete JSON"></i></a>
+                <a href="@{ContentNodes.edit(node.type, node.id)}"><i class="icon-pencil" title="Edit"></i></a>
+                <a href="@{ContentNodes.delete(node.type, node.id)}"><i class="icon-trash" title="Delete"></i></a>
             </td>
             <td>
                 ${node.modified.format('yyyy-MM-dd (HH:mm:ss)')}
