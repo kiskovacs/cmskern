@@ -9,6 +9,8 @@ import play.Logger;
 import play.Play;
 import play.modules.morphia.MorphiaPlugin;
 
+import java.util.Arrays;
+
 /**
  * Simple operations on the MongoDB,
  * using the morphia play module (only for the time being,
@@ -69,11 +71,11 @@ public final class MongoDbUtils {
     }
 
     public static void ensureIndexes(final String collectionName, String ... columns) {
-        Logger.info("~~ Ensure MongoDB index for %s on %s", columns, collectionName);
+        Logger.info("~~ Ensure MongoDB index for %s on %s", Arrays.asList(columns), collectionName);
         DBCollection dbColl = getDBCollection(collectionName);
         BasicDBObject keys = new BasicDBObject();
         for (String column : columns) {
-            keys.append(column, 1); // assume ascending index (by default)
+            keys.append(column, 1); // assume ascending index
         }
         dbColl.createIndex(keys);
     }
