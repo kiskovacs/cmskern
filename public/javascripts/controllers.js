@@ -63,9 +63,15 @@ function EditContentNodeCtrl($xhr) {
     scope.helper = new CalloutDialogHelper();
 
     scope.select_value = function(callout_url, field_name) {
-        var field_value = scope.$get(field_name);
-        // Create Bootbox with external selection form loaded from callout URL
-        return bootbox.dialog(scope.helper.selection_form(callout_url, field_name, field_value), [
+        var fq_name = field_name;
+        var cur_pos = this.$index;
+        if (typeof cur_pos != 'undefined') {
+            var dotPos = fq_name.lastIndexOf('.');
+            fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
+        }
+        var field_value = scope.$get(fq_name);
+        // Create Bootbox Modal with external selection form loaded as specified by callout URL
+        return bootbox.dialog(scope.helper.selection_form(callout_url, fq_name, field_value), [
             {
                 'label': 'Cancel'
             },
@@ -73,7 +79,7 @@ function EditContentNodeCtrl($xhr) {
                 'label': 'Save',
                 'class': 'btn-primary success',
                 'callback': function() {
-                    return scope.save_value(field_name, calloutGetSelectedValue());
+                    return scope.save_value(fq_name, calloutGetSelectedValue());
                 }
             }
         ], {
@@ -84,7 +90,7 @@ function EditContentNodeCtrl($xhr) {
     scope.save_value = function(fieldname, doc_data) {
         scope.$set(fieldname, doc_data.value);
         scope.$eval(); // force model update
-        console.log("Updated " + fieldname + ": " + doc_data.value);
+        console.log("Updated " + fieldname + " = " + doc_data.value);
     };
 
 }

@@ -2,17 +2,6 @@
     { "name": "titel", "label": "Titel", "type": "text", "len": "xlarge"},
     { "name": "online", "label": "Online?", "type": "checkbox"},
 
-
-    { "name": "teaserbild_intern_ref", "label": "Teaserbild (intern)",
-        "type": "reference", "len": "xlarge",
-        "callout": "/callouts/internal/image_reference",
-        "helptext": "References an internal URL to a selected image."},
-    { "name": "teaserbild_flickr_url", "label": "Teaserbild (flickr)",
-        "type": "reference", "len": "xlarge",
-        "callout": "/callouts/flickr_photo_reference",
-        "helptext": "References URL from a selected photo (hosted on flickr.com)."},
-
-
     { "name": "teasers", "label": "Teaser", "type": "repeatable",
         "min": "1",
         "children": [
@@ -20,11 +9,20 @@
             { "name": "ueberschrift", "label": "Überschrift", "type": "text", "len": "xlarge" },
             { "name": "teasertext", "label": "Teasertext", "type": "textarea", "len": "xlarge" },
 
+            { "name": "teaserbild_intern_ref", "label": "Teaserbild (intern)",
+                "type": "reference", "len": "xlarge",
+                "callout": "/callouts/internal/image_reference",
+                "helptext": "References an internal URL to a selected image."},
+            { "name": "teaserbild_flickr_url", "label": "Teaserbild (flickr)",
+                "type": "reference", "len": "xlarge",
+                "callout": "/callouts/flickr_photo_reference",
+                "helptext": "References URL from a selected photo (hosted on flickr.com)."},
+
             { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
                 "min": "1",
                 "children": [
-                    { "name": "spB", "label": "Sub-Spitzmarke", "type": "text" },
-                    { "name": "ttB", "label": "Sub-Teasertext", "type": "textarea" }
+                    { "name": "subSpitzmarke", "label": "Sub-Spitzmarke", "type": "text" },
+                    { "name": "subTeasertext", "label": "Sub-Teasertext", "type": "textarea" }
                 ]
             }
         ]

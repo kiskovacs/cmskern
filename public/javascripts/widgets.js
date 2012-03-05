@@ -20,7 +20,7 @@ angular.widget('my:form', function(element) {
             var qualifiedName = this.parentName + '.' + field.name,
                 fullyQualifiedName = this.fqName + '.' + field.name,
                 fieldElStr;
-            console.log("----> qualifiedName: " + qualifiedName);
+            console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
             // has hierarchical subforms?
             if (field.children) {
@@ -85,15 +85,15 @@ angular.widget('my:form', function(element) {
                 case 'reference': {
 
                     fieldElStr  = '<div class="reference input-append">';
-                    fieldElStr += '<input class="span2" name="' + qualifiedName + '" ';
+                    fieldElStr += '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
 
-                    angular.forEach(field, function(value, attribute) {
-                        if (attribute != 'tag') {
-                            fieldElStr += attribute + '="' + value + '" ';
-                        }
-                    });
+                    //angular.forEach(field, function(value, attribute) {
+                    //    if (attribute != 'tag') {
+                    //        fieldElStr += attribute + '="' + value + '" ';
+                    //    }
+                    //});
 
-                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + qualifiedName + '\')"><i class="icon-edit"></i></span></div>';
+                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span></div>';
                     break;
                 }
                 case 'checkbox':; //fallthrough
@@ -111,11 +111,11 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'textarea': {
-                    fieldElStr = '<textarea name="' + qualifiedName + '" ';
+                    fieldElStr = '<textarea class="' + lengthClassName + '" name="' + qualifiedName + '" ';
 
-                    angular.forEach(field, function(attribute) {
-                        fieldElStr += attribute + '="' + field[attribute] + '" ';
-                    });
+                    //angular.forEach(field, function(attribute) {
+                    //    fieldElStr += attribute + '="' + field[attribute] + '" ';
+                    //});
 
                     fieldElStr += '></textarea>';
                     break;
