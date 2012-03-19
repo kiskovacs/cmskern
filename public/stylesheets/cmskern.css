@@ -46,6 +46,11 @@ legend .ng-directive {
     margin-bottom: 10px;
 }
 
+img.ui-datepicker-trigger {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
 div.btn_add {
     width: 100%;
     text-align: right;

@@ -1,3 +1,12 @@
+[niko, 19-Mar-2012]
+
+How to trigger jQuery UI datepicker (class: ui-datepicker-trigger?) with bootstrap icon?
+  <div class="reference input-append">
+    <input type="text" class="datepicker" ...>
+    <span class="add-on"><i class="icon-calendar"></i></span>
+  </div>
+
+
 [niko, 27-Feb-2012]
 
 Manipulation of array elements seems not possible that easy:

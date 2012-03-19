@@ -21,6 +21,7 @@ The data type of the field.
 Supported types are:
 * text
 * textarea
+* date
 * checkbox
 * reference (a "callout" attribute has to be specified)
 * repeatable (a "children" attribute has to be specified)
@@ -30,6 +31,13 @@ Supported types are:
 
 The URL to the page which returns the HTML form fragment
 as displayed by the modal dialog to choose a value from.
+
+
+(optional, only relevant for type == "date") Attribute: "dateFormat" (Default value: "dd-mm-yy")
+
+Specifies the format in which the date information is represented as JSON value.
+Format must be according to the formatDate function of the jQuery UI datepicker component:
+See documentation: http://docs.jquery.com/UI/Datepicker/formatDate
 
 
 (optional) Attribute: "len"  (Default value: "medium")

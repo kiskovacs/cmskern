@@ -74,7 +74,7 @@ angular.widget('my:form', function(element) {
                 return;
             }
 
-            // ~~ Render Field Types
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Render Field Types
             var typeLength = "medium";
             if (field.len) {
                 typeLength = field.len;
@@ -93,12 +93,16 @@ angular.widget('my:form', function(element) {
                     //    }
                     //});
 
-                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span></div>';
+                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span>';
+                    fieldElStr += '</div>';
                     break;
                 }
                 case 'date': {
-                    fieldElStr  = '<input type="text" class="datepicker ' + lengthClassName + '"';
-                    fieldElStr += '       ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'dd/mm/yy\'}">';
+                    fieldElStr  = '<div class="reference">';
+                    fieldElStr += '<input type="text" class="datepicker ' + lengthClassName + '"';
+                    fieldElStr += '  ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'' + field.dateFormat + '\', showOn: \'both\',';
+                    fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
+                    fieldElStr += '</div>';
                     break;
                 }
                 case 'checkbox':; //fallthrough

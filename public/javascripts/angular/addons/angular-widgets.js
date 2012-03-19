@@ -361,7 +361,7 @@ angular.widget('@ui:autocomplete', function(expr, el, val) {
 // ui:datepicker widget
 // jQuery UI datepicker
 angular.widget('@ui:datepicker', function(expr, el, val) {
-    if(!$.datepicker)
+    if (!$.datepicker)
         return;
     var compiler = this;
     var defaults = {dateFormat: 'dd-mm-yy'};
@@ -369,23 +369,30 @@ angular.widget('@ui:datepicker', function(expr, el, val) {
     var events = {};
     var dateExpr = widgetUtils.parseAttrExpr(el, 'ui:date');
     return function(el) {
-        var currentScope = this
+        var currentScope = this;
         var tagName = $(el)[0].tagName.toLowerCase();
-        if(tagName == 'input' || tagName == 'textarea')
+        if (tagName == 'input' || tagName == 'textarea')
             events.onClose = function(date, ui){
-                var dt = $(el).datepicker('getDate');
-                widgetUtils.setValue(currentScope, dateExpr, dt);
+                var dt = $(el).datepicker('getDate'); // returns date object
+                var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
+                widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         else
             events.onSelect = function(date, ui){
                 var dt = $(el).datepicker('getDate');
-                widgetUtils.setValue(currentScope, dateExpr, dt);
+                var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
+                widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         $.extend(options, events);
         $(el).datepicker(options);
         currentScope.$watch(dateExpr.expression, function(val){
-            if(val && val instanceof Date)
+            if (val && val instanceof Date) {
+                // format Date to string
                 $(el).datepicker('setDate', widgetUtils.formatValue(val, dateExpr, currentScope));
+            } else {
+                // assume string is given in proper representation
+                $(el).datepicker('setDate', val);
+            }
         }, null, true);
     };
 });
