@@ -20,6 +20,9 @@ TO-DO List
 
 * Einlesen von ContentNode Testdaten, angetriggert von Bootstraper
 
+* index Seite: highlighId in den Flash Scope packen, damit dieser nicht immer wieder
+  bei einem Refresh auftaucht
+
 * Richtext Editor integrieren (z.B. tinyMCE ...)
 
 * Innerhalb eines Callouts erlauben auch ein neues Element ("on-the-fly" anzulegen)

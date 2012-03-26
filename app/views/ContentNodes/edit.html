@@ -29,6 +29,7 @@
 
     var globalContentType   = "${contentType.slug}";
     var globalContentSchema =  ${contentType.jsonForm.raw()};
+    var globalSchemaRules   =  globalContentSchema.rules;
 
     // ~~ define data we are working with
     var globalContentNodeId = "${contentNode.id}";
@@ -45,7 +46,7 @@
 <div ng:controller="EditContentNodeCtrl">
 
     <form class="form-horizontal" ng:submit="submit()">
-        <my:form schema="contentSchema" data="contentNode"></my:form>
+        <my:form schema="contentSchema.fields" data="contentNode"></my:form>
 
         <div class="form-actions">
             <button class="btn btn-primary">Save</button>

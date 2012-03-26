@@ -106,20 +106,9 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'select': {
-                    /*
-                    fieldElStr = '<select class="' + lengthClassName + '" name="' + qualifiedName + '">';
-                    //fieldElStr += field.values;
-
-                    angular.forEach(field.allowedValues, function(elem, idx) {
-                        fieldElStr += '<option value="' + elem.value + '" label="' + elem.label + '" />';
-                    });
-
-                    fieldElStr += '</select>';
-                    */
-
                     fieldElStr =  '<ul ui:selectable-container class="selectBox">';
-                    fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in data.cities" data-value="{{i.value}}">';   // i._selected
-                    fieldElStr += '        <div class="name">{{i.name}}</div>';
+                    fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in schemaRules.' + field.rule_ref + '.allowedValues" data-value="{{i.value}}">';
+                    fieldElStr += '        <div class="name">{{i.label}}</div>';
                     fieldElStr += '    </li>';
                     fieldElStr += '</ul>';
 

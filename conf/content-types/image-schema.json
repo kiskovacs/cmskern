@@ -1,5 +1,8 @@
-[
-    { "name": "name", "label": "Name", "type": "text", "len": "xlarge"},
-    { "name": "asset", "label": "Asset", "type": "reference", "callout": "/callouts/asset_reference", "len": "xlarge"},
-    { "name": "keywords", "label": "Keywords", "type": "text", "len": "xlarge"}
-]
+{
+    "fields":
+    [
+        { "name": "name", "label": "Name", "type": "text", "len": "xlarge"},
+        { "name": "asset", "label": "Asset", "type": "reference", "callout": "/callouts/asset_reference", "len": "xlarge"},
+        { "name": "keywords", "label": "Keywords", "type": "text", "len": "xlarge"}
+    ]
+}

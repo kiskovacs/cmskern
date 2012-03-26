@@ -1,8 +1,12 @@
+<!--suppress XmlUnboundNsPrefix -->
 #{extends 'main.html' /}
 #{set title: 'Create ' + contentType.displayName /}
 
+#{set 'moreStyles'}
+    <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/ui-lightness/jquery-ui-1.8.18.custom.css'}">
+#{/set}
+
 #{set 'moreScripts'}
-    <!--suppress XmlUnboundNsPrefix -->
     <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
 
     <!-- Angular Core Library -->
@@ -25,6 +29,7 @@
 
     var globalContentType   = "${contentType.slug}";
     var globalContentSchema =  ${contentType.jsonForm.raw()};
+    var globalSchemaRules   =  globalContentSchema.rules;
 
     // ~~ initialize data
     var globalContentNodeId = -1;
@@ -38,7 +43,7 @@
 
     <!-- Main form for editing content -->
     <form class="form-horizontal" ng:submit="submit()">
-        <my:form schema="contentSchema" data="contentNode"></my:form>
+        <my:form schema="contentSchema.fields" data="contentNode"></my:form>
 
         <div class="form-actions">
             <button class="btn btn-primary">Save</button>

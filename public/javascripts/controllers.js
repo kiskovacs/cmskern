@@ -7,15 +7,9 @@ function EditContentNodeCtrl($xhr) {
     // define data we are working with
     this.contentType   = globalContentType;
     this.contentSchema = globalContentSchema;
+    this.schemaRules   = globalSchemaRules;
     this.contentNode   = globalContentNode;      // will probably be empty
     this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
-
-
-    // TODO
-    this.data = { cities:[
-        {name: 'Value 1', value: 'vv1'},
-        {name: 'Value 2', value: 'vv2'}]
-    };
 
 
     this.submit = function() {
@@ -94,6 +88,7 @@ function EditContentNodeCtrl($xhr) {
         });
     };
 
+    // Called after Save Button of Callout-Dialog is pressed
     scope.save_value = function(fieldname, doc_data) {
         scope.$set(fieldname, doc_data.value);
         scope.$eval(); // force model update

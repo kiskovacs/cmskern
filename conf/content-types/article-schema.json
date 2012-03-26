@@ -1,47 +1,55 @@
-[
-    { "name": "titel", "label": "Titel", "type": "text", "len": "xxlarge"
+{
+"rules":
+    {  "rule_sources": { "type": "multiple",
+            "allowedValues": [
+                { "value": "unspecified", "label": "Unspecified", "selected": true },
+                { "value": "reporter_A", "label": "Reporter A" },
+                { "value": "reporter_B", "label": "Reporter B" }
+            ]
+        }
     },
 
-    { "name": "online", "label": "Online?", "type": "checkbox"
-    },
+"fields":
+    [
+        { "name": "titel", "label": "Titel", "type": "text", "len": "xxlarge"
+        },
 
-    { "name": "online_datum", "label": "Online-Datum", "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
-      "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
-    },
+        { "name": "online", "label": "Online?", "type": "checkbox"
+        },
 
-    { "name": "sources", "label": "Quelle(n)", "type": "select", "multiple": true,
-        "allowedValues": [
-            { "selected": true, "value": "unspecified", "label": "Unspecified" },
-            { "value": "reporter_A", "label": "Reporter A" },
-            { "value": "reporter_B", "label": "Reporter B" }
-        ]
-    },
+        { "name": "online_datum", "label": "Online-Datum", "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
+          "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
+        },
 
-    { "name": "teasers", "label": "Teaser", "type": "repeatable",
-        "min": "1",
-        "children": [
-            { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
-            { "name": "ueberschrift", "label": "Überschrift", "type": "text", "len": "xxlarge" },
-            { "name": "teasertext", "label": "Teasertext", "type": "textarea", "len": "xxlarge" },
+        { "name": "sources", "label": "Quelle(n)", "type": "select", "rule_ref": "rule_sources"
+        },
 
-            { "name": "teaserbild_intern_ref", "label": "Teaserbild (intern)",
-                "type": "reference", "len": "xlarge",
-                "callout": "/callouts/internal/image_reference",
-                "helptext": "References an internal URL to a selected image."},
+        { "name": "teasers", "label": "Teaser", "type": "repeatable",
+            "min": "1",
+            "children": [
+                { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
+                { "name": "ueberschrift", "label": "Überschrift", "type": "text", "len": "xxlarge" },
+                { "name": "teasertext", "label": "Teasertext", "type": "textarea", "len": "xxlarge" },
 
-            { "name": "teaserbild_flickr_url", "label": "Teaserbild (flickr)",
-                "type": "reference", "len": "xlarge",
-                "callout": "/callouts/flickr_photo_reference",
-                "helptext": "References URL from a selected photo (hosted on flickr.com)."},
+                { "name": "teaserbild_intern_ref", "label": "Teaserbild (intern)",
+                    "type": "reference", "len": "xlarge",
+                    "callout": "/callouts/internal/image_reference",
+                    "helptext": "References an internal URL to a selected image."},
 
-            { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
-                "min": "1",
-                "children": [
-                    { "name": "subSpitzmarke", "label": "Sub-Spitzmarke", "type": "text" },
-                    { "name": "subTeasertext", "label": "Sub-Teasertext", "type": "textarea" }
-                ]
-            }
-        ]
-    }
+                { "name": "teaserbild_flickr_url", "label": "Teaserbild (flickr)",
+                    "type": "reference", "len": "xlarge",
+                    "callout": "/callouts/flickr_photo_reference",
+                    "helptext": "References URL from a selected photo (hosted on flickr.com)."},
 
-]
+                { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
+                    "min": "1",
+                    "children": [
+                        { "name": "subSpitzmarke", "label": "Sub-Spitzmarke", "type": "text" },
+                        { "name": "subTeasertext", "label": "Sub-Teasertext", "type": "textarea" }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}
