@@ -25,37 +25,64 @@
 
 
 // ui:selectable directive
-// makes a set of elements selectable, based of jQuery UI selectable
+//    makes a set of elements selectable, based of jQuery UI selectable
 angular.directive('ui:selectable', function(expr, el) {
     var propExpr = widgetUtils.parseExpr(expr);
     return function(el) {
         var currentScope = this;
-        if(propExpr){
-            $(el).bind('_onSelectable', function(e, state){
-                widgetUtils.setValue(currentScope, propExpr, state);
+        if (propExpr) {
+            $(el).bind('_onSelectable', function(e, obj) {
+                console.log("**** ui:selectable SET ::" + obj.value + " ->" + obj.operation);
+                // Append to array instead of overwrite existing value
+                var values = widgetUtils.getValue(currentScope, propExpr);
+                if (typeof values == 'undefined') {
+                    values = [];
+                }
+                if (obj.operation == 'selected') {
+                    if (angular.Array.indexOf(values, obj.value) < 0) {
+                        angular.Array.add(values, obj.value);
+                    }
+                } else {
+                    // operation == 'unselected'
+                    if (angular.Array.indexOf(values, obj.value) >= 0) {
+                        angular.Array.remove(values, obj.value);
+                    }
+                }
+                console.log("            *** " + values);
+                widgetUtils.setValue(currentScope, propExpr, values);
             });
-            currentScope.$watch(propExpr.expression, function(val){
-                var d = widgetUtils.formatValue(val, propExpr, currentScope);
-                if(val)
-                    $(el).addClass('ui-selected');
-                else
-                    $(el).removeClass('ui-selected');
+            currentScope.$watch(propExpr.expression, function(value) {
+                var d = widgetUtils.formatValue(value, propExpr, currentScope);
+                var dataVal = $(el).data("value");
+                if (dataVal == value) {
+                    if (value) {
+                        console.log("**** ui:selectable ADD ::" + value + "<->" + dataVal);
+                        $(el).addClass('ui-selected');
+                    } else {
+                        console.log("**** ui:selectable REMOVE ::" + value + "<->" + dataVal);
+                        $(el).removeClass('ui-selected');
+                    }
+                }
             }, null, true);
         }
     };
 });
 
 
-//ui:selectable-container
-//a directive for an element containing ui:selectable items
+// ui:selectable-container
+//    a directive for an element containing ui:selectable items
 angular.directive('ui:selectable-container', function(expr, el) {
     var options = {
         filter: '*:first, *:first ~ *', //  dirty hack, to be optimized....
-        selected: function(event, ui){
-            $(ui.selected).trigger('_onSelectable', true);
+        selected: function(event, ui) {
+            var value = $(ui.selected).data("value");
+            console.log("**** ui:selectable-container SELECTED: " + value);
+            $(ui.selected).trigger('_onSelectable', { "operation": "selected", "value": value});
         },
-        unselected: function(event, ui){
-            $(ui.unselected).trigger('_onSelectable', false);
+        unselected: function(event, ui) {
+            var value = $(ui.unselected).data("value");
+            console.log("**** ui:selectable-container UNSELECTED: " + value);
+            $(ui.unselected).trigger('_onSelectable', { "operation": "unselected", "value": value});
         }
     };
     $(el).selectable(options);
@@ -66,8 +93,8 @@ angular.directive('ui:selectable-container', function(expr, el) {
 
 
 
-//ui:masked
-//a directive for a text element to obtain masked-field editing capabilities
+// ui:masked
+//    a directive for a text element to obtain masked-field editing capabilities
 angular.widget('ui:masked', function(el) {
     var compiler = this;
     var defaults = {allowInvalid: false};

@@ -105,6 +105,26 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</div>';
                     break;
                 }
+                case 'select': {
+                    /*
+                    fieldElStr = '<select class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                    //fieldElStr += field.values;
+
+                    angular.forEach(field.allowedValues, function(elem, idx) {
+                        fieldElStr += '<option value="' + elem.value + '" label="' + elem.label + '" />';
+                    });
+
+                    fieldElStr += '</select>';
+                    */
+
+                    fieldElStr =  '<ul ui:selectable-container class="selectBox">';
+                    fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in data.cities" data-value="{{i.value}}">';   // i._selected
+                    fieldElStr += '        <div class="name">{{i.name}}</div>';
+                    fieldElStr += '    </li>';
+                    fieldElStr += '</ul>';
+
+                    break;
+                }
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {

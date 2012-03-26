@@ -11,6 +11,13 @@ function EditContentNodeCtrl($xhr) {
     this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
 
 
+    // TODO
+    this.data = { cities:[
+        {name: 'Value 1', value: 'vv1'},
+        {name: 'Value 2', value: 'vv2'}]
+    };
+
+
     this.submit = function() {
         // check whether content already exists or not
         if (this.contentNodeId < 0) {
