@@ -28,6 +28,10 @@ h3.contentTypeName {
 
 /* ~~ Form elements ~~ */
 
+.input-xxlarge {
+    width: 500px;
+}
+
 .content fieldset {
     margin-left: 25px;
 }
@@ -74,9 +78,45 @@ div.subform > fieldset:last-child > legend > a.move_down {
     cursor: pointer;
 }
 
+.selectBox {
+    /* border: solid 2px #999; */
+}
+
+ul.selectBox {
+    margin: 0;
+}
+
+.selectBox li {
+    list-style-type: none;
+    display: block;
+    background-color: #eee;
+    border: solid 1px #ddd;
+    margin: 3px;
+    padding: 3px;
+}
+
+.selectBox .name {
+    /* font-weight: bold; */
+    font-style: italic;
+}
+
+.selectBox li.ui-selecting {
+    background: #87B089;
+    box-shadow: 0 0 5px #87B089;
+
+}
+.selectBox li.ui-selected {
+    background: #9CB89D;
+    box-shadow: 0 0 5px #87B089;
+}
+
+
+
+
 #search_results {
     margin-top: 20px;
 }
+
 
 /* ~~ Table elements ~~ */
 
