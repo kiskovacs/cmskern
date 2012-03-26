@@ -2,7 +2,7 @@
 #{set title:'Version History' /}
 
 #{set 'moreScripts'}
-    <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.17.custom.min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
 #{/set}
 
 
@@ -14,31 +14,30 @@
 <pre>${contentNode.jsonContent}</pre>
 
 
-
-<h2>Older Versions</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th width="10%">Version</th>
-            <th width="10%">Modified</th>
-            <th width="80%">Content</th>
-        </tr>
-    </thead>
-    <tbody>
-        #{list items:versions, as:'rev'}
-        <tr>
-            <td>
-                ${rev.version}
-            </td>
-            <td>
-                ${rev.modified.format('yyyy-MM-dd (HH:mm:ss)')}
-            </td>
-            <td>
-                <pre>${rev.jsonContent}</pre>
-            </td>
-        </tr>
-        #{/list}
-    </tbody>
-</table>
-
-
+#{if versions}
+    <h2>Older Versions</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="10%">Version</th>
+                <th width="10%">Modified</th>
+                <th width="80%">Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            #{list items:versions, as:'rev'}
+            <tr>
+                <td>
+                    ${rev.version}
+                </td>
+                <td>
+                    ${rev.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+                </td>
+                <td>
+                    <pre>${rev.jsonContent}</pre>
+                </td>
+            </tr>
+            #{/list}
+        </tbody>
+    </table>
+#{/if}
