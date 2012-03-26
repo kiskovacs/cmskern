@@ -85,15 +85,8 @@ angular.widget('my:form', function(element) {
                 case 'reference': {
 
                     fieldElStr  = '<div class="reference input-append">';
-                    fieldElStr += '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
-
-                    //angular.forEach(field, function(value, attribute) {
-                    //    if (attribute != 'tag') {
-                    //        fieldElStr += attribute + '="' + value + '" ';
-                    //    }
-                    //});
-
-                    fieldElStr += '><span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span>';
+                    fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                    fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                     break;
                 }
@@ -111,7 +104,6 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '        <div class="name">{{i.label}}</div>';
                     fieldElStr += '    </li>';
                     fieldElStr += '</ul>';
-
                     break;
                 }
                 case 'checkbox':; //fallthrough

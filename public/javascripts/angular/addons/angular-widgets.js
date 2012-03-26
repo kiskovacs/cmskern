@@ -31,6 +31,16 @@ angular.directive('ui:selectable', function(expr, el) {
     return function(el) {
         var currentScope = this;
         if (propExpr) {
+            // init values on load (per each single element)
+            /*
+            var values = widgetUtils.getValue(currentScope, propExpr);
+            if (angular.Array.indexOf(values, el.value) < 0) {
+                angular.Array.add(values, el.value);
+            }
+            widgetUtils.setValue(currentScope, propExpr, values);
+            */
+
+            // binding called on select or unselect
             $(el).bind('_onSelectable', function(e, obj) {
                 console.log("**** ui:selectable SET ::" + obj.value + " ->" + obj.operation);
                 // Append to array instead of overwrite existing value
@@ -48,18 +58,17 @@ angular.directive('ui:selectable', function(expr, el) {
                         angular.Array.remove(values, obj.value);
                     }
                 }
-                console.log("            *** " + values);
+                //console.log("            *** " + values);
                 widgetUtils.setValue(currentScope, propExpr, values);
             });
             currentScope.$watch(propExpr.expression, function(value) {
                 var d = widgetUtils.formatValue(value, propExpr, currentScope);
                 var dataVal = $(el).data("value");
+                // If clicked: value will be a single value
                 if (dataVal == value) {
                     if (value) {
-                        console.log("**** ui:selectable ADD ::" + value + "<->" + dataVal);
                         $(el).addClass('ui-selected');
                     } else {
-                        console.log("**** ui:selectable REMOVE ::" + value + "<->" + dataVal);
                         $(el).removeClass('ui-selected');
                     }
                 }
