@@ -2,6 +2,8 @@
 TO-DO List
 ---------------
 
+* Problem: Initialisierung der Werte in tinyMCE und datepicker benötigen absolute contentNode Ref
+
 * Content Typen anpassen:
   -> Article: mit boolean und fixed vocabular & Verweis auf Bild (als Callout)
   -> Image: callout dort entsprechend ausbauen
@@ -10,9 +12,6 @@ TO-DO List
 
 * Beispiel für drop-down mit fest vorbelegten Werten
   => http://docs-next.angularjs.org/api/angular.widget.select
-
-* Unterschiedliche Textlängen für Input Fields unterstützen (z.B. min, small, medium)
-  => Textklassen, die dann von Bootstrap ausgewertet werden
 
 * Startanzahl von Kindern bei "repeatable" Typen über das Schema steuerbar machen
 
@@ -23,11 +22,7 @@ TO-DO List
 * index Seite: highlighId in den Flash Scope packen, damit dieser nicht immer wieder
   bei einem Refresh auftaucht
 
-* Richtext Editor integrieren (z.B. tinyMCE ...)
-
 * Innerhalb eines Callouts erlauben auch ein neues Element ("on-the-fly" anzulegen)
-
-* Date Felder zu den erlaubten Typen aufnehmen
 
 * Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
   sollte es besser von BasicDBObject erben?
@@ -74,5 +69,12 @@ IDEAS
 ---------------
 DONE
 ---------------
+
+* Richtext Editor integrieren (z.B. tinyMCE ...)
+
+* Date Felder zu den erlaubten Typen aufnehmen
+
+* Unterschiedliche Textlängen für Input Fields unterstützen (z.B. min, small, medium)
+  => Textklassen, die dann von Bootstrap ausgewertet werden
 
 * Up/Down Buttons for "repeatable" Types, um die Reihenfolge von Kindern zu manipulieren

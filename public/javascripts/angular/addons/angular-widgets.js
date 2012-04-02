@@ -22,48 +22,6 @@
  * THE SOFTWARE.
  */
 
-angular.widget('@ui:wysiwyg', function(expr, el, val) {
-    if (!$.wysiwyg) {
-        console.log("wysiwyg plugin not available");
-        return;
-    }
-    console.log("START wysiwyg");
-
-    var compiler = this;
-    var defaults = {};
-    var options = widgetUtils.getOptions(el, defaults);
-    var events = {};
-    var contentExpr = widgetUtils.parseAttrExpr(el, 'ui:content');
-    return function(el) {
-        var currentScope = this;
-        var tagName = $(el)[0].tagName.toLowerCase();
-        /*
-        if (tagName == 'textarea')
-            events.onClose = function(theElem, ui) {
-                console.log("ON CLOSE");
-                var content = $(el).wysiwyg('getContent');
-                widgetUtils.setValue(currentScope, contentExpr, content);
-            };
-        else
-            events.onBlur = function(theElem, ui) {
-                console.log("ON BLUR");
-                var content = $(el).wysiwyg('getContent');
-                widgetUtils.setValue(currentScope, contentExpr, content);
-            };
-        $.extend(options, events);
-        */
-        $(el).wysiwyg(options);
-        /*
-        currentScope.$watch(contentExpr.expression, function(val) {
-            // assume string is given in proper representation
-            console.log("WATCH SET CONTENT: " + val);
-            $(el).wysiwyg('setContent', val);
-        }, null, true);
-        */
-    };
-});
-
-
 // ui:selectable directive
 //    makes a set of elements selectable, based of jQuery UI selectable
 angular.directive('ui:selectable', function(expr, el) {
@@ -697,9 +655,9 @@ var widgetUtils = {
 // Added on top of Łukasz Twarogowski stuff
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// --- Custom TinyMCE Service
+// --- Custom TinyMCE Service (works only with 10.5)
 // TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks
-angular.directive('ui:tinymce', function(expression, config) {
+angular.directive('ui:tinymceBETA', function(expression, config) {
     return function(element) {
         if (expression === 'fast') {
             element.tinymce({
@@ -739,3 +697,101 @@ angular.directive('ui:tinymce', function(expression, config) {
         }
     };
 });
+
+angular.widget('@ui:tinymce', function(expr, el, val) {
+    /* if (!$.tinymce) {
+        console.log("tinymce plugin not available");
+        return;
+    }
+    */
+    console.log("START tinymce");
+
+    var compiler = this;
+    var defaults = {};
+    var options = widgetUtils.getOptions(el, defaults);
+    var events = {};
+    var contentExpr = widgetUtils.parseAttrExpr(el, 'name');
+
+    return function (el) {
+        var currentScope = this;
+        widgetUtils.setValue(currentScope, contentExpr, content);
+        /*
+        events.onChange = function (theElem, ui) {
+            console.log("ON CHANGE");
+            var content = $(el).tinymce('getContent');
+            widgetUtils.setValue(currentScope, contentExpr, content);
+        };
+        $.extend(options, events);
+        */
+
+        $(el).tinymce({
+
+            oninit: function(inst) {
+                // TODO: ACHTUNG absoluter Pfad benötigt!!!
+                var inHTML = currentScope.$get('contentNode.titel');   // widgetUtils.getValue(currentScope, contentExpr);
+
+                console.log("ONINIT --> " + inHTML);
+                inst.setContent(inHTML);
+            },
+
+            // Update Textarea and Trigger change event
+            onchange_callback: function(inst) {
+                console.log("CALLBACK --> " + inst.getContent());
+
+                if (inst.isDirty()) {
+                    console.log("CALLBACK DIRTY");
+                    inst.save();
+                    widgetUtils.setValue(currentScope, contentExpr, inst.getContent());
+                    el.trigger('change');
+                }
+                return true; // Continue handling
+            }
+        });
+    };
+});
+
+
+// ~~ jQuery WYSIWYG Plug-In Integration
+angular.widget('@ui:wysiwyg', function(expr, el, val) {
+    if (!$.wysiwyg) {
+        console.log("wysiwyg plugin not available");
+        return;
+    }
+    console.log("START wysiwyg");
+
+    var compiler = this;
+    var defaults = {};
+    var options = widgetUtils.getOptions(el, defaults);
+    var events = {};
+    var contentExpr = widgetUtils.parseAttrExpr(el, 'ui:content');
+    return function(el) {
+        var currentScope = this;
+        var tagName = $(el)[0].tagName.toLowerCase();
+        /*
+         if (tagName == 'textarea')
+         events.onClose = function(theElem, ui) {
+         console.log("ON CLOSE");
+         var content = $(el).wysiwyg('getContent');
+         widgetUtils.setValue(currentScope, contentExpr, content);
+         };
+         else
+         events.onBlur = function(theElem, ui) {
+         console.log("ON BLUR");
+         var content = $(el).wysiwyg('getContent');
+         widgetUtils.setValue(currentScope, contentExpr, content);
+         };
+         $.extend(options, events);
+         */
+        $(el).wysiwyg(options);
+        /*
+         currentScope.$watch(contentExpr.expression, function(val) {
+         // assume string is given in proper representation
+         console.log("WATCH SET CONTENT: " + val);
+         $(el).wysiwyg('setContent', val);
+         }, null, true);
+         */
+    };
+});
+
+
+
