@@ -3,6 +3,7 @@
 require:
     - play
     - play -> morphia [1.2.4d]
+    - play -> secure
     - play -> deadbolt 1.5.2
     - play -> crud
     - play -> jelastic 0.1
