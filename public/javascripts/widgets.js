@@ -121,13 +121,13 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'textarea': {
-                    fieldElStr = '<textarea class="' + lengthClassName + '" name="' + qualifiedName + '" ';
+                    fieldElStr = '<textarea ui:wysiwyg ui:content="' + qualifiedName + '" class="wysiwyg ' + lengthClassName + '" name="' + qualifiedName + '" ';
 
                     //angular.forEach(field, function(attribute) {
                     //    fieldElStr += attribute + '="' + field[attribute] + '" ';
                     //});
 
-                    fieldElStr += '></textarea>';
+                    fieldElStr += ' rows="10" cols="70"></textarea>';
                     break;
                 }
             }

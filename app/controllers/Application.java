@@ -24,4 +24,8 @@ public class Application extends Controller {
         render(content);
     }
 
+    public static void test() {
+        render();
+    }
+
 }

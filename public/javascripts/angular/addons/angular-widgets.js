@@ -22,6 +22,46 @@
  * THE SOFTWARE.
  */
 
+angular.widget('@ui:wysiwyg', function(expr, el, val) {
+    if (!$.wysiwyg) {
+        console.log("wysiwyg plugin not available");
+        return;
+    }
+    console.log("START wysiwyg");
+
+    var compiler = this;
+    var defaults = {};
+    var options = widgetUtils.getOptions(el, defaults);
+    var events = {};
+    var contentExpr = widgetUtils.parseAttrExpr(el, 'ui:content');
+    return function(el) {
+        var currentScope = this;
+        var tagName = $(el)[0].tagName.toLowerCase();
+        /*
+        if (tagName == 'textarea')
+            events.onClose = function(theElem, ui) {
+                console.log("ON CLOSE");
+                var content = $(el).wysiwyg('getContent');
+                widgetUtils.setValue(currentScope, contentExpr, content);
+            };
+        else
+            events.onBlur = function(theElem, ui) {
+                console.log("ON BLUR");
+                var content = $(el).wysiwyg('getContent');
+                widgetUtils.setValue(currentScope, contentExpr, content);
+            };
+        $.extend(options, events);
+        */
+        $(el).wysiwyg(options);
+        /*
+        currentScope.$watch(contentExpr.expression, function(val) {
+            // assume string is given in proper representation
+            console.log("WATCH SET CONTENT: " + val);
+            $(el).wysiwyg('setContent', val);
+        }, null, true);
+        */
+    };
+});
 
 
 // ui:selectable directive
@@ -652,3 +692,50 @@ var widgetUtils = {
         return v;
     }
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Added on top of Łukasz Twarogowski stuff
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// --- Custom TinyMCE Service
+// TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks
+angular.directive('ui:tinymce', function(expression, config) {
+    return function(element) {
+        if (expression === 'fast') {
+            element.tinymce({
+                // Location of TinyMCE script
+                script_url: 'http://resources.holycrap.ws/jscripts/tiny_mce/tiny_mce.js',
+
+                // General options
+                theme: "simple",
+
+                // Update Textarea and Trigger change event
+                handle_event_callback: function(e) {
+                    if (this.isDirty()) {
+                        this.save();
+                        element.trigger('change');
+                    }
+                    return true;
+                }
+            });
+        } else {
+            $(element).tinymce({
+                // Location of TinyMCE script
+                script_url: 'http://resources.holycrap.ws/jscripts/tiny_mce/tiny_mce.js',
+
+                // General options
+                theme: "simple",
+
+                // Update Textarea and Trigger change event
+                onchange_callback: function(inst) {
+
+                    if (inst.isDirty()) {
+                        inst.save();
+                        element.trigger('change');
+                    }
+                    return true; // Continue handling
+                }
+            });
+        }
+    };
+});
