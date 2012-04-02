@@ -728,7 +728,7 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
 
             oninit: function(inst) {
                 // TODO: ACHTUNG absoluter Pfad benötigt!!!
-                var inHTML = currentScope.$get('contentNode.titel');   // widgetUtils.getValue(currentScope, contentExpr);
+                var inHTML = "..."; // currentScope.$get('contentNode.titel');   // widgetUtils.getValue(currentScope, contentExpr);
 
                 console.log("ONINIT --> " + inHTML);
                 inst.setContent(inHTML);
