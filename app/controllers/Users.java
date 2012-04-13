@@ -3,7 +3,7 @@ package controllers;
 import models.User;
 
 /**
- * Backoffice for content types.
+ * Backoffice for users accessing cmskern.
  *
  * @author Niko Schmuck
  * @since 02.04.2012

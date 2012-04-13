@@ -23,7 +23,7 @@ import java.util.Collection;
  * @author Niko Schmuck
  * @since 27.02.2012
  */
-public class BlobAccess extends Controller {
+public class Blobs extends Controller {
     
     public static void upload(String qqfile) {
         Logger.info("Starting to upload %s ...", qqfile);

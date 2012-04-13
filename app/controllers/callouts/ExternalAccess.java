@@ -1,4 +1,4 @@
-package controllers;
+package controllers.callouts;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -56,10 +56,13 @@ public class ExternalAccess extends Controller {
         }
         Logger.info("Found %d photos from flickr", photos.size());
         
-        render(photos);
+        renderTemplate("Callouts/external/searchFlickr.html", photos);
     }
 
 
+    /**
+     * Minimal representation of a flickr photo.
+     */
     static class Photo {
         String id;
         String title;

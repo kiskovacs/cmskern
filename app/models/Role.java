@@ -1,17 +1,22 @@
 package models;
 
 import com.google.code.morphia.annotations.Entity;
+import com.google.code.morphia.annotations.Indexed;
 import play.data.validation.Required;
 import play.modules.morphia.Model;
 
 /**
+ * An authorization role which can be assigned to one or more users
+ * accessing the system.
+ *
  * @author Niko Schmuck
  * @since 02.04.2012
  */
-@Entity
+@Entity(value = "roles", noClassnameStored = true)
 public class Role extends Model implements models.deadbolt.Role {
 
     @Required
+    @Indexed // TODO (unique = true)
     public String name;
 
     public Role(String name) {

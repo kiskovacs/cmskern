@@ -6,11 +6,12 @@ import models.deadbolt.RoleHolder;
 import play.data.validation.Required;
 import play.modules.morphia.Model;
 
-import javax.persistence.ManyToOne;
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Representing a single user accessing the system.
+ *
  * @author Niko Schmuck
  * @since 02.04.2012
  */
@@ -24,8 +25,8 @@ public class User extends Model implements RoleHolder {
 
     public String fullName;
 
-    @Required
-    @ManyToOne
+    // @Required
+    // TODO how to model ManyToOne relationsship best with morphia?
     public Role role;
 
     public User(String userName, String fullName, Role role) {

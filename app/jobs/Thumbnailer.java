@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Job to asynchronously resize an image as thumbnail.
+ * Job to asynchronously resize an image to an thumbnail.
  *
  * @author Niko Schmuck
  * @since 27.02.2012

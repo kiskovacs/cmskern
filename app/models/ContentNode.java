@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Capturing a content node which basically consists of a rough JSON document
- * and some additional metadata.
+ * and some metadata capturing user and time information.
  *
  * @author Niko Schmuck
  * @since 21.01.2012
@@ -39,6 +39,8 @@ public class ContentNode {
     private String type;
     private String jsonContent;
     
+    // TODO add user
+
 
     public ContentNode(String type, String jsonContent) {
         this.type = type;

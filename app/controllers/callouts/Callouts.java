@@ -1,4 +1,4 @@
-package controllers;
+package controllers.callouts;
 
 import play.Logger;
 import play.mvc.Controller;

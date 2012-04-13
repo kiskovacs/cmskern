@@ -15,14 +15,14 @@ POST    /schema                                 ContentTypesApi.create
 DELETE  /schema/{id}                            ContentTypesApi.delete
 
 # ~~ Call-Outs (for dialog content)
-GET     /callouts/{<.*>name}                    Callouts.get
+GET     /callouts/{<.*>name}                    callouts.Callouts.get
 
 # ~~ Helper for choosing references (call-out)
-GET     /helper/{action}                        ExternalAccess.{action}
-GET     /blobs                                  BlobAccess.listAssets
-GET     /blob/get/{name}                        BlobAccess.getByName
-GET     /blobs/{id}                             BlobAccess.getById
-POST    /blobs                                  BlobAccess.upload
+GET     /helper/{action}                        callouts.ExternalAccess.{action}
+GET     /blobs                                  Blobs.listAssets
+GET     /blobs/n/{name}                         Blobs.getByName
+GET     /blobs/id/{id}                          Blobs.getById
+POST    /blobs                                  Blobs.upload
 
 
 # ~~ Import CRUD routes (for admin area)

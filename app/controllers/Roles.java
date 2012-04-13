@@ -3,7 +3,7 @@ package controllers;
 import models.Role;
 
 /**
- * Backoffice for content types.
+ * Backoffice for user roles.
  *
  * @author Niko Schmuck
  * @since 02.04.2012

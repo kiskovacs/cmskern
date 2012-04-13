@@ -12,6 +12,8 @@ import play.mvc.With;
 import java.util.List;
 
 /**
+ * Access to content nodes: the central entities of cmskern.
+ *
  * @author Niko Schmuck
  * @since 23.01.2012
  */

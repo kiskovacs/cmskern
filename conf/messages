@@ -2,8 +2,11 @@
 # For example, for French create a messages.fr file
 #
 
-slug=Shortname (URL)
+slug=Short Name (URL)
 name=Name
 displayName=Display Name
 description=Description
-jsonForm=Form Definition (JSON)
+jsonForm=Form Definition
+
+fullName=Full Name
+userName=User Name

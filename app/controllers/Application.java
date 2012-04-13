@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Main entry point to cmskern web application.
+ */
 public class Application extends Controller {
 
     public static void index() {
