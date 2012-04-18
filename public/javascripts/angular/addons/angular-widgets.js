@@ -714,7 +714,10 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
 
     return function (el) {
         var currentScope = this;
-        widgetUtils.setValue(currentScope, contentExpr, content);
+
+        // (18-Apr-2012) interesting this is only a problem in Chrome, but not Firefox ~~
+        //widgetUtils.setValue(currentScope, contentExpr, content);
+
         /*
         events.onChange = function (theElem, ui) {
             console.log("ON CHANGE");
