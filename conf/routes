@@ -28,7 +28,6 @@ POST    /blobs                                  Blobs.upload
 # ~~ Import CRUD routes (for admin area)
 *       /admin                                  module:crud
 
-
 # ~~ REST API for content
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/edit                            ContentNodes.blank
@@ -42,6 +41,8 @@ GET     /{type}/{id}/versions                     ContentNodes.showVersions
 GET     /{type}/{id}/delete                       ContentNodes.delete
 GET     /test                                    Application.test
 
+# ~~ Import secure routes (for login/logout)
+*       /                                       module:secure
 
 # ~~ Ignore favicon requests
 GET     /favicon.ico                            404
