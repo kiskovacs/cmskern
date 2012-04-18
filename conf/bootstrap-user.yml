@@ -1,0 +1,28 @@
+# ~~ Basic Access Roles
+
+Role(r_guest):
+  name: guest
+
+Role(r_editor):
+  name: editor
+
+Role(r_admin):
+  name: admin
+
+
+# ~~ Sample users
+
+User(u_hans):
+  userName: hans
+  fullName: Hans Müller
+  role:     guest
+
+User(u_axel):
+  userName: axel
+  fullName: Axel Meyer
+  role:     editor
+
+User(u_admin):
+  userName: admin
+  fullName: Ruth Schmidt
+  role:     admin

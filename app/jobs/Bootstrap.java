@@ -7,6 +7,7 @@ import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
+import utils.MongoDbUtils;
 
 /**
  * Bootstrap class which is executed at the very beginning
@@ -20,11 +21,12 @@ public class Bootstrap extends Job {
 
     public void doJob() {
         Logger.info("Starting cmskern bootstrap job (Play env: %s)...", Play.id);
+        Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
         if (ContentType.count() == 0) {
             // Fixtures.deleteAll();
             Logger.info("Importing bootstrap data ...");
-            Fixtures.load("bootstrap-data.yml");
+            Fixtures.loadModels("bootstrap-data.yml");
         }
 
         // ~~

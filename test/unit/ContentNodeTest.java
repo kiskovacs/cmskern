@@ -17,8 +17,8 @@ public class ContentNodeTest extends UnitTest {
     @Before
     public void setUpData() {
         // Already done by Bootstrap Job
-        // ContentType.deleteAll();
-        // Fixtures.loadModels("bootstrap-data.yml");
+        // MorphiaFixtures.delete(ContentNode.class);
+        // MorphiaFixtures.loadModels("bootstrap-data.yml");
     }
 
     @Test

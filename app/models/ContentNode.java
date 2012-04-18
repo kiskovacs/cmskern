@@ -13,34 +13,47 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Capturing a content node which basically consists of a rough JSON document
- * and some metadata capturing user and time information.
+ * Capturing a content node which basically consists of a JSON sub-document
+ * and some additional metadata capturing user and time information.
+ *
+ * <p>Since the content representation as a JSON sub-document does not really
+ * fit to the Morphia programming model, we manage instances by our own.</p>
+ *
+ * <p>The second reason to not use Morphia for this class is the way
+ * we move older instances over to a very own <code>versions</code> collection.</p>
  *
  * @author Niko Schmuck
  * @since 21.01.2012
  */
 public class ContentNode {
 
-    public static final String COLLECTION_NAME         = "content";
+    /** Name of MongoDB collection for content */
+    public static final String COLLECTION_NAME = "content";
+
+    /** Name of MongoDB collection for archived content (aka versions) */
     public static final String VERSION_COLLECTION_NAME = "versions";
 
+    // Metadata
     public static final String ATTR_ID         = "_id";
     public static final String ATTR_TYPE       = "_type";
     public static final String ATTR_CREATED    = "_created";
     public static final String ATTR_MODIFIED   = "_modified";
     public static final String ATTR_VERSION    = "_version";
     public static final String ATTR_IDREF      = "_ref";
+
+    // Sub-document holding the manually edited "real" content
     public static final String ATTR_DATA       = "data";
 
+    // ~
     private ObjectId id;
     private Long modified;
     private Long created;
     private Integer version = 1;
     private String type;
     private String jsonContent;
-    
-    // TODO add user
+    // TODO add user creator and modifier
 
+    // ~~
 
     public ContentNode(String type, String jsonContent) {
         this.type = type;
@@ -51,9 +64,9 @@ public class ContentNode {
         DBObject dbObj = new BasicDBObject();
         DBObject contentObj = MongoDbUtils.convert(jsonContent);
         dbObj.put(ATTR_DATA, contentObj);
-        // add some metadata
+        // add metadata
         dbObj.put(ATTR_TYPE, type);
-        dbObj.put(ATTR_VERSION, 1);
+        dbObj.put(ATTR_VERSION, version);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
@@ -157,7 +170,7 @@ public class ContentNode {
     // ~~
 
     /**
-     * Returns the pure JSON body without the metadata.
+     * Returns pure JSON body without the metadata.
      */
     public String getJsonContent() {
         return jsonContent;

@@ -16,13 +16,16 @@ import play.modules.morphia.Model;
 public class Role extends Model implements models.deadbolt.Role {
 
     @Required
-    @Indexed // TODO (unique = true)
+    @Indexed(unique = true)
     public String name;
+
+    // ~~
 
     public Role(String name) {
         this.name = name;
     }
 
+    @Override
     public String getRoleName() {
         return name;
     }

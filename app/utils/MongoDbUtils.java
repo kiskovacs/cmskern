@@ -4,6 +4,7 @@ import com.google.code.morphia.Datastore;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import models.ContentNode;
+import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import play.Logger;
 import play.Play;
@@ -91,6 +92,14 @@ public final class MongoDbUtils {
         Datastore datastore = MorphiaPlugin.ds();
         DB db = datastore.getDB();
         return db.getCollection(collectionName);
+    }
+
+    public static String getDBName() {
+        return MorphiaPlugin.ds().getDB().getName();
+    }
+
+    public static String getDBServers() {
+        return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
     }
 
     public static GridFS getGridFS() {
