@@ -24,11 +24,10 @@ public class AccessControl extends Controller implements DeadboltHandler {
     public void beforeRoleCheck() {
         Logger.info("****************** beforeRoleCheck");
         // Note that if you provide your own implementation of Secure's Security class you would refer to that instead
-        /*
         if (!Secure.Security.isConnected()) {
             try {
                 if (!session.contains("username")) {
-                    Logger.info("Redirect to login screen ...");
+                    Logger.info("Redirect (%s) to login screen ...", request.url);
                     flash.put("url", "GET".equals(request.method) ? request.url : "/");
                     Secure.login();
                 }
@@ -38,7 +37,6 @@ public class AccessControl extends Controller implements DeadboltHandler {
                 // handle this in an app-specific way
             }
         }
-        */
     }
 
     public RoleHolder getRoleHolder() {
@@ -47,11 +45,12 @@ public class AccessControl extends Controller implements DeadboltHandler {
             Logger.info("Role holder for user %s", userName);
             return User.findByUserName(userName);
         } else {
+            Logger.info("---> authenticate: ???" + session.contains("username"));
             // TODO: just for the time being
             return new RoleHolder() {
                 @Override
                 public List<? extends Role> getRoles() {
-                    return Arrays.asList(new models.Role("editor"));
+                    return Arrays.asList(new models.Role("anonymous"));
                 }
             };
         }
@@ -78,4 +77,5 @@ public class AccessControl extends Controller implements DeadboltHandler {
     public RestrictedResourcesHandler getRestrictedResourcesHandler() {
         return null;
     }
+
 }

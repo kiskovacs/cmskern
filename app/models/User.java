@@ -4,10 +4,14 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
 import models.deadbolt.RoleHolder;
+import play.Logger;
+import play.data.validation.Email;
 import play.data.validation.Required;
+import play.libs.Codec;
 import play.modules.morphia.Model;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,9 +30,20 @@ public class User extends Model implements RoleHolder {
 
     public String fullName;
 
+    @Email
+    @Required
+    public String email;
+
+    /**
+     * Hält den SHA1 Wert des Passwortes (40 Hexadezimalstellen binär String).
+     */
+    public String passwd_hash;
+
     @Required
     @Reference
     public Role role;
+
+    public Date lastLoginAt;
 
     // ~~
 
@@ -46,7 +61,7 @@ public class User extends Model implements RoleHolder {
         return Arrays.asList(role);
     }
 
-    // TODO: Strange: YAML Import seems not to be able to resolve Role type???
+    // TODO: Strange: YAML import seems not to be able to resolve Role type???
     public void setRoleByName(String rolename) {
         this.role = Role.findByName(rolename);
     }
@@ -55,6 +70,25 @@ public class User extends Model implements RoleHolder {
         this.role = role;
     }
 
+    public void setPasswd(String passwd) {
+        if (passwd != null && passwd.trim().length() > 0) {
+            Logger.info("~~ set password for user %s", userName);
+            // calculate hash out of the given plain password
+            this.passwd_hash = Codec.hexSHA1(passwd);
+        }
+    }
+
+    public static User authenticate(String userName, String password) {
+        User u = User.q("userName", userName).filter("passwd_hash", password).get();
+        Logger.info("User u: %s", u);
+        if (u != null) {
+            u.lastLoginAt = new Date();
+            u.save();
+        }
+        return u;
+    }
+
+    // ~~
 
     @Override
     public String toString() {

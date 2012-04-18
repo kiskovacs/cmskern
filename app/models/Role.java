@@ -34,6 +34,8 @@ public class Role extends Model implements models.deadbolt.Role {
         return Role.find("name", name).first();
     }
 
+    // ~~
+
     @Override
     public String toString() {
         return this.name;

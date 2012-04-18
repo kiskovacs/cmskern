@@ -7,12 +7,26 @@
 
     <div class="objectForm">
     #{form action:@create(), enctype:'multipart/form-data'}
-        #{crud.form fields: ['fullName', 'userName', 'role'] /}
+
+        #{crud.form fields: ['fullName', 'userName', 'email', 'role'] /}
+
+        <div class="crudField crud_text">
+            #{field 'object.passwd'}
+                <label for="${field.name}">Password</label>
+                <input type="text" size="50" value="" name="${field.name}" class="${field.errorClass}" id="${field.id}">
+                #{ifError field.name}
+                    <span class="error">${field.error}</span>
+                #{/ifError}
+                <span class="crudHelp"></span>
+            #{/field}
+        </div>
+
         <p class="crudButtons">
             <input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
             <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
             <input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
         </p>
+
     #{/form}
     </div>
 

@@ -62,6 +62,7 @@ public class ContentNode {
     
     public void create() {
         DBObject dbObj = new BasicDBObject();
+        // Logger.info(".... going to create new content node with: %s", jsonContent);
         DBObject contentObj = MongoDbUtils.convert(jsonContent);
         dbObj.put(ATTR_DATA, contentObj);
         // add metadata
