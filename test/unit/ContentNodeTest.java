@@ -18,7 +18,7 @@ public class ContentNodeTest extends UnitTest {
     public void setUpData() {
         // Already done by Bootstrap Job
         // ContentType.deleteAll();
-        // Fixtures.load("bootstrap-data.yml");
+        // Fixtures.loadModels("bootstrap-data.yml");
     }
 
     @Test
