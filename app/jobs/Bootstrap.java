@@ -2,6 +2,7 @@ package jobs;
 
 import models.ContentNode;
 import models.ContentType;
+import models.Role;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
@@ -24,9 +25,12 @@ public class Bootstrap extends Job {
         Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
         if (ContentType.count() == 0) {
-            // Fixtures.deleteAll();
             Logger.info("Importing bootstrap data ...");
             Fixtures.loadModels("bootstrap-data.yml");
+        }
+        if (Role.count() == 0) {
+            Logger.info("Importing bootstrap roles and users ...");
+            Fixtures.loadModels("bootstrap-user.yml");
         }
 
         // ~~

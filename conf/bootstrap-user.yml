@@ -13,16 +13,16 @@ Role(r_admin):
 # ~~ Sample users
 
 User(u_hans):
-  userName: hans
-  fullName: Hans Müller
-  role:     guest
+  userName:   hans
+  fullName:   Hans Müller
+  roleByName: guest
 
 User(u_axel):
-  userName: axel
-  fullName: Axel Meyer
-  role:     editor
+  userName:   axel
+  fullName:   Axel Meyer
+  roleByName: editor
 
 User(u_admin):
-  userName: admin
-  fullName: Ruth Schmidt
-  role:     admin
+  userName:   admin
+  fullName:   Ruth Schmidt
+  roleByName: admin

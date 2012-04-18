@@ -47,8 +47,12 @@ public class User extends Model implements RoleHolder {
     }
 
     // TODO: Strange: YAML Import seems not to be able to resolve Role type???
-    public void setRole(String rolename) {
+    public void setRoleByName(String rolename) {
         this.role = Role.findByName(rolename);
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 
