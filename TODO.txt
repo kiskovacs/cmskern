@@ -2,6 +2,12 @@
 TO-DO List
 ---------------
 
+* "Cancel" Button soll nicht speichern :)
+
+* Referenzen auf Bilder in Richtext Editor
+
+* Anlegen/Hochladen von Bildern in Richtext Editor Auswahl (on-the-fly)
+
 * Problem: Initialisierung der Werte in tinyMCE und datepicker benötigen absolute contentNode Ref
 
 * Content Typen anpassen:

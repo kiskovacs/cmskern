@@ -30,7 +30,7 @@ public class UserTest extends UnitTest {
     public void userHasRoleSet() {
         User admin = User.findByUserName("admin");
         assertEquals(1, admin.getRoles().size());
-        assertEquals("admin", admin.getRoles().get(0).getRoleName());
+        assertEquals("admin", admin.getRoles().get(0).name);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class UserTest extends UnitTest {
         assertNotNull(horst);
         User retrieved = User.findByUserName("horst");
         assertEquals("Horst Mayer", retrieved.fullName);
-        assertEquals("guest", retrieved.getRoles().get(0).getRoleName());
+        assertEquals("guest", retrieved.getRoles().get(0).name);
     }
 
 }

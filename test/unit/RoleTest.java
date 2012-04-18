@@ -1,6 +1,7 @@
 package unit;
 
 import models.Role;
+import models.User;
 import org.junit.Before;
 import org.junit.Test;
 import play.modules.morphia.Model;
@@ -15,6 +16,7 @@ public class RoleTest extends UnitTest {
 
     @Before
     public void setUpData() {
+        MorphiaFixtures.delete(User.class);
         MorphiaFixtures.delete(Role.class);
         MorphiaFixtures.loadModels("bootstrap-user.yml");
     }
@@ -27,7 +29,7 @@ public class RoleTest extends UnitTest {
     @Test
     public void findByName() {
         Role admin = Role.findByName("admin");
-        assertEquals("admin", admin.getRoleName());
+        assertEquals("admin", admin.name);
     }
 
     @Test

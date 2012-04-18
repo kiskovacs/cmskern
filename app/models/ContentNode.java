@@ -93,6 +93,7 @@ public class ContentNode {
         } catch (IllegalArgumentException e) {
             Logger.info("Invalid ID specified: %s", e.getMessage());
         }
+
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
