@@ -11,8 +11,11 @@
     <small>from ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}</small>
 </h2>
 
-<pre>${contentNode.jsonContent}</pre>
-
+<pre id="rev_current"></pre>
+<script type="text/javascript">
+    var jsRaw = ${contentNode.jsonContent.raw()};
+    document.getElementById('rev_current').innerHTML = JSON.stringify(jsRaw, null, 4);
+</script>
 
 #{if versions}
     <h2>Older Versions</h2>
@@ -34,7 +37,11 @@
                     ${rev.modified.format('yyyy-MM-dd (HH:mm:ss)')}
                 </td>
                 <td>
-                    <pre>${rev.jsonContent}</pre>
+                    <pre id="rev_${rev_index}"></pre>
+                    <script type="text/javascript">
+                        var jsRaw = ${rev.jsonContent.raw()};
+                        document.getElementById('rev_${rev_index}').innerHTML = JSON.stringify(jsRaw, null, 4);
+                    </script>
                 </td>
             </tr>
             #{/list}
