@@ -23,7 +23,7 @@ public class UserTest extends UnitTest {
 
     @Test
     public void count() {
-        assertEquals(3, User.count());
+        assertEquals(4, User.count());
     }
 
     @Test
@@ -38,6 +38,9 @@ public class UserTest extends UnitTest {
         User u = new User("horst", "Horst Mayer", Role.findByName("guest"));
         Model horst = u.save();
         assertNotNull(horst);
+        User retrieved = User.findByUserName("horst");
+        assertEquals("Horst Mayer", retrieved.fullName);
+        assertEquals("guest", retrieved.getRoles().get(0).getRoleName());
     }
 
 }

@@ -1,5 +1,8 @@
 # ~~ Basic Access Roles
 
+Role(r_anonymous):
+  name: anonymous
+
 Role(r_guest):
   name: guest
 
@@ -15,6 +18,11 @@ Role(r_admin):
 User(u_hans):
   userName:   hans
   fullName:   Hans Müller
+  roleByName: guest
+
+User(u_berta):
+  userName:   berta
+  fullName:   Berta Müller
   roleByName: guest
 
 User(u_axel):
