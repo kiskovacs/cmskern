@@ -1,13 +1,8 @@
 package controllers;
 
-import controllers.deadbolt.Deadbolt;
-import controllers.deadbolt.Restrict;
-import controllers.deadbolt.Restrictions;
-import controllers.deadbolt.RoleHolderPresent;
 import models.ContentNode;
 import models.ContentType;
 import play.mvc.Controller;
-import play.mvc.With;
 
 import java.util.List;
 
@@ -17,11 +12,10 @@ import java.util.List;
  * @author Niko Schmuck
  * @since 23.01.2012
  */
-@With(Deadbolt.class)
-@RoleHolderPresent
+// TODO @With(Secure.class)
 public class ContentNodes extends Controller {
 
-    @Restrictions({@Restrict("editor"), @Restrict("admin")})
+    @Check("editor,admin")
     public static void blank(String type) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown type: " + type);
@@ -29,7 +23,7 @@ public class ContentNodes extends Controller {
         render(contentType);
     }
 
-    @Restrictions({@Restrict("editor"), @Restrict("admin")})
+    @Check("editor,admin")
     public static void edit(String type, String id) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown type: " + type);
@@ -39,7 +33,7 @@ public class ContentNodes extends Controller {
         render(contentNode, contentType);
     }
 
-    @Restrict({"admin"})
+    @Check("admin")
     public static void delete(String type, String id) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown type: " + type);

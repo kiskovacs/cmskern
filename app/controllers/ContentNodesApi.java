@@ -6,6 +6,7 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
 
+// TODO @With(Secure.class)
 public class ContentNodesApi extends Controller {
 
     public static void getBody(String type, String id) {
@@ -22,7 +23,7 @@ public class ContentNodesApi extends Controller {
         renderJSON(obj.toString());
     }
 
-
+    @Check("editor,admin")
     public static void create(String type, String body) {
         Logger.debug("Going to create %s ... ", body);
         ContentNode contentNode = new ContentNode(type, body);
@@ -34,6 +35,7 @@ public class ContentNodesApi extends Controller {
         renderJSON("{\"id\": \"" + contentNode.getId() + "\"}");
     }
 
+    @Check("editor,admin")
     public static void update(String type, String id, String body) {
         // TODO: filter also by type?  Check if already exists?
         ContentNode contentNode = ContentNode.findById(id);
@@ -43,6 +45,7 @@ public class ContentNodesApi extends Controller {
         renderJSON("{\"id\": \"" + contentNode.getId() + "\"}");
     }
 
+    @Check("admin")
     public static void delete(String type, String id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);

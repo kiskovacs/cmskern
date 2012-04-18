@@ -3,7 +3,6 @@ package models;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
-import models.deadbolt.RoleHolder;
 import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -22,7 +21,7 @@ import java.util.List;
  */
 @Entity(value = "users", noClassnameStored = true)
 @Model.AutoTimestamp
-public class User extends Model implements RoleHolder {
+public class User extends Model {
 
     @Required
     @Indexed(unique = true)
@@ -57,9 +56,23 @@ public class User extends Model implements RoleHolder {
         return find("userName", userName).first();
     }
 
-    public List<? extends models.deadbolt.Role> getRoles() {
+    public List<Role> getRoles() {
         return Arrays.asList(role);
     }
+
+    public boolean isMemberOf(String rolename) {
+        return rolename.equals(role.name);
+    }
+
+    public boolean isMemberOfAtLeastOne(String[] rolenames) {
+        for (String rolename : rolenames) {
+            if (this.isMemberOf(rolename)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // TODO: Strange: YAML import seems not to be able to resolve Role type???
     public void setRoleByName(String rolename) {

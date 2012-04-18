@@ -10,6 +10,7 @@ import play.Logger;
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {
+        Logger.info("************* authenticate");
         boolean valid = (User.authenticate(username, password) != null);
         if (!valid) {
         	Logger.warn("Invalid combination of username (%s) and password: %s", username, request.path);
@@ -26,7 +27,8 @@ public class Security extends Secure.Security {
      * @param groupname Ein oder mehrere Gruppennamen (mit Komma separiert)
      */
     static boolean check(String groupname) {
-    	String username = connected();
+        Logger.info("************* check");
+        String username = connected();
     	if (username == null) {
     		Logger.warn("User is not logged in, cannot check group membership.");
     		return false;
@@ -35,16 +37,14 @@ public class Security extends Secure.Security {
         Logger.info("----> check user: %s", user);
         if (user != null) {
             // Ist Benutzer der geforderten Gruppe angehörig?
-/*
+
             String[] reqGroup = groupname.split(",");
             if (user.isMemberOfAtLeastOne(reqGroup)) {
-                cacheUpdateUser(username);  // TODO: vielleicht etwas seltener
             	return true;
             } else {
             	// ... tritt auch bei jedem secure.check tag Aufruf
         		// Logger.debug("User '%s' is not assigned to group '%s': %s", username, groupname, request.path);
             }
-*/
         } else {
     		Logger.warn("Unknown user name '%s' specified: %s", username, request.path);
         }

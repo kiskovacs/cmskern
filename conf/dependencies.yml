@@ -4,9 +4,11 @@ require:
     - play
     - play -> morphia 1.2.6a
     - play -> secure
-    - play -> deadbolt 1.5.2
     - play -> crud
     - play -> jelastic 0.1
+
+    # (2012-04-18) not yet working smoothly with secure module
+    # - play -> deadbolt 1.5.2
 
     # ~~ .less Files werden leider nicht übersetzt (2012-01-22)
     # play -> less [0.3]

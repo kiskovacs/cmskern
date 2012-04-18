@@ -13,7 +13,7 @@ import play.modules.morphia.Model;
  * @since 02.04.2012
  */
 @Entity(value = "roles", noClassnameStored = true)
-public class Role extends Model implements models.deadbolt.Role {
+public class Role extends Model {
 
     @Required
     @Indexed(unique = true)
@@ -23,11 +23,6 @@ public class Role extends Model implements models.deadbolt.Role {
 
     public Role(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String getRoleName() {
-        return name;
     }
 
     public static Role findByName(String name) {
