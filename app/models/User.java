@@ -4,7 +4,6 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
 import models.deadbolt.RoleHolder;
-import play.Logger;
 import play.data.validation.Required;
 import play.modules.morphia.Model;
 
@@ -31,7 +30,7 @@ public class User extends Model implements RoleHolder {
     @Reference
     public Role role;
 
-    // ~
+    // ~~
 
     public User(String userName, String fullName, Role role) {
         this.userName = userName;
@@ -47,19 +46,10 @@ public class User extends Model implements RoleHolder {
         return Arrays.asList(role);
     }
 
-    /* @Added void cascadeAdd() {
-        Logger.info("----> (%s) role %s ", userName, role);
-        if (!role.comments.contains(this)) {
-            post.comments.add(this);
-            post.save();
-        }
-    }*/
-
+    // TODO: Strange: YAML Import seems not to be able to resolve Role type???
     public void setRole(String rolename) {
-        Logger.info("********* SET ROLE: " + rolename);
         this.role = Role.findByName(rolename);
     }
-
 
 
     @Override
