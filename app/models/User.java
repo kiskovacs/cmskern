@@ -87,12 +87,12 @@ public class User extends Model {
         if (passwd != null && passwd.trim().length() > 0) {
             Logger.info("~~ set password for user %s", userName);
             // calculate hash out of the given plain password
-            this.passwd_hash = Codec.hexSHA1(passwd);
+            this.passwd_hash = hashedPw(passwd);
         }
     }
 
     public static User authenticate(String userName, String password) {
-        User u = User.q("userName", userName).filter("passwd_hash", password).get();
+        User u = User.q("userName", userName).filter("passwd_hash", hashedPw(password)).get();
         Logger.info("User u: %s", u);
         if (u != null) {
             u.lastLoginAt = new Date();
@@ -101,11 +101,17 @@ public class User extends Model {
         return u;
     }
 
+    private static String hashedPw(String clear) {
+        return Codec.hexSHA1(clear);
+    }
+
     // ~~
 
     @Override
     public String toString() {
         return this.userName;
     }
+
+
 
 }

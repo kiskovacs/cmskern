@@ -4,45 +4,41 @@ import models.User;
 import play.Logger;
 
 /**
- * Hinweis: weiteres Login Verfahren, bei erfolgreichem Anmelden, steckt
- * im {@link Application} Controller.
+ * This class providing user authentication and
+ * group membership verification.
  */
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {
-        Logger.info("************* authenticate");
+        Logger.info("Authenticate %s", username);
         boolean valid = (User.authenticate(username, password) != null);
         if (!valid) {
         	Logger.warn("Invalid combination of username (%s) and password: %s", username, request.path);
         } else {
         	Logger.info("Successfully authenticated user '%s'", username);
         }
-
         return valid;
     }
 
     /**
      * check if user is at least in one group
      *
-     * @param groupname Ein oder mehrere Gruppennamen (mit Komma separiert)
+     * @param groupname One or more group names (separated by comma)
      */
     static boolean check(String groupname) {
-        Logger.info("************* check");
         String username = connected();
     	if (username == null) {
     		Logger.warn("User is not logged in, cannot check group membership.");
     		return false;
     	}
+        // TODO: cache user info to avoid look up on every single secure.cache tag
         User user = User.findByUserName(username);
-        Logger.info("----> check user: %s", user);
+        Logger.debug("check if user %s is member of group %s", user, groupname);
         if (user != null) {
-            // Ist Benutzer der geforderten Gruppe angehörig?
-
             String[] reqGroup = groupname.split(",");
             if (user.isMemberOfAtLeastOne(reqGroup)) {
             	return true;
             } else {
-            	// ... tritt auch bei jedem secure.check tag Aufruf
         		// Logger.debug("User '%s' is not assigned to group '%s': %s", username, groupname, request.path);
             }
         } else {
@@ -54,6 +50,20 @@ public class Security extends Secure.Security {
     static void onDisconnected() {
         // String username = params.get("username");
         Application.index();
+    }
+
+
+    static void onAuthenticated() {
+        Logger.info("Login by user %s", connected());
+    }
+
+    static void onDisconnect() {
+        Logger.info("Logout by user %s", connected());
+    }
+
+    static void onCheckFailed(String groupname) {
+        Logger.warn("Failed auth for group %s", groupname);
+        forbidden();
     }
 
 }

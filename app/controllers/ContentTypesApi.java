@@ -7,11 +7,13 @@ import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
+import play.mvc.With;
 import utils.JsonUtils;
 
 import java.io.IOException;
 import java.util.List;
 
+@With(Secure.class)
 public class ContentTypesApi extends Controller {
 
     /**
@@ -59,6 +61,7 @@ public class ContentTypesApi extends Controller {
 
     // ~~ REST API (for admins)
 
+    @Check("admin")
     public static void create(String name, String body) {
         Logger.info("Going to create type: %s ... ", name);
 
@@ -76,7 +79,7 @@ public class ContentTypesApi extends Controller {
         renderJSON(type.jsonForm);
     }
 
-
+    @Check("admin")
     public static void update(String id, String name, String body) {
         ContentType type = ContentType.findById(id);
         notFoundIfNull(type, "Unknown type ID: " + id);
@@ -90,7 +93,9 @@ public class ContentTypesApi extends Controller {
         render(type);
     }
 
+    @Check("admin")
     public static void delete(String id) {
+        // TODO: this is a very critical operation, add more serious checks?
         ContentType type = ContentType.findById(id);
         notFoundIfNull(type, "Unknown type ID: " + id);
         Logger.info("Going to delete %s ...", id);

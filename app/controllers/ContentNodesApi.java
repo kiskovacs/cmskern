@@ -5,8 +5,9 @@ import models.ContentNode;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
+import play.mvc.With;
 
-// TODO @With(Secure.class)
+@With(Secure.class)
 public class ContentNodesApi extends Controller {
 
     public static void getBody(String type, String id) {
@@ -25,7 +26,7 @@ public class ContentNodesApi extends Controller {
 
     @Check("editor,admin")
     public static void create(String type, String body) {
-        Logger.debug("Going to create %s ... ", body);
+        Logger.debug("Going to create: %s ... ", body);
         ContentNode contentNode = new ContentNode(type, body);
         contentNode.create();
         // deliver back location of new content resource

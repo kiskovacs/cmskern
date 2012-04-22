@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import play.Logger;
 import play.libs.MimeTypes;
 import play.mvc.Controller;
+import play.mvc.With;
 import utils.MongoDbUtils;
 
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ import java.util.Collection;
  * @author Niko Schmuck
  * @since 27.02.2012
  */
+@With(Secure.class)
 public class Blobs extends Controller {
-    
+
+    @Check("editor,admin")
     public static void upload(String qqfile) {
         Logger.info("Starting to upload %s ...", qqfile);
 
@@ -46,6 +49,7 @@ public class Blobs extends Controller {
         }
     }
 
+    @Check("editor,admin")
     public static void list() {
         Logger.info("Listing assets ...");
 
@@ -60,6 +64,7 @@ public class Blobs extends Controller {
         renderText(fileList);
     }
 
+    @Check("editor,admin")
     public static void listAssets() {
         Logger.info("Listing assets ...");
 

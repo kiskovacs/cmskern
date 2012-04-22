@@ -3,6 +3,7 @@ package controllers;
 import models.ContentNode;
 import models.ContentType;
 import play.mvc.Controller;
+import play.mvc.With;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.Map;
 /**
  * Main entry point to cmskern web application.
  */
+@With(Secure.class)
+@Check("guest,editor,admin")
 public class Application extends Controller {
 
     public static void index() {
@@ -25,10 +28,6 @@ public class Application extends Controller {
         }
         
         render(content);
-    }
-
-    public static void test() {
-        render();
     }
 
 }

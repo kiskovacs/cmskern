@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.mvc.With;
 
 /**
  * Backoffice for users accessing cmskern.
@@ -8,7 +9,8 @@ import models.User;
  * @author Niko Schmuck
  * @since 02.04.2012
  */
-// TODO: protect against unsecured access
 @CRUD.For(User.class)
+@With(Secure.class)
+@Check("admin")
 public class Users extends CRUD {
 }

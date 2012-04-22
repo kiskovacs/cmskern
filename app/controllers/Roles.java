@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Role;
+import play.mvc.With;
 
 /**
  * Backoffice for user roles.
@@ -10,5 +11,7 @@ import models.Role;
  */
 // TODO: protect against unsecured access
 @CRUD.For(Role.class)
+@With(Secure.class)
+@Check("admin")
 public class Roles extends CRUD {
 }

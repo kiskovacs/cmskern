@@ -5,6 +5,9 @@
 # ~~ Home page
 GET     /                                       Application.index
 
+# ~~ Import secure routes (for login/logout)
+*       /                                       module:secure
+
 # ~~ REST API for (content) types
 GET     /schema/{name}/form.json                ContentTypesApi.asFormDescriptor
 GET     /schema/{id}/edit                       ContentTypesApi.edit
@@ -29,6 +32,7 @@ POST    /blobs                                  Blobs.upload
 *       /admin                                  module:crud
 
 # ~~ REST API for content
+GET     /nodes/test                             ContentNodes.test
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/edit                            ContentNodes.blank
 GET     /{type}/{id}/full                       ContentNodesApi.getFull
@@ -41,8 +45,6 @@ GET     /{type}/{id}/versions                     ContentNodes.showVersions
 GET     /{type}/{id}/delete                       ContentNodes.delete
 GET     /test                                    Application.test
 
-# ~~ Import secure routes (for login/logout)
-*       /                                       module:secure
 
 # ~~ Ignore favicon requests
 GET     /favicon.ico                            404

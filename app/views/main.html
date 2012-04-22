@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" xmlns:ng="http://angularjs.org">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <title>#{get 'title' /}</title>
@@ -46,9 +46,17 @@
                     <div class="nav-collapse">
                         <ul class="nav">
                             <li class="active"><a href="/">Home</a></li>
-                            <li><a href="/admin">Admin</a></li>
+                            #{secure.check "admin"}
+                              <li><a href="/admin">Admin</a></li>
+                            #{/secure.check}
                             <!-- li><a href="#contact">Contact</a></li -->
                         </ul>
+                        #{if session.username}
+                        <p class="navbar-text pull-right">
+                            Logged in as ${session.username}
+                            <a href="@{Secure.logout()}">(Log out)</a>
+                        </p>
+                        #{/if}
                     </div><!--/.nav-collapse -->
                 </div>
             </div>

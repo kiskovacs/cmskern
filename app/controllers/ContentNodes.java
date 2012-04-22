@@ -2,7 +2,9 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
+import play.Logger;
 import play.mvc.Controller;
+import play.mvc.With;
 
 import java.util.List;
 
@@ -12,8 +14,14 @@ import java.util.List;
  * @author Niko Schmuck
  * @since 23.01.2012
  */
-// TODO @With(Secure.class)
+@With(Secure.class)
 public class ContentNodes extends Controller {
+
+    @Check("admin")
+    public static void test() {
+        Logger.info("REACHED test ~~~~~~~~~~~~~~~~~~~~");
+        render();
+    }
 
     @Check("editor,admin")
     public static void blank(String type) {
@@ -44,6 +52,7 @@ public class ContentNodes extends Controller {
         redirect("Application.index");
     }
 
+    @Check("editor,admin")
     public static void showVersions(String type, String id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown node ID: " + id);

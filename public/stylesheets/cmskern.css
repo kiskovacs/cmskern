@@ -181,3 +181,13 @@ th {
 .topbar .btn {
     border: 0;
 }
+
+
+/* ~~~ Login dialog ~~~ */
+#login h1 {
+    color: #9DD53A;
+}
+
+#login .instructions {
+    color: #696969;
+}
