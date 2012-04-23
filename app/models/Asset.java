@@ -21,7 +21,8 @@ public class Asset {
     public static final int THUMBNAIL_WIDTH  = 75;
     public static final int THUMBNAIL_HEIGHT = 75;
 
-    public static final String URL_PATH = "/blobs/id/";
+    public static final String URL_ORIG_PATH  = "/blobs/o/";
+    public static final String URL_THUMB_PATH = "/blobs/t/";
 
     // ~~ Names of keys
 
@@ -77,12 +78,12 @@ public class Asset {
     }
 
     private static Asset fromDBObject(DBObject dbObj) {
-        String url = URL_PATH + dbObj.get(ID);
+        String url = URL_ORIG_PATH + dbObj.get(ID);
 
         DBObject metadata = (DBObject) dbObj.get(METADATA);
         String thumbUrl = null;
         if (metadata != null && metadata.get(THUMB_REF) != null) {
-            thumbUrl = URL_PATH + metadata.get(THUMB_REF);
+            thumbUrl = URL_THUMB_PATH + metadata.get(THUMB_REF);
         }
         return new Asset(url, thumbUrl,
                          (String) dbObj.get(FILENAME), (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));

@@ -68,21 +68,26 @@ public class Blobs extends Controller {
     }
 
 
-    public static void getByName(String name) {
-        Logger.info("Lookup asset by name: %s", name);
-        GridFSDBFile dbFile = MongoDbUtils.getFileByFilename(name);
+    public static void getOriginalById(String id) {
+        Logger.info("Lookup asset by id: %s", id);
+        GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile);
-        Logger.info("Return GridFS file: %s", dbFile.getFilename());
+        Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
 
         response.contentType = dbFile.getContentType();
         renderBinary(dbFile.getInputStream());
     }
 
-    public static void getById(String id) {
-        Logger.info("Lookup asset by id: %s", id);
-        GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
+    public static void getThumbById(String id) {
+        // we might want to split this into an own GridFS collection...
+        getOriginalById(id);
+    }
+
+    public static void getByName(String name) {
+        Logger.info("Lookup asset by name: %s", name);
+        GridFSDBFile dbFile = MongoDbUtils.getFileByFilename(name);
         notFoundIfNull(dbFile);
-        Logger.info("Return GridFS file: %s", dbFile.getFilename());
+        Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
 
         response.contentType = dbFile.getContentType();
         renderBinary(dbFile.getInputStream());
