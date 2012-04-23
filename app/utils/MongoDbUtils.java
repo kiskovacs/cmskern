@@ -3,6 +3,7 @@ package utils;
 import com.google.code.morphia.Datastore;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 import models.ContentNode;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
@@ -22,13 +23,42 @@ import java.util.Arrays;
  */
 public final class MongoDbUtils {
 
+    // ~~ Basics
+
+    public static String getDBServers() {
+        return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
+    }
+
+    public static String getDBName() {
+        return MorphiaPlugin.ds().getDB().getName();
+    }
+
+    public static DBCollection getDBCollection(final String collectionName) {
+        Datastore datastore = MorphiaPlugin.ds();
+        DB db = datastore.getDB();
+        return db.getCollection(collectionName);
+    }
+
+    public static void ensureIndexes(final String collectionName, String ... columns) {
+        Logger.info("~~ Ensure MongoDB index for %s on %s", Arrays.asList(columns), collectionName);
+        DBCollection dbColl = getDBCollection(collectionName);
+        BasicDBObject keys = new BasicDBObject();
+        for (String column : columns) {
+            keys.append(column, 1); // assume ascending index
+        }
+        dbColl.createIndex(keys);
+    }
+
+
+    // ~~ Operations on single documents
+
     public static DBObject convert(final String jsonRepresentation) {
         Object o = com.mongodb.util.JSON.parse(jsonRepresentation);
         return (DBObject) o;
     }
     
     public static void create(final String collectionName, DBObject object) {
-        object.removeField(""); // TODO: schon höher lösen
+        object.removeField(""); // TODO: fix earlier in call chain
         DBCollection dbColl = getDBCollection(collectionName);
         dbColl.insert(object);
     }
@@ -40,7 +70,7 @@ public final class MongoDbUtils {
 
     public static void updateWithMetadata(final String collectionName, final String versionCollectionName,
                                           final String id, DBObject contentData) {
-        contentData.removeField(""); // TODO: schon höher lösen
+        contentData.removeField(""); // TODO: fix earlier in call chain
         // Logger.debug("~~ Update MongoDB with values: %s", contentData.toString());
         DBCollection dbColl = getDBCollection(collectionName);
 
@@ -71,36 +101,12 @@ public final class MongoDbUtils {
         return dbColl.findOne(queryById(id));
     }
 
-    public static void ensureIndexes(final String collectionName, String ... columns) {
-        Logger.info("~~ Ensure MongoDB index for %s on %s", Arrays.asList(columns), collectionName);
-        DBCollection dbColl = getDBCollection(collectionName);
-        BasicDBObject keys = new BasicDBObject();
-        for (String column : columns) {
-            keys.append(column, 1); // assume ascending index
-        }
-        dbColl.createIndex(keys);
-    }
-    
-
-    // ~~
-
-    public static DBObject queryById(final String id) {
+    private static DBObject queryById(final String id) {
         return new BasicDBObject("_id", new ObjectId(id));
     }
-    
-    public static DBCollection getDBCollection(final String collectionName) {
-        Datastore datastore = MorphiaPlugin.ds();
-        DB db = datastore.getDB();
-        return db.getCollection(collectionName);
-    }
 
-    public static String getDBName() {
-        return MorphiaPlugin.ds().getDB().getName();
-    }
 
-    public static String getDBServers() {
-        return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
-    }
+    // ~~ GridFS
 
     public static GridFS getGridFS() {
         Datastore datastore = MorphiaPlugin.ds();
@@ -109,5 +115,17 @@ public final class MongoDbUtils {
         String collectionName = Play.configuration.getProperty("morphia.collection.upload", "uploads");
         return new GridFS(db, collectionName);
     }
-    
+
+    public static GridFSDBFile getFileByFilename(String filename) {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        return gfs.findOne(filename);
+    }
+
+    public static GridFSDBFile getFileById(String id) {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        return gfs.findOne(new ObjectId(id));
+    }
+
+
+
 }

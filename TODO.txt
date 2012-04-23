@@ -13,7 +13,6 @@ TO-DO List
   - tinyMCE        angular-widgets.js: L734 (var inHTML = "...";)
   - datepicker
 
-
 * Content Typen anpassen:
   -> Article: mit boolean und fixed vocabular & Verweis auf Bild (als Callout)
   -> Image: callout dort entsprechend ausbauen
@@ -52,16 +51,17 @@ TO-DO List
 Modellierung
 ---------------
 
-For ContentType
+* For Asset
+    * Should the thumbnails better stored in a separate GridFS collection?
+      (how efficient is MongoDB $exists, even in 2.0 with using indexes)
 
-* no special / white chars allowed as part of name
-* RegExp validation auf dem Namensfeld
+* For ContentType
+    * no special / white chars allowed as part of name
+    * RegExp validation auf dem Namensfeld
 
-
-For ContentNode
-
-* jsonForm has to be valid JSON
-  (custom validator?)
+* For ContentNode
+    * jsonForm has to be valid JSON
+      (custom validator?)
 
 
 ---------------

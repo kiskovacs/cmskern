@@ -23,8 +23,10 @@ GET     /callouts/{<.*>name}                    callouts.Callouts.get
 # ~~ Helper for choosing references (call-out)
 GET     /helper/{action}                        callouts.ExternalAccess.{action}
 GET     /blobs                                  Blobs.listAssets
-GET     /blobs/n/{name}                         Blobs.getByName
+GET     /blobs/asJSON                           Blobs.list
+GET     /blobs/forTiny                          Blobs.listAssetsForTinyMCE
 GET     /blobs/id/{id}                          Blobs.getById
+GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 
 

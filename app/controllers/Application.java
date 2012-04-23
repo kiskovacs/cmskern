@@ -17,7 +17,7 @@ import java.util.Map;
 public class Application extends Controller {
 
     public static void index() {
-        // TODO: only for demo purposes get out content nodes grouped by type
+        // TODO: only for the beginning: get out content nodes grouped by type
 
         List<ContentType> types = ContentType.findAll();
 
