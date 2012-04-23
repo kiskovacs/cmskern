@@ -5,10 +5,14 @@ TO-DO List
 * "Cancel" Button soll nicht speichern :)
 
 * Referenzen auf Bilder in Richtext Editor
+  => tinyMCE Plugin
 
 * Anlegen/Hochladen von Bildern in Richtext Editor Auswahl (on-the-fly)
 
-* Problem: Initialisierung der Werte in tinyMCE und datepicker benötigen absolute contentNode Ref
+* Problem: Initialisierung der Werte in ... benötigen absolute contentNode Ref
+  - tinyMCE        angular-widgets.js: L734 (var inHTML = "...";)
+  - datepicker
+
 
 * Content Typen anpassen:
   -> Article: mit boolean und fixed vocabular & Verweis auf Bild (als Callout)

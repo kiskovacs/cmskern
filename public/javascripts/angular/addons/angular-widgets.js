@@ -728,6 +728,28 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
         */
 
         $(el).tinymce({
+            mode : "exact",
+            elements : "ajaxfilemanager",
+            theme : "advanced",
+            plugins : "advimage,advlink,contextmenu",
+            theme_advanced_buttons1 : "bold,italic,underline,separator,"+
+                                      "undo,redo,separator,"+
+                                      "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
+                                      "link,unlink,image,separator,"+
+                                      "code,cleanup",
+            theme_advanced_buttons2 : "",
+            theme_advanced_buttons3 : "",
+            theme_advanced_toolbar_location : "top",
+            theme_advanced_toolbar_align : "left",
+            extended_valid_elements : "hr[class|width|size|noshade]",
+            file_browser_callback : "ajaxfilemanager",
+            paste_use_dialog : false,
+            theme_advanced_resizing : true,
+            theme_advanced_resize_horizontal : true,
+            apply_source_formatting : true,
+            force_br_newlines : true,
+            force_p_newlines : false,
+            relative_urls : true,
 
             oninit: function(inst) {
                 // TODO: ACHTUNG absoluter Pfad benötigt!!!
@@ -753,7 +775,36 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     };
 });
 
+function ajaxfilemanager(field_name, url, type, win) {
+    var view = 'detail';
+    switch (type) {
+        case "image":
+            view = 'thumbnail';
+            break;
+        case "media":
+            break;
+        case "flash":
+            break;
+        case "file":
+            break;
+        default:
+            return false;
+    }
+    tinyMCE.activeEditor.windowManager.open({
+        url: "/?refer=ajaxfilemanager&view=" + view,
+        width: 782,
+        height: 440,
+        inline : "yes",
+        close_previous : "no"
+    },{
+        window : win,
+        input : field_name
+    });
+}
 
+
+
+// TODO: ~~~~~~~~~ NOT IN USE: currently
 // ~~ jQuery WYSIWYG Plug-In Integration
 angular.widget('@ui:wysiwyg', function(expr, el, val) {
     if (!$.wysiwyg) {
