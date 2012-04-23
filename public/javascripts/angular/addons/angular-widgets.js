@@ -751,7 +751,7 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
             apply_source_formatting : true,
             force_br_newlines : true,
             force_p_newlines : false,
-            relative_urls : true,
+            relative_urls : false,
 
             oninit: function(inst) {
                 // TODO: ACHTUNG absoluter Pfad benötigt!!!

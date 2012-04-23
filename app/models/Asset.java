@@ -4,11 +4,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
+import play.mvc.Router;
 import utils.MongoDbUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Store metadata about an media asset (e.g. image, video, etc).
@@ -20,9 +19,6 @@ public class Asset {
 
     public static final int THUMBNAIL_WIDTH  = 75;
     public static final int THUMBNAIL_HEIGHT = 75;
-
-    public static final String URL_ORIG_PATH  = "/blobs/o/";
-    public static final String URL_THUMB_PATH = "/blobs/t/";
 
     // ~~ Names of keys
 
@@ -78,12 +74,15 @@ public class Asset {
     }
 
     private static Asset fromDBObject(DBObject dbObj) {
-        String url = URL_ORIG_PATH + dbObj.get(ID);
+        Map<String, Object> argMap = new HashMap<String, Object>(1);
+        argMap.put("id", dbObj.get(ID));
+        String url = Router.getFullUrl("Blobs.getOriginalById", argMap);
 
         DBObject metadata = (DBObject) dbObj.get(METADATA);
         String thumbUrl = null;
         if (metadata != null && metadata.get(THUMB_REF) != null) {
-            thumbUrl = URL_THUMB_PATH + metadata.get(THUMB_REF);
+            argMap.put("id", metadata.get(THUMB_REF));
+            thumbUrl = Router.getFullUrl("Blobs.getThumbById", argMap);
         }
         return new Asset(url, thumbUrl,
                          (String) dbObj.get(FILENAME), (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));
