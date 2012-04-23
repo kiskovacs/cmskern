@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>#{get 'title' /}</title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/fileuploader.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/bootstrap.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/cmskern.css'}">
+        #{get 'moreStyles' /}
+
+        <!-- JavaScripts -->
+        <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-1.7.1.min.js'}"></script>
+
+        <script type="text/javascript" src="@{'/public/javascripts/bootstrap/bootstrap.min.js'}"></script>
+        <script type="text/javascript" src="@{'/public/javascripts/bootstrap/bootbox.min.js'}"></script>
+
+        <script type="text/javascript" src="@{'/public/javascripts/fileuploader.js'}"></script>
+
+        #{get 'moreScripts' /}
+
+        <!-- Fav (and touch) icons -->
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+    </head>
+
+    <body>
+
+        <div class="content">
+            <div class="page-header">
+                <h1>#{get 'title' /} <small></small></h1>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    #{doLayout /}
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

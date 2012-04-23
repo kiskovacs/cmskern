@@ -731,7 +731,7 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
             mode : "exact",
             elements : "ajaxfilemanager",
             theme : "advanced",
-            plugins : "advimage,advlink,contextmenu",
+            plugins : "advimage,advlink,contextmenu,autosave",
             theme_advanced_buttons1 : "bold,italic,underline,separator,"+
                                       "undo,redo,separator,"+
                                       "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
@@ -744,6 +744,8 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
             extended_valid_elements : "hr[class|width|size|noshade]",
             file_browser_callback : "ajaxfilemanager",
             paste_use_dialog : false,
+            theme_advanced_statusbar_location : 'bottom',
+            theme_advanced_path : false,
             theme_advanced_resizing : true,
             theme_advanced_resize_horizontal : true,
             apply_source_formatting : true,
@@ -791,7 +793,7 @@ function ajaxfilemanager(field_name, url, type, win) {
             return false;
     }
     tinyMCE.activeEditor.windowManager.open({
-        url: "/?refer=ajaxfilemanager&view=" + view,
+        url: "/blobs/forTiny.html?refer=ajaxfilemanager&view=" + view,
         width: 782,
         height: 440,
         inline : "yes",

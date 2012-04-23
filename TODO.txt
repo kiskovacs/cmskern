@@ -2,36 +2,32 @@
 TO-DO List
 ---------------
 
-* "Cancel" Button soll nicht speichern :)
-
-* Referenzen auf Bilder in Richtext Editor
-  => tinyMCE Plugin
-
 * Anlegen/Hochladen von Bildern in Richtext Editor Auswahl (on-the-fly)
 
 * Problem: Initialisierung der Werte in ... benötigen absolute contentNode Ref
   - tinyMCE        angular-widgets.js: L734 (var inHTML = "...";)
   - datepicker
 
-* Content Typen anpassen:
-  -> Article: mit boolean und fixed vocabular & Verweis auf Bild (als Callout)
-  -> Image: callout dort entsprechend ausbauen
+* "Cancel" Button soll nicht speichern :)
 
-* Auch wenn Referenzfeld, trotzdem Eingabe erlauben (nicht disablen)
+* fileuploader.js und .css raus aus main.html
+  => werden nur in ContentNodes/blank und edit verwendet
+  => gemeinsame base page für content editieren (Sammelbecken js & css)
 
-* Beispiel für drop-down mit fest vorbelegten Werten
-  => http://docs-next.angularjs.org/api/angular.widget.select
+* Verify that JSON is valid, before Saving Content Type
+  => otherwise you could end up not being able to access content any more
 
 * Startanzahl von Kindern bei "repeatable" Typen über das Schema steuerbar machen
 
 * Erlauben Kinder von unterschiedlichem Typ hinzuzufügen (über Dropdown Box)
 
 * Einlesen von ContentNode Testdaten, angetriggert von Bootstraper
+  (oder reicht das Einlesen der Content Type Definitionen?)
 
 * index Seite: highlighId in den Flash Scope packen, damit dieser nicht immer wieder
   bei einem Refresh auftaucht
 
-* Innerhalb eines Callouts erlauben auch ein neues Element ("on-the-fly" anzulegen)
+* Innerhalb eines Callouts erlauben auch ein neues Element ("on-the-fly") anzulegen
 
 * Kann ContentNode statt selbstgeschriebenen MongoDB Zugriff auch über Morphia laufen?
   sollte es besser von BasicDBObject erben?
@@ -76,11 +72,24 @@ IDEAS
   oder http://www.uploadify.com/
   oder http://valums.com/ajax-upload/
 
+
 ---------------
 DONE
 ---------------
 
+* Content Typen anpassen:
+  -> Article: mit boolean und fixed vocabular & Verweis auf Bild (als Callout)
+  -> Image: callout dort entsprechend ausbauen
+
+* Referenzen auf Bilder in Richtext Editor
+  => tinyMCE Plugin
+
 * Richtext Editor integrieren (z.B. tinyMCE ...)
+
+* Auch wenn Referenzfeld, trotzdem Eingabe erlauben (nicht disablen)
+
+* Beispiel für drop-down mit fest vorbelegten Werten
+  => http://docs-next.angularjs.org/api/angular.widget.select
 
 * Date Felder zu den erlaubten Typen aufnehmen
 

@@ -1,0 +1,21 @@
+#{extends 'mini.html' /}
+#{set title: 'Asset list' /}
+
+#{set 'moreScripts'}
+    #{script 'jquery/jquery-ui-1.8.18.custom.min.js' /}
+    #{script 'tinymce/tiny_mce.js' /}
+    #{script 'tinymce/jquery.tinymce.js' /}
+    #{script 'tinymce/plugins/ajaxfilemanager/jscripts/for_tinymce.js' /}
+#{/set}
+
+
+<ul class="thumbnails">
+#{list items: assets, as:'asset'}
+    <li>
+        <a href="#" onclick="selectFile('${asset.url}')" class="thumbnail">
+            <!-- TODO: specify width and height -->
+            <img data-objectid="${asset.url}" src="${asset.thumbUrl}" alt="${asset.filename}">
+        </a>
+    </li>
+#{/list}
+</ul>
