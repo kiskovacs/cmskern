@@ -93,7 +93,6 @@ public class User extends Model {
 
     public static User authenticate(String userName, String password) {
         User u = User.q("userName", userName).filter("passwd_hash", hashedPw(password)).get();
-        Logger.info("User u: %s", u);
         if (u != null) {
             u.lastLoginAt = new Date();
             u.save();

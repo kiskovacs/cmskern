@@ -10,7 +10,7 @@ import play.Logger;
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {
-        Logger.info("Authenticate %s", username);
+        Logger.info("Authenticating %s ...", username);
         boolean valid = (User.authenticate(username, password) != null);
         if (!valid) {
         	Logger.warn("Invalid combination of username (%s) and password: %s", username, request.path);
