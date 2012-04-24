@@ -1,5 +1,7 @@
 package utils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import models.ContentNode;
 import models.ContentType;
 import org.codehaus.jackson.JsonNode;
@@ -17,7 +19,13 @@ import java.util.Map;
  */
 public class JsonUtils {
 
-    
+    public static Map<String, Object> convertToMap(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());
+    }
+
+    // ~~
+
     public static JsonNode enrich(ContentType contentType, ContentNode contentNode) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 

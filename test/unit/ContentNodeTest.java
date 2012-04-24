@@ -23,12 +23,12 @@ public class ContentNodeTest extends UnitTest {
 
     @Test
     public void updateNode() {
-        ContentNode node = new ContentNode("articles", "{\"titel\":\"foo\"}");
+        ContentNode node = new ContentNode("article", "{\"titel\":\"foo\"}");
         node.create();
         assertNotNull(node.getId());
 
         ContentNode v1 = ContentNode.findById(node.getId());
-        assertEquals("articles", v1.getType());
+        assertEquals("article", v1.getType());
         assertThat(v1.getJsonContent(), containsString("foo"));
         assertEquals(Integer.valueOf(1), v1.getVersion());
         assertNotNull(v1.getModified());

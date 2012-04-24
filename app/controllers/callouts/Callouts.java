@@ -1,7 +1,11 @@
 package controllers.callouts;
 
+import models.ContentNode;
 import play.Logger;
 import play.mvc.Controller;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Simple controller to render "call-out" template
@@ -14,9 +18,19 @@ import play.mvc.Controller;
 public class Callouts extends Controller {
     
     public static void get(String name) {
+        Map<String, Object> model = new HashMap<String, Object>();
+        // ~~
+        if (name.equalsIgnoreCase("internal/article_reference")) {
+            // ~~ Convert to ContentNode and to generic Map structure
+            //List<ContentNode> articles = ContentNode.findByType("article", 20);
+            //model.put("articles", ContentNode.convertToMap(articles));
+            // ~~ RAW access
+            model.put("articles", ContentNode.findByTypeRaw("article", 20));
+        }
+        // ~~
         String templateName = "Callouts/" + name + ".html";
         Logger.info("Going to render %s ...", templateName);
-        renderTemplate(templateName);
+        renderTemplate(templateName, model);
     }
     
 }

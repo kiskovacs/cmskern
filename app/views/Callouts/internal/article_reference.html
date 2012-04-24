@@ -1,0 +1,25 @@
+<!-- Select one of the existing articles -->
+
+<h3>Select Article</h3>
+
+<ul>
+  #{list items: articles, as:'article'}
+    <li><a href="#" onclick="setValue('${article._id}')">${article.data.titel}</a></li>
+  #{/list}
+</ul>
+
+
+<script type="text/javascript">
+    var selectedValue = "";
+
+    function setValue(val) {
+        selectedValue = val;
+    }
+
+    // Contract between Caller and Callout
+    function calloutGetSelectedValue() {
+        return {
+            value: selectedValue
+        };
+    }
+</script>

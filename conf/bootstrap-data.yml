@@ -1,18 +1,22 @@
 # Bootstrap data described using the YAML notation
 
-# Leider funktionieren die JSON Zuweisung noch nicht wie gewünscht
+# Unfortunately assigning JSON content does not work, therefore reference external definitions
 # siehe http://stackoverflow.com/questions/9026017/is-it-possible-to-assign-a-json-value-inside-a-yaml-definition
 
-ContentType(articles):
-    slug: articles
+ContentType(article):
+    slug: article
     displayName: Article
-    description: Simple content type for an text article
+    description: Content type for an text article
     jsonFormFromFile: conf/content-types/article-schema.json
 
-ContentType(images):
-    slug: images
+ContentType(collection):
+    slug: collection
+    displayName: Article Collection
+    description: A collection can hold links to one or more articles
+    jsonFormFromFile: conf/content-types/collection-schema.json
+
+ContentType(image):
+    slug: image
     displayName: Image
     description: Image container referencing an photo for example
     jsonFormFromFile: conf/content-types/image-schema.json
-
-# Bilderstrecke ...

@@ -6,11 +6,13 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import play.Logger;
+import utils.JsonUtils;
 import utils.MongoDbUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Capturing a content node which basically consists of a JSON sub-document
@@ -59,7 +61,17 @@ public class ContentNode {
         this.type = type;
         this.jsonContent = jsonContent;
     }
-    
+
+    public static void createIndexes() {
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
+        // Also indexes for the version collection
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
+        // create also compound key
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF, ATTR_VERSION);
+    }
+
+    // ~~
+
     public void create() {
         DBObject dbObj = new BasicDBObject();
         // Logger.info(".... going to create new content node with: %s", jsonContent);
@@ -121,6 +133,18 @@ public class ContentNode {
         return nodes;
     }
 
+    // TODO: Temporary to figure out if this is the right access
+    public static List<DBObject> findByTypeRaw(String type, int max) {
+        List<DBObject> nodes = new ArrayList<DBObject>();
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
+        while (dbCur.hasNext()) {
+            DBObject dbObj = dbCur.next();
+            nodes.add(dbObj);
+        }
+        return nodes;
+    }
+
     /**
      * Returns the most recent revisions related to this origin content node.
      */
@@ -137,12 +161,12 @@ public class ContentNode {
 
     // ~~
 
-    public static void createIndexes() {
-        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
-        // Also indexes for the version collection
-        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
-        // create also compound key
-        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF, ATTR_VERSION);
+    public static List<Map<String, Object>> convertToMap(List<ContentNode> nodes) {
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(nodes.size());
+        for (ContentNode node : nodes) {
+            result.add(JsonUtils.convertToMap(node.getJsonContent()));
+        }
+        return result;
     }
 
     // ~~

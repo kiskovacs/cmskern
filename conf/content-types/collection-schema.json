@@ -1,0 +1,15 @@
+{
+    "fields":
+    [
+        { "name": "name", "label": "Name", "type": "text", "len": "xlarge"},
+        { "name": "slug", "label": "Slug", "type": "text", "len": "xlarge"},
+
+        { "name": "articles", "label": "Article", "type": "repeatable",
+            "min": "1",
+            "children": [
+                { "name": "article_ref", "label": "Reference", "type": "reference", "len": "xlarge",
+                  "callout": "/callouts/internal/article_reference" }
+            ]
+        }
+    ]
+}

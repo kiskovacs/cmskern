@@ -27,7 +27,7 @@ public class ContentTypeTest extends UnitTest {
 
     @Test
     public void getByName() {
-        ContentType contentType = ContentType.findByName("articles");
+        ContentType contentType = ContentType.findByName("article");
         assertNotNull(contentType);
         assertEquals("Article", contentType.displayName);
         assertThat(contentType.jsonForm, containsString("\"name\": \"titel\", \"label\": \"Titel\""));
