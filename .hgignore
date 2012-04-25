@@ -3,6 +3,7 @@ syntax: regexp
 .*\.swo
 .*\.swn
 .*\.swm
+^logs
 eclipse
 \.classpath
 \.project

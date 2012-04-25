@@ -1,0 +1,14 @@
+{
+
+"fields":
+    [
+        { "name": "titel", "label": "Titel", "type": "text", "len": "xxlarge"
+        },
+
+
+        { "name": "online", "label": "Online?", "type": "checkbox"
+        },
+
+
+    ]
+}

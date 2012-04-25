@@ -1,76 +1,29 @@
 /* jasmine-like end2end tests go here */
-describe('PhoneCat App', function() {
-
-  it('should redirect index.html to index.html#/phones', function() {
-    browser().navigateTo('../../app/index.html');
-    expect(browser().location().hash()).toBe('/phones');
-  });
-
-
-  describe('Phone list view', function() {
+describe('cmskern App', function() {
+  describe('Admin view', function() {
 
     beforeEach(function() {
-      browser().navigateTo('../../app/index.html#/phones');
     });
 
 
-    it('should filter the phone list as user types into the search box', function() {
-      expect(repeater('.phones li').count()).toBe(20);
-
-      input('query').enter('nexus');
-      expect(repeater('.phones li').count()).toBe(1);
-
-      input('query').enter('motorola');
-      expect(repeater('.phones li').count()).toBe(8);
+    it('should show a new content type edit form with three required fields', function() {
+      browser().navigateTo('/admin/contenttypes/new');
+      expect(element('input#object_slug').attr('name')).toBe('object.slug');
+      expect(element('input#object_displayName').attr('name')).toBe('object.displayName');
+      expect(element('textarea#object_jsonForm').attr('name')).toBe('object.jsonForm');
     });
 
 
-    it('should be possible to control phone order via the drop down select box', function() {
-      input('query').enter('tablet'); //let's narrow the dataset to make the test assertions shorter
-
-      expect(repeater('.phones li', 'Phone List').column('a')).
-          toEqual(["Motorola XOOM\u2122 with Wi-Fi",
-                   "MOTOROLA XOOM\u2122"]);
-
-      select('orderProp').option('alphabetical');
-
-      expect(repeater('.phones li', 'Phone List').column('a')).
-          toEqual(["MOTOROLA XOOM\u2122",
-                   "Motorola XOOM\u2122 with Wi-Fi"]);
+    it('should save a new content type', function() {
+      browser().navigateTo('/admin/contenttypes/new');
+      input('object.slug').enter('testcontenttyp'); //let's narrow the dataset to make the test assertions shorter
+      input('object.displayName').enter('Test Content Typ'); //let's narrow the dataset to make the test assertions shorter
+      input('object.jsonForm').enter('[ { "name": "titel", "label": "Titel", "type": "text"}, { "name": "online", "label": "Online?", "type": "checkbox"}, { "name": "teasers", "label": "Teaser", "type": "repeatable", "min": "1", "children": [ { "name": "spitzmarke", "label": "Spitzmarke" }, { "name": "ueberschrift", "label": "Überschrift" }, { "name": "teasertext", "label": "Teasertext", "type": "textarea" } { "name": "childteaser", "label": "Child Teaser", "type": "repeatable", "min": "1", "children": [ { "name": "spitzmarke", "label": "Spitzmarke" }, { "name": "ueberschrift", "label": "Überschrift" }, { "name": "teasertext", "label": "Teasertext", "type": "textarea" } ] } ] } ]'); //let's narrow the dataset to make the test assertions shorter
+      element('.crudButtons input[name="_save"]').click();
+      
+      expect(browser().location().path()).toBe('/admin/contenttypes');
+      
     });
 
-
-    it('should render phone specific links', function() {
-      input('query').enter('nexus');
-      element('.phones li a').click();
-      expect(browser().location().hash()).toBe('/phones/nexus-s');
-    });
-  });
-
-
-  describe('Phone detail view', function() {
-
-    beforeEach(function() {
-      browser().navigateTo('../../app/index.html#/phones/nexus-s');
-    });
-
-
-    it('should display nexus-s page', function() {
-      expect(binding('phone.name')).toBe('Nexus S');
-    });
-
-
-    it('should display the first phone image as the main phone image', function() {
-      expect(element('img.phone').attr('src')).toBe('img/phones/nexus-s.0.jpg');
-    });
-
-
-    it('should swap main image if a thumbnail image is clicked on', function() {
-      element('.phone-thumbs li:nth-child(3) img').click();
-      expect(element('img.phone').attr('src')).toBe('img/phones/nexus-s.2.jpg');
-
-      element('.phone-thumbs li:nth-child(1) img').click();
-      expect(element('img.phone').attr('src')).toBe('img/phones/nexus-s.0.jpg');
-    });
   });
 });
