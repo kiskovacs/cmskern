@@ -6,6 +6,8 @@ import org.junit.Test;
 import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
+import java.util.Date;
+
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
@@ -24,22 +26,28 @@ public class ContentNodeTest extends UnitTest {
     }
 
     @Test
-    public void updateNode() {
+    public void updateNode() throws InterruptedException {
         ContentNode node = new ContentNode("article", "{\"titel\":\"foo\"}");
-        node.create();
+        // creates version 1
+        node.create("UnitTester");
         assertNotNull(node.getId());
 
         ContentNode v1 = ContentNode.findById(node.getId());
         assertEquals("article", v1.getType());
         assertThat(v1.getJsonContent(), containsString("foo"));
         assertEquals(Integer.valueOf(1), v1.getVersion());
-        assertNotNull(v1.getModified());
+        assertEquals("UnitTester", v1.getCreator());
+        assertEquals("UnitTester", v1.getModifier());
+        assertNotNull(v1.getModifier());
+        Date v1_timestamp = (Date) v1.getModified().clone();
 
-        v1.update("{\"titel\":\"bar\"}");
+        // this will create a second version
+        Thread.sleep(10);
+        v1.update("TanteEmma", "{\"titel\":\"bar\"}");
 
         ContentNode v2 = ContentNode.findById(node.getId());
         assertEquals(Integer.valueOf(2), v2.getVersion());
-        assertTrue(v2.getModified().after(v1.getModified()));
+        assertTrue(v2.getModified().after(v1_timestamp));
         assertEquals("Created date must stay constant", v1.getCreated(), v2.getCreated());
         assertThat(v2.getJsonContent(), containsString("bar"));
         assertThat(v2.getJsonContent(), not(containsString("foo")));

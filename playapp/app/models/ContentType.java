@@ -61,7 +61,7 @@ public class ContentType extends Model {
      */
     public void setJsonFormFromFile(String filename) throws IOException {
         File inputFile = Play.getFile(filename);
-        Logger.info("Read form schema definition from %s", inputFile.getAbsolutePath());
+        Logger.info("   ~ read form schema definition from %s", inputFile.getAbsolutePath());
         jsonForm = IOUtils.toString(new FileReader(inputFile));
     }
 

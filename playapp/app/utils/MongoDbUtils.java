@@ -1,10 +1,12 @@
 package utils;
 
 import com.google.code.morphia.Datastore;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
-import models.ContentNode;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import play.Logger;
@@ -72,29 +74,6 @@ public final class MongoDbUtils {
         dbColl.update(queryById(id), object);
     }
 
-    public static void updateWithMetadata(final String collectionName, final String versionCollectionName,
-                                          final String id, DBObject contentData) {
-        contentData.removeField(""); // TODO: fix earlier in call chain
-        // Logger.debug("~~ Update MongoDB with values: %s", contentData.toString());
-        DBCollection dbColl = getDBCollection(collectionName);
-
-        // ~~ Get current version
-        DBObject verObj = dbColl.findOne(queryById(id));
-        verObj.removeField("_id");
-        verObj.put("_ref", id);
-        getDBCollection(versionCollectionName).save(verObj);
-
-        // ~~ Update existing object
-        WriteResult res = dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_DATA, contentData)), true, false);
-        Logger.info("~~ Update values, result %s", res.getLastError());
-        // Update last modified date
-        res = dbColl.update(queryById(id), new BasicDBObject("$set", new BasicDBObject(ContentNode.ATTR_MODIFIED, System.currentTimeMillis())));
-        Logger.debug("~~ Update last modified date, result %s", res.getLastError());
-        // Increment version number
-        res = dbColl.update(queryById(id), new BasicDBObject("$inc", new BasicDBObject(ContentNode.ATTR_VERSION, 1)));
-        Logger.debug("~~ Incremented version, result %s", res.getLastError());
-    }
-
     public static void delete(final String collectionName, final String id) {
         DBCollection dbColl = getDBCollection(collectionName);
         dbColl.remove(queryById(id));
@@ -105,7 +84,7 @@ public final class MongoDbUtils {
         return dbColl.findOne(queryById(id));
     }
 
-    private static DBObject queryById(final String id) {
+    public static DBObject queryById(final String id) {
         return new BasicDBObject("_id", new ObjectId(id));
     }
 

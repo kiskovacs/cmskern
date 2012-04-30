@@ -1,9 +1,6 @@
 package models;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import org.bson.types.ObjectId;
 import play.Logger;
 import utils.JsonUtils;
@@ -39,7 +36,9 @@ public class ContentNode {
     public static final String ATTR_ID         = "_id";
     public static final String ATTR_TYPE       = "_type";
     public static final String ATTR_CREATED    = "_created";
+    public static final String ATTR_CREATOR    = "_creator";
     public static final String ATTR_MODIFIED   = "_modified";
+    public static final String ATTR_MODIFIER   = "_modifier";
     public static final String ATTR_VERSION    = "_version";
 
     /**
@@ -54,13 +53,18 @@ public class ContentNode {
     public static final String ATTR_DATA       = "data";
 
     // ~
+
     private ObjectId id;
-    private Long modified;
-    private Long created;
     private Integer version = 1;
+
+    private Long created;
+    private String creator;
+
+    private Long modified;
+    private String modifier;
+
     private String type;
     private String jsonContent;
-    // TODO add user creator and modifier
 
     // ~~
 
@@ -79,7 +83,7 @@ public class ContentNode {
 
     // ~~
 
-    public void create() {
+    public void create(String creatorUsername) {
         DBObject dbObj = new BasicDBObject();
         // Logger.info(".... going to create new content node with: %s", jsonContent);
         DBObject contentObj = MongoDbUtils.convert(jsonContent);
@@ -88,14 +92,18 @@ public class ContentNode {
         dbObj.put(ATTR_TYPE, type);
         dbObj.put(ATTR_VERSION, version);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
+        dbObj.put(ATTR_CREATOR, creator = creatorUsername);
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
+        dbObj.put(ATTR_MODIFIER, modifier = creatorUsername);
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
         this.id = (ObjectId) dbObj.get(ATTR_ID);
     }
 
-    public void update(String jsonContent) {
+    public void update(String username, String jsonContent) {
         DBObject contentData = MongoDbUtils.convert(jsonContent);
-        MongoDbUtils.updateWithMetadata(COLLECTION_NAME, VERSION_COLLECTION_NAME, getId(), contentData);
+        this.modifier = username;
+        this.modified = System.currentTimeMillis();
+        updateWithMetadata(modifier, modified, getId(), contentData);
     }
 
     public void delete() {
@@ -188,8 +196,10 @@ public class ContentNode {
         //dbObj.removeField("_type");
         Integer version = (Integer) dbObj.get(ATTR_VERSION);
         Long created = (Long) dbObj.get(ATTR_CREATED);
+        String creator = (String) dbObj.get(ATTR_CREATOR);
         //dbObj.removeField("_created");
         Long modified = (Long) dbObj.get(ATTR_MODIFIED);
+        String modifier = (String) dbObj.get(ATTR_MODIFIER);
         //dbObj.removeField("_modified");
         String jsonContent = dbObj.get(ATTR_DATA).toString();
         // ~~
@@ -197,11 +207,38 @@ public class ContentNode {
         node.id = id;
         node.type = type;
         node.version = version;
-        node.modified = modified;
         node.created = created;
+        node.creator = creator;
+        node.modified = modified;
+        node.modifier = modifier;
         return node;
     }
-    
+
+    private static void updateWithMetadata(final String username, long timestamp,
+                                           final String id, DBObject contentData) {
+        contentData.removeField(""); // TODO: fix earlier in call chain
+        // Logger.debug("~~ Update MongoDB with values: %s", contentData.toString());
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+
+        // ~~ Get current version and save it to archive
+        DBObject verObj = dbColl.findOne(MongoDbUtils.queryById(id));
+        verObj.removeField(ATTR_ID);
+        verObj.put(ATTR_IDREF, id);
+        MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME).save(verObj);
+
+        // ~~ Update existing object
+        WriteResult res = dbColl.update(MongoDbUtils.queryById(id),
+                new BasicDBObject("$set", new BasicDBObject()
+                        .append(ContentNode.ATTR_DATA, contentData)
+                        .append(ContentNode.ATTR_MODIFIED, timestamp)
+                        .append(ContentNode.ATTR_MODIFIER, username)
+                ), true, false);
+        Logger.info("~~ Update content, result: %s", res.getLastError());
+
+        // Increment version number
+        res = dbColl.update(MongoDbUtils.queryById(id), new BasicDBObject("$inc", new BasicDBObject(ContentNode.ATTR_VERSION, 1)));
+        Logger.debug("~~ Incremented version, result %s", res.getLastError());
+    }
 
     // ~~
 
@@ -216,12 +253,20 @@ public class ContentNode {
         return id.toString();
     }
 
+    public Date getCreated() {
+        return new Date(created);
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
     public Date getModified() {
         return new Date(modified);
     }
 
-    public Date getCreated() {
-        return new Date(created);
+    public String getModifier() {
+        return modifier;
     }
 
     public String getType() {

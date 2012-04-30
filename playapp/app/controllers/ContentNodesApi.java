@@ -28,7 +28,8 @@ public class ContentNodesApi extends Controller {
     public static void create(String type, String body) {
         Logger.debug("Going to create: %s ... ", body);
         ContentNode contentNode = new ContentNode(type, body);
-        contentNode.create();
+        String username = Security.connected();
+        contentNode.create(username);
         // deliver back location of new content resource
         Logger.info("Created new content node with ID: %s", contentNode.getId());
         response.status = Http.StatusCode.CREATED;
@@ -42,7 +43,8 @@ public class ContentNodesApi extends Controller {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
         Logger.info("Going to update %s with ID %s ...", type, id);
-        contentNode.update(body);
+        String username = Security.connected();
+        contentNode.update(username, body);
         renderJSON("{\"id\": \"" + contentNode.getId() + "\"}");
     }
 
