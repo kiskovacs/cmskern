@@ -45,7 +45,9 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="metaInfo">
-    Current Version: ${contentNode.version}, last edited on ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+    Current Version: ${contentNode.version} <br />
+    edited on ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}<br />
+    by ${contentNode.modifier}
 </div>
 
 <div ng:controller="EditContentNodeCtrl">

@@ -6,10 +6,10 @@
 #{/set}
 
 
-<h2>Current Version: ${contentNode.version}
+<h3>Current Version: ${contentNode.version}
     <a href="@{ContentNodes.edit(contentNode.type, contentNode.id)}"><i class="icon-pencil" title="Edit"></i></a>
-    <small>from ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}</small>
-</h2>
+    <small>from ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')} by ${contentNode.modifier}</small>
+</h3>
 
 <pre id="rev_current"></pre>
 <script type="text/javascript">
@@ -18,13 +18,14 @@
 </script>
 
 #{if versions}
-    <h2>Older Versions</h2>
+    <h3>Older Versions</h3>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th width="10%">Version</th>
                 <th width="10%">Modified</th>
-                <th width="80%">Content</th>
+                <th width="10%">Modifier</th>
+                <th width="70%">Content</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,9 @@
                 </td>
                 <td>
                     ${rev.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+                </td>
+                <td>
+                    ${rev.modifier}
                 </td>
                 <td>
                     <pre id="rev_${rev_index}"></pre>
