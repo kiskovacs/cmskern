@@ -3,7 +3,6 @@ package models;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
-import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.libs.Codec;
@@ -85,7 +84,6 @@ public class User extends Model {
 
     public void setPasswd(String passwd) {
         if (passwd != null && passwd.trim().length() > 0) {
-            Logger.info("~~ set password for user %s", userName);
             // calculate hash out of the given plain password
             this.passwd_hash = hashedPw(passwd);
         }

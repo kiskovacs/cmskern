@@ -41,9 +41,16 @@ public class ContentNode {
     public static final String ATTR_CREATED    = "_created";
     public static final String ATTR_MODIFIED   = "_modified";
     public static final String ATTR_VERSION    = "_version";
+
+    /**
+     * If the content node is archived in the version collection, this attribute
+     * will link back to the original node.
+     */
     public static final String ATTR_IDREF      = "_ref";
 
-    // Sub-document holding the manually edited "real" content
+    /**
+     * Sub-document (JSON) holding the manually edited "real" content,
+     */
     public static final String ATTR_DATA       = "data";
 
     // ~
@@ -89,11 +96,14 @@ public class ContentNode {
     public void update(String jsonContent) {
         DBObject contentData = MongoDbUtils.convert(jsonContent);
         MongoDbUtils.updateWithMetadata(COLLECTION_NAME, VERSION_COLLECTION_NAME, getId(), contentData);
-
     }
 
     public void delete() {
         MongoDbUtils.delete(COLLECTION_NAME, getId());
+    }
+
+    public static void deleteAll() {
+        MongoDbUtils.drop(COLLECTION_NAME);
     }
 
     // ~~

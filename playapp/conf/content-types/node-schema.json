@@ -1,12 +1,6 @@
 {
 "rules":
-    {  "rule_sources": { "type": "multiple",
-            "allowedValues": [
-                { "value": "unspecified", "label": "Unspecified", "selected": true },
-                { "value": "reporter_A", "label": "Reporter A" },
-                { "value": "reporter_B", "label": "Reporter B" }
-            ]
-        }
+    {
     },
 
 "fields":

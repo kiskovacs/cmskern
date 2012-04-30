@@ -56,9 +56,12 @@ public class ContentType extends Model {
         return false; // TODO implement validation
     }
 
+    /**
+     * Called by Bootstrap definition.
+     */
     public void setJsonFormFromFile(String filename) throws IOException {
         File inputFile = Play.getFile(filename);
-        Logger.info("Read JSON Form from %s", inputFile.getAbsolutePath());
+        Logger.info("Read form schema definition from %s", inputFile.getAbsolutePath());
         jsonForm = IOUtils.toString(new FileReader(inputFile));
     }
 

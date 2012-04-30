@@ -3,26 +3,30 @@ package unit;
 import models.ContentType;
 import org.junit.Before;
 import org.junit.Test;
+import play.Logger;
+import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
 import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
+ * Unit tests for the {@link models.ContentType} entity.
+ *
  * @author Niko Schmuck
  * @since 26.01.2012
  */
 public class ContentTypeTest extends UnitTest {
 
     @Before
-    public void setUpData() {
-        // Already done by Bootstrap Job
-        // ContentType.deleteAll();
-        // MorphiaFixtures.loadModels("bootstrap-data.yml");
+    public void setUpData() throws InterruptedException {
+        Logger.info("Going to setup ...");
+        MorphiaFixtures.deleteDatabase();
+        MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
     }
 
     @Test
     public void count() {
-        assertEquals(2, ContentType.count());
+        assertEquals(4, ContentType.count());
     }
 
     @Test

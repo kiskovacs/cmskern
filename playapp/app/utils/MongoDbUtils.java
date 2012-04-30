@@ -49,6 +49,10 @@ public final class MongoDbUtils {
         dbColl.createIndex(keys);
     }
 
+    public static void drop(final String collectionName) {
+        getDBCollection(collectionName).drop();
+    }
+
 
     // ~~ Operations on single documents
 
@@ -125,7 +129,5 @@ public final class MongoDbUtils {
         GridFS gfs = MongoDbUtils.getGridFS();
         return gfs.findOne(new ObjectId(id));
     }
-
-
 
 }

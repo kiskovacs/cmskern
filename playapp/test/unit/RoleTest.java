@@ -9,16 +9,19 @@ import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
 /**
+ * Unit tests for the {@link Role} entity.
+ *
  * @author Niko Schmuck
  * @since 18.04.2012
  */
 public class RoleTest extends UnitTest {
 
     @Before
+    @SuppressWarnings("unchecked")
     public void setUpData() {
         MorphiaFixtures.delete(User.class);
         MorphiaFixtures.delete(Role.class);
-        MorphiaFixtures.loadModels("bootstrap-user.yml");
+        MorphiaFixtures.loadModels("bootstrap-users_and_roles.yml");
     }
 
     @Test

@@ -25,12 +25,12 @@ public class Bootstrap extends Job {
         Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
         if (ContentType.count() == 0) {
-            Logger.info("Importing bootstrap data ...");
-            Fixtures.loadModels("bootstrap-data.yml");
+            Logger.info("Importing bootstrap content types ...");
+            Fixtures.loadModels("bootstrap-contenttypes.yml");
         }
         if (Role.count() == 0) {
             Logger.info("Importing bootstrap roles and users ...");
-            Fixtures.loadModels("bootstrap-user.yml");
+            Fixtures.loadModels("bootstrap-users_and_roles.yml");
         }
 
         // ~~

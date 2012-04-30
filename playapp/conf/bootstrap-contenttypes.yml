@@ -21,9 +21,8 @@ ContentType(image):
     description: Image container referencing an photo for example
     jsonFormFromFile: conf/content-types/image-schema.json
 
-ContentType(nodes):
-    slug: nodes
+ContentType(node):
+    slug: node
     displayName: Navigationsknoten
     description: Naviknoten
     jsonFormFromFile: conf/content-types/node-schema.json
-

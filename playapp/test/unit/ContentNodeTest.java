@@ -3,12 +3,15 @@ package unit;
 import models.ContentNode;
 import org.junit.Before;
 import org.junit.Test;
+import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
+ * Unit tests for the {@link models.ContentNode} entity.
+ *
  * @author Niko Schmuck
  * @since 05.03.2012
  */
@@ -16,9 +19,8 @@ public class ContentNodeTest extends UnitTest {
 
     @Before
     public void setUpData() {
-        // Already done by Bootstrap Job
-        // MorphiaFixtures.delete(ContentNode.class);
-        // MorphiaFixtures.loadModels("bootstrap-data.yml");
+        MorphiaFixtures.deleteDatabase(); // since content nodes to not relate to a Morphia based model
+        MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
     }
 
     @Test
