@@ -1,7 +1,10 @@
 package models;
 
+import com.google.code.morphia.Datastore;
+import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
+import com.google.code.morphia.utils.LongIdEntity;
 import com.mongodb.*;
-import org.bson.types.ObjectId;
 import play.Logger;
 import utils.JsonUtils;
 import utils.MongoDbUtils;
@@ -54,7 +57,7 @@ public class ContentNode {
 
     // ~
 
-    private ObjectId id;
+    private Long id;
     private Integer version = 1;
 
     private Long created;
@@ -95,8 +98,9 @@ public class ContentNode {
         dbObj.put(ATTR_CREATOR, creator = creatorUsername);
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
         dbObj.put(ATTR_MODIFIER, modifier = creatorUsername);
+        dbObj.put(ATTR_ID, generateLongId(COLLECTION_NAME));
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
-        this.id = (ObjectId) dbObj.get(ATTR_ID);
+        this.id = (Long) dbObj.get(ATTR_ID);
     }
 
     public void update(String username, String jsonContent) {
@@ -190,7 +194,7 @@ public class ContentNode {
     // ~~
 
     private static ContentNode convert(DBObject dbObj) {
-        ObjectId id = (ObjectId) dbObj.get(ATTR_ID);
+        Long id = (Long) dbObj.get(ATTR_ID);
         //dbObj.removeField("_id");
         String type = (String) dbObj.get(ATTR_TYPE);
         //dbObj.removeField("_type");
@@ -222,7 +226,7 @@ public class ContentNode {
 
         // ~~ Get current version and save it to archive
         DBObject verObj = dbColl.findOne(MongoDbUtils.queryById(id));
-        verObj.removeField(ATTR_ID);
+        verObj.put(ATTR_ID, generateLongId(VERSION_COLLECTION_NAME));
         verObj.put(ATTR_IDREF, id);
         MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME).save(verObj);
 
@@ -275,6 +279,20 @@ public class ContentNode {
 
     public Integer getVersion() {
         return version != null ? version : 1;
+    }
+
+    // ~~
+
+    private static Long generateLongId(String collName) {
+        Datastore ds = MongoDbUtils.getDatastore();
+        Query<LongIdEntity.StoredId> q = ds.find(LongIdEntity.StoredId.class, "_id", collName);
+        UpdateOperations<LongIdEntity.StoredId> uOps = ds.createUpdateOperations(LongIdEntity.StoredId.class).inc("value");
+        LongIdEntity.StoredId newId = ds.findAndModify(q, uOps);
+        if (newId == null) {
+            newId = new LongIdEntity.StoredId(collName);
+            ds.save(newId);
+        }
+        return newId.getValue();
     }
 
 }

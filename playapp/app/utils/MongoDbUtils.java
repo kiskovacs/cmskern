@@ -31,6 +31,10 @@ public final class MongoDbUtils {
         return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
     }
 
+    public static Datastore getDatastore() {
+        return MorphiaPlugin.ds();
+    }
+
     public static String getDBName() {
         return MorphiaPlugin.ds().getDB().getName();
     }
@@ -85,7 +89,7 @@ public final class MongoDbUtils {
     }
 
     public static DBObject queryById(final String id) {
-        return new BasicDBObject("_id", new ObjectId(id));
+        return new BasicDBObject("_id", Long.valueOf(id));
     }
 
 
