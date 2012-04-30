@@ -2,7 +2,6 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
-import play.Logger;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -16,12 +15,6 @@ import java.util.List;
  */
 @With(Secure.class)
 public class ContentNodes extends Controller {
-
-    @Check("admin")
-    public static void test() {
-        Logger.info("REACHED test ~~~~~~~~~~~~~~~~~~~~");
-        render();
-    }
 
     @Check("editor,admin")
     public static void blank(String type) {
@@ -53,13 +46,12 @@ public class ContentNodes extends Controller {
     }
 
     @Check("editor,admin")
-    public static void showVersions(String type, String id) {
+    public static void versions(String type, String id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown node ID: " + id);
         List<ContentNode> versions = ContentNode.findVersionsForId(id);
         render(contentNode, versions);
     }
-
 
     public static void list(String type) {
         List<ContentNode> nodes = ContentNode.findByType(type, 50);
