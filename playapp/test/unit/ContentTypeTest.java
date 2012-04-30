@@ -3,7 +3,6 @@ package unit;
 import models.ContentType;
 import org.junit.Before;
 import org.junit.Test;
-import play.Logger;
 import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
@@ -19,7 +18,6 @@ public class ContentTypeTest extends UnitTest {
 
     @Before
     public void setUpData() throws InterruptedException {
-        Logger.info("Going to setup ...");
         MorphiaFixtures.deleteDatabase();
         MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
     }

@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import utils.MongoDbUtils;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Collection;
 public class Blobs extends Controller {
 
     @Check("editor,admin")
-    public static void upload(String qqfile) {
+    public static void upload(String qqfile) throws IOException {
         Logger.info("Starting to upload %s ...", qqfile);
 
         GridFS gfs = MongoDbUtils.getGridFS();
@@ -41,7 +42,13 @@ public class Blobs extends Controller {
             dbFile.setContentType(contentType);
             dbFile.save();
             // Start to generate thumbnailing job asynchronously
-            new Thumbnailer((ObjectId) dbFile.getId()).now();
+            Thumbnailer thumbnailer = new Thumbnailer((ObjectId) dbFile.getId());
+            boolean runAsync = false; // TODO make configurable
+            if (runAsync) {
+                thumbnailer.now();
+            } else {
+                thumbnailer.doJob();
+            }
             renderJSON("{\"success\":true}");
         }
     }

@@ -84,8 +84,8 @@ public class Asset {
             argMap.put("id", metadata.get(THUMB_REF));
             thumbUrl = Router.getFullUrl("Blobs.getThumbById", argMap);
         }
-        return new Asset(url, thumbUrl,
-                         (String) dbObj.get(FILENAME), (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));
+        return new Asset(url, thumbUrl, (String) dbObj.get(FILENAME),
+                         (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));
     }
 
 }
