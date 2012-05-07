@@ -63,6 +63,69 @@
         </div>
 
         <div class="container">
+            <div id="menu">
+                <div>
+                    <div>Redaktion</div>
+                    <ul>
+                        <li>
+                            <div>Article</div>
+                            <div class="submenu">
+                                <ul>
+                                    <li><a href="@{Application.list('article')}">Edit</a></li>
+                                    <li><a href="@{ContentNodes.blank('article')}">Add New</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div>Images</div>
+                            <div class="submenu">
+                                <ul>
+                                    <li><a href="@{Application.list('image')}">Edit</a></li>
+                                    <li><a href="@{ContentNodes.blank('image')}">Add New</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div>Site</div>
+                    <ul>
+                        <li>
+                            <div>Nodes</div>
+                            <div class="submenu">
+                                <ul>
+                                    <li><a href="@{Application.list('node')}">Edit</a></li>
+                                    <li><a href="@{ContentNodes.blank('node')}">Add New</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div>Admin</div>
+                    <ul>
+                        <li>
+                            <div>ContentTypes</div>
+                            <div class="submenu">
+                                <ul>
+                                    <li>Edit</li>
+                                    <li>Add New</li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div>User</div>
+                            <div class="submenu">
+                                <ul>
+                                    <li>Edit</li>
+                                    <li>Add New</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
             <div class="content">
                 <div class="page-header">
                     <h1>#{get 'title' /} <small></small></h1>

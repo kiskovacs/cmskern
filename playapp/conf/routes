@@ -4,6 +4,7 @@
 
 # ~~ Home page
 GET     /                                       Application.index
+GET     /list                                       Application.list
 
 # ~~ Import secure routes (for login/logout)
 *       /                                       module:secure

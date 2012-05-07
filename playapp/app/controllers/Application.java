@@ -2,6 +2,7 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -17,17 +18,25 @@ import java.util.Map;
 public class Application extends Controller {
 
     public static void index() {
-        // TODO: only for the beginning: get out content nodes grouped by type
+            List<ContentType> types = ContentType.findAll();
 
-        List<ContentType> types = ContentType.findAll();
+            Map<ContentType, List<ContentNode>> content = new HashMap<ContentType, List<ContentNode>>();
+            for (ContentType type : types) {
+                List<ContentNode> nodes = ContentNode.findByType(type.slug, 50);
+                content.put(type, nodes);
+            }
+            render(content);
 
-        Map<ContentType, List<ContentNode>> content = new HashMap<ContentType, List<ContentNode>>();
-        for (ContentType type : types) {
-            List<ContentNode> nodes = ContentNode.findByType(type.slug, 50);
-            content.put(type, nodes);
-        }
-        
-        render(content);
     }
 
+    public static void list(String name) {
+        if (name != null) {
+            List<ContentNode> contents = null;
+            ContentType type = ContentType.findByName(name);
+            contents = ContentNode.findByType(type.slug, 50);
+            render(contents);
+        } else {
+            index();
+        }
+    }
 }
