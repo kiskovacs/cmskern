@@ -158,11 +158,19 @@ th {
     margin-bottom: 0;
 }
 
-.metaInfo {
+.metadata {
     color: #666666;
     font-size: 10px;
     margin-bottom: 10px;
-    text-align: right;
+    line-height: 1.2em;
+}
+
+.idInfo {
+    float: left;
+}
+
+.versionInfo {
+    float: right;
 }
 
 /* Styles you shouldn't keep as they are for displaying this base example only */

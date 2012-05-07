@@ -25,7 +25,7 @@ public class Callouts extends Controller {
             //List<ContentNode> articles = ContentNode.findByType("article", 20);
             //model.put("articles", ContentNode.convertToMap(articles));
             // ~~ RAW access
-            model.put("articles", ContentNode.findByTypeRaw("article", 20));
+            model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
         }
         // ~~
         String templateName = "Callouts/" + name + ".html";

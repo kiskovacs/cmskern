@@ -17,7 +17,8 @@
     #{script 'misc/underscore-min.js' /}
 
     *{-- Angular Core Library --}*
-    <script type="text/javascript" src="@{'/public/javascripts/angular/angular.js'}" ng:autobind></script>
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html" src="@{'/public/javascripts/angular/angular.js'}"
+        ng:autobind></script>
 
     *{-- Angular Add-Ons --}*
     #{script 'angular/addons/angular-widgets.js'/}
@@ -44,10 +45,16 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<div class="metaInfo">
-    Current Version: ${contentNode.version} <br />
-    edited on ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')}<br />
-    by ${contentNode.modifier}
+<div class="metadata">
+    <div class="idInfo">
+        <span class="version">#${contentNode.id}</span>
+    </div>
+    <div class="versionInfo">
+        Current Version: <span class="version">${contentNode.version}</span> <br />
+        edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
+        by <span class="author">${contentNode.modifier}</span>
+    </div>
+    <div style="clear: both;"></div>
 </div>
 
 <div ng:controller="EditContentNodeCtrl">

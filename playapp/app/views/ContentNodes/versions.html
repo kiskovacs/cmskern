@@ -8,7 +8,8 @@
 
 <h3>Current Version: ${contentNode.version}
     <a href="@{ContentNodes.edit(contentNode.type, contentNode.id)}"><i class="icon-pencil" title="Edit"></i></a>
-    <small>from ${contentNode.modified.format('yyyy-MM-dd (HH:mm:ss)')} by ${contentNode.modifier}</small>
+    <small>from <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span>
+    by <span class="author">${contentNode.modifier}</span></small>
 </h3>
 
 <pre id="rev_current"></pre>
@@ -32,13 +33,13 @@
             #{list items:versions, as:'rev'}
             <tr>
                 <td>
-                    ${rev.version}
+                    <span class="version">${rev.version}</span>
                 </td>
                 <td>
-                    ${rev.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+                    <span class="datetime">${rev.modified.format('dd/MMM/yyyy HH:mm')}</span>
                 </td>
                 <td>
-                    ${rev.modifier}
+                    <span class="author">${rev.modifier}</span>
                 </td>
                 <td>
                     <pre id="rev_${rev_index}"></pre>

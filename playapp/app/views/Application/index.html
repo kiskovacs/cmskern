@@ -20,7 +20,7 @@
 #{list items:content.entrySet(), as:'entry'}
 
 <h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}
-    #{secure.check "editor,admin"}
+    #{secure.check 'editor,admin'}
       <a href="@{ContentNodes.blank(entry.key.slug)}"><i class="icon-plus"></i></a> </small>
     #{/secure.check}
 </h3>
@@ -30,35 +30,35 @@
     <thead>
         <tr>
             <th width="25%">ID</th>
+            <th width="30%">Actions</th>
             <th width="15%">Version</th>
             <th width="30%">Last Modified</th>
-            <th width="30%">Actions</th>
         </tr>
     </thead>
     <tbody>
         #{list items:entry.value, as:'node'}
         <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
             <td>
-               #{secure.check "editor,admin"}<a href="@{ContentNodes.edit(node.type, node.id)}">#{/secure.check}
+               #{secure.check 'editor,admin'}<a href="@{ContentNodes.edit(node.type, node.id)}">#{/secure.check}
                  ${node.title}
-               #{secure.check "editor,admin"}</a>#{/secure.check}
-            </td>
-            <td>
-                ${node.version}
-            </td>
-            <td>
-                ${node.modified.format('yyyy-MM-dd (HH:mm:ss)')}
+               #{secure.check 'editor,admin'}</a>#{/secure.check}
             </td>
             <td>
                 <a href="@{ContentNodesApi.getBody(node.type, node.id)}"><i class="icon-eye-open" title="View Content JSON"></i></a>
                 <a href="@{ContentNodesApi.getFull(node.type, node.id)}"><i class="icon-info-sign" title="View Complete JSON"></i></a>
-                #{secure.check "editor,admin"}
+                #{secure.check 'editor,admin'}
                   <a href="@{ContentNodes.edit(node.type, node.id)}"><i class="icon-pencil" title="Edit"></i></a>
                   <a href="@{ContentNodes.versions(node.type, node.id)}"><i class="icon-road" title="Show Versions"></i></a>
                 #{/secure.check}
-                #{secure.check "admin"}
+                #{secure.check 'admin'}
                   <a href="@{ContentNodes.delete(node.type, node.id)}"><i class="icon-trash" title="Delete"></i></a>
                 #{/secure.check}
+            </td>
+            <td>
+                <span class="version">${node.version}</span> by <span class="author">${node.modifier}</span>
+            </td>
+            <td>
+                <span class="datetime">${node.modified.format('dd/MMM/yyyy HH:mm')}</span>
             </td>
         </tr>
         #{/list}
