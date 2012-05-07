@@ -1,25 +1,47 @@
-<!-- Select one of the existing articles -->
+<!-- Select one existing articles -->
 
 <h3>Select Article</h3>
 
 <ul>
   #{list items: articles, as:'article'}
-    <li><a href="#" onclick="setValue('${article._id}')">${article.data.title}</a></li>
+    <li><a href="#" onclick="updateRef('${article._id}', '${article.data.title}')">${article.data.title}</a></li>
   #{/list}
 </ul>
 
 
-<script type="text/javascript">
-    var selectedValue = "";
+<fieldset>
+    <label for="select-value">Article ID</label>
+    <input type="text" id="select-value" name="value" value="${article_ref.value}" readonly="readonly" />
 
-    function setValue(val) {
+    <label for="select-title">Title</label>
+    <input type="text" id="select-title" name="title" value="${article_title.value}" />
+</fieldset>
+
+
+<script type="text/javascript">
+
+    // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
+    var selectedValue = "";
+    var selectedTitle = "";
+
+    function updateRef(val, title) {
         selectedValue = val;
+        $("#select-value").val(val);
+        selectedTitle = title;
+        $("#select-title").val(title);
     }
+
+    $("#select-title").on("change", function(event) {
+        event.preventDefault();
+        selectedTitle = $(this).val();
+    });
 
     // Contract between Caller and Callout
-    function calloutGetSelectedValue() {
+    function calloutGetSelectedValues() {
         return {
-            value: selectedValue
+            '${article_ref.fieldname}':   selectedValue,
+            '${article_title.fieldname}': selectedTitle
         };
     }
+
 </script>

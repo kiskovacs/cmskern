@@ -8,7 +8,8 @@
             "min": "1",
             "children": [
                 { "name": "article_ref", "label": "Reference", "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/article_reference" }
+                  "callout": "/callouts/internal/article_reference", "update_also": "article_title" },
+                { "name": "article_title", "label": "Title", "type": "text", "len": "xlarge" }
             ]
         }
     ]

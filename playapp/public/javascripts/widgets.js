@@ -90,7 +90,12 @@ angular.widget('my:form', function(element) {
 
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
-                    fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\')"><i class="icon-edit"></i></span>';
+                    fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\'';
+                    if (field.update_also) {
+                        var fullyQualifiedNameSeconday = this.fqName + '.' + field.update_also;
+                        fieldElStr += ',\'' + fullyQualifiedNameSeconday + '\'';
+                    }
+                    fieldElStr += ')"><i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                     break;
                 }

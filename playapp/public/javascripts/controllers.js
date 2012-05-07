@@ -63,16 +63,31 @@ function EditContentNodeCtrl($xhr) {
 
     scope.helper = new CalloutDialogHelper();
 
-    scope.select_value = function(callout_url, field_name) {
+    // Called by referencing input element (see widget.js)
+    scope.select_value = function(callout_url, field_name, field_name_secondary) {
         var fq_name = field_name;
+        var fq_name_sec = field_name_secondary;
+        // Special handling for array elements: insert position number
         var cur_pos = this.$index;
         if (typeof cur_pos != 'undefined') {
             var dotPos = fq_name.lastIndexOf('.');
             fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
+            if (field_name_secondary) {
+                dotPos = fq_name_sec.lastIndexOf('.');
+                fq_name_sec = fq_name_sec.substring(0, dotPos) + '.' + cur_pos + fq_name_sec.substring(dotPos);
+            }
         }
         var field_value = scope.$get(fq_name);
+        var field_value_sec = scope.$get(fq_name_sec);
+
+        var fields = {};
+        fields[fq_name] = field_value;
+        if (field_name_secondary) {
+            fields[fq_name_sec] = field_value_sec;
+        }
+
         // Create Bootbox Modal with external selection form loaded as specified by callout URL
-        return bootbox.dialog(scope.helper.selection_form(callout_url, fq_name, field_value), [
+        return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [
             {
                 'label': 'Cancel'
             },
@@ -80,7 +95,7 @@ function EditContentNodeCtrl($xhr) {
                 'label': 'Save',
                 'class': 'btn-primary success',
                 'callback': function() {
-                    return scope.save_value(fq_name, calloutGetSelectedValue());
+                    return scope.save_values(calloutGetSelectedValues());
                 }
             }
         ], {
@@ -88,11 +103,15 @@ function EditContentNodeCtrl($xhr) {
         });
     };
 
-    // Called after Save Button of Callout-Dialog is pressed
-    scope.save_value = function(fieldname, doc_data) {
-        scope.$set(fieldname, doc_data.value);
+    // Called after "Save" Button in Callout-Dialog is pressed
+    scope.save_values = function(doc_data) {
+        jQuery.each(doc_data, function(fieldname, val) {
+            scope.$set(fieldname, val);
+            console.log("Updated " + fieldname + " to: " + val);
+        });
+        //scope.$set(fieldname, doc_data.value);
+        //scope.$set('contentNode.title', doc_data.title);
         scope.$eval(); // force model update
-        console.log("Updated " + fieldname + " = " + doc_data.value);
     };
 
 }
@@ -105,12 +124,12 @@ CalloutDialogHelper = (function() {
 
     function CalloutDialogHelper() {}
 
-    CalloutDialogHelper.prototype.selection_form = function(callout_url, field_name, field_value) {
-        // callout_url is specified
+    CalloutDialogHelper.prototype.selection_form = function(callout_url, fields) {
+        // Make AJAX GET to callout_url and put inside HTML form
         setTimeout(function() {
-            $.get(callout_url, {value: field_value},  // TODO: if value already exists, append field_value
-                function(data) {
-                    $("#selection_form").html(data);
+            $.get(callout_url, fields,
+                function(responseForm) {
+                    $("#selection_form").html(responseForm);
                 });
         }, 1); // small delay to ensure form ID is available
         return '<form id="selection_form" class="form-horizontal"></form>';

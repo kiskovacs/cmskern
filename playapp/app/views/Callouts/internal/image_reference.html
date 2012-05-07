@@ -1,10 +1,10 @@
-<!-- Select one of the existing images or create a new one (on-the-fly) -->
+<!-- Select one of the existing images or TODO: create a new one (on-the-fly) -->
 
 <h3>Select Image</h3>
 
 <fieldset>
     <label for="select-value">Value</label>
-    <input type="text" id="select-value" name="value" value="${params.value}"/>
+    <input type="text" id="select-value" name="value" value="${teaserbild_intern_ref.value}"/>
 </fieldset>
 
 <script type="text/javascript">
@@ -16,9 +16,9 @@
     });
 
     // Contract between Caller and Callout
-    function calloutGetSelectedValue() {
+    function calloutGetSelectedValues() {
         return {
-            value: selectedValue
+            '${teaserbild_intern_ref.fieldname}': selectedValue
         };
     }
 </script>
