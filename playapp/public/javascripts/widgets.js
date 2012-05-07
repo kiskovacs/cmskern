@@ -81,6 +81,10 @@ angular.widget('my:form', function(element) {
             }
             var lengthClassName = 'input-' + typeLength;
 
+            if (field.type == 'title') {
+                field.type = 'text'; // for the inputing part, there is no difference
+            }
+
             switch (field.type || 'text') {
                 case 'reference': {
 

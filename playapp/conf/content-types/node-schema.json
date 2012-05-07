@@ -5,7 +5,7 @@
 
 "fields":
     [
-        { "name": "titel", "label": "Titel", "type": "text", "len": "xxlarge"
+        { "name": "title", "label": "Titel", "type": "title", "len": "xxlarge"
         },
 
         { "name": "mutter_knoten", "label": "Mutterknoten", "type": "text", "len": "xlarge"

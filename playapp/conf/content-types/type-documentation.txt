@@ -1,6 +1,8 @@
 (required) Attribute: "name"
 
 The name of the field as it is for reference in the JSON data structure.
+There has to be exactly one field named "title" (of type: title)
+for holding a human-readable name of the content node.
 
 
 (required) Attribute: "label"
@@ -19,6 +21,8 @@ what this field is supposed to hold information (long description).
 
 The data type of the field.
 Supported types are:
+
+* title (must exactly be used once per schema, on the root level)
 * text
 * textarea
 * date

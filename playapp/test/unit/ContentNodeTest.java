@@ -8,6 +8,7 @@ import play.test.UnitTest;
 
 import java.util.Date;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
@@ -27,7 +28,7 @@ public class ContentNodeTest extends UnitTest {
 
     @Test
     public void updateNode() throws InterruptedException {
-        ContentNode node = new ContentNode("article", "{\"titel\":\"foo\"}");
+        ContentNode node = new ContentNode("article", "{\"title\":\"foo\"}");
         // creates version 1
         node.create("UnitTester");
         assertNotNull(node.getId());
@@ -43,13 +44,14 @@ public class ContentNodeTest extends UnitTest {
 
         // this will create a second version
         Thread.sleep(10);
-        v1.update("TanteEmma", "{\"titel\":\"bar\"}");
+        v1.update("TanteEmma", "{\"title\":\"bar\"}");
 
         ContentNode v2 = ContentNode.findById(node.getId());
         assertEquals(Integer.valueOf(2), v2.getVersion());
         assertTrue(v2.getModified().after(v1_timestamp));
         assertEquals("Created date must stay constant", v1.getCreated(), v2.getCreated());
         assertThat(v2.getJsonContent(), containsString("bar"));
+        assertThat(v2.getTitle(), is("bar"));
         assertThat(v2.getJsonContent(), not(containsString("foo")));
     }
 

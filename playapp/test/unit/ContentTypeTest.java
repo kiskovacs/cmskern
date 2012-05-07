@@ -32,7 +32,7 @@ public class ContentTypeTest extends UnitTest {
         ContentType contentType = ContentType.findByName("article");
         assertNotNull(contentType);
         assertEquals("Article", contentType.displayName);
-        assertThat(contentType.jsonForm, containsString("\"name\": \"titel\", \"label\": \"Titel\""));
+        assertThat(contentType.jsonForm, containsString("\"name\": \"title\", \"label\": \"Titel\""));
     }
 
 }

@@ -1,7 +1,7 @@
 {
     "fields":
     [
-        { "name": "name", "label": "Name", "type": "text", "len": "xlarge"},
+        { "name": "title", "label": "Title", "type": "title", "len": "xlarge"},
         { "name": "slug", "label": "Slug", "type": "text", "len": "xlarge"},
 
         { "name": "articles", "label": "Article", "type": "repeatable",

@@ -4,6 +4,8 @@ import com.google.code.morphia.Datastore;
 import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.utils.LongIdEntity;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.*;
 import play.Logger;
 import utils.JsonUtils;
@@ -54,6 +56,12 @@ public class ContentNode {
      * Sub-document (JSON) holding the manually edited "real" content,
      */
     public static final String ATTR_DATA       = "data";
+
+    /**
+     * The sub-document has to have one element named title holding
+     * a human-readable string describing this content node.
+     */
+    public static final String ATTR_TITLE      = "title";
 
     // ~
 
@@ -277,6 +285,12 @@ public class ContentNode {
         return type;
     }
 
+    public String getTitle() {
+        JsonParser parser = new JsonParser();
+        JsonObject jsonRoot = parser.parse(jsonContent).getAsJsonObject();
+        return jsonRoot.has(ATTR_TITLE) ? jsonRoot.get(ATTR_TITLE).getAsString() : null;
+    }
+
     public Integer getVersion() {
         return version != null ? version : 1;
     }
@@ -285,7 +299,7 @@ public class ContentNode {
 
     private static Long generateLongId(String collName) {
         Datastore ds = MongoDbUtils.getDatastore();
-        Query<LongIdEntity.StoredId> q = ds.find(LongIdEntity.StoredId.class, "_id", collName);
+        Query<LongIdEntity.StoredId> q = ds.find(LongIdEntity.StoredId.class, ATTR_ID, collName);
         UpdateOperations<LongIdEntity.StoredId> uOps = ds.createUpdateOperations(LongIdEntity.StoredId.class).inc("value");
         LongIdEntity.StoredId newId = ds.findAndModify(q, uOps);
         if (newId == null) {

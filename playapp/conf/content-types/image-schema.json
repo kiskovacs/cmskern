@@ -1,7 +1,7 @@
 {
     "fields":
     [
-        { "name": "name", "label": "Name", "type": "text", "len": "xlarge"},
+        { "name": "title", "label": "Title", "type": "title", "len": "xlarge"},
         { "name": "asset", "label": "Asset", "type": "reference", "callout": "/callouts/asset_reference", "len": "xlarge"},
         { "name": "keywords", "label": "Keywords", "type": "text", "len": "xlarge"}
     ]
