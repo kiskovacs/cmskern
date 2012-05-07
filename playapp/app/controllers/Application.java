@@ -2,7 +2,6 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
-import play.Logger;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -34,7 +33,7 @@ public class Application extends Controller {
             List<ContentNode> contents = null;
             ContentType type = ContentType.findByName(name);
             contents = ContentNode.findByType(type.slug, 50);
-            render(contents);
+            render(type, contents);
         } else {
             index();
         }

@@ -65,13 +65,13 @@
         <div class="container">
             <div id="menu">
                 <div>
-                    <div>Redaktion</div>
+                    <div>Editor's Desk</div>
                     <ul>
                         <li>
-                            <div>Article</div>
+                            <div>Articles</div>
                             <div class="submenu">
                                 <ul>
-                                    <li><a href="@{Application.list('article')}">Edit</a></li>
+                                    <li><a href="@{Application.list('article')}">List</a></li>
                                     <li><a href="@{ContentNodes.blank('article')}">Add New</a></li>
                                 </ul>
                             </div>
@@ -80,7 +80,7 @@
                             <div>Images</div>
                             <div class="submenu">
                                 <ul>
-                                    <li><a href="@{Application.list('image')}">Edit</a></li>
+                                    <li><a href="@{Application.list('image')}">List</a></li>
                                     <li><a href="@{ContentNodes.blank('image')}">Add New</a></li>
                                 </ul>
                             </div>
@@ -94,7 +94,7 @@
                             <div>Nodes</div>
                             <div class="submenu">
                                 <ul>
-                                    <li><a href="@{Application.list('node')}">Edit</a></li>
+                                    <li><a href="@{Application.list('node')}">List</a></li>
                                     <li><a href="@{ContentNodes.blank('node')}">Add New</a></li>
                                 </ul>
                             </div>
@@ -108,8 +108,8 @@
                             <div>ContentTypes</div>
                             <div class="submenu">
                                 <ul>
-                                    <li>Edit</li>
-                                    <li>Add New</li>
+                                    <li><a href="@{ContentTypes.list()}">List</a></li>
+                                    <li><a href="@{ContentTypes.blank()}">Add New</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -117,8 +117,8 @@
                             <div>User</div>
                             <div class="submenu">
                                 <ul>
-                                    <li>Edit</li>
-                                    <li>Add New</li>
+                                    <li><a href="@{Users.list()}">List</a></li>
+                                    <li><a href="@{Users.blank()}">Add New</a></li>
                                 </ul>
                             </div>
                         </li>
