@@ -704,7 +704,8 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
         return;
     }
     */
-    console.log("START tinymce");
+    // widget is initialized only once per element (eg. in array only once)
+    console.log("START tinymce for element type: " + el[0].name);
 
     var compiler = this;
     var defaults = {};
@@ -712,11 +713,13 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     var events = {};
     var contentExpr = widgetUtils.parseAttrExpr(el, 'name');
 
+    // callback per each element instance available in the content node
     return function (el) {
         var currentScope = this;
 
-        // (18-Apr-2012) interesting this is only a problem in Chrome, but not Firefox ~~
-        //widgetUtils.setValue(currentScope, contentExpr, content);
+        // get existing value, otherwise initialize
+        var o = widgetUtils.getValue(currentScope, contentExpr) || '';
+        console.log("---> o : " + o);
 
         /*
         events.onChange = function (theElem, ui) {
@@ -754,9 +757,7 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
             relative_urls : false,
 
             oninit: function(inst) {
-                // TODO: ACHTUNG absoluter Pfad benötigt!!!
-                var inHTML = "..."; // currentScope.$get('contentNode.titel');   // widgetUtils.getValue(currentScope, contentExpr);
-
+                var inHTML = o;
                 console.log("ONINIT --> " + inHTML);
                 inst.setContent(inHTML);
             },

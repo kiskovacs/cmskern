@@ -82,12 +82,11 @@ angular.widget('my:form', function(element) {
             var lengthClassName = 'input-' + typeLength;
 
             if (field.type == 'title') {
-                field.type = 'text'; // for the inputing part, there is no difference
+                field.type = 'text'; // for the inputing part, there is no difference (except that title is a required field)
             }
 
             switch (field.type || 'text') {
                 case 'reference': {
-
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
                     fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\'';
