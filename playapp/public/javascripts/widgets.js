@@ -129,7 +129,7 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'textarea': {
-                    fieldElStr = '<textarea ui:tinymce class="' + lengthClassName + '" name="' + qualifiedName + '" ';
+                    fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthClassName + '" name="' + qualifiedName + '" ';
 
                     //angular.forEach(field, function(attribute) {
                     //    fieldElStr += attribute + '="' + field[attribute] + '" ';

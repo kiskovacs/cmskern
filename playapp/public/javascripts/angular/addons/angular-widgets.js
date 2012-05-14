@@ -717,6 +717,7 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     return function (el) {
         var currentScope = this;
 
+        console.log("---> el : " + el[0].name);
         // get existing value, otherwise initialize
         var o = widgetUtils.getValue(currentScope, contentExpr) || '';
         console.log("---> o : " + o);
@@ -730,8 +731,21 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
         $.extend(options, events);
         */
 
+        $(el).each(function(index, el) {
+            console.log("***** -> " + el + ", this? " + (el == this));
+        });
+        //tinymce.get(my_editor_id).setContent('');
+
+        // console.log("  has tinymce???? " + $(el).tinymce());
+        //if (typeof $(el).tinymce() != 'undefined') {
+        //    console.log("TinyMCE remove #####");
+        //    $(el).tinymce().remove();
+        //}
+
+
         $(el).tinymce({
-            mode : "exact",
+            mode : "specific_textareas",
+            editor_selector : "mceRichText",
             elements : "ajaxfilemanager",
             theme : "advanced",
             plugins : "advimage,advlink,contextmenu,autosave",
@@ -760,6 +774,11 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
                 var inHTML = o;
                 console.log("ONINIT --> " + inHTML);
                 inst.setContent(inHTML);
+            },
+
+            handle_event_callback  : function(e) {
+                console.log("0000 *** handle_event_callback " + e);
+                return true;
             },
 
             // Update Textarea and Trigger change event
