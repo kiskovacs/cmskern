@@ -28,10 +28,10 @@ public class Application extends Controller {
 
     }
 
-    public static void list(String name) {
-        if (name != null) {
+    public static void list(String typeName) {
+        if (typeName != null) {
             List<ContentNode> contents = null;
-            ContentType type = ContentType.findByName(name);
+            ContentType type = ContentType.findByName(typeName);
             contents = ContentNode.findByType(type.slug, 50);
             render(type, contents);
         } else {
