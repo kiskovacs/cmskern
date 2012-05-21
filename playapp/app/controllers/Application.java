@@ -17,14 +17,14 @@ import java.util.Map;
 public class Application extends Controller {
 
     public static void index() {
-            List<ContentType> types = ContentType.findAll();
+        List<ContentType> types = ContentType.findAll();
 
-            Map<ContentType, List<ContentNode>> content = new HashMap<ContentType, List<ContentNode>>();
-            for (ContentType type : types) {
-                List<ContentNode> nodes = ContentNode.findByType(type.slug, 50);
-                content.put(type, nodes);
-            }
-            render(content);
+        Map<ContentType, List<ContentNode>> content = new HashMap<ContentType, List<ContentNode>>();
+        for (ContentType type : types) {
+            List<ContentNode> nodes = ContentNode.findByType(type.slug, 50);
+            content.put(type, nodes);
+        }
+        render(content);
 
     }
 
