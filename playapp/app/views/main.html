@@ -68,24 +68,30 @@
                     <div class="well sidebar-nav sidebar-nav-fixed">
 
                         <ul class="nav nav-list">
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                             <li class="nav-header">Content</li>
                             *{ ~~ TODO retrieve via ContentType.findByGroup('content') ~~ }*
                             <li><a href="@{Application.list('article')}">List articles</a></li>
-                            <li><a href="@{ContentNodes.blank('article')}">Add new article</a></li>
+                            <li><a href="@{ContentNodes.blank('article')}">New article</a></li>
 
                             <li><a href="@{Application.list('image')}">List images</a></li>
-                            <li><a href="@{ContentNodes.blank('image')}">Add New image</a></li>
+                            <li><a href="@{ContentNodes.blank('image')}">New image</a></li>
 
+                            <li><a href="@{Application.list('imageGallery')}">List image galleries</a></li>
+                            <li><a href="@{ContentNodes.blank('imageGallery')}">New image gallery</a></li>
+
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                             <li class="nav-header">Site</li>
                             *{ ~~ TODO retrieve via ContentType.findByGroup('site') ~~ }*
                             <li><a href="@{Application.list('node')}">List nodes</a></li>
-                            <li><a href="@{ContentNodes.blank('node')}">Add new node</a></li>
+                            <li><a href="@{ContentNodes.blank('node')}">New node</a></li>
 
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                             <li class="nav-header">Admin Tasks</li>
                             <li><a href="@{ContentTypes.list()}">List content types</a></li>
-                            <li><a href="@{ContentTypes.blank()}">Add new content type</a></li>
+                            <li><a href="@{ContentTypes.blank()}">New content type</a></li>
                             <li><a href="@{Users.list()}">List users</a></li>
-                            <li><a href="@{Users.blank()}">Add new user</a></li>
+                            <li><a href="@{Users.blank()}">New user</a></li>
                         </ul>
                     </div>
                 </div>
