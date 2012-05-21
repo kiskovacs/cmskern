@@ -27,6 +27,8 @@ public class Callouts extends Controller {
             //model.put("articles", ContentNode.convertToMap(articles));
             // ~~ RAW access
             model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
+        } else if (name.equalsIgnoreCase("internal/image_reference")) {
+            model.put("images", ContentNode.findByTypeRaw("image", 20));  // TODO: improve by using paging
         }
 
         // Add parameters given to model, introduce simple name map

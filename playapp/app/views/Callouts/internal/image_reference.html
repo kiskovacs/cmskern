@@ -2,23 +2,46 @@
 
 <h3>Select Image</h3>
 
+<ul>
+#{list items: images, as:'image'}
+    <li><a href="#" onclick="updateRef('${image._id}', '${image.data.title}')">${image.data.title}</a></li>
+#{/list}
+</ul>
+
+
 <fieldset>
-    <label for="select-value">Value</label>
-    <input type="text" id="select-value" name="value" value="${teaserbild_intern_ref.value}"/>
+    <label for="select-value">Image ID</label>
+    <input type="text" id="select-value" name="value" value="${image_ref.value}" readonly="readonly" />
+
+    <label for="select-title">Title</label>
+    <input type="text" id="select-title" name="title" value="${image_title.value}" />
 </fieldset>
 
-<script type="text/javascript">
-    var selectedValue = "";
 
-    $("#select-value").on("change", function(event) {
+<script type="text/javascript">
+
+    // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
+    var selectedValue = "";
+    var selectedTitle = "";
+
+    function updateRef(val, title) {
+        selectedValue = val;
+        $("#select-value").val(val);
+        selectedTitle = title;
+        $("#select-title").val(title);
+    }
+
+    $("#select-title").on("change", function(event) {
         event.preventDefault();
-        selectedValue = $(this).val();
+        selectedTitle = $(this).val();
     });
 
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${teaserbild_intern_ref.fieldname}': selectedValue
+            '${image_ref.fieldname}':   selectedValue,
+            '${image_title.fieldname}': selectedTitle
         };
     }
+
 </script>
