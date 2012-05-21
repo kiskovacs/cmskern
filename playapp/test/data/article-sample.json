@@ -1,8 +1,8 @@
 {
-    "titel": "Start",
+    "title": "Start",
     "online": false,
-    "teasers": [
-        { "spitzmarke": "Nr. 1", "ueberschrift": "bla fasel ..." },
-        { "spitzmarke": "Nr. 2", "ueberschrift": "und so weiter ..." }
+    "paras": [
+        { "headline": "Nr. 1", "text": "bla fasel ..." },
+        { "headline": "Nr. 2", "text": "und so weiter ..." }
     ]
 }

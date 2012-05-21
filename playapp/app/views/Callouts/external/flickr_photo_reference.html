@@ -18,7 +18,7 @@
 
 <fieldset>
     <label for="select-value">URL of selected photo</label>
-    <input type="text" id="select-value" name="value" value="${teaserbild_flickr_url.value}" class="input-xxlarge" />
+    <input type="text" id="select-value" name="value" value="${flickr_url.value}" class="input-xxlarge" />
 </fieldset>
 
 <script type="text/javascript">
@@ -32,7 +32,7 @@
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${teaserbild_flickr_url.fieldname}': selectedValue
+            '${flickr_url.fieldname}': selectedValue
         };
     }
 

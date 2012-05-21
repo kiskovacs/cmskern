@@ -4,25 +4,23 @@
     },
     "_created": 1330553135188,
     "_modified": 1330940599913,
-    "_type": "articles",
+    "_type": "article",
     "data": {
         "online": "yes",
-        "teasers": [
+        "paras": [
             {
-                "spitzmarke": "S1",
-                "teaserbild_flickr_url": "http://static.flickr.com/7210/6809181372_d143969dbf_s.jpg",
-                "teaserbild_intern_ref": "56",
-                "teasertext": "TT1",
-                "ueberschrift": "Ü1"
+                "flickr_url": "http://static.flickr.com/7210/6809181372_d143969dbf_s.jpg",
+                "image_ref": "56",
+                "text": "TT1",
+                "headline": "Ü1"
             },
             {
-                "spitzmarke": "coolio",
-                "teaserbild_flickr_url": "http://static.flickr.com/7178/6807681250_affd84aebf_s.jpg",
-                "teaserbild_intern_ref": "55",
-                "teasertext": "Nummero 2",
-                "ueberschrift": "Rund um Berlin"
+                "flickr_url": "http://static.flickr.com/7178/6807681250_affd84aebf_s.jpg",
+                "image_ref": "55",
+                "text": "Nummero 2",
+                "headline": "Rund um Berlin"
             }
         ],
-        "titel": "Hallodri"
+        "title": "Hallo Dr. I."
     }
 }
