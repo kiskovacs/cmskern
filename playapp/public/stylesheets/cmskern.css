@@ -26,6 +26,36 @@ h3.contentTypeName {
     margin-top: 25px;
 }
 
+
+/* ~~ Nav Bar ~~ */
+
+.sidebar-nav-fixed {
+    padding: 9px 0;
+    position: fixed;
+    left: 20px;
+    top: 60px;
+    width: 225px;
+}
+
+.row-fluid > .span-fixed-sidebar {
+    margin-left: 290px;
+}
+
+/*
+@media(max-width: 767px) {
+    .sidebar-nav-fixed {
+        width:auto;
+    }
+}
+
+@media(max-width: 979px) {
+    .sidebar-nav-fixed {
+        position:static;
+        width: auto;
+    }
+}
+*/
+
 /* ~~ Form elements ~~ */
 
 .input-xxlarge {
