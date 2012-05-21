@@ -41,8 +41,10 @@ function EditContentNodeCtrl($xhr) {
 
     scope.addChild = function(ctx) {
         if (ctx.child) {
+            console.log("Add child: " + ctx.child);
             ctx.child.push({});
         } else {
+            console.log("Init child: " + ctx.childname);
             ctx.parent[ctx.childname] = [{}];
         }
     };

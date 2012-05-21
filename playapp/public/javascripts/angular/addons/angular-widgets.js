@@ -731,28 +731,16 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
         $.extend(options, events);
         */
 
-        $(el).each(function(index, el) {
-            console.log("***** -> " + el + ", this? " + (el == this));
-        });
-        //tinymce.get(my_editor_id).setContent('');
-
-        // console.log("  has tinymce???? " + $(el).tinymce());
-        //if (typeof $(el).tinymce() != 'undefined') {
-        //    console.log("TinyMCE remove #####");
-        //    $(el).tinymce().remove();
-        //}
-
-
         $(el).tinymce({
             mode : "specific_textareas",
             editor_selector : "mceRichText",
             elements : "ajaxfilemanager",
             theme : "advanced",
-            plugins : "advimage,advlink,contextmenu,autosave",
+            plugins : "advimage,advlink,contextmenu,autosave,imggallery",
             theme_advanced_buttons1 : "bold,italic,underline,separator,"+
                                       "undo,redo,separator,"+
                                       "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
-                                      "link,unlink,image,separator,"+
+                                      "link,unlink,image,imggallery,separator,"+
                                       "code,cleanup",
             theme_advanced_buttons2 : "",
             theme_advanced_buttons3 : "",
@@ -774,11 +762,6 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
                 var inHTML = o;
                 console.log("ONINIT --> " + inHTML);
                 inst.setContent(inHTML);
-            },
-
-            handle_event_callback  : function(e) {
-                console.log("0000 *** handle_event_callback " + e);
-                return true;
             },
 
             // Update Textarea and Trigger change event
