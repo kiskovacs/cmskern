@@ -5,33 +5,42 @@
 
 "fields":
     [
-        { "name": "title", "label": "Titel", "type": "title", "len": "xxlarge"
+        { "name": "title", "label": "Titel",
+          "type": "title", "len": "xxlarge"
         },
 
-        { "name": "mutter_knoten", "label": "Mutterknoten", "type": "text", "len": "xlarge"
+        { "name": "mutter_knoten", "label": "Mutterknoten",
+          "type": "text", "len": "xlarge"
         },
 
-        { "name": "pfad", "label": "Pfad", "type": "text", "len": "xlarge"
+        { "name": "pfad", "label": "Pfad",
+          "type": "text", "len": "xlarge"
         },
 
-        { "name": "online", "label": "Online?", "type": "checkbox"
+        { "name": "online", "label": "Online?",
+          "type": "checkbox"
         },
 
-        { "name": "default_article", "label": "Default Aritkel", "type": "reference", "len": "xlarge",
-                      "callout": "/callouts/internal/article_reference"
+        { "name": "default_article", "label": "Default Aritkel",
+          "type": "reference", "len": "xlarge",
+          "callout": "/callouts/internal/article_reference"
         },
 
-        { "name": "adzone", "label": "Ad-Zone/Belegungseinheit", "type": "text", "len": "xlarge"
+        { "name": "adzone", "label": "Ad-Zone/Belegungseinheit",
+          "type": "text", "len": "xlarge"
         },
         
-        { "name": "html_include", "label": "HTML Include", "type": "text", "len": "xlarge"
+        { "name": "html_include", "label": "HTML Include",
+          "type": "text", "len": "xlarge"
         },
         
-        { "name": "sidebar", "label": "Sidebar", "type": "reference", "len": "xlarge",
-                      "callout": "/callouts/internal/sidebar_reference"
+        { "name": "sidebar", "label": "Sidebar",
+          "type": "reference", "len": "xlarge",
+          "callout": "/callouts/internal/sidebar_reference"
         },
 
-        { "name": "ivw", "label": "IVW Themengebiet", "type": "text", "len": "xlarge"
+        { "name": "ivw", "label": "IVW Themengebiet",
+          "type": "text", "len": "xlarge"
         }
     ]
 }

@@ -4,25 +4,40 @@
 # siehe http://stackoverflow.com/questions/9026017/is-it-possible-to-assign-a-json-value-inside-a-yaml-definition
 
 ContentType(article):
+    group: content
+    sortkey: 1
     slug: article
     displayName: Article
-    description: Content type for an text article
+    description: the central content type for an text article.
     jsonFormFromFile: conf/content-types/article-schema.json
 
-ContentType(collection):
-    slug: collection
+ContentType(articleCollection):
+    group: content
+    sortkey: 2
+    slug: articleCollection
     displayName: Article Collection
-    description: A collection can hold links to one or more articles
-    jsonFormFromFile: conf/content-types/collection-schema.json
+    description: holding links to one or more articles.
+    jsonFormFromFile: conf/content-types/articleCollection-schema.json
 
 ContentType(image):
+    group: content
+    sortkey: 3
     slug: image
     displayName: Image
-    description: Image container referencing an photo for example
+    description: the asset as also some metadata for an image.
     jsonFormFromFile: conf/content-types/image-schema.json
 
+ContentType(imageGallery):
+    group: content
+    sortkey: 4
+    slug: imageGallery
+    displayName: Image Gallery
+    description: referencing multiple images at a time.
+    jsonFormFromFile: conf/content-types/imageGallery-schema.json
+
 ContentType(node):
+    group: site
     slug: node
-    displayName: Navigationsknoten
-    description: Naviknoten with links to articles and sidebars
+    displayName: Navigation Node
+    description: containing links to articles and sidebars.
     jsonFormFromFile: conf/content-types/node-schema.json

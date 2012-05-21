@@ -1,52 +1,65 @@
 {
 "rules":
-    {  "rule_sources": { "type": "multiple",
+    {  "rule_news_source": { "type": "multiple",
             "allowedValues": [
                 { "value": "unspecified", "label": "Unspecified", "selected": true },
-                { "value": "reporter_A", "label": "Reporter A" },
-                { "value": "reporter_B", "label": "Reporter B" }
+                { "value": "by_mail",     "label": "By Mail" },
+                { "value": "by_phone",    "label": "By Phone" }
             ]
         }
     },
 
 "fields":
     [
-        { "name": "title", "label": "Titel", "type": "title", "len": "xxlarge"
+        { "name": "title", "label": "Title",
+          "type": "title", "len": "xxlarge"
         },
 
-        { "name": "online", "label": "Online?", "type": "checkbox"
+        { "name": "online", "label": "Online?",
+          "type": "checkbox"
         },
 
-        { "name": "online_datum", "label": "Online-Datum", "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
+        { "name": "online_date", "label": "Online Date",
+          "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
           "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
         },
 
-        { "name": "sources", "label": "Quelle(n)", "type": "select", "rule_ref": "rule_sources"
+        { "name": "source", "label": "News Source",
+          "type": "select", "rule_ref": "rule_news_source"
         },
 
-        { "name": "teasers", "label": "Teaser", "type": "repeatable",
+        { "name": "paras", "label": "Paragraph", "type": "repeatable",
             "min": "1",
             "children": [
-                { "name": "spitzmarke", "label": "Spitzmarke", "type": "text" },
-                { "name": "ueberschrift", "label": "Überschrift", "type": "text", "len": "xxlarge" },
-                { "name": "teasertext", "label": "Teasertext", "type": "textarea", "len": "xxlarge" },
+                { "name": "headline", "label": "Headline",
+                  "type": "text", "len": "xxlarge"
+                },
+                { "name": "text", "label": "Text",
+                  "type": "textarea", "len": "xxlarge"
+                },
 
-                { "name": "teaserbild_intern_ref", "label": "Teaserbild (intern)",
-                    "type": "reference", "len": "xlarge",
-                    "callout": "/callouts/internal/image_reference",
-                    "helptext": "References an internal URL to a selected image."},
+                { "name": "image_ref", "label": "Image (intern)",
+                  "type": "reference", "len": "xlarge",
+                  "callout": "/callouts/internal/image_reference", "update_also": "image_title",
+                  "helptext": "References an internal URL to a selected image."
+                },
+                { "name": "image_title", "label": "Title",
+                  "type": "text", "len": "xlarge"
+                },
 
-                { "name": "teaserbild_flickr_url", "label": "Teaserbild (flickr)",
-                    "type": "reference", "len": "xlarge",
-                    "callout": "/callouts/flickr_photo_reference",
-                    "helptext": "References URL from a selected photo (hosted on flickr.com)."},
+                { "name": "flickr_url", "label": "Image (flickr)",
+                  "type": "reference", "len": "xlarge",
+                  "callout": "/callouts/external/flickr_photo_reference",
+                  "helptext": "References URL from a selected photo (hosted on flickr.com)."
+                },
 
-                { "name": "childteasers", "label": "Child Teaser", "type": "repeatable",
-                    "min": "1",
-                    "children": [
-                        { "name": "subSpitzmarke", "label": "Sub-Spitzmarke", "type": "text" },
-                        { "name": "subTeasertext", "label": "Sub-Teasertext", "type": "textarea" }
-                    ]
+                { "name": "childparas", "label": "Child Paragraph",
+                  "type": "repeatable", "min": "1", "children": [
+                      { "name": "subHeader", "label": "Sub-Headline",
+                        "type": "text" },
+                      { "name": "subText", "label": "Sub-Text",
+                        "type": "textarea" }
+                  ]
                 }
             ]
         }

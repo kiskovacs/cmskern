@@ -1,0 +1,20 @@
+{
+"fields":
+    [
+        { "name": "title", "label": "Title", "type": "title", "len": "xlarge"},
+
+        { "name": "images", "label": "Image",
+            "type": "repeatable", "min": "1",
+            "children": [
+                { "name": "image_ref", "label": "Reference",
+                  "type": "reference", "len": "xlarge",
+                  "callout": "/callouts/internal/image_reference", "update_also": "image_title"
+                },
+                { "name": "image_title", "label": "Title",
+                  "type": "text", "len": "xlarge"
+                }
+            ]
+        }
+
+    ]
+}
