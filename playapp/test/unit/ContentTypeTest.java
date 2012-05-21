@@ -6,6 +6,8 @@ import org.junit.Test;
 import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
+import java.util.List;
+
 import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
@@ -24,7 +26,7 @@ public class ContentTypeTest extends UnitTest {
 
     @Test
     public void count() {
-        assertEquals(4, ContentType.count());
+        assertEquals(5, ContentType.count());
     }
 
     @Test
@@ -32,7 +34,17 @@ public class ContentTypeTest extends UnitTest {
         ContentType contentType = ContentType.findByName("article");
         assertNotNull(contentType);
         assertEquals("Article", contentType.displayName);
-        assertThat(contentType.jsonForm, containsString("\"name\": \"title\", \"label\": \"Titel\""));
+        assertThat(contentType.jsonForm, containsString("\"name\": \"title\", \"label\": \"Title\""));
+    }
+
+    @Test
+    public void getByGroup() {
+        List<ContentType> contentTypes = ContentType.findByGroup("content");
+        assertEquals(4, contentTypes.size());
+        assertEquals("Article", contentTypes.get(0).displayName);
+        assertEquals("Article Collection", contentTypes.get(1).displayName);
+        assertEquals("Image", contentTypes.get(2).displayName);
+        assertEquals("Image Gallery", contentTypes.get(3).displayName);
     }
 
 }

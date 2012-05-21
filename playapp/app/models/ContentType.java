@@ -12,6 +12,7 @@ import play.modules.morphia.Model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The type model class which stores one content type definition
@@ -31,9 +32,26 @@ public class ContentType extends Model {
 
     @Required
     public String displayName;
-    
+
+    /**
+     * Allows to group multiple content types together
+     * (for example to distinguish between content and site related types).
+     */
+    public String group;
+
+    /**
+     * The sort key is only used for informational means.
+     */
+    public String sortkey;
+
+    /**
+     * A short description about what this content type should be used for.
+     */
     public String description;
-    
+
+    /**
+     * The field definition of the content type as JSON.
+     */
     @Required
     @MaxSize(20000)
     public String jsonForm;
@@ -48,10 +66,15 @@ public class ContentType extends Model {
 
     // ~~
 
-    public static ContentType findByName(String slug) {
+    public static ContentType findByName(final String slug) {
         return ContentType.find("slug", slug).first();
     }
-    
+
+    public static List<ContentType> findByGroup(final String group) {
+        return ContentType.find("group", group).order("sortkey").asList();
+    }
+
+
     private boolean validateJson() {
         return false; // TODO implement validation
     }
