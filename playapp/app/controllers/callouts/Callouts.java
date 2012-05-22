@@ -20,15 +20,18 @@ public class Callouts extends Controller {
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
 
-        // Find object types to refer to (TODO: this could also be handled by schema definition)
-        if (name.equalsIgnoreCase("internal/article_reference")) {
+        // Find object types to refer to
+        // TODO: this could also be handled by schema definition or made a bit more generic
+        if (name.contains("internal/article_")) {
             // ~~ Convert to ContentNode and to generic Map structure
             //List<ContentNode> articles = ContentNode.findByType("article", 20);
             //model.put("articles", ContentNode.convertToMap(articles));
             // ~~ RAW access
             model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
-        } else if (name.equalsIgnoreCase("internal/image_reference")) {
+        } else if (name.contains("/image_")) {
             model.put("images", ContentNode.findByTypeRaw("image", 20));  // TODO: improve by using paging
+        } else if (name.contains("/imageGallery_")) {
+            model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", 20));  // TODO: improve by using paging
         }
 
         // Add parameters given to model, introduce simple name map

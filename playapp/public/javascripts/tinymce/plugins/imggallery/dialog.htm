@@ -2,17 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>{#imggallery_dlg.title}</title>
-	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/dialog.js"></script>
 </head>
 <body>
 
 <form onsubmit="ImgGalleryDialog.insert(); return false;" action="#">
-	<p>Choose an image gallery.</p>
-	<p>Selected text: <input id="someval" name="someval" type="text" class="text" /></p>
-	<p>Custom arg: <input id="somearg" name="somearg" type="text" class="text" /></p>
+	<!-- p>Choose an image gallery.</p -->
+	<!-- p>Selected text: <input id="someval" name="someval" type="text" class="text" /></p -->
+	<!-- Custom arg: <input id="somearg" name="somearg" type="text" class="text" / -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.get('/callouts/internal/imageGallery_ajax', function(data) {
+                $('#galleries').html(data);
+            });
 
-	<div class="mceActionPanel">
+            $("a.in_dialog").live("click", function() {
+                var val = $(this).attr('data-refid');
+                var title = $(this).text();
+                $("#select_value").val(val);
+                $("#select_title").val(title);
+            });
+
+        });
+    </script>
+
+    <h3>Select Image Gallery</h3>
+    <div id="galleries"></div>
+    <fieldset>
+        <label for="select_value">Gallery ID</label>
+        <input type="text" id="select_value" name="value" value="" readonly="readonly" />
+
+        <label for="select_title">Gallery Title</label>
+        <input type="text" id="select_title" name="title" value="" />
+    </fieldset>
+
+    <div class="mceActionPanel">
 		<input type="button" id="insert" name="insert" value="{#insert}" onclick="ImgGalleryDialog.insert();" />
 		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>

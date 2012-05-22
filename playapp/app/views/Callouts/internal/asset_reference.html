@@ -10,14 +10,14 @@
 
 
 <fieldset>
-    <label for="select-value">Asset Reference</label>
-    <input type="text" id="select-value" name="value" value="${asset.value}" class="input-xxlarge"/>
+    <label for="select_value">Asset Reference</label>
+    <input type="text" id="select_value" name="value" value="${asset.value}" class="input-xxlarge"/>
 </fieldset>
 
 <script type="text/javascript">
     var selectedValue = "";
 
-    $("#select-value").on("change", function(event) {
+    $("#select_value").on("change", function(event) {
         event.preventDefault();
         selectedValue = $(this).val();
     });
@@ -56,7 +56,7 @@
                 event.preventDefault();
                 selectedValue = $("img:first-child", this).data("objectid");
                 console.log('Set value to ' + selectedValue);
-                $("#select-value").val(selectedValue);
+                $("#select_value").val(selectedValue);
             });
         });
     }

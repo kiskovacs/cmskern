@@ -5,13 +5,13 @@ var ImgGalleryDialog = {
 		var f = document.forms[0];
 
 		// Get the selected contents as text and place it in the input
-		f.someval.value = tinyMCEPopup.editor.selection.getContent({format : 'text'});
-		f.somearg.value = tinyMCEPopup.getWindowArg('some_custom_arg');
+		f.select_value.value = tinyMCEPopup.editor.selection.getContent({format : 'text'});
+		// f.somearg.value = tinyMCEPopup.getWindowArg('some_custom_arg');
 	},
 
 	insert : function() {
 		// Insert the contents from the input into the document
-        var v = '[gallery ' + document.forms[0].someval.value + ']';
+        var v = '<p>[gallery id:' + document.forms[0].select_value.value + ' title:\'' + document.forms[0].select_title.value + '\']</p>';
 		tinyMCEPopup.editor.execCommand('mceInsertContent', false, v);
 		tinyMCEPopup.close();
 	}
