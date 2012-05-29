@@ -105,10 +105,56 @@ function EditContentNodeCtrl($xhr) {
         });
     };
 
+
+    // Called by referencing input element (see widget.js)
+    scope.simple_select_value = function(callout_url, field_names) {
+      var field_ar = field_names.split('#');
+      var fields ={};
+        fields["update_fields"] = Array();
+
+        for (i in field_ar) {
+            var fq_name = field_ar[i];
+            if (fq_name) {
+
+
+            // Special handling for array elements: insert position number
+            var cur_pos = this.$index;
+            if (typeof cur_pos != 'undefined') {
+                var dotPos = fq_name.lastIndexOf('.');
+                fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
+
+            }
+
+            var field_value = scope.$get(fq_name);
+            fields[fq_name] = field_value;
+            fields["update_fields"].push(fq_name);
+
+            }
+        }
+
+
+        // Create Bootbox Modal with external selection form loaded as specified by callout URL
+        return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [
+            {
+                'label': 'Cancel'
+            },
+            {
+                'label': 'Save',
+                'class': 'btn-primary success',
+                'callback': function() {
+                    return scope.save_values(calloutGetSelectedValues());
+                }
+            }
+        ], {
+            "animate": false
+        });
+    };
+
     // Called after "Save" Button in Callout-Dialog is pressed
     scope.save_values = function(doc_data) {
         jQuery.each(doc_data, function(fieldname, val) {
             scope.$set(fieldname, val);
+
             console.log("Updated " + fieldname + " to: " + val);
         });
         //scope.$set(fieldname, doc_data.value);

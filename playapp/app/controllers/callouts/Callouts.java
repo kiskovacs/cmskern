@@ -5,6 +5,7 @@ import play.Logger;
 import play.mvc.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +33,17 @@ public class Callouts extends Controller {
             model.put("images", ContentNode.findByTypeRaw("image", 20));  // TODO: improve by using paging
         } else if (name.contains("/imageGallery_")) {
             model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", 20));  // TODO: improve by using paging
+        } else if (name.contains("/node_")) {
+            List dl = ContentNode.findByTypeRaw("node", 20);
+            Logger.debug("dl: %s", dl);
+            model.put("nodes",dl );  // TODO: improve by using paging
+        }  else if (name.contains("/test_")) {
+            String[] fieldnames= params.getAll("update_fields[]");
+
+            Logger.debug("fieldnames: " + fieldnames);
+
+            model.put("fieldnames", fieldnames);
+            model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
         }
 
         // Add parameters given to model, introduce simple name map

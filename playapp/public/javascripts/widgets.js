@@ -47,7 +47,7 @@ angular.widget('my:form', function(element) {
                 var subform = angular.element('<div class="subform"></div>');
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
 
-                var legendChild = angular.element('<legend>' + field.label + '</legend>'); // Position: {{$index}}
+                var legendChild = angular.element('<legend>' + field.label +'</legend>'); // Position: {{$index}}
 
                 // ~~ up button (only if not first element, see CSS selector)
                 var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
@@ -94,6 +94,17 @@ angular.widget('my:form', function(element) {
                         var fullyQualifiedNameSeconday = this.fqName + '.' + field.update_also;
                         fieldElStr += ',\'' + fullyQualifiedNameSeconday + '\'';
                     }
+                    fieldElStr += ')"><i class="icon-edit"></i></span>';
+                    fieldElStr += '</div>';
+                    break;
+                }
+                 case 'simple_reference': {
+                    fieldElStr  = '<div class="reference input-append">';
+                    fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                    var fieldnames = ""; // field.to_update.join("#");
+                    for (i in field.to_update) { fieldnames += this.fqName+ '.' + field.to_update[i] + "#"; };
+
+                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fieldnames +'\'';
                     fieldElStr += ')"><i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                     break;
