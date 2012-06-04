@@ -21,7 +21,7 @@ public class RoleTest extends UnitTest {
     public void setUpData() {
         MorphiaFixtures.delete(User.class);
         MorphiaFixtures.delete(Role.class);
-        MorphiaFixtures.loadModels("bootstrap-users_and_roles.yml");
+        MorphiaFixtures.loadModels("initial-users_and_roles.yml");
     }
 
     @Test

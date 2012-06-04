@@ -26,11 +26,11 @@ public class Bootstrap extends Job {
 
         if (Role.count() == 0L) {
             Logger.info("Importing initial roles and users ...");
-            Fixtures.loadModels("bootstrap-users_and_roles.yml");
+            Fixtures.loadModels("initial-users_and_roles.yml");
         }
         if (ContentType.count() == 0L) {
             Logger.info("Importing initial content types ...");
-            Fixtures.loadModels("bootstrap-contenttypes.yml");
+            Fixtures.loadModels("initial-contenttypes.yml");
         }
         if (ContentNode.count() == 0L) {
             Logger.info("Importing initial content nodes ...");

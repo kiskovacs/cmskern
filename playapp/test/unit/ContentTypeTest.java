@@ -21,7 +21,7 @@ public class ContentTypeTest extends UnitTest {
     @Before
     public void setUpData() throws InterruptedException {
         MorphiaFixtures.deleteDatabase();
-        MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
+        MorphiaFixtures.loadModels("initial-contenttypes.yml");
     }
 
     @Test
