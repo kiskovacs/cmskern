@@ -2,7 +2,7 @@
 
 require:
     - play
-    - play -> morphia 1.2.6a
+    - play -> morphia 1.2.7
     - play -> secure
     - play -> crud
 
