@@ -26,7 +26,7 @@
         var params = Array('${(fieldnames as String[]).join('\',\'')}');
         var result = {};
 
-    for (idx in params) {
+        for (idx in params) {
             if (params[idx] && "" !== params[idx]) {
 
                 result[params[idx]] = temp[idx];
@@ -39,9 +39,9 @@
         $('#id_field').val(id);
         $('#title_field').val(title);
         $('#teaser_field').val(teaser);
-    temp[0] = id;
-    temp[1] = title;
-    temp[2] = teaser;
-   }
+        temp[0] = id;
+        temp[1] = title;
+        temp[2] = teaser;
+    }
 
 </script>
