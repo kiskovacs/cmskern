@@ -40,4 +40,4 @@ api-archive
 ^playapp/eclipse/classes$
 ^playapp/bin$
 ^.*\.DS_Store$
-BACKUp
+BACKUP
