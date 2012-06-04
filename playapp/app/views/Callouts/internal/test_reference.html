@@ -20,15 +20,14 @@
 
 <script type="text/javascript">
 
-    var temp = Array();
+    var temp = new Array();
 
     function calloutGetSelectedValues() {
-        var params = Array('${(fieldnames as String[]).join('\',\'')}');
+        var params = new Array('${(fieldnames as String[]).join('\',\'')}');
         var result = {};
 
         for (idx in params) {
             if (params[idx] && "" !== params[idx]) {
-
                 result[params[idx]] = temp[idx];
             }
         }
