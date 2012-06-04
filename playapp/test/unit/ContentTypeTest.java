@@ -40,11 +40,12 @@ public class ContentTypeTest extends UnitTest {
     @Test
     public void getByGroup() {
         List<ContentType> contentTypes = ContentType.findByGroup("editorial");
-        assertEquals(4, contentTypes.size());
+        assertEquals(5, contentTypes.size());
         assertEquals("Article", contentTypes.get(0).displayName);
         assertEquals("Article Collection", contentTypes.get(1).displayName);
         assertEquals("Image", contentTypes.get(2).displayName);
         assertEquals("Image Gallery", contentTypes.get(3).displayName);
+        assertEquals("Tag", contentTypes.get(4).displayName);
     }
 
 }
