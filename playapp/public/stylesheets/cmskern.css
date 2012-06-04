@@ -41,6 +41,14 @@ h3.contentTypeName {
     margin-left: 290px;
 }
 
+.nav-list .nav-header  {
+    margin-top: 20px;
+}
+
+.nav-list .separator {
+    margin-bottom: 5px;
+}
+
 /*
 @media(max-width: 767px) {
     .sidebar-nav-fixed {
