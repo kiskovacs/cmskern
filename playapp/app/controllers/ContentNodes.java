@@ -2,7 +2,6 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
-import play.mvc.Controller;
 import play.mvc.With;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * @since 23.01.2012
  */
 @With(Secure.class)
-public class ContentNodes extends Controller {
+public class ContentNodes extends Application {
 
     @Check("editor,admin")
     public static void blank(String type) {

@@ -151,7 +151,12 @@ function EditContentNodeCtrl($xhr) {
     // Called after "Save" Button in Callout-Dialog is pressed
     scope.save_values = function(doc_data) {
         jQuery.each(doc_data, function(fieldname, val) {
-            scope.$set(fieldname, val);
+            if (endsWith(fieldname, "_idref")) {
+                console.log("convert to int");
+                scope.$set(fieldname, parseInt(val));
+            } else {
+                scope.$set(fieldname, val);
+            }
 
             console.log("Updated " + fieldname + " to: " + val);
         });
@@ -160,6 +165,9 @@ function EditContentNodeCtrl($xhr) {
         scope.$eval(); // force model update
     };
 
+    function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
 }
 EditContentNodeCtrl.$inject = ['$xhr'];
 

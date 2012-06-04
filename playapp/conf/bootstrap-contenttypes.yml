@@ -4,7 +4,7 @@
 # siehe http://stackoverflow.com/questions/9026017/is-it-possible-to-assign-a-json-value-inside-a-yaml-definition
 
 ContentType(article):
-    group: content
+    group: editorial
     sortkey: 1
     slug: article
     displayName: Article
@@ -12,7 +12,7 @@ ContentType(article):
     jsonFormFromFile: conf/content-types/article-schema.json
 
 ContentType(articleCollection):
-    group: content
+    group: editorial
     sortkey: 2
     slug: articleCollection
     displayName: Article Collection
@@ -20,7 +20,7 @@ ContentType(articleCollection):
     jsonFormFromFile: conf/content-types/articleCollection-schema.json
 
 ContentType(image):
-    group: content
+    group: editorial
     sortkey: 3
     slug: image
     displayName: Image
@@ -28,15 +28,24 @@ ContentType(image):
     jsonFormFromFile: conf/content-types/image-schema.json
 
 ContentType(imageGallery):
-    group: content
+    group: editorial
     sortkey: 4
     slug: imageGallery
     displayName: Image Gallery
     description: referencing multiple images at a time.
     jsonFormFromFile: conf/content-types/imageGallery-schema.json
 
+ContentType(sidebar):
+    group: site
+    sortkey: 1
+    slug: sidebar
+    displayName: Sidebar
+    description: an area displaying or teaser other side content.
+    jsonFormFromFile: conf/content-types/sidebar-schema.json
+
 ContentType(node):
     group: site
+    sortkey: 2
     slug: node
     displayName: Navigation Node
     description: containing links to articles and sidebars.

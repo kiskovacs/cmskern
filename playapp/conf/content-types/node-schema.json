@@ -21,9 +21,12 @@
           "type": "checkbox"
         },
 
-        { "name": "default_article", "label": "Default Aritkel",
+        { "name": "article_idref", "label": "Default Artikel ID",
           "type": "reference", "len": "xlarge",
-          "callout": "/callouts/internal/article_reference"
+          "callout": "/callouts/internal/article_reference", "update_also": "article_title"
+        },
+        { "name": "article_title", "label": "Default Artikel Title",
+            "type": "text", "len": "xlarge"
         },
 
         { "name": "adzone", "label": "Ad-Zone/Belegungseinheit",
@@ -34,7 +37,7 @@
           "type": "text", "len": "xlarge"
         },
         
-        { "name": "sidebar", "label": "Sidebar",
+        { "name": "sidebar_idref", "label": "Sidebar",
           "type": "reference", "len": "xlarge",
           "callout": "/callouts/internal/sidebar_reference"
         },

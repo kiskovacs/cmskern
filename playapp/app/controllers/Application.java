@@ -2,6 +2,7 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
+import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -15,6 +16,12 @@ import java.util.Map;
 @With(Secure.class)
 @Check("guest,editor,admin")
 public class Application extends Controller {
+
+    @Before
+    static void addDefaults() {
+        renderArgs.put("editorialTypes", ContentType.findByGroup("editorial"));
+        renderArgs.put("siteTypes", ContentType.findByGroup("site"));
+    }
 
     public static void index() {
         List<ContentType> types = ContentType.findAll();
