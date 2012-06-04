@@ -24,13 +24,17 @@ public class Bootstrap extends Job {
         Logger.info("Starting cmskern bootstrap job (Play env: %s)...", Play.id);
         Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
-        if (ContentType.count() == 0) {
-            Logger.info("Importing bootstrap content types ...");
+        if (Role.count() == 0L) {
+            Logger.info("Importing initial roles and users ...");
+            Fixtures.loadModels("bootstrap-users_and_roles.yml");
+        }
+        if (ContentType.count() == 0L) {
+            Logger.info("Importing initial content types ...");
             Fixtures.loadModels("bootstrap-contenttypes.yml");
         }
-        if (Role.count() == 0) {
-            Logger.info("Importing bootstrap roles and users ...");
-            Fixtures.loadModels("bootstrap-users_and_roles.yml");
+        if (ContentNode.count() == 0L) {
+            Logger.info("Importing initial content nodes ...");
+            Fixtures.loadModels("initial-content.yml");
         }
 
         // ~~
