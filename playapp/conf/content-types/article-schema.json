@@ -24,10 +24,6 @@
           "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
         },
 
-        { "name": "source", "label": "News Source",
-          "type": "select", "rule_ref": "rule_news_source"
-        },
-
         { "name": "paras", "label": "Paragraph", "type": "repeatable",
             "min": "1",
             "children": [
@@ -62,6 +58,14 @@
                   ]
                 }
             ]
+        },
+
+        { "name": "source", "label": "News Source",
+            "type": "select", "rule_ref": "rule_news_source"
+        },
+
+        { "name": "tags", "label": "Tags",
+          "type": "autoSuggest", "query_type": "tags", "embed_value": true
         }
 
     ]

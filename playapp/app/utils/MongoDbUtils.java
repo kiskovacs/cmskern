@@ -92,6 +92,10 @@ public final class MongoDbUtils {
         return new BasicDBObject("_id", Long.valueOf(id));
     }
 
+    public static long count(String collectionName) {
+        DBCollection dbColl = getDBCollection(collectionName);
+        return dbColl.count();
+    }
 
     // ~~ GridFS
 

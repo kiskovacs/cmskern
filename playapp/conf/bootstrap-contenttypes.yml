@@ -35,6 +35,14 @@ ContentType(imageGallery):
     description: referencing multiple images at a time.
     jsonFormFromFile: conf/content-types/imageGallery-schema.json
 
+ContentType(tag):
+    group: editorial
+    sortkey: 5
+    slug: tag
+    displayName: Tag
+    description: a keyword summarizing the relevant information.
+    jsonFormFromFile: conf/content-types/tag-schema.json
+
 ContentType(sidebar):
     group: site
     sortkey: 1

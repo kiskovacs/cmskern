@@ -1,0 +1,9 @@
+{
+"fields":
+    [
+        { "name": "title", "label": "Titel",
+          "type": "title", "len": "xxlarge"
+        }
+
+    ]
+}

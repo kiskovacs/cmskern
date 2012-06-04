@@ -45,6 +45,10 @@ h3.contentTypeName {
     margin-top: 20px;
 }
 
+.nav-list .nav-header:first-child  {
+    margin-top: 0px;
+}
+
 .nav-list .separator {
     margin-bottom: 5px;
 }

@@ -1,12 +1,13 @@
 package unit;
 
 import models.ContentNode;
+import models.IdTitle;
 import org.junit.Before;
 import org.junit.Test;
-import play.test.MorphiaFixtures;
 import play.test.UnitTest;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -22,8 +23,8 @@ public class ContentNodeTest extends UnitTest {
 
     @Before
     public void setUpData() {
-        MorphiaFixtures.deleteDatabase(); // since content nodes to not relate to a Morphia based model
-        MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
+        // NOTE: ContentNode is not mapped via Morphia (because of custom schemas)
+        ContentNode.deleteAll();
     }
 
     @Test
@@ -53,6 +54,21 @@ public class ContentNodeTest extends UnitTest {
         assertThat(v2.getJsonContent(), containsString("bar"));
         assertThat(v2.getTitle(), is("bar"));
         assertThat(v2.getJsonContent(), not(containsString("foo")));
+    }
+
+    @Test
+    public void searchNodes() {
+        createContentNode("article", "{\"title\":\"Blumenwiese neben Autobahn (U. Schnauss)\"}");
+        createContentNode("article", "{\"title\":\"Blumenthal (Schnauss)\"}");
+        createContentNode("article", "{\"title\":\"Völlig ohne Bl... \"}");
+
+        List<IdTitle> result = ContentNode.findByTypeAndTitle("article", "blume", false, 0);
+        assertEquals(2, result.size());
+    }
+
+    private void createContentNode(String type, String data) {
+        ContentNode node = new ContentNode(type, data);
+        node.create("UnitTester");
     }
 
 }

@@ -26,7 +26,7 @@ public class ContentTypeTest extends UnitTest {
 
     @Test
     public void count() {
-        assertEquals(5, ContentType.count());
+        assertEquals(7, ContentType.count());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ContentTypeTest extends UnitTest {
 
     @Test
     public void getByGroup() {
-        List<ContentType> contentTypes = ContentType.findByGroup("content");
+        List<ContentType> contentTypes = ContentType.findByGroup("editorial");
         assertEquals(4, contentTypes.size());
         assertEquals("Article", contentTypes.get(0).displayName);
         assertEquals("Article Collection", contentTypes.get(1).displayName);
