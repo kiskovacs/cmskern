@@ -125,6 +125,11 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</ul>';
                     break;
                 }
+                case 'autoSuggest': {
+                    fieldElStr += '<input type="text" class="autoSuggest ' + lengthClassName + '"';
+                    fieldElStr += '  ui:autoSuggest ui:item="' + qualifiedName + '">';
+                    break;
+                }
                 case 'checkbox':; //fallthrough
                 case 'password':; //fallthrough
                 case 'text': {

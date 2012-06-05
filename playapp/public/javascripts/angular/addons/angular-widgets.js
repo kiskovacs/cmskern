@@ -655,6 +655,39 @@ var widgetUtils = {
 // Added on top of Łukasz Twarogowski stuff
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+// ui:autoSuggest widget
+angular.widget('@ui:autoSuggest', function(expr, el, val) {
+    var compiler = this;
+    var defaults = {
+        selectedItemProp: "title",
+        searchObjProps: "title",
+        selectedValuesProp: "id",
+        retrieveLimit: 20
+    };
+    var options = widgetUtils.getOptions(el, defaults);
+    var events = {};
+    var itemExpr = widgetUtils.parseAttrExpr(el, 'ui:item');
+    return function(el) {
+        var currentScope = this;
+        events.onClose = function(val, ui) {
+            // var dt = $(el).datepicker('getDate'); // returns date object
+            console.log("onClose -> set value: " + val);
+            widgetUtils.setValue(currentScope, itemExpr, dtStr);
+        };
+        events.retrieveComplete = function(data) {
+            console.log(data);
+            return data;
+        };
+        $.extend(options, events);
+        $(el).autoSuggest("http://localhost:9000/tag/search", options);
+        console.log("---> EXPR: " + itemExpr.expression + ")))");
+        currentScope.$watch(itemExpr.expression, function(val) {
+            console.log("watch -> set value: " + val);
+        }, null, true);
+    };
+});
+
 // --- Custom TinyMCE Service (works only with 10.5)
 // TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks
 angular.directive('ui:tinymceBETA', function(expression, config) {
