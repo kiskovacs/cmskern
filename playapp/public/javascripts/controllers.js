@@ -34,9 +34,8 @@ function EditContentNodeCtrl($xhr) {
         }
     };
 
-    this.reset = function() {
-        console.log("Reset form ...");
-        //this.form = angular.copy(this.contentNode);
+    this.cancel = function() {
+        console.log("Cancel form ...");
         window.history.back();
     };
 
