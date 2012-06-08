@@ -16,6 +16,10 @@ import java.util.List;
 @With(Secure.class)
 public class ContentNodes extends Application {
 
+    public static void test() {
+        render();
+    }
+
     @Check("editor,admin")
     public static void blank(String type) {
         ContentType contentType = ContentType.findByName(type);
