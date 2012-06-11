@@ -9,7 +9,7 @@ output['debug'] = True
 
 env.re_tag = r'\d{5}' # Assumes tags are in the form 00123
 
-env.rsyncparam = "-r -v -u --delete -l --exclude '.DS_Store' --exclude '/playapp/orig_images' --exclude '/playapp/eclipse/' --exclude '/playapp/data/' --exclude '/playapp/attachments/' --exclude '/playapp/public/images/cache/' --exclude '.hg' --exclude '.git' --exclude '.svn' --exclude '*.swp' --exclude '*.swo' --exclude '/playapp/logs' --exclude '/playapp/server.pid' --exclude '/f3-modules/*.pyc' --exclude '/playapp/tmp' --exclude '/uploads' --exclude '/playapp/cache'" 
+env.rsyncparam = "-r -v -u --delete -l --exclude '.DS_Store' --exclude '/playapp/orig_images' --exclude '/playapp/eclipse/' --exclude '/playapp/data/' --exclude '/playapp/attachments/' --exclude '/playapp/public/images/cache/' --exclude '.hg' --exclude '.git' --exclude '.svn' --exclude '*.swp' --exclude '*.swo' --exclude '/playapp/logs' --exclude '/playapp/server.pid' --exclude '/f3-modules/*.pyc' --exclude '/playapp/tmp' --exclude '/uploads' --exclude '/playapp/cache' --exclude '/playapp/modules'" 
 
 """
 ********************************
