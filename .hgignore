@@ -19,6 +19,7 @@ api-archive
 ^playapp/.settings
 ^playapp/cache
 ^playapp/modules
+\.sass-cache
 
 ^htdocs/sites/default/files/languages/.*\.js
 ^htdocs/sites/default/files/ctools/css
