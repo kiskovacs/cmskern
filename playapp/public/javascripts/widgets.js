@@ -98,12 +98,13 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</div>';
                     break;
                 }
-                 case 'simple_reference': {
+                 case 'simple_reference': {  // Extends reference by allowing multiple fields to be updated
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
                     var fieldnames = ""; // field.to_update.join("#");
-                    for (i in field.to_update) { fieldnames += this.fqName+ '.' + field.to_update[i] + "#"; };
-
+                    for (i in field.to_update) {
+                        fieldnames += this.fqName+ '.' + field.to_update[i] + "#";
+                    }
                     fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fieldnames +'\'';
                     fieldElStr += ')"><i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
@@ -118,15 +119,25 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'select': {
-                    fieldElStr =  '<ul ui:selectable-container class="selectBox">';
+                    fieldElStr  =  '<ul ui:selectable-container class="selectBox">';
                     fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in schemaRules.' + field.rule_ref + '.allowedValues" data-value="{{i.value}}">';
                     fieldElStr += '        <div class="name">{{i.label}}</div>';
                     fieldElStr += '    </li>';
                     fieldElStr += '</ul>';
                     break;
                 }
+                case 'array': {
+                    fieldElStr  = '[<a href="" ng:click="' + fullyQualifiedName + '.$add(\'\')">add empty</a>]';
+                    fieldElStr +=  '<ul ng:init="' + fullyQualifiedName + '=[\'foo\', \'bar\']">';
+                    fieldElStr += '    <li ng:repeat="elem in ' + fullyQualifiedName + '">';
+                    fieldElStr += '        <input name="contentNode.tags" value="{{elem}}">';
+                    fieldElStr += '    </li>';
+                    fieldElStr += '</ul>';
+                    break;
+                }
                 case 'autoComplete': {
-                    fieldElStr += '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
+                    // TODO: Under development (still hard-code to use tag search)
+                    fieldElStr  = '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
                     fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
                     break;
                 }

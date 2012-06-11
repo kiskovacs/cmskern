@@ -92,3 +92,7 @@ TODO: we might want to use min also as part of the validator (for maximum string
 
 A regular expression or a rule / function ensuring that the user specified value
 is validated against on the client-side before the user can submit the form.
+
+(optional) Attribute: "readonly"
+
+(optional) Attribute: "hidden"

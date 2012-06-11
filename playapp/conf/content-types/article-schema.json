@@ -65,7 +65,7 @@
         },
 
         { "name": "tags", "label": "Tags",
-          "type": "autoComplete", "query_type": "tags", "embed_value": true
+          "type": "array", "query_type": "tags"
         }
 
     ]
