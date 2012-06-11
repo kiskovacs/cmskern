@@ -29,17 +29,23 @@ public class Callouts extends Controller {
             //model.put("articles", ContentNode.convertToMap(articles));
             // ~~ RAW access
             model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
-        } else if (name.contains("/image_")) {
+        }
+        else if (name.contains("/image_")) {
             model.put("images", ContentNode.findByTypeRaw("image", 20));  // TODO: improve by using paging
-        } else if (name.contains("/imageGallery_")) {
+        }
+        else if (name.contains("/imageGallery_")) {
             model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", 20));  // TODO: improve by using paging
-        } else if (name.contains("/node_")) {
+        }
+        else if (name.contains("/sidebar_")) {
+            model.put("sidebars", ContentNode.findByTypeRaw("sidebar", 20));  // TODO: improve by using paging
+        }
+        else if (name.contains("/node_")) {
             List dl = ContentNode.findByTypeRaw("node", 20);
             Logger.debug("dl: %s", dl);
             model.put("nodes",dl );  // TODO: improve by using paging
-        }  else if (name.contains("/test_")) {
+        }
+        else if (name.contains("/test_")) {
             String[] fieldnames= params.getAll("update_fields[]");
-
             Logger.debug("fieldnames: " + fieldnames);
 
             model.put("fieldnames", fieldnames);
@@ -54,6 +60,7 @@ public class Callouts extends Controller {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("fieldname", key);
                 map.put("value", param.getValue());
+                Logger.info("Add to model: %s -> %s", simpleName, map);
                 model.put(simpleName, map);
             }
         }

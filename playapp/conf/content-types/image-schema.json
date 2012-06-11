@@ -4,7 +4,7 @@
         { "name": "title", "label": "Title",
           "type": "title", "len": "xlarge"
         },
-        { "name": "asset", "label": "Asset",
+        { "name": "asset_ref", "label": "Asset",
           "type": "reference", "callout": "/callouts/internal/asset_reference", "len": "xlarge"
         },
         { "name": "keywords", "label": "Keywords",

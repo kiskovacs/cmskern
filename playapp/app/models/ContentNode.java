@@ -50,7 +50,7 @@ public class ContentNode {
      * If the content node is archived in the version collection, this attribute
      * will link back to the original node.
      */
-    public static final String ATTR_IDREF      = "_ref";
+    public static final String ATTR_IDREF      = "_idref";
 
     /**
      * Sub-document (JSON) holding the manually edited "real" content,
@@ -62,6 +62,7 @@ public class ContentNode {
      * a human-readable string describing this content node.
      */
     public static final String ATTR_TITLE      = "title";
+    public static final String ATTR_TITLE_QUAL = ATTR_DATA + '.' + ATTR_TITLE;
 
     // ~
 
@@ -86,6 +87,7 @@ public class ContentNode {
 
     public static void createIndexes() {
         MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TITLE_QUAL);
         // Also indexes for the version collection
         MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
         // create also compound key
@@ -101,12 +103,13 @@ public class ContentNode {
         dbObj.put(ATTR_DATA, contentObj);
         // add metadata
         dbObj.put(ATTR_TYPE, type);
-        dbObj.put(ATTR_VERSION, version);
+        dbObj.put(ATTR_VERSION, version = 1);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
         dbObj.put(ATTR_CREATOR, creator = creatorUsername);
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
         dbObj.put(ATTR_MODIFIER, modifier = creatorUsername);
         dbObj.put(ATTR_ID, generateLongId(COLLECTION_NAME));
+        Logger.debug("Going to create new (%s) content node '%s' ...", type, dbObj.get(ATTR_ID));
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
         this.id = (Long) dbObj.get(ATTR_ID);
     }
@@ -116,6 +119,10 @@ public class ContentNode {
         this.modifier = username;
         this.modified = System.currentTimeMillis();
         updateWithMetadata(modifier, modified, getId(), contentData);
+    }
+
+    public static long count() {
+        return MongoDbUtils.count(COLLECTION_NAME);
     }
 
     public void delete() {
@@ -159,6 +166,27 @@ public class ContentNode {
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
+        }
+        return nodes;
+    }
+
+    public static List<IdTitle> findByTypeAndTitle(String type, String query, boolean matchCase, int max) {
+        List<IdTitle> nodes = new ArrayList<IdTitle>();
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+
+        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
+        if (matchCase) {
+            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query));
+        } else {
+            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query).append("$options", "i"));
+        }
+
+        DBCursor dbCur = dbColl.find(q, new BasicDBObject(ATTR_TITLE_QUAL, 1)).sort(new BasicDBObject(ATTR_TITLE_QUAL, 1)).limit(max);
+        Logger.info("Query for " + query);
+        while (dbCur.hasNext()) {
+            DBObject dbObj = dbCur.next();
+            Logger.info("---> " + dbObj);
+            nodes.add(new IdTitle((Long) dbObj.get(ATTR_ID), (String) ((DBObject) dbObj.get(ATTR_DATA)).get(ATTR_TITLE)));
         }
         return nodes;
     }
@@ -254,6 +282,11 @@ public class ContentNode {
 
     // ~~
 
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent;
+        create(this.creator);
+    }
+
     /**
      * Returns pure JSON body without the metadata.
      */
@@ -269,6 +302,10 @@ public class ContentNode {
         return new Date(created);
     }
 
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -279,6 +316,10 @@ public class ContentNode {
 
     public String getModifier() {
         return modifier;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getType() {

@@ -24,7 +24,7 @@ function EditContentNodeCtrl($xhr) {
             return false;
         } else {
             // content already exists
-            console.log("Start saving ...");
+            console.log("Updating content node " + this.contentNodeId + " ...");
             $xhr('PUT', "/" + this.contentType + "/" + this.contentNodeId, this.contentNode, function(code, response) {
                 window.location.href =  "/?highlightId=" + response.id;
             }, function(code, response) {
@@ -34,9 +34,9 @@ function EditContentNodeCtrl($xhr) {
         }
     };
 
-    this.reset = function() {
-        console.log("Reset form ...");
-        this.form = angular.copy(this.contentNode);
+    this.cancel = function() {
+        console.log("Cancel form ...");
+        window.history.back();
     };
 
     scope.addChild = function(ctx) {
@@ -64,6 +64,7 @@ function EditContentNodeCtrl($xhr) {
     };
 
     scope.helper = new CalloutDialogHelper();
+
 
     // Called by referencing input element (see widget.js)
     scope.select_value = function(callout_url, field_name, field_name_secondary) {
@@ -107,53 +108,54 @@ function EditContentNodeCtrl($xhr) {
 
 
     // Called by referencing input element (see widget.js)
-    scope.simple_select_value = function(callout_url, field_names) {
-      var field_ar = field_names.split('#');
-      var fields ={};
+    scope.simple_select_value = function (callout_url, field_names) {
+        var field_ar = field_names.split('#');
+        var fields = {};
         fields["update_fields"] = Array();
 
         for (i in field_ar) {
             var fq_name = field_ar[i];
             if (fq_name) {
+                // Special handling for array elements: insert position number
+                var cur_pos = this.$index;
+                if (typeof cur_pos != 'undefined') {
+                    var dotPos = fq_name.lastIndexOf('.');
+                    fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
+                }
 
-
-            // Special handling for array elements: insert position number
-            var cur_pos = this.$index;
-            if (typeof cur_pos != 'undefined') {
-                var dotPos = fq_name.lastIndexOf('.');
-                fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
-
-            }
-
-            var field_value = scope.$get(fq_name);
-            fields[fq_name] = field_value;
-            fields["update_fields"].push(fq_name);
-
+                var field_value = scope.$get(fq_name);
+                fields[fq_name] = field_value;
+                fields["update_fields"].push(fq_name);
             }
         }
-
 
         // Create Bootbox Modal with external selection form loaded as specified by callout URL
         return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [
             {
-                'label': 'Cancel'
+                'label':'Cancel'
             },
             {
-                'label': 'Save',
-                'class': 'btn-primary success',
-                'callback': function() {
+                'label':'Save',
+                'class':'btn-primary success',
+                'callback':function () {
                     return scope.save_values(calloutGetSelectedValues());
                 }
             }
         ], {
-            "animate": false
+            "animate":false
         });
     };
+
 
     // Called after "Save" Button in Callout-Dialog is pressed
     scope.save_values = function(doc_data) {
         jQuery.each(doc_data, function(fieldname, val) {
-            scope.$set(fieldname, val);
+            if (endsWith(fieldname, "_idref")) {
+                console.log("convert to int");
+                scope.$set(fieldname, parseInt(val));
+            } else {
+                scope.$set(fieldname, val);
+            }
 
             console.log("Updated " + fieldname + " to: " + val);
         });
@@ -162,6 +164,9 @@ function EditContentNodeCtrl($xhr) {
         scope.$eval(); // force model update
     };
 
+    function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
 }
 EditContentNodeCtrl.$inject = ['$xhr'];
 

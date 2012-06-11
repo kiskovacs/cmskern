@@ -38,6 +38,7 @@ POST    /blobs                                  Blobs.upload
 # ~~ REST API for content
 GET     /nodes/test                             ContentNodes.test
 GET     /{type}/{id}/edit                       ContentNodes.edit
+GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank
 GET     /{type}/{id}/full                       ContentNodesApi.getFull
 GET     /{type}/{id}                            ContentNodesApi.getBody

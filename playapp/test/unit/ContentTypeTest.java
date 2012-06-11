@@ -21,12 +21,12 @@ public class ContentTypeTest extends UnitTest {
     @Before
     public void setUpData() throws InterruptedException {
         MorphiaFixtures.deleteDatabase();
-        MorphiaFixtures.loadModels("bootstrap-contenttypes.yml");
+        MorphiaFixtures.loadModels("initial-contenttypes.yml");
     }
 
     @Test
     public void count() {
-        assertEquals(5, ContentType.count());
+        assertEquals(7, ContentType.count());
     }
 
     @Test
@@ -39,12 +39,13 @@ public class ContentTypeTest extends UnitTest {
 
     @Test
     public void getByGroup() {
-        List<ContentType> contentTypes = ContentType.findByGroup("content");
-        assertEquals(4, contentTypes.size());
+        List<ContentType> contentTypes = ContentType.findByGroup("editorial");
+        assertEquals(5, contentTypes.size());
         assertEquals("Article", contentTypes.get(0).displayName);
         assertEquals("Article Collection", contentTypes.get(1).displayName);
         assertEquals("Image", contentTypes.get(2).displayName);
         assertEquals("Image Gallery", contentTypes.get(3).displayName);
+        assertEquals("Tag", contentTypes.get(4).displayName);
     }
 
 }

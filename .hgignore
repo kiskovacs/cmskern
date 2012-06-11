@@ -19,6 +19,7 @@ api-archive
 ^playapp/.settings
 ^playapp/cache
 ^playapp/modules
+\.sass-cache
 
 ^htdocs/sites/default/files/languages/.*\.js
 ^htdocs/sites/default/files/ctools/css
@@ -40,4 +41,4 @@ api-archive
 ^playapp/eclipse/classes$
 ^playapp/bin$
 ^.*\.DS_Store$
-BACKUp
+BACKUP

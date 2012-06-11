@@ -16,7 +16,7 @@
     #{script 'misc/date.format.js' /}
     #{script 'misc/underscore-min.js' /}
 
-    *{-- Angular Core Library --}*
+*{-- Angular Core Library --}*
     <script type="text/javascript" src="@{'/public/javascripts/angular/angular.js'}" ng:autobind></script>
 
     *{-- Angular Add-Ons --}*
@@ -51,8 +51,8 @@
         <my:form schema="contentSchema.fields" data="contentNode"></my:form>
 
         <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button ng:click="reset()" class="btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn" ng:click="cancel()">Cancel</button>
         </div>
     </form>
 

@@ -11,7 +11,7 @@
 
 <fieldset>
     <label for="select_value">Asset Reference</label>
-    <input type="text" id="select_value" name="value" value="${asset.value}" class="input-xxlarge"/>
+    <input type="text" id="select_value" name="value" value="${asset_ref.value}" class="input-xxlarge"/>
 </fieldset>
 
 <script type="text/javascript">
@@ -25,7 +25,7 @@
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${asset.fieldname}': selectedValue
+            '${asset_ref.fieldname}': selectedValue
         };
     }
 

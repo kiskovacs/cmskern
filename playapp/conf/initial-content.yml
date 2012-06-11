@@ -1,0 +1,19 @@
+ContentNode(a_n1):
+  creator: admin
+  type: article
+  jsonContent: "{'title':'Start with N1', 'undzwo':'nochwa'}"
+
+ContentNode(t_nature):
+  creator: admin
+  type: tag
+  jsonContent: "{'title':'Nature'}"
+
+ContentNode(t_mountains):
+  creator: admin
+  type: tag
+  jsonContent: "{'title':'Mountains'}"
+
+ContentNode(t_oceans):
+  creator: admin
+  type: tag
+  jsonContent: "{'title':'Oceans'}"

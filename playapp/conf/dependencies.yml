@@ -2,10 +2,9 @@
 
 require:
     - play
-    - play -> morphia 1.2.6a
+    - play -> morphia 1.2.7
     - play -> secure
     - play -> crud
-    - play -> jelastic 0.1
 
     # (2012-04-18) not yet working smoothly with secure module
     # - play -> deadbolt 1.5.2

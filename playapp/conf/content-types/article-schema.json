@@ -24,10 +24,6 @@
           "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
         },
 
-        { "name": "source", "label": "News Source",
-          "type": "select", "rule_ref": "rule_news_source"
-        },
-
         { "name": "paras", "label": "Paragraph", "type": "repeatable",
             "min": "1",
             "children": [
@@ -38,7 +34,7 @@
                   "type": "textarea", "len": "xxlarge"
                 },
 
-                { "name": "image_ref", "label": "Image (intern)",
+                { "name": "image_idref", "label": "Image (intern)",
                   "type": "reference", "len": "xlarge",
                   "callout": "/callouts/internal/image_reference", "update_also": "image_title",
                   "helptext": "References an internal URL to a selected image."
@@ -62,6 +58,14 @@
                   ]
                 }
             ]
+        },
+
+        { "name": "source", "label": "News Source",
+            "type": "select", "rule_ref": "rule_news_source"
+        },
+
+        { "name": "tags", "label": "Tags",
+          "type": "autoComplete", "query_type": "tags", "embed_value": true
         }
 
     ]

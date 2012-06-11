@@ -319,11 +319,12 @@ angular.widget('ui:emblem', function(el) {
 // ui:autocomplete widget
 // jQuery UI autocomplete
 angular.widget('@ui:autocomplete', function(expr, el, val) {
-
     var compiler = this;
     var defaults = {
-        renderName: function(item){ return item.firstName + ' ' + item.lastName;},
-        renderItem: function(term, item){
+        renderName: function(item) {
+            return item.value;
+        },
+        renderItem: function(term, item) {
             var hl = this.highlight ? (this.highlightFunction || widgetUtils.highlight) : widgetUtils.noHighlight;
             return $('<a></a>').append(hl(term, options.renderName(item)));
         },
@@ -333,36 +334,64 @@ angular.widget('@ui:autocomplete', function(expr, el, val) {
     };
     var opt = widgetUtils.getOptions(el, {});
     var options = {};
-    var presetName = $(el).attr('ui:preset');
     var itemExpr = widgetUtils.parseAttrExpr(el, 'ui:item');
-    var linkFn = function($xhr, $log, presets, el) {
+    var linkFn = function($xhr, el) {
         var currentScope = this;
-        var preset = null;
-        if(presets && presetName)
-            preset = presets.get(presetName) || {};
         var ac;
 
-        $.extend(options, defaults, preset, opt);
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+
+        $.extend(options, defaults, opt);
         var events = {
-            source: function(req, res){
-                $xhr('GET', options.urls.list + req.term, function(code, response){
-                    res(response);
+            source: function(req, res) {
+                $xhr('GET', options.urls.list + extractLast(req.term), function(code, response) {
+                            res($.map(response, function(item) {
+                                return {
+                                    label: item.id,
+                                    value: item.title
+                                }
+                            }));
                 });
             },
-            select: function(event, ui){
+            search: function() {
+                // custom minLength
+                var term = extractLast( this.value );
+                if ( term.length < 2 ) {
+                    return false;
+                }
+            },
+            select: function(event, ui) {
                 var txt = '';
-                if(!options.clearOnSelect)
+                if (!options.clearOnSelect)
                     txt = (options.renderText || options.renderName)(ui.item);
+                console.log("  --> select txt: " + txt);
                 $(el).val(txt).blur();
-                if(options.onSelect)
+                if (options.onSelect)
                     options.onSelect(ui.item);
-                if(itemExpr)
+                if (itemExpr)
                     widgetUtils.setValue(currentScope, itemExpr, ui.item);
                 return options.clearOnSelect;
+                // prevent value inserted on focus
+                return false;
             },
-            focus: function(event, ui){
+            focus: function(event, ui) {
                 var txt = (options.renderText || options.renderName)(ui.item);
-                $(el).val(txt);
+                var terms = split( txt );
+                console.log("  --> terms: " + terms + " from txt: " + txt);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push( ui.item.value );
+                // add placeholder to get the comma-and-space at the end
+                terms.push( "" );
+                this.value = terms.join( ", " );
+
+                $(el).val(this.value);
                 return false;
             }
         };
@@ -374,19 +403,31 @@ angular.widget('@ui:autocomplete', function(expr, el, val) {
         };
 
         $.extend(options, events);
+
         ac = $(el).autocomplete(options).data('autocomplete');
+
+        // don't navigate away from the field on tab when selecting an item
+        $(el).bind("keydown", function(event) {
+            if (event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
+                event.preventDefault();
+            }
+        })
+
         $.extend(ac, renderFn);
 
-        if(itemExpr && itemExpr.expression)
-            currentScope.$watch(itemExpr.expression, function(val){
+        if (itemExpr && itemExpr.expression)
+            currentScope.$watch(itemExpr.expression, function(val) {
                 var txt;
-                if(val)
+                if (val) {
                     txt = (options.renderText || options.renderName)(val);
+                }
+                console.log("55555555555 ...." + txt);
+
                 $(el).val(txt).blur();
             }, null, true);
 
     };
-    linkFn.$inject = ['$xhr', '$log', 'autocompletePresets'];
+    linkFn.$inject = ['$xhr'];
     return linkFn;
 });
 
@@ -654,6 +695,7 @@ var widgetUtils = {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Added on top of Łukasz Twarogowski stuff
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 // --- Custom TinyMCE Service (works only with 10.5)
 // TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks

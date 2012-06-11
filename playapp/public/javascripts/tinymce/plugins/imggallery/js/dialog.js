@@ -11,7 +11,7 @@ var ImgGalleryDialog = {
 
 	insert : function() {
 		// Insert the contents from the input into the document
-        var v = '<p>[gallery id:' + document.forms[0].select_value.value + ' title:\'' + document.forms[0].select_title.value + '\']</p>';
+        var v = '<p>#{imageGallery id:\'' + document.forms[0].select_value.value + '\', title:\'' + document.forms[0].select_title.value + '\' /}</p>';
 		tinyMCEPopup.editor.execCommand('mceInsertContent', false, v);
 		tinyMCEPopup.close();
 	}
