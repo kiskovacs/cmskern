@@ -697,6 +697,31 @@ var widgetUtils = {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+// custom widget transforming comma-separated string to Array
+angular.widget('@ui:valueArray', function(expr, el, val) {
+    var compiler = this;
+    var events = {};
+    var options = {};
+    var itemExpr = widgetUtils.parseAttrExpr(el, 'ui:item');
+    return function(el) {
+        var currentScope = this;
+        $(el).change(function() {
+            var csvStr = $(this).val();
+            var arrStr = $.map(csvStr.split(","), $.trim);
+            widgetUtils.setValue(currentScope, itemExpr, arrStr);
+        });
+        // call-in from Angular
+        currentScope.$watch(itemExpr.expression, function(val) {
+            // $(el).datepicker('setDate', val);
+            if (typeof val == 'undefined') {
+                val = ['foo', 'bar'].join(', ');
+            }
+            // expects value from already to be comma-separated
+            $(el).val(val);
+        }, null, true);
+    };
+});
+
 // --- Custom TinyMCE Service (works only with 10.5)
 // TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks
 angular.directive('ui:tinymceBETA', function(expression, config) {

@@ -127,12 +127,8 @@ angular.widget('my:form', function(element) {
                     break;
                 }
                 case 'array': {
-                    fieldElStr  = '[<a href="" ng:click="' + fullyQualifiedName + '.$add(\'\')">add empty</a>]';
-                    fieldElStr +=  '<ul ng:init="' + fullyQualifiedName + '=[\'foo\', \'bar\']">';
-                    fieldElStr += '    <li ng:repeat="elem in ' + fullyQualifiedName + '">';
-                    fieldElStr += '        <input name="contentNode.tags" value="{{elem}}">';
-                    fieldElStr += '    </li>';
-                    fieldElStr += '</ul>';
+                    fieldElStr  = '<input type="text" class="valueArray ' + lengthClassName + '" ui:item="' + qualifiedName + '" ';
+                    fieldElStr += ' ui:valueArray >';
                     break;
                 }
                 case 'autoComplete': {
