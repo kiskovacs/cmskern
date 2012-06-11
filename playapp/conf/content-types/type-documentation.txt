@@ -1,3 +1,8 @@
+=========================================================================
+Documentation of the JSON Schema defintion for cmskern
+=========================================================================
+
+
 (required) Attribute: "name"
 
 The name of the field as it is for reference in the JSON data structure.
@@ -29,6 +34,13 @@ Supported types are:
 * checkbox
 * reference (a "callout" attribute has to be specified)
 * repeatable (a "children" attribute has to be specified)
+
+TODO:
+
+* array
+* number and/or integer
+* boolean
+(try to be in accordance to: http://tools.ietf.org/html/draft-zyp-json-schema-03)
 
 
 (optional, required if type == "reference") Attribute: "callout"

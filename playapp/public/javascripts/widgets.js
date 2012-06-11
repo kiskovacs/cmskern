@@ -125,8 +125,8 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</ul>';
                     break;
                 }
-                case 'autoSuggest': {
-                    fieldElStr += '<input type="textbox" class="autoSuggest ' + lengthClassName + '"';
+                case 'autoComplete': {
+                    fieldElStr += '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
                     fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
                     break;
                 }
