@@ -36,7 +36,7 @@
 
                 { "name": "image_idref", "label": "Image (intern)",
                   "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/image_reference", "update_also": "image_title",
+                  "callout": "/callouts/internal/image_reference", "update": ["image_idref", "image_title"]
                   "helptext": "References an internal URL to a selected image."
                 },
                 { "name": "image_title", "label": "Title",

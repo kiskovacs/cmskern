@@ -41,19 +41,16 @@ public class Callouts extends Controller {
         }
         else if (name.contains("/node_")) {
             List dl = ContentNode.findByTypeRaw("node", 20);
-            Logger.debug("dl: %s", dl);
             model.put("nodes",dl );  // TODO: improve by using paging
         }
-        else if (name.contains("/test_")) {
-            String[] fieldnames= params.getAll("update_fields[]");
-            Logger.debug("fieldnames: " + fieldnames);
 
-            model.put("fieldnames", fieldnames);
-            model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
-        }
 
+        String[] fieldnames= params.getAll("update_fields[]");
+
+        model.put("fieldnames", fieldnames);
         // Add parameters given to model, introduce simple name map
         for (Map.Entry<String, String> param : params.allSimple().entrySet()) {
+
             String key = param.getKey();
             if (key.startsWith("contentNode")) {
                 String simpleName = key.substring(key.lastIndexOf('.') + 1);

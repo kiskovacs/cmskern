@@ -1,4 +1,29 @@
 /* App Controllers */
+function dump(arr,level) {
+	var dumped_text = "";
+	if(!level) level = 0;
+
+	//The padding given at the beginning of the line.
+	var level_padding = "";
+	for(var j=0;j<level+1;j++) level_padding += "    ";
+
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects
+		for(var item in arr) {
+			var value = arr[item];
+
+			if(typeof(value) == 'object') { //If it is an array,
+				dumped_text += level_padding + "'" + item + "' ...\n";
+				dumped_text += dump(value,level+1);
+			} else {
+				dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+			}
+		}
+	} else { //Stings/Chars/Numbers etc.
+		dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+	}
+	return dumped_text;
+}
+
 
 function EditContentNodeCtrl($xhr) {
     var scope;
@@ -150,14 +175,28 @@ function EditContentNodeCtrl($xhr) {
     // Called after "Save" Button in Callout-Dialog is pressed
     scope.save_values = function(doc_data) {
         jQuery.each(doc_data, function(fieldname, val) {
+          if (fieldname && fieldname != "null")   {
             if (endsWith(fieldname, "_idref")) {
                 console.log("convert to int");
-                scope.$set(fieldname, parseInt(val));
+                if (val.indexOf(",") != -1) {
+                    // dann ist das ein Array von IDs
+                    var retval = Array();
+                    values = val.split(",");
+                    for (v in values) {
+                        retval.push(parseInt(values[v]));
+                    }
+                    scope.$set(fieldname, retval);
+                } else {
+                    scope.$set(fieldname, parseInt(val));
+                }
+
             } else {
                 scope.$set(fieldname, val);
             }
 
             console.log("Updated " + fieldname + " to: " + val);
+                        }
+
         });
         //scope.$set(fieldname, doc_data.value);
         //scope.$set('contentNode.title', doc_data.title);

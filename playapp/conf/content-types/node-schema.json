@@ -9,10 +9,19 @@
           "type": "title", "len": "xxlarge"
         },
 
-        { "name": "mutter_knoten", "label": "Mutterknoten",
+        { "name": "parent_node_idref", "label": "Mutterknoten ID",
+          "type": "reference", "len": "xlarge",
+          "callout": "/callouts/internal/node_reference", "update": ["parent_node_idref", "parent_node", null, "ancestors_idref"]
+        },
+
+        { "name": "parent_node", "label": "Mutterknoten",
           "type": "text", "len": "xlarge"
         },
 
+        { "name": "ancestors_idref", "label": "Vorfahren",
+          "type": "array", "len": "xlarge"
+        },
+        
         { "name": "pfad", "label": "Pfad",
           "type": "text", "len": "xlarge"
         },
