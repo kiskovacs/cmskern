@@ -1,72 +1,138 @@
 {
-"rules":
-    {  "rule_news_source": { "type": "multiple",
-            "allowedValues": [
-                { "value": "unspecified", "label": "Unspecified", "selected": true },
-                { "value": "by_mail",     "label": "By Mail" },
-                { "value": "by_phone",    "label": "By Phone" }
+    "rules":{
+        "rule_news_source":{
+            "type":"multiple",
+            "allowedValues":[
+                {
+                    "value":"unspecified",
+                    "label":"Unspecified",
+                    "selected":true
+                },
+                {
+                    "value":"by_mail",
+                    "label":"By Mail"
+                },
+                {
+                    "value":"by_phone",
+                    "label":"By Phone"
+                }
             ]
         }
     },
 
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xxlarge"
+    "types":{
+        "_para":{
+            "label":"Paragraph",
+            "fields":[
+                {
+                    "name":"headline",
+                    "label":"Headline",
+                    "type":"text",
+                    "len":"xxlarge"
+                },
+                {
+                    "name":"text",
+                    "label":"Text",
+                    "type":"textarea",
+                    "len":"xxlarge"
+                },
+                {
+                    "name":"childparas",
+                    "label":"Child Paragraph",
+                    "type":"_child_para",
+                    "min":"0"
+                }
+            ]
         },
-
-        { "name": "online", "label": "Online?",
-          "type": "checkbox"
-        },
-
-        { "name": "online_date", "label": "Online Date",
-          "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
-          "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
-        },
-
-        { "name": "paras", "label": "Paragraph", "type": "repeatable",
-            "min": "1",
-            "children": [
-                { "name": "headline", "label": "Headline",
-                  "type": "text", "len": "xxlarge"
+        "_child_para":{
+            "label":"Child Paragraph",
+            "fields":[
+                {
+                    "name":"subHeader",
+                    "label":"Sub-Headline",
+                    "type":"text"
                 },
-                { "name": "text", "label": "Text",
-                  "type": "textarea", "len": "xxlarge"
-                },
-
-                { "name": "image_idref", "label": "Image (intern)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/image_reference", "update_also": "image_title",
-                  "helptext": "References an internal URL to a selected image."
-                },
-                { "name": "image_title", "label": "Title",
-                  "type": "text", "len": "xlarge"
-                },
-
-                { "name": "flickr_url", "label": "Image (flickr)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/external/flickr_photo_reference",
-                  "helptext": "References URL from a selected photo (hosted on flickr.com)."
-                },
-
-                { "name": "childparas", "label": "Child Paragraph",
-                  "type": "repeatable", "min": "1", "children": [
-                      { "name": "subHeader", "label": "Sub-Headline",
-                        "type": "text" },
-                      { "name": "subText", "label": "Sub-Text",
-                        "type": "textarea" }
-                  ]
+                {
+                    "name":"subText",
+                    "label":"Sub-Text",
+                    "type":"textarea"
                 }
             ]
         },
 
-        { "name": "source", "label": "News Source",
-            "type": "select", "rule_ref": "rule_news_source"
+        "_internal_image":{
+            "label":"Internal Image",
+            "fields":[
+                {
+                    "name":"image_idref",
+                    "label":"Image (intern)",
+                    "type":"reference",
+                    "len":"xlarge",
+                    "callout":"/callouts/internal/image_reference",
+                    "update_also":"image_title",
+                    "helptext":"References an internal URL to a selected image."
+                },
+                {
+                    "name":"image_title",
+                    "label":"Title",
+                    "type":"text",
+                    "len":"xlarge"
+                }
+            ]
         },
-
-        { "name": "tags", "label": "Tags",
-          "type": "array", "query_type": "tags"
+        "_flickr_image":{
+            "label":"Image from Flickr",
+            "fields":[
+                {
+                    "name":"flickr_url",
+                    "label":"Image (flickr)",
+                    "type":"reference",
+                    "len":"xlarge",
+                    "callout":"/callouts/external/flickr_photo_reference",
+                    "helptext":"References URL from a selected photo (hosted on flickr.com)."
+                }
+            ]
         }
+    },
 
+    "fields":[
+        {
+            "name":"title",
+            "label":"Title",
+            "type":"title",
+            "len":"xxlarge"
+        },
+        {
+            "name":"online",
+            "label":"Online?",
+            "type":"checkbox"
+        },
+        {
+            "name":"online_date",
+            "label":"Online Date",
+            "type":"date",
+            "dateFormat":"dd-mm-yy",
+            "len":"small",
+            "helptext":"Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
+        },
+        {
+            "name":"paras",
+            "label":"Paragraph",
+            "type":["_para", "_internal_image", "_flickr_image"],
+            "min":"1"
+        },
+        {
+            "name":"source",
+            "label":"News Source",
+            "type":"select",
+            "rule_ref":"rule_news_source"
+        },
+        {
+            "name":"tags",
+            "label":"Tags",
+            "type":"array",
+            "query_type":"tags"
+        }
     ]
+
 }
