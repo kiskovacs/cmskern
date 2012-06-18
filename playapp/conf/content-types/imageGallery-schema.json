@@ -1,34 +1,38 @@
 {
-    "fields":[
-        {
-            "name":"title",
-            "label":"Title",
-            "type":"title",
-            "len":"xlarge"
+    "id":"imageGallery",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
         },
-
-        {
-            "name":"images",
-            "label":"Image",
-            "type":"repeatable",
-            "min":"1",
-            "children":[
-                {
-                    "name":"image_idref",
-                    "label":"Reference",
-                    "type":"reference",
-                    "len":"xlarge",
-                    "callout":"/callouts/internal/image_reference",
-                    "update_also":"image_title"
-                },
-                {
-                    "name":"image_title",
-                    "label":"Title",
-                    "type":"text",
-                    "len":"xlarge"
+        "images":{
+            "type":"array",
+            "title":"Image",
+            "items":{
+                "title":"Image",
+                "properties":{
+                    "image_idref":{
+                        "title":"Image (intern)",
+                        "description":"References an internal URL to a selected image.",
+                        "type":"string",
+                        "format":"uri",
+                        "ui_class":"reference",
+                        "ui_callout":"/callouts/internal/image_reference",
+                        "ui_update_also":"image_title",
+                        "ui_width":"xlarge"
+                    },
+                    "image_title":{
+                        "title":"Title",
+                        "type":"string",
+                        "ui_width":"xlarge"
+                    }
                 }
-            ]
+            }
         }
-
-    ]
+    }
 }

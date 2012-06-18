@@ -1,3 +1,16 @@
+
+Since 2012-06-18 all cmskern schemas are now based on top of
+
+    JSON Schema Definition
+    http://tools.ietf.org/html/draft-zyp-json-schema-03
+
+
+DEPRECATED: the old documentation will be converted to the
+types used in cmskern.
+
+Note: some concepts like linking and extending are not yet
+leveraged.
+
 =========================================================================
 Documentation of the JSON Schema defintion for cmskern
 =========================================================================
