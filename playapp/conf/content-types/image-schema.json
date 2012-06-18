@@ -1,15 +1,24 @@
 {
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xlarge"
+    "fields":[
+        {
+            "name":"title",
+            "label":"Title",
+            "type":"title",
+            "len":"xlarge"
         },
-        { "name": "asset_ref", "label": "Asset",
-          "type": "reference", "callout": "/callouts/internal/asset_reference", "len": "xlarge"
+        {
+            "name":"asset_ref",
+            "label":"Asset",
+            "type":"reference",
+            "callout":"/callouts/internal/asset_reference",
+            "len":"xlarge"
         },
-        { "name": "keywords", "label": "Keywords",
-          "type": "text", "len": "xlarge",
-          "helptext": "Specify multiple keywords by separating entries with comma."
+        {
+            "name":"keywords",
+            "label":"Keywords",
+            "type":"text",
+            "len":"xlarge",
+            "helptext":"Specify multiple keywords by separating entries with comma."
         }
     ]
 }

@@ -1,23 +1,44 @@
 {
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xlarge"
-        },
-        { "name": "slug", "label": "Slug",
-           "type": "text", "len": "xlarge"
-        },
-        { "name": "articles", "label": "Article",
-          "type": "repeatable", "min": "1",
-          "children": [
-                { "name": "article_idref", "label": "Reference",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/article_reference", "update_also": "article_title"
+    "types":{
+        "_article":{
+            "label":"Article",
+            "fields":[
+                {
+                    "name":"article_idref",
+                    "label":"Reference",
+                    "type":"reference",
+                    "len":"xlarge",
+                    "callout":"/callouts/internal/article_reference",
+                    "update_also":"article_title"
                 },
-                { "name": "article_title", "label": "Title",
-                  "type": "text", "len": "xlarge"
+                {
+                    "name":"article_title",
+                    "label":"Title",
+                    "type":"text",
+                    "len":"xlarge"
                 }
-          ]
+            ]
+        }
+    },
+
+    "fields":[
+        {
+            "name":"title",
+            "label":"Title",
+            "type":"title",
+            "len":"xlarge"
+        },
+        {
+            "name":"slug",
+            "label":"Slug",
+            "type":"text",
+            "len":"xlarge"
+        },
+        {
+            "name":"articles",
+            "label":"Article",
+            "type":["_article"],
+            "min":"1"
         }
     ]
 }
