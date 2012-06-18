@@ -784,10 +784,10 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     return function (el) {
         var currentScope = this;
 
-        console.log("---> el : " + el[0].name);
+        //console.log("---> el : " + el[0].name);
         // get existing value, otherwise initialize
         var o = widgetUtils.getValue(currentScope, contentExpr) || '';
-        console.log("---> o : " + o);
+        //console.log("---> o : " + o);
 
         /*
         events.onChange = function (theElem, ui) {
@@ -920,4 +920,20 @@ angular.widget('@ui:wysiwyg', function(expr, el, val) {
 });
 
 
-
+// run once on compile (when ng:repeat turns this into a template)
+angular.directive('jq:autoremove', function(expression, templateElement) {
+    return function(instanceElement) {
+        // run on each instance, (when ng:repeat needs a new <li> to insert into the DOM)
+        // instanceElement is already jQuery selector
+        console.log("now removing...");
+        // if nothing yet selected only display first subgroup
+        if (this.elementGroupsToRemove.length === 0) {
+            instanceElement.children(".subelements:gt(0)").remove();
+        } else {
+            this.elementGroupsToRemove.forEach(function(e) {
+                console.log("    * removing " + e);
+                instanceElement.children("." + e).remove();
+            });
+        }
+    }
+});

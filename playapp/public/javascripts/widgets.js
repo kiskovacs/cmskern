@@ -16,7 +16,7 @@ angular.widget('my:form', function(element) {
             fieldset = angular.element('<fieldset class="root"></fieldset>');
 
         // process every field as specified in the JSON schema definition
-        //                               context object: {parentName, fqName, curDOMParent, invisible}
+        //                               context object: {parentName, fqName, curDOMParent, childtype}
         angular.forEach(schema, function processField(field, fieldKey) {
             var qualifiedName = this.parentName + '.' + fieldKey,
                 fullyQualifiedName = this.fqName + '.' + fieldKey,
@@ -46,7 +46,7 @@ angular.widget('my:form', function(element) {
 
                 // ~~~~~~ construct subform
                 var subform = angular.element('<div class="subform"></div>');
-                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
+                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '" jq:autoremove=""></fieldset>');
 
                 var legendChild = angular.element('<legend>' + field.title +'</legend>'); // Position: {{$index}}
 
@@ -61,20 +61,29 @@ angular.widget('my:form', function(element) {
                 var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
+                jQuery.each(field.items, function (subIdx, subfield) {
+                    // ~~ render fields of subform
+                    var elGroup = angular.element('<div class="subelements ' + subfield.id + '"></div>');
+                    angular.forEach(subfield.properties, processField,
+                        {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: elGroup, childtype: subfield.id});
+                    subfieldset.append(elGroup);
+                });
                 subform.append(subfieldset);
 
                 this.curDOMParent.append(subform);
 
-                // ~~ add button (available no matter how many already exist)
+                // ~~
                 var localScope = this;
+                var subfieldTypes = [];
                 jQuery.each(field.items, function (subIdx, subfield) {
-                    // ~~ render fields of subform (TODO: erst später)
-                    angular.forEach(subfield.properties, processField,
-                        {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset, invisible: subIdx > 0});
-
+                   subfieldTypes.push(subfield.id);
+                });
+                jQuery.each(field.items, function (subIdx, subfield) {
+                    // ~~ add sub-entity button (available no matter how many already exist)
                     var addButton = angular.element('<div class="btn_add"><a href="#" ' +
                         ' ng:click="addChild({parent:'+ localScope.parentName +',' +
-                        ' child:' + qualifiedName + ', childname: \'' + fieldKey + '\', childtype: \'' + subfield.id + '\'})">' +
+                        ' child:' + qualifiedName + ', childname: \'' + fieldKey + '\',' +
+                        ' childtype: \'' + subfield.id + '\', allChildtypes: \'' + subfieldTypes + '\'})">' +
                         '<i class="icon-plus" title="Add ' + subfield.title + '"></i>' + subfield.title + '</a></div>');
                     localScope.curDOMParent.append(addButton);
                 });
@@ -102,8 +111,16 @@ angular.widget('my:form', function(element) {
             }
             else if (field.enum) {
                 fieldElStr  = '<ul ui:selectable-container class="selectBox">';
-                fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in schemaRules.' + field.rule_ref + '.allowedValues" data-value="{{i.value}}">';
-                fieldElStr += '        <div class="name">{{i.title}}</div>';
+                console.log("    * enum: " + field.enum);
+                fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in [';
+                for (idx in field.enum) {
+                    fieldElStr += '\'' + field.enum[idx] + '\'';
+                    if (idx < field.enum.length-1) {
+                        fieldElStr += ',';
+                    }
+                }
+                fieldElStr += ']" data-value="{{i}}">';
+                fieldElStr += '        <div class="name">{{i}}</div>';
                 fieldElStr += '    </li>';
                 fieldElStr += '</ul>';
             }
@@ -158,9 +175,6 @@ angular.widget('my:form', function(element) {
                     }
                 });
 
-                //if (this.invisible) {
-                //    fieldElStr += ' style="display:none"';
-                //}
                 fieldElStr += '>';
             }
 

@@ -11,6 +11,8 @@ function EditContentNodeCtrl($xhr) {
     this.contentNode   = globalContentNode;      // will probably be empty
     this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
 
+    this.elementGroupsToRemove = [];
+
 
     this.submit = function() {
         // check whether content already exists or not
@@ -39,6 +41,9 @@ function EditContentNodeCtrl($xhr) {
         window.history.back();
     };
 
+    /**
+     * Triggered when user presses the "Add" Button (subform).
+     */
     scope.addChild = function(ctx) {
         if (ctx.child) {
             console.log("Add child (type: " + ctx.childtype + "): " + ctx.child);
@@ -47,6 +52,15 @@ function EditContentNodeCtrl($xhr) {
             console.log("Init child (type: " + ctx.childtype + "): " + ctx.childname);
             ctx.parent[ctx.childname] = [{ _type: ctx.childtype }];
         }
+        scope.elementGroupsToRemove = ctx.allChildtypes.split(',');
+        var idx = scope.elementGroupsToRemove.indexOf(ctx.childtype);
+        if (idx != -1) {
+            scope.elementGroupsToRemove.splice(idx, 1);
+        } else {
+            // by default remove first
+            scope.elementGroupsToRemove.splice(0, 1);
+        }
+        // hiding is done via directive in angular-widget.js
     };
 
     scope.moveDown = function(arr) {
