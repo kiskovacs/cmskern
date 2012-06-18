@@ -16,15 +16,15 @@ angular.widget('my:form', function(element) {
             fieldset = angular.element('<fieldset class="root"></fieldset>');
 
         // process every field as specified in the JSON schema definition
-        angular.forEach(schema, function processField(field) {
-            var qualifiedName = this.parentName + '.' + field.name,
-                fullyQualifiedName = this.fqName + '.' + field.name,
+        angular.forEach(schema, function processField(field, fieldKey) {
+            var qualifiedName = this.parentName + '.' + fieldKey,
+                fullyQualifiedName = this.fqName + '.' + fieldKey,
                 fieldElStr;
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
             // has hierarchical subforms?
-            if (field.children) {
-                var childElem = field.name + 'Elem';
+            if (field.items) {
+                var childElem = fieldKey + 'Elem';
 
                 // ~~~~ FIXME: start (init array top-level)
                 var contentChilds = scope.$eval(qualifiedName);
@@ -47,7 +47,7 @@ angular.widget('my:form', function(element) {
                 var subform = angular.element('<div class="subform"></div>');
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '"></fieldset>');
 
-                var legendChild = angular.element('<legend>' + field.label +'</legend>'); // Position: {{$index}}
+                var legendChild = angular.element('<legend>' + field.title +'</legend>'); // Position: {{$index}}
 
                 // ~~ up button (only if not first element, see CSS selector)
                 var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
@@ -57,118 +57,110 @@ angular.widget('my:form', function(element) {
                 legendChild.append(moveDownButton);
 
                 // ~~ remove (per individual child group)
-                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.label + '"></i></a>');
+                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
                 subform.append(subfieldset);
 
                 // ~~
                 this.curDOMParent.append(subform);
-                angular.forEach(field.children, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset});
+                angular.forEach(field.items, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset});
 
                 // ~~ add button (should be available anytime)
-                var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + field.name + '\'})"><i class="icon-plus" title="Add"></i>' + field.label + '</a></div>');
+                var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + fieldKey + '\'})"><i class="icon-plus" title="Add"></i>' + field.title + '</a></div>');
                 this.curDOMParent.append(addButton);
 
                 //console.log("~~ after add children   -> " + qualifiedName);
                 return;
             }
 
-            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Render Field Types
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start Render Field Type
             var typeLength = "medium";
-            if (field.len) {
-                typeLength = field.len;
+            if (field.ui_width) {
+                typeLength = field.ui_width;
             }
             var lengthClassName = 'input-' + typeLength;
 
-            if (field.type == 'title') {
-                field.type = 'text'; // for the inputing part, there is no difference (except that title is a required field)
+            if (field.type == 'array' && field.items.type == 'string') {
+                fieldElStr  = '<input type="text" class="valueArray ' + lengthClassName + '" ui:item="' + qualifiedName + '" ';
+                fieldElStr += ' ui:valueArray >';
+            }
+            else if (field.enum) {
+                fieldElStr  = '<ul ui:selectable-container class="selectBox">';
+                fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in schemaRules.' + field.rule_ref + '.allowedValues" data-value="{{i.value}}">';
+                fieldElStr += '        <div class="name">{{i.title}}</div>';
+                fieldElStr += '    </li>';
+                fieldElStr += '</ul>';
+            }
+            else if (field.ui_class == 'reference') {
+                fieldElStr  = '<div class="reference input-append">';
+                fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.ui_callout + '\',\'' + fullyQualifiedName + '\'';
+                if (field.ui_update_also) {
+                    var fullyQualifiedNameSeconday = this.fqName + '.' + field.ui_update_also;
+                    fieldElStr += ',\'' + fullyQualifiedNameSeconday + '\'';
+                }
+                fieldElStr += ')"><i class="icon-edit"></i></span>';
+                fieldElStr += '</div>';
+            }
+            else if (field.ui_class == 'simple_reference') {
+                // Extends reference by allowing multiple fields to be updated
+                fieldElStr  = '<div class="reference input-append">';
+                fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                var fieldnames = ""; // field.ui_to_update.join("#");
+                for (i in field.ui_to_update) {
+                    fieldnames += this.fqName+ '.' + field.ui_to_update[i] + "#";
+                }
+                fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fieldnames +'\'';
+                fieldElStr += ')"><i class="icon-edit"></i></span>';
+                fieldElStr += '</div>';
+
+            }
+            else if (field.format == 'date') {
+                fieldElStr  = '<div class="reference">';
+                fieldElStr += '<input type="text" class="datepicker ' + lengthClassName + '"';
+                // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
+                fieldElStr += '  ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'yy-mm-dd\', showOn: \'both\',';
+                fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
+                fieldElStr += '</div>';
+            }
+            else if (field.ui_class == 'richtextarea') {
+                fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthClassName + '" name="' + qualifiedName + '" ';
+
+                //angular.forEach(field, function(attribute) {
+                //    fieldElStr += attribute + '="' + field[attribute] + '" ';
+                //});
+
+                fieldElStr += ' rows="8" cols="70"></textarea>';
+            }
+            // ~~ "normal" text input field
+            else {
+
+                fieldElStr = '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
+
+                angular.forEach(field, function(value, attribute) {
+                    if (attribute != 'tag') {
+                        fieldElStr += attribute + '="' + value + '" ';
+                    }
+                });
+
+                fieldElStr += '>';
             }
 
-            switch (field.type || 'text') {
-                case 'reference': {
-                    fieldElStr  = '<div class="reference input-append">';
-                    fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
-                    fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\'';
-                    if (field.update_also) {
-                        var fullyQualifiedNameSeconday = this.fqName + '.' + field.update_also;
-                        fieldElStr += ',\'' + fullyQualifiedNameSeconday + '\'';
-                    }
-                    fieldElStr += ')"><i class="icon-edit"></i></span>';
-                    fieldElStr += '</div>';
-                    break;
-                }
-                 case 'simple_reference': {  // Extends reference by allowing multiple fields to be updated
-                    fieldElStr  = '<div class="reference input-append">';
-                    fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
-                    var fieldnames = ""; // field.to_update.join("#");
-                    for (i in field.to_update) {
-                        fieldnames += this.fqName+ '.' + field.to_update[i] + "#";
-                    }
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fieldnames +'\'';
-                    fieldElStr += ')"><i class="icon-edit"></i></span>';
-                    fieldElStr += '</div>';
-                    break;
-                }
-                case 'date': {
-                    fieldElStr  = '<div class="reference">';
-                    fieldElStr += '<input type="text" class="datepicker ' + lengthClassName + '"';
-                    fieldElStr += '  ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'' + field.dateFormat + '\', showOn: \'both\',';
-                    fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
-                    fieldElStr += '</div>';
-                    break;
-                }
-                case 'select': {
-                    fieldElStr  =  '<ul ui:selectable-container class="selectBox">';
-                    fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in schemaRules.' + field.rule_ref + '.allowedValues" data-value="{{i.value}}">';
-                    fieldElStr += '        <div class="name">{{i.label}}</div>';
-                    fieldElStr += '    </li>';
-                    fieldElStr += '</ul>';
-                    break;
-                }
-                case 'array': {
-                    fieldElStr  = '<input type="text" class="valueArray ' + lengthClassName + '" ui:item="' + qualifiedName + '" ';
-                    fieldElStr += ' ui:valueArray >';
-                    break;
-                }
-                case 'autoComplete': {
-                    // TODO: Under development (still hard-code to use tag search)
-                    fieldElStr  = '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
-                    fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
-                    break;
-                }
-                case 'checkbox':; //fallthrough
-                case 'password':; //fallthrough
-                case 'text': {
-                    fieldElStr = '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
+            /* type == 'autoComplete':
+             // TODO: Under development (still hard-code to use tag search)
+             fieldElStr  = '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
+             fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
+             */
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Render Field Type
 
-                    angular.forEach(field, function(value, attribute) {
-                        if (attribute != 'tag') {
-                            fieldElStr += attribute + '="' + value + '" ';
-                        }
-                    });
-
-                    fieldElStr += '>';
-                    break;
-                }
-                case 'textarea': {
-                    fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthClassName + '" name="' + qualifiedName + '" ';
-
-                    //angular.forEach(field, function(attribute) {
-                    //    fieldElStr += attribute + '="' + field[attribute] + '" ';
-                    //});
-
-                    fieldElStr += ' rows="8" cols="70"></textarea>';
-                    break;
-                }
-            }
 
             var controlGroup = angular.element('<div class="control-group"></div>');
-            controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.label + '</label>'));
+            controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
             var controlElem = angular.element('<div class="controls">');
             controlElem.append(fieldElStr);
-            if (field.helptext) {
-                controlElem.append('<p class="help-block">' + field.helptext + '</p>');
+            if (field.description) {
+                controlElem.append('<p class="help-block">' + field.description + '</p>');
             }
 
             controlGroup.append(controlElem);
