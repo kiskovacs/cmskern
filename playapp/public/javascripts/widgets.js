@@ -16,6 +16,7 @@ angular.widget('my:form', function(element) {
             fieldset = angular.element('<fieldset class="root"></fieldset>');
 
         // process every field as specified in the JSON schema definition
+        //                               context object: {parentName, fqName, curDOMParent, invisible}
         angular.forEach(schema, function processField(field, fieldKey) {
             var qualifiedName = this.parentName + '.' + fieldKey,
                 fullyQualifiedName = this.fqName + '.' + fieldKey,
@@ -23,7 +24,7 @@ angular.widget('my:form', function(element) {
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
             // has hierarchical subforms?
-            if (field.items) {
+            if (field.items && jQuery.isArray(field.items)) {
                 var childElem = fieldKey + 'Elem';
 
                 // ~~~~ FIXME: start (init array top-level)
@@ -62,27 +63,41 @@ angular.widget('my:form', function(element) {
                 subfieldset.append(legendChild);
                 subform.append(subfieldset);
 
-                // ~~
                 this.curDOMParent.append(subform);
-                angular.forEach(field.items, processField, {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset});
 
-                // ~~ add button (should be available anytime)
-                var addButton = angular.element('<div class="btn_add"><a href="#" ng:click="addChild({parent:'+ this.parentName +', child:' + qualifiedName + ', childname: \'' + fieldKey + '\'})"><i class="icon-plus" title="Add"></i>' + field.title + '</a></div>');
-                this.curDOMParent.append(addButton);
+                // ~~ add button (available no matter how many already exist)
+                var localScope = this;
+                jQuery.each(field.items, function (subIdx, subfield) {
+                    // ~~ render fields of subform (TODO: erst später)
+                    angular.forEach(subfield.properties, processField,
+                        {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: subfieldset, invisible: subIdx > 0});
 
-                //console.log("~~ after add children   -> " + qualifiedName);
+                    var addButton = angular.element('<div class="btn_add"><a href="#" ' +
+                        ' ng:click="addChild({parent:'+ localScope.parentName +',' +
+                        ' child:' + qualifiedName + ', childname: \'' + fieldKey + '\', childtype: \'' + subfield.id + '\'})">' +
+                        '<i class="icon-plus" title="Add ' + subfield.title + '"></i>' + subfield.title + '</a></div>');
+                    localScope.curDOMParent.append(addButton);
+                });
+
                 return;
             }
 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start Render Field Type
+
+            var controlGroup = angular.element('<div class="control-group"></div>');
+
+            // ~~ Label for input element
+            controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
+            var controlElem = angular.element('<div class="controls">');
+
             var typeLength = "medium";
             if (field.ui_width) {
                 typeLength = field.ui_width;
             }
-            var lengthClassName = 'input-' + typeLength;
+            var lengthCssClassName = 'input-' + typeLength;
 
             if (field.type == 'array' && field.items.type == 'string') {
-                fieldElStr  = '<input type="text" class="valueArray ' + lengthClassName + '" ui:item="' + qualifiedName + '" ';
+                fieldElStr  = '<input type="text" class="valueArray ' + lengthCssClassName + '" ui:item="' + qualifiedName + '" ';
                 fieldElStr += ' ui:valueArray >';
             }
             else if (field.enum) {
@@ -94,7 +109,7 @@ angular.widget('my:form', function(element) {
             }
             else if (field.ui_class == 'reference') {
                 fieldElStr  = '<div class="reference input-append">';
-                fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
                 fieldElStr += '  <span class="add-on" ng:click="select_value(\'' + field.ui_callout + '\',\'' + fullyQualifiedName + '\'';
                 if (field.ui_update_also) {
                     var fullyQualifiedNameSeconday = this.fqName + '.' + field.ui_update_also;
@@ -106,7 +121,7 @@ angular.widget('my:form', function(element) {
             else if (field.ui_class == 'simple_reference') {
                 // Extends reference by allowing multiple fields to be updated
                 fieldElStr  = '<div class="reference input-append">';
-                fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
+                fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
                 var fieldnames = ""; // field.ui_to_update.join("#");
                 for (i in field.ui_to_update) {
                     fieldnames += this.fqName+ '.' + field.ui_to_update[i] + "#";
@@ -114,18 +129,17 @@ angular.widget('my:form', function(element) {
                 fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fieldnames +'\'';
                 fieldElStr += ')"><i class="icon-edit"></i></span>';
                 fieldElStr += '</div>';
-
             }
             else if (field.format == 'date') {
                 fieldElStr  = '<div class="reference">';
-                fieldElStr += '<input type="text" class="datepicker ' + lengthClassName + '"';
+                fieldElStr += '<input type="text" class="datepicker ' + lengthCssClassName + '"';
                 // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
                 fieldElStr += '  ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'yy-mm-dd\', showOn: \'both\',';
                 fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
                 fieldElStr += '</div>';
             }
             else if (field.ui_class == 'richtextarea') {
-                fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthClassName + '" name="' + qualifiedName + '" ';
+                fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthCssClassName + '" name="' + qualifiedName + '" ';
 
                 //angular.forEach(field, function(attribute) {
                 //    fieldElStr += attribute + '="' + field[attribute] + '" ';
@@ -136,7 +150,7 @@ angular.widget('my:form', function(element) {
             // ~~ "normal" text input field
             else {
 
-                fieldElStr = '<input class="' + lengthClassName + '" name="' + qualifiedName + '" ';
+                fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
 
                 angular.forEach(field, function(value, attribute) {
                     if (attribute != 'tag') {
@@ -144,6 +158,9 @@ angular.widget('my:form', function(element) {
                     }
                 });
 
+                //if (this.invisible) {
+                //    fieldElStr += ' style="display:none"';
+                //}
                 fieldElStr += '>';
             }
 
@@ -152,19 +169,14 @@ angular.widget('my:form', function(element) {
              fieldElStr  = '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
              fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
              */
+            controlElem.append(fieldElStr);
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Render Field Type
 
-
-            var controlGroup = angular.element('<div class="control-group"></div>');
-            controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
-            var controlElem = angular.element('<div class="controls">');
-            controlElem.append(fieldElStr);
+            // ~~ optionally add help hint
             if (field.description) {
                 controlElem.append('<p class="help-block">' + field.description + '</p>');
             }
-
             controlGroup.append(controlElem);
-            //console.log("****** append to " + qualifiedName);
             this.curDOMParent.append(controlGroup);
 
         }, {parentName: data, fqName: data, curDOMParent: fieldset});

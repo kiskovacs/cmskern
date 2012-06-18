@@ -41,11 +41,11 @@ function EditContentNodeCtrl($xhr) {
 
     scope.addChild = function(ctx) {
         if (ctx.child) {
-            console.log("Add child: " + ctx.child);
-            ctx.child.push({});
+            console.log("Add child (type: " + ctx.childtype + "): " + ctx.child);
+            ctx.child.push({ _type: ctx.childtype });
         } else {
-            console.log("Init child: " + ctx.childname);
-            ctx.parent[ctx.childname] = [{}];
+            console.log("Init child (type: " + ctx.childtype + "): " + ctx.childname);
+            ctx.parent[ctx.childname] = [{ _type: ctx.childtype }];
         }
     };
 

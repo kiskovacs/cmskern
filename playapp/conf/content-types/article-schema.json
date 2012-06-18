@@ -26,8 +26,9 @@
             "title":"Paragraph",
             "items":[
                 {
+                    "id":"textpara",
                     "type":"object",
-                    "title":"Text",
+                    "title":"Text Paragraph",
                     "additionalProperties":false,
                     "properties":{
                         "headline":{
@@ -38,28 +39,34 @@
                         "text":{
                             "title":"Text",
                             "type":"string",
-                            "ui_textclass":"textarea",
+                            "ui_class":"richtextarea",
                             "ui_width":"xxlarge"
                         },
                         "childparas":{
-                            "type":"object",
+                            "type":"array",
                             "title":"Child Paragraph",
-                            "additionalProperties":false,
-                            "properties":{
-                                "subHeader":{
-                                    "title":"Sub-Headline",
-                                    "type":"string"
-                                },
-                                "subText":{
-                                    "title":"Sub-Text",
-                                    "type":"string",
-                                    "ui_class":"richtextarea"
+                            "items":[
+                                {
+                                    "title":"Child Para",
+                                    "type":"object",
+                                    "properties":{
+                                        "subHeader":{
+                                            "title":"Sub-Headline",
+                                            "type":"string"
+                                        },
+                                        "subText":{
+                                            "title":"Sub-Text",
+                                            "type":"string",
+                                            "ui_class":"richtextarea"
+                                        }
+                                    }
                                 }
-                            }
+                            ]
                         }
                     }
                 },
                 {
+                    "id":"internal_image",
                     "type":"object",
                     "title":"Internal Image",
                     "additionalProperties":false,
@@ -82,6 +89,7 @@
                     }
                 },
                 {
+                    "id":"flickr_image",
                     "type":"object",
                     "title":"Flickr Image",
                     "additionalProperties":false,
