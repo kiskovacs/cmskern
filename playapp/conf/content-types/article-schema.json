@@ -1,72 +1,303 @@
 {
-"rules":
-    {  "rule_news_source": { "type": "multiple",
-            "allowedValues": [
-                { "value": "unspecified", "label": "Unspecified", "selected": true },
-                { "value": "by_mail",     "label": "By Mail" },
-                { "value": "by_phone",    "label": "By Phone" }
-            ]
-        }
-    },
-
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xxlarge"
-        },
-
-        { "name": "online", "label": "Online?",
-          "type": "checkbox"
-        },
-
-        { "name": "online_date", "label": "Online Date",
-          "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
-          "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
-        },
-
-        { "name": "paras", "label": "Paragraph", "type": "repeatable",
-            "min": "1",
-            "children": [
-                { "name": "headline", "label": "Headline",
-                  "type": "text", "len": "xxlarge"
-                },
-                { "name": "text", "label": "Text",
-                  "type": "textarea", "len": "xxlarge"
-                },
-
-                { "name": "image_idref", "label": "Image (intern)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/image_reference", "update": ["image_idref", "image_title"]
-                  "helptext": "References an internal URL to a selected image."
-                },
-                { "name": "image_title", "label": "Title",
-                  "type": "text", "len": "xlarge"
-                },
-
-                { "name": "flickr_url", "label": "Image (flickr)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/external/flickr_photo_reference",
-                  "helptext": "References URL from a selected photo (hosted on flickr.com)."
-                },
-
-                { "name": "childparas", "label": "Child Paragraph",
-                  "type": "repeatable", "min": "1", "children": [
-                      { "name": "subHeader", "label": "Sub-Headline",
-                        "type": "text" },
-                      { "name": "subText", "label": "Sub-Text",
-                        "type": "textarea" }
-                  ]
-                }
-            ]
-        },
-
-        { "name": "source", "label": "News Source",
-            "type": "select", "rule_ref": "rule_news_source"
-        },
-
-        { "name": "tags", "label": "Tags",
-          "type": "array", "query_type": "tags"
-        }
-
-    ]
+   "fields" : [
+      {
+         "name" : "online",
+         "type" : "checkbox",
+         "label" : "Online?"
+      },
+      {
+         "callout" : "/callouts/internal/node_reference",
+         "name" : "node_idref",
+         "type" : "reference",
+         "label" : "Navigationsknoten",
+         "update" : [
+            "node_idref",
+            "node_title",
+            null,
+            null
+         ]
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "node_title",
+         "type" : "text",
+         "label" : "Navigationsknoten"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "title",
+         "type" : "title",
+         "label" : "Titel"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "catchline",
+         "type" : "text",
+         "label" : "Spitzmarke"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "teaser_title",
+         "type" : "text",
+         "label" : "Teaser Titel"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "teaser_text",
+         "type" : "textarea",
+         "label" : "Teaser Text"
+      },
+      {
+         "len" : "xlarge",
+         "callout" : "/callouts/internal/image_reference",
+         "helptext" : "References an internal URL to a selected image.",
+         "name" : "teaser_idref",
+         "type" : "reference",
+         "label" : "Teaser Image"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "body",
+         "type" : "textarea",
+         "label" : "Body Text"
+      },
+      {
+         "min" : "0",
+         "name" : "related_articles",
+         "children" : [
+            {
+               "len" : "xlarge",
+               "callout" : "/callouts/internal/test_reference",
+               "helptext" : "References an internal URL to a selected article.",
+               "name" : "article_idref",
+               "type" : "reference",
+               "label" : "Artikel",
+               "update" : [
+                  "article_idref",
+                  "headline",
+                  "teaser"
+               ]
+            },
+            {
+               "len" : "xxlarge",
+               "name" : "headline",
+               "type" : "text",
+               "label" : "Headline"
+            },
+            {
+               "len" : "xxlarge",
+               "name" : "teaser",
+               "type" : "textarea",
+               "label" : "Text"
+            },
+            {
+               "len" : "xlarge",
+               "callout" : "/callouts/internal/image_reference",
+               "update_also" : "image_title",
+               "helptext" : "References an internal URL to a selected image.",
+               "name" : "image_idref",
+               "type" : "reference",
+               "label" : "Image (intern)"
+            }
+         ],
+         "type" : "repeatable",
+         "label" : "Weiterführende Artikel"
+      },
+      {
+         "min" : "1",
+         "max" : "1",
+         "name" : "dates",
+         "children" : [
+            {
+               "len" : "small",
+               "helptext" : "Specify the embargo date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
+               "name" : "embargo_date",
+               "type" : "date",
+               "label" : "Embargo Date",
+               "dateFormat" : "dd-mm-yy"
+            },
+            {
+               "len" : "small",
+               "helptext" : "Specify the expire date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
+               "name" : "expire_date",
+               "type" : "date",
+               "label" : "Expire Date",
+               "dateFormat" : "dd-mm-yy"
+            },
+            {
+               "len" : "small",
+               "helptext" : "Specify the sort date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
+               "name" : "sort_date",
+               "type" : "date",
+               "label" : "Sort Date",
+               "dateFormat" : "dd-mm-yy"
+            }
+         ],
+         "type" : "repeatable",
+         "label" : "Datumseinträge"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "tags",
+         "type" : "array",
+         "label" : "Tags"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "author",
+         "type" : "text",
+         "label" : "Autor"
+      },
+      {
+         "len" : "xxlarge",
+         "name" : "copyright",
+         "type" : "text",
+         "label" : "Copyright"
+      },
+      {
+         "len" : "large",
+         "name" : "source",
+         "type" : "text",
+         "label" : "Source"
+      },
+      {
+         "len" : "xlarge",
+         "callout" : "/callouts/internal/sidebar_reference",
+         "name" : "sidebar_idref",
+         "type" : "reference",
+         "label" : "Sidebar"
+      },
+      {
+         "len" : "large",
+         "name" : "adzone",
+         "type" : "text",
+         "label" : "Belegungseinheit"
+      },
+      {
+         "min" : 1,
+         "max" : 1,
+         "name" : "settings",
+         "children" : [
+            {
+               "name" : "comments",
+               "type" : "checkbox",
+               "label" : "Kommentare zulassen",
+               "selected" : true
+            },
+            {
+               "name" : "print",
+               "type" : "checkbox",
+               "label" : "Druckansicht",
+               "selected" : true
+            },
+            {
+               "name" : "rating",
+               "type" : "checkbox",
+               "label" : "Bewertung zulassen",
+               "selected" : true
+            },
+            {
+               "name" : "socialbookmarks",
+               "type" : "checkbox",
+               "label" : "Social Bookmarks",
+               "selected" : true
+            },
+            {
+               "name" : "recommend",
+               "type" : "checkbox",
+               "label" : "Weiterempfehlen",
+               "selected" : true
+            }
+         ],
+         "type" : "repeatable",
+         "label" : "Settings"
+      },
+      {
+         "min" : "1",
+         "max" : 1,
+         "name" : "issue",
+         "children" : [
+            {
+               "rule_ref" : "rule_magazines",
+               "name" : "magazine",
+               "type" : "select",
+               "label" : "Heft"
+            },
+            {
+               "len" : "large",
+               "name" : "issue_year",
+               "type" : "text",
+               "label" : "Heft Jahr"
+            },
+            {
+               "len" : "large",
+               "name" : "issue_number",
+               "type" : "text",
+               "label" : "Heftnummer"
+            },
+            {
+               "len" : "large",
+               "name" : "issue_pages",
+               "type" : "text",
+               "label" : "Seiten"
+            }
+         ],
+         "type" : "repeatable",
+         "label" : "Heft"
+      }
+   ],
+   "rules" : {
+      "rule_settings" : {
+         "type" : "multiple",
+         "allowedValues" : [
+            {
+               "value" : "comments",
+               "label" : "Kommentare zulassen",
+               "selected" : true
+            },
+            {
+               "value" : "print",
+               "label" : "Druckansicht",
+               "selected" : true
+            },
+            {
+               "value" : "rating",
+               "label" : "Bewertung zulassen",
+               "selected" : true
+            },
+            {
+               "value" : "socialbookmarks",
+               "label" : "Social Bookmarks",
+               "selected" : true
+            },
+            {
+               "value" : "recommend",
+               "label" : "Weiterempfehlen",
+               "selected" : true
+            }
+         ]
+      },
+      "rule_magazines" : {
+         "type" : "single",
+         "allowedValues" : [
+            {
+               "value" : "unspecified",
+               "label" : "Unspecified",
+               "selected" : true
+            },
+            {
+               "value" : "ng",
+               "label" : "NG"
+            },
+            {
+               "value" : "ngworld",
+               "label" : "NG World"
+            },
+            {
+               "value" : "ngkids",
+               "label" : "NG Kids"
+            }
+         ]
+      }
+   }
 }

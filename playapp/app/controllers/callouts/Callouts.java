@@ -47,6 +47,8 @@ public class Callouts extends Controller {
 
         String[] fieldnames= params.getAll("update_fields[]");
 
+        Logger.info("fieldnames: %s" , fieldnames);
+
         model.put("fieldnames", fieldnames);
         // Add parameters given to model, introduce simple name map
         for (Map.Entry<String, String> param : params.allSimple().entrySet()) {

@@ -89,12 +89,17 @@ angular.widget('my:form', function(element) {
                 case 'reference': {
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthClassName + '" name="' + qualifiedName + '">';
-                    var fieldnames = ""; // field.to_update.join("#");
-                    for (i in field.update) {
-                        fieldnames += this.fqName+ '.' + field.update[i] + "#";
+                    if (field.update) {
+                        var fieldnames = ""; // field.to_update.join("#");
+                        for (i in field.update) {
+                            fieldnames += this.fqName+ '.' + field.update[i] + "#";
+                        }
+                        console.log("fields to update: " + fieldnames);
+                        fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fieldnames +'\'';
+                    } else {
+
+                        fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fullyQualifiedName + '\'';
                     }
-                    console.log("fields to update: " + fieldnames);
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.callout + '\',\'' + fieldnames +'\'';
                     fieldElStr += ')"><i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                     break;

@@ -135,6 +135,7 @@ function EditContentNodeCtrl($xhr) {
     // Called by referencing input element (see widget.js)
     scope.simple_select_value = function (callout_url, field_names) {
         var field_ar = field_names.split('#');
+        console.log("field_ar " + dump(field_ar));
         var fields = {};
         fields["update_fields"] = Array();
 
@@ -174,6 +175,7 @@ function EditContentNodeCtrl($xhr) {
 
     // Called after "Save" Button in Callout-Dialog is pressed
     scope.save_values = function(doc_data) {
+    console.log("doc_data: " + dump(doc_data));
         jQuery.each(doc_data, function(fieldname, val) {
           if (fieldname && fieldname != "null")   {
             if (endsWith(fieldname, "_idref")) {

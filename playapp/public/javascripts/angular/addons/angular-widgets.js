@@ -714,7 +714,7 @@ angular.widget('@ui:valueArray', function(expr, el, val) {
         currentScope.$watch(itemExpr.expression, function(val) {
             // $(el).datepicker('setDate', val);
             if (typeof val == 'undefined') {
-                val = ['foo', 'bar'].join(', ');
+                val = '';
             }
             // expects value from already to be comma-separated
             $(el).val(val);

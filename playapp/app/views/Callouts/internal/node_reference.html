@@ -1,0 +1,55 @@
+<!-- Select one existing articles -->
+<h3>Select Node</h3>
+
+<ul>
+  #{list items: nodes, as:'node'}
+    <li><a href="#" onclick="updateRef('${node._id}', '${node.data.title}', '${node.data.path}', '${node.data.ancestors}')">${node.data.title}</a></li>
+  #{/list}
+</ul>
+
+
+<fieldset>
+    <label for="select_id">Node ID</label>
+    <input type="text" id="select_id" name="value" readonly="readonly" />
+
+    <label for="select_title">Title</label>
+    <input type="text" id="select_title" name="title" />
+    <label for="select_path">Path</label>
+    <input type="text" id="select_path" name="title"/>
+    <label for="select_parent">Ancestors</label>
+    <input type="text" id="select_parent" name="title" />
+</fieldset>
+
+
+<script type="text/javascript">
+    var temp = Array();
+    // contract: returns [ID, TITLE, PATH, ANCESTORS]
+
+    function updateRef(id, title, path, parents) {
+    temp[0] = id;
+    temp[1] = title;
+    temp[2] = path;
+    if (parents) {
+    temp[3] = parents +"," +id;
+    } else {
+    temp[3] =id;
+    }
+        $('#select_id').val(id);
+        $('#select_title').val(title);
+        $('#select_path').val(path);
+        $('#select_parent').val(temp[3]);
+
+    }
+
+    function calloutGetSelectedValues() {
+        var params = Array('${(fieldnames as String[]).join('\',\'')}');
+        var result = {};
+        for (idx in params) {
+            if (params[idx] && "" !== params[idx]) {
+                result[params[idx]] = temp[idx];
+            }
+        }
+        return result;
+    }
+
+</script>
