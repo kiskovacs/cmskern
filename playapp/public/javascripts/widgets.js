@@ -162,13 +162,14 @@ angular.widget('my:form', function(element) {
                 fieldElStr = angular.element('<div class="subelements ' + fieldKey + '"></div>');
                 console.log("**** START " + fieldKey);
                 angular.forEach(field.properties, processField,
-                    {parentName: fieldKey, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
+                    {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
             }
             // ~~ "normal" text input field
             else {
-
                 fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
-
+                if (field.type == 'boolean') {
+                    field.type = 'checkbox'; // TODO: weg vom hack...
+                }
                 angular.forEach(field, function(value, attribute) {
                     if (attribute != 'tag') {
                         fieldElStr += attribute + '="' + value + '" ';
