@@ -1,19 +1,21 @@
 /* App Controllers */
-function dump(arr,level) {
+
+// TODO: move to a helper lib
+function dump(arr, level) {
 	var dumped_text = "";
-	if(!level) level = 0;
+	if (!level) level = 0;
 
 	//The padding given at the beginning of the line.
 	var level_padding = "";
-	for(var j=0;j<level+1;j++) level_padding += "    ";
+	for (var j=0; j<level+1; j++) level_padding += "    ";
 
-	if(typeof(arr) == 'object') { //Array/Hashes/Objects
-		for(var item in arr) {
+	if (typeof(arr) == 'object') { //Array/Hashes/Objects
+		for (var item in arr) {
 			var value = arr[item];
 
-			if(typeof(value) == 'object') { //If it is an array,
+			if (typeof(value) == 'object') { //If it is an array,
 				dumped_text += level_padding + "'" + item + "' ...\n";
-				dumped_text += dump(value,level+1);
+				dumped_text += dump(value, level+1);
 			} else {
 				dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
 			}
@@ -24,6 +26,7 @@ function dump(arr,level) {
 	return dumped_text;
 }
 
+// ~~~~~~
 
 function EditContentNodeCtrl($xhr) {
     var scope;
@@ -105,8 +108,8 @@ function EditContentNodeCtrl($xhr) {
     scope.helper = new CalloutDialogHelper();
 
 
-    // Called by referencing input element (see widget.js)
-    scope.select_value = function(callout_url, field_name, field_name_secondary) {
+    // TODO: Delete as soon as simple_select_value is working properly
+    scope.DEPRECATED_select_value = function(callout_url, field_name, field_name_secondary) {
         var fq_name = field_name;
         var fq_name_sec = field_name_secondary;
         // Special handling for array elements: insert position number
@@ -147,14 +150,14 @@ function EditContentNodeCtrl($xhr) {
 
 
     // Called by referencing input element (see widget.js)
-    scope.simple_select_value = function (callout_url, field_names) {
-        var field_ar = field_names.split('#');
-        console.log("field_ar " + dump(field_ar));
+    scope.simple_select_value = function (callout_url, field_names, src_prop_names) {
+        var fn_arr = field_names.split('#');
+        var src_name_arr = src_prop_names ? src_prop_names.split('#') : [];
         var fields = {};
-        fields["update_fields"] = Array();
+        fields["update_fields"] = new Array();
 
-        for (i in field_ar) {
-            var fq_name = field_ar[i];
+        for (i in fn_arr) {
+            var fq_name = fn_arr[i];
             if (fq_name) {
                 // Special handling for array elements: insert position number
                 var cur_pos = this.$index;
@@ -164,7 +167,10 @@ function EditContentNodeCtrl($xhr) {
                 }
 
                 var field_value = scope.$get(fq_name);
-                fields[fq_name] = field_value;
+                if (src_prop_names) {
+                    fields['src_prop_' + src_name_arr[i]] = field_value;
+                    console.log("  SET " + src_name_arr[i] + " ->>> " + field_value);
+                }
                 fields["update_fields"].push(fq_name);
             }
         }

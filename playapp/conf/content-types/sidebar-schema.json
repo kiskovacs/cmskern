@@ -15,6 +15,8 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/node_reference",
+            "ui_src_type":"node",
+            "ui_src_properties":["id","title"],
             "ui_update":["parent_node_idref", "parent_title"],
             "ui_width":"xxlarge"
         },

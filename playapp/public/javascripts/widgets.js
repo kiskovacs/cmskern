@@ -133,14 +133,15 @@ angular.widget('my:form', function(element) {
                 fieldElStr  = '<div class="reference input-append">';
                 fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
                 if (field.ui_update) {
-                    var fieldnames = ""; // field.to_update.join("#");
+                    var fieldnames = "";
                     for (i in field.ui_update) {
                         fieldnames += this.fqName+ '.' + field.ui_update[i] + "#";
                     }
+                    var srcPropNames = field.ui_src_properties.join('#');
                     console.log("fields to update: " + fieldnames);
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fieldnames +'\'';
+                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fieldnames +'\',\'' + srcPropNames +'\'';
                 } else {
-
+                    // TODO: Should we require to specify: ui_update
                     fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fullyQualifiedName + '\'';
                 }
                 fieldElStr += ')"><i class="icon-edit"></i></span>';

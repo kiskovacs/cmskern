@@ -13,6 +13,8 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/node_reference",
+            "ui_src_type":"node",
+            "ui_src_properties":["id", "title"],
             "ui_update":["node_idref", "node_title"],
             "ui_width":"xlarge"
         },
@@ -48,6 +50,8 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/image_reference",
+            "ui_src_type":"image",
+            "ui_src_properties":["id"],
             "ui_update":["teaser_idref"],
             "ui_width":"xlarge"
         },
@@ -69,6 +73,8 @@
                         "type":"string",
                         "description":"References an internal URL to a selected article.",
                         "ui_callout":"/callouts/internal/test_reference",
+                        "ui_src_type":"article",
+                        "ui_src_properties":["id", "title", "teaser_text"],
                         "ui_update":["article_idref", "headline", "teaser"],
                         "ui_class":"reference",
                         "ui_width":"xlarge"
@@ -88,9 +94,11 @@
                         "title":"Image",
                         "description":"References an internal URL to a selected image.",
                         "type":"string",
-                        "ui_width":"xlarge",
                         "ui_callout":"/callouts/internal/image_reference",
-                        "ui_update":["image_idref", "image_title"]
+                        "ui_src_type":"image",
+                        "ui_src_properties":["id", "title"],
+                        "ui_update":["image_idref", "image_title"],
+                        "ui_width":"xlarge"
                     }
                 }
             }
@@ -153,6 +161,9 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/sidebar_reference",
+            "ui_src_type":"sidebar",
+            "ui_src_properties":["id"],
+            "ui_update":["sidebar_idref"],
             "ui_width":"xlarge"
         },
         "adzone":{

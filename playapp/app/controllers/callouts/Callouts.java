@@ -46,7 +46,6 @@ public class Callouts extends Controller {
         }
 
         String[] fieldnames = params.getAll("update_fields[]");
-
         Logger.info("fieldnames: %s" , fieldnames);
 
         model.put("fieldnames", fieldnames);
@@ -54,13 +53,9 @@ public class Callouts extends Controller {
         for (Map.Entry<String, String> param : params.allSimple().entrySet()) {
 
             String key = param.getKey();
-            if (key.startsWith("contentNode")) {
-                String simpleName = key.substring(key.lastIndexOf('.') + 1);
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("fieldname", key);
-                map.put("value", param.getValue());
-                Logger.info("Add to model: %s -> %s", simpleName, map);
-                model.put(simpleName, map);
+            if (key.startsWith("src_prop_")) {
+                Logger.info("Add to model: %s -> %s", key, param.getValue());
+                model.put(key, param.getValue());
             }
         }
 

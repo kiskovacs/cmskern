@@ -1,15 +1,15 @@
 <h3>Select Sidebar</h3>
 
 <ul>
-  #{list items: sidebars, as:'sidebar'}
+#{list items: sidebars, as:'sidebar'}
     <li><a href="#" onclick="updateRef('${sidebar._id}', '${sidebar.data.title}')">${sidebar.data.title}</a></li>
-  #{/list}
+#{/list}
 </ul>
 
 
 <fieldset>
     <label for="select_value">Sidebar ID</label>
-    <input type="text" id="select_value" name="value" value="${sidebar_idref.value}" readonly="readonly" />
+    <input type="text" id="select_value" name="value" value="${src_prop_id}" readonly="readonly"/>
 </fieldset>
 
 
@@ -23,14 +23,14 @@
         $("#select_value").val(val);
     }
 
-    $("#select_title").on("change", function(event) {
+    $("#select_title").on("change", function (event) {
         event.preventDefault();
     });
 
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${sidebar_idref.fieldname}': selectedValue
+            '${sidebar_idref.fieldname}':selectedValue
         };
     }
 

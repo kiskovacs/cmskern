@@ -2,19 +2,19 @@
 
 <ul>
     #{list items: articles, as:'article'}
-    <li><a href="#" onclick="updateRef('${article._id}', '${article.data.teaser_title}', '${article.data.teaser_text}')">${article.data.title}</a></li>
+      <li><a href="#" onclick="updateRef('${article._id}', '${article.data.teaser_title}', '${article.data.teaser_text}')">${article.data.title}</a></li>
     #{/list}
 </ul>
 
 <fieldset>
     <label for="id_field">Article ID</label>
-    <input type="text" id="id_field" name="value" value="" readonly="readonly" />
+    <input type="text" id="id_field" name="value" value="${src_prop_id}" readonly="readonly" />
 
     <label for="title_field">Title</label>
-    <input type="text" id="title_field" name="title" value="" />
+    <input type="text" id="title_field" name="title" value="${src_prop_title}" />
 
     <label for="teaser_field">Teaser</label>
-    <textarea id="teaser_field"></textarea>
+    <textarea id="teaser_field">${src_prop_teaser_text}</textarea>
 </fieldset>
 
 
