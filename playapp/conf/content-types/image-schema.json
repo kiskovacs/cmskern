@@ -13,15 +13,20 @@
         "asset_ref":{
             "title":"Asset",
             "type":"string",
-            "callout":"/callouts/internal/asset_reference",
+            "ui_callout":"/callouts/internal/asset_reference",
             "ui_class":"reference",
             "ui_width":"xlarge"
         },
         "keywords":{
             "title":"Keywords",
             "description":"Specify multiple keywords by separating entries with comma.",
-            "type":"string",
-            "ui_width":"xlarge"
+            "type":"array",
+            "ui_class":"compact",
+            "ui_width":"large",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
+            }
         }
     }
 }

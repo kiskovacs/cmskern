@@ -14,9 +14,9 @@
             "title":"Mutterknoten ID",
             "type":"string",
             "ui_class":"reference",
-            "ui_width":"xxlarge",
             "ui_callout":"/callouts/internal/node_reference",
-            "ui_update":["parent_node_idref", "parent_title"]
+            "ui_update":["parent_node_idref", "parent_title"],
+            "ui_width":"xxlarge"
         },
         "parent_title":{
             "title":"Mutterknoten",
@@ -28,6 +28,7 @@
             "type":"array",
             "items":{
                 "type":"object",
+                "title":"Paragraph",
                 "properties":{
                     "headline":{
                         "title":"Headline",
@@ -41,7 +42,6 @@
                         "ui_width":"xxlarge"
                     }
                 }
-
             }
         }
     }

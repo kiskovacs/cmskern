@@ -23,7 +23,8 @@ public class Callouts extends Controller {
 
         // Find object types to refer to
         // TODO: this could also be handled by schema definition or made a bit more generic
-        if (name.contains("internal/article_")) {
+        if (name.contains("internal/article_")
+                || name.contains("internal/test_")) {
             // ~~ Convert to ContentNode and to generic Map structure
             //List<ContentNode> articles = ContentNode.findByType("article", 20);
             //model.put("articles", ContentNode.convertToMap(articles));
@@ -44,8 +45,7 @@ public class Callouts extends Controller {
             model.put("nodes",dl );  // TODO: improve by using paging
         }
 
-
-        String[] fieldnames= params.getAll("update_fields[]");
+        String[] fieldnames = params.getAll("update_fields[]");
 
         Logger.info("fieldnames: %s" , fieldnames);
 

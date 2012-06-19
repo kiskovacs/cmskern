@@ -68,33 +68,32 @@
                     <div class="well sidebar-nav sidebar-nav-fixed">
 
                         <ul class="nav nav-list">
-                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header content active-header">
-                            <div class="menu-arrow"></div>
-                            Content
-                            </li>
-                            *{ ~~ TODO retrieve via ContentType.findByGroup('content') ~~ }*
-                            <li class="active"><a href="@{Application.list('article')}">List articles</a></li>
-                            <li><a href="@{ContentNodes.blank('article')}">New article</a></li>
 
-                            <li><a href="@{Application.list('image')}">List images</a></li>
-                            <li><a href="@{ContentNodes.blank('image')}">New image</a></li>
-
-                            <li><a href="@{Application.list('imageGallery')}">List image galleries</a></li>
-                            <li><a href="@{ContentNodes.blank('imageGallery')}">New image gallery</a></li>
+                            <li class="nav-header">Editiorial Content</li>
+                            #{list items:editorialTypes, as:'contentType'}
+                                <li class="content"><a href="@{Application.list(contentType.slug)}">List ${contentType.displayName}</a></li>
+                                <li class="content"><a href="@{ContentNodes.blank(contentType.slug)}">New ${contentType.displayName}</a></li>
+                                <div class="separator"></div>
+                            #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header site">Site</li>
-                            *{ ~~ TODO retrieve via ContentType.findByGroup('site') ~~ }*
-                            <li><a href="@{Application.list('node')}">List nodes</a></li>
-                            <li><a href="@{ContentNodes.blank('node')}">New node</a></li>
+                            <li class="nav-header">Site Structure</li>
+                            #{list items:siteTypes, as:'contentType'}
+                                <li class="site"><a href="@{Application.list(contentType.slug)}">List ${contentType.displayName}</a></li>
+                                <li class="site"><a href="@{ContentNodes.blank(contentType.slug)}">New ${contentType.displayName}</a></li>
+                                <div class="separator"></div>
+                            #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header admin-tasks">Admin Tasks</li>
-                            <li class="admin-tasks"><a href="@{ContentTypes.list()}">List content types</a></li>
-                            <li class="admin-tasks"><a href="@{ContentTypes.blank()}">New content type</a></li>
-                            <li class="admin-tasks"><a href="@{Users.list()}">List users</a></li>
-                            <li class="admin-tasks"><a href="@{Users.blank()}">New user</a></li>
+                            <li class="nav-header">Admin Tasks</li>
+
+                            <li class="admin"><a href="@{ContentTypes.list()}">List Content Types</a></li>
+                            <li class="admin"><a href="@{ContentTypes.blank()}">New Content Type</a></li>
+                            <div class="separator"></div>
+
+                            <li class="admin"><a href="@{Users.list()}">List Users</a></li>
+                            <li class="admin"><a href="@{Users.blank()}">New User</a></li>
+
                         </ul>
                     </div>
                 </div>

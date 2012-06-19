@@ -193,8 +193,8 @@ function EditContentNodeCtrl($xhr) {
         jQuery.each(doc_data, function(fieldname, val) {
           if (fieldname && fieldname != "null")   {
             if (endsWith(fieldname, "_idref")) {
-                console.log("convert to int");
-                if (val.indexOf(",") != -1) {
+                console.log("convert " + val + " to int");
+                if (val && val.indexOf(",") != -1) {
                     // dann ist das ein Array von IDs
                     var retval = Array();
                     values = val.split(",");

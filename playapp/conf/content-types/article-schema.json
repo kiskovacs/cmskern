@@ -17,7 +17,7 @@
             "ui_width":"xlarge"
         },
         "node_title":{
-            "title":"Navigationsknoten",
+            "title":"Nav.knoten Titel",
             "type":"string",
             "ui_width":"xxlarge"
         },
@@ -30,7 +30,6 @@
         "catchline":{
             "title":"Spitzmarke",
             "type":"string",
-            "required":true,
             "ui_width":"xxlarge"
         },
         "teaser_title":{
@@ -49,6 +48,7 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/image_reference",
+            "ui_update":["teaser_idref"],
             "ui_width":"xlarge"
         },
         "body":{
@@ -61,6 +61,7 @@
             "title":"Weiterführende Artikel",
             "type":"array",
             "items":{
+                "title":"Artikel",
                 "type":"object",
                 "properties":{
                     "article_idref":{
@@ -68,9 +69,9 @@
                         "type":"string",
                         "description":"References an internal URL to a selected article.",
                         "ui_callout":"/callouts/internal/test_reference",
+                        "ui_update":["article_idref", "headline", "teaser"],
                         "ui_class":"reference",
-                        "ui_width":"xlarge",
-                        "ui_update":["article_idref", "headline", "teaser"]
+                        "ui_width":"xlarge"
                     },
                     "headline":{
                         "title":"Headline",
@@ -84,12 +85,12 @@
                         "ui_class":"richtextarea"
                     },
                     "image_idref":{
-                        "title":"Image (intern)",
+                        "title":"Image",
+                        "description":"References an internal URL to a selected image.",
                         "type":"string",
                         "ui_width":"xlarge",
                         "ui_callout":"/callouts/internal/image_reference",
-                        "ui_update":["image_idref", "image_title"],
-                        "description":"References an internal URL to a selected image."
+                        "ui_update":["image_idref", "image_title"]
                     }
                 }
             }
@@ -123,7 +124,9 @@
         },
         "tags":{
             "title":"Tags",
+            "description":"Multiple entries separated by comma (ie. aegypt,desert).",
             "type":"array",
+            "ui_class":"compact",
             "ui_width":"large",
             "items":{
                 "type":"string",
@@ -133,7 +136,6 @@
         "author":{
             "title":"Autor",
             "type":"string",
-            "required":true,
             "ui_width":"xxlarge"
         },
         "copyright":{
@@ -185,7 +187,7 @@
                 "recommend":{
                     "title":"Weiterempfehlen",
                     "type":"boolean",
-                    "selected":true
+                    "default":true
                 }
             }
         },
@@ -194,21 +196,21 @@
             "type":"object",
             "properties":{
                 "magazine":{
-                    "title":"Heft",
+                    "title":"Heft Name",
                     "type":"string",
                     "enum":["NG", "NG World", "NG Kids"]
                 },
                 "year":{
                     "title":"Heft Jahr",
-                    "type":"integer"
+                    "type":"string"
                 },
                 "number":{
                     "title":"Heftnummer",
-                    "type":"integer"
+                    "type":"string"
                 },
                 "pages":{
                     "title":"Seiten",
-                    "type":"integer"
+                    "type":"string"
                 }
             }
         }

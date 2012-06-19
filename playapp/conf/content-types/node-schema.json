@@ -25,7 +25,7 @@
             "type":"boolean"
         },
         "article_idref":{
-            "title":"Default Article Reference",
+            "title":"Default Article Ref.",
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/article_reference",
@@ -52,6 +52,7 @@
             "type":"string",
             "ui_class":"reference",
             "ui_callout":"/callouts/internal/sidebar_reference",
+            "ui_update":["sidebar_idref"],
             "ui_width":"xlarge"
         },
         "ivw":{

@@ -24,7 +24,12 @@ angular.widget('my:form', function(element) {
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
             // has hierarchical subforms?
-            if (field.items && jQuery.isArray(field.items)) {
+            if (field.type == 'array' && field.items && field.ui_class != 'compact') {
+                // if items is a singular value set it to an array to make the rest work
+                if (!jQuery.isArray(field.items)) {
+                    field.items = [ field.items ];
+                }
+
                 var childElem = fieldKey + 'Elem';
 
                 // ~~~~ FIXME: start (init array top-level)
@@ -78,6 +83,7 @@ angular.widget('my:form', function(element) {
                 jQuery.each(field.items, function (subIdx, subfield) {
                    subfieldTypes.push(subfield.id);
                 });
+
                 jQuery.each(field.items, function (subIdx, subfield) {
                     // ~~ add sub-entity button (available no matter how many already exist)
                     var addButton = angular.element('<div class="btn_add"><a href="#" ' +
@@ -105,13 +111,12 @@ angular.widget('my:form', function(element) {
             }
             var lengthCssClassName = 'input-' + typeLength;
 
-            if (field.type == 'array' && field.items.type == 'string') {
+            if (field.type == 'array' && field.ui_class == 'compact') {
                 fieldElStr  = '<input type="text" class="valueArray ' + lengthCssClassName + '" ui:item="' + qualifiedName + '" ';
                 fieldElStr += ' ui:valueArray >';
             }
             else if (field.enum) {
                 fieldElStr  = '<ul ui:selectable-container class="selectBox">';
-                console.log("    * enum: " + field.enum);
                 fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in [';
                 for (idx in field.enum) {
                     fieldElStr += '\'' + field.enum[idx] + '\'';
@@ -164,17 +169,27 @@ angular.widget('my:form', function(element) {
                 angular.forEach(field.properties, processField,
                     {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
             }
+            else if (field.type == 'boolean') {
+                fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
+                fieldElStr += ' type="checkbox"';
+                // should set default value?
+                if (globalContentNodeId == -1 && field.default == true) {
+                    fieldElStr += ' checked="checked"';
+                }
+                fieldElStr += '>';
+            }
             // ~~ "normal" text input field
             else {
                 fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
-                if (field.type == 'boolean') {
-                    field.type = 'checkbox'; // TODO: weg vom hack...
-                }
                 angular.forEach(field, function(value, attribute) {
                     if (attribute != 'tag') {
                         fieldElStr += attribute + '="' + value + '" ';
                     }
                 });
+                // should set default value?
+                if (globalContentNodeId == -1 && field.default) {
+                    fieldElStr += ' value="' + field.default + '"';
+                }
 
                 fieldElStr += '>';
             }
