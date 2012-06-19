@@ -1,35 +1,48 @@
 {
-    "fields": [{
-        "name": "title",
-        "label": "Title",
-        "type": "title",
-        "len": "xlarge"
-    },
-    {
-        "name": "parent_node_idref",
-        "label": "Mutterknoten ID",
-        "type": "reference",
-        "len": "xxlarge",
-        "callout": "/callouts/internal/node_reference",
-        "update": ["parent_node_idref", "parent_title"]
-    },
-    {
-        "name": "parent_title",
-        "label": "Mutterknoten",
-        "type":
-        "text",
-        "len": "xxlarge",
-    },
-    { "name": "paras", "label": "Module", "type": "repeatable",
-               "min": "1",
-               "children": [
-                   { "name": "headline", "label": "Headline",
-                     "type": "text", "len": "xxlarge"
-                   },
-                   { "name": "text", "label": "Text",
-                     "type": "textarea", "len": "xxlarge"
-                   },
-               ]
-           },
-    ]
+    "id":"sidebar",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "parent_node_idref":{
+            "title":"Mutterknoten ID",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_width":"xxlarge",
+            "ui_callout":"/callouts/internal/node_reference",
+            "ui_update":["parent_node_idref", "parent_title"]
+        },
+        "parent_title":{
+            "title":"Mutterknoten",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "paras":{
+            "title":"Module",
+            "type":"array",
+            "items":{
+                "type":"object",
+                "properties":{
+                    "headline":{
+                        "title":"Headline",
+                        "type":"string",
+                        "ui_width":"xxlarge"
+                    },
+                    "text":{
+                        "title":"Text",
+                        "type":"string",
+                        "ui_class":"richttextarea",
+                        "ui_width":"xxlarge"
+                    }
+                }
+
+            }
+        }
+    }
 }

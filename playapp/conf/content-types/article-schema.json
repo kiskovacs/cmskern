@@ -1,303 +1,215 @@
 {
-   "fields" : [
-      {
-         "name" : "online",
-         "type" : "checkbox",
-         "label" : "Online?"
-      },
-      {
-         "callout" : "/callouts/internal/node_reference",
-         "name" : "node_idref",
-         "type" : "reference",
-         "label" : "Navigationsknoten",
-         "update" : [
-            "node_idref",
-            "node_title",
-            null,
-            null
-         ]
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "node_title",
-         "type" : "text",
-         "label" : "Navigationsknoten"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "title",
-         "type" : "title",
-         "label" : "Titel"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "catchline",
-         "type" : "text",
-         "label" : "Spitzmarke"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "teaser_title",
-         "type" : "text",
-         "label" : "Teaser Titel"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "teaser_text",
-         "type" : "textarea",
-         "label" : "Teaser Text"
-      },
-      {
-         "len" : "xlarge",
-         "callout" : "/callouts/internal/image_reference",
-         "helptext" : "References an internal URL to a selected image.",
-         "name" : "teaser_idref",
-         "type" : "reference",
-         "label" : "Teaser Image"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "body",
-         "type" : "textarea",
-         "label" : "Body Text"
-      },
-      {
-         "min" : "0",
-         "name" : "related_articles",
-         "children" : [
-            {
-               "len" : "xlarge",
-               "callout" : "/callouts/internal/test_reference",
-               "helptext" : "References an internal URL to a selected article.",
-               "name" : "article_idref",
-               "type" : "reference",
-               "label" : "Artikel",
-               "update" : [
-                  "article_idref",
-                  "headline",
-                  "teaser"
-               ]
-            },
-            {
-               "len" : "xxlarge",
-               "name" : "headline",
-               "type" : "text",
-               "label" : "Headline"
-            },
-            {
-               "len" : "xxlarge",
-               "name" : "teaser",
-               "type" : "textarea",
-               "label" : "Text"
-            },
-            {
-               "len" : "xlarge",
-               "callout" : "/callouts/internal/image_reference",
-               "update_also" : "image_title",
-               "helptext" : "References an internal URL to a selected image.",
-               "name" : "image_idref",
-               "type" : "reference",
-               "label" : "Image (intern)"
+    "id":"article",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "online":{
+            "title":"Online?",
+            "type":"boolean"
+        },
+        "node_idref":{
+            "title":"Navigationsknoten",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_callout":"/callouts/internal/node_reference",
+            "ui_update":["node_idref", "node_title"],
+            "ui_width":"xlarge"
+        },
+        "node_title":{
+            "title":"Navigationsknoten",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "catchline":{
+            "title":"Spitzmarke",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "teaser_title":{
+            "title":"Teaser Titel",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "teaser_text":{
+            "title":"Teaser Text",
+            "type":"string",
+            "ui_class":"richtextarea",
+            "ui_width":"xxlarge"
+        },
+        "teaser_idref":{
+            "title":"Teaser Image",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_callout":"/callouts/internal/image_reference",
+            "ui_width":"xlarge"
+        },
+        "body":{
+            "title":"Body Text",
+            "type":"string",
+            "ui_class":"richtextarea",
+            "ui_width":"xxlarge"
+        },
+        "related_articles":{
+            "title":"Weiterführende Artikel",
+            "type":"array",
+            "items":{
+                "type":"object",
+                "properties":{
+                    "article_idref":{
+                        "title":"Artikel",
+                        "type":"string",
+                        "description":"References an internal URL to a selected article.",
+                        "ui_callout":"/callouts/internal/test_reference",
+                        "ui_class":"reference",
+                        "ui_width":"xlarge",
+                        "ui_update":["article_idref", "headline", "teaser"]
+                    },
+                    "headline":{
+                        "title":"Headline",
+                        "type":"string",
+                        "ui_width":"xxlarge"
+                    },
+                    "teaser":{
+                        "title":"Text",
+                        "type":"string",
+                        "ui_width":"xxlarge",
+                        "ui_class":"richtextarea"
+                    },
+                    "image_idref":{
+                        "title":"Image (intern)",
+                        "type":"string",
+                        "ui_width":"xlarge",
+                        "ui_callout":"/callouts/internal/image_reference",
+                        "ui_update":["image_idref", "image_title"],
+                        "description":"References an internal URL to a selected image."
+                    }
+                }
             }
-         ],
-         "type" : "repeatable",
-         "label" : "Weiterführende Artikel"
-      },
-      {
-         "min" : "1",
-         "max" : "1",
-         "name" : "dates",
-         "children" : [
-            {
-               "len" : "small",
-               "helptext" : "Specify the embargo date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
-               "name" : "embargo_date",
-               "type" : "date",
-               "label" : "Embargo Date",
-               "dateFormat" : "dd-mm-yy"
-            },
-            {
-               "len" : "small",
-               "helptext" : "Specify the expire date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
-               "name" : "expire_date",
-               "type" : "date",
-               "label" : "Expire Date",
-               "dateFormat" : "dd-mm-yy"
-            },
-            {
-               "len" : "small",
-               "helptext" : "Specify the sort date of this article (format: DD-MM-YYYY, example: 19-03-2012).",
-               "name" : "sort_date",
-               "type" : "date",
-               "label" : "Sort Date",
-               "dateFormat" : "dd-mm-yy"
+        },
+        "dates":{
+            "title":"Datumseinträge",
+            "type":"object",
+            "properties":{
+                "embargo_date":{
+                    "title":"Embargo Date",
+                    "description":"Specify the embargo date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "expire_date":{
+                    "title":"Expire Date",
+                    "description":"Specify the expire date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "sort_date":{
+                    "title":"Sort Date",
+                    "description":"Specify the sort date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                }
             }
-         ],
-         "type" : "repeatable",
-         "label" : "Datumseinträge"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "tags",
-         "type" : "array",
-         "label" : "Tags"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "author",
-         "type" : "text",
-         "label" : "Autor"
-      },
-      {
-         "len" : "xxlarge",
-         "name" : "copyright",
-         "type" : "text",
-         "label" : "Copyright"
-      },
-      {
-         "len" : "large",
-         "name" : "source",
-         "type" : "text",
-         "label" : "Source"
-      },
-      {
-         "len" : "xlarge",
-         "callout" : "/callouts/internal/sidebar_reference",
-         "name" : "sidebar_idref",
-         "type" : "reference",
-         "label" : "Sidebar"
-      },
-      {
-         "len" : "large",
-         "name" : "adzone",
-         "type" : "text",
-         "label" : "Belegungseinheit"
-      },
-      {
-         "min" : 1,
-         "max" : 1,
-         "name" : "settings",
-         "children" : [
-            {
-               "name" : "comments",
-               "type" : "checkbox",
-               "label" : "Kommentare zulassen",
-               "selected" : true
-            },
-            {
-               "name" : "print",
-               "type" : "checkbox",
-               "label" : "Druckansicht",
-               "selected" : true
-            },
-            {
-               "name" : "rating",
-               "type" : "checkbox",
-               "label" : "Bewertung zulassen",
-               "selected" : true
-            },
-            {
-               "name" : "socialbookmarks",
-               "type" : "checkbox",
-               "label" : "Social Bookmarks",
-               "selected" : true
-            },
-            {
-               "name" : "recommend",
-               "type" : "checkbox",
-               "label" : "Weiterempfehlen",
-               "selected" : true
+        },
+        "tags":{
+            "title":"Tags",
+            "type":"array",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
             }
-         ],
-         "type" : "repeatable",
-         "label" : "Settings"
-      },
-      {
-         "min" : "1",
-         "max" : 1,
-         "name" : "issue",
-         "children" : [
-            {
-               "rule_ref" : "rule_magazines",
-               "name" : "magazine",
-               "type" : "select",
-               "label" : "Heft"
-            },
-            {
-               "len" : "large",
-               "name" : "issue_year",
-               "type" : "text",
-               "label" : "Heft Jahr"
-            },
-            {
-               "len" : "large",
-               "name" : "issue_number",
-               "type" : "text",
-               "label" : "Heftnummer"
-            },
-            {
-               "len" : "large",
-               "name" : "issue_pages",
-               "type" : "text",
-               "label" : "Seiten"
+        },
+        "author":{
+            "title":"Autor",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "copyright":{
+            "title":"Copyright",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "source":{
+            "title":"Source",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "sidebar_idref":{
+            "title":"Sidebar",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_callout":"/callouts/internal/sidebar_reference",
+            "ui_width":"xlarge"
+        },
+        "adzone":{
+            "title":"Belegungseinheit",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "settings":{
+            "title":"Settings",
+            "type":"object",
+            "properties":{
+                "comments":{
+                    "title":"Kommentare zulassen",
+                    "type":"boolean",
+                    "default":true
+                },
+                "print":{
+                    "title":"Druckansicht",
+                    "type":"boolean",
+                    "default":true
+                },
+                "rating":{
+                    "title":"Bewertung zulassen",
+                    "type":"boolean",
+                    "default":true
+                },
+                "socialbookmarks":{
+                    "title":"Social Bookmarks",
+                    "type":"boolean",
+                    "default":true
+                },
+                "recommend":{
+                    "title":"Weiterempfehlen",
+                    "type":"boolean",
+                    "selected":true
+                }
             }
-         ],
-         "type" : "repeatable",
-         "label" : "Heft"
-      }
-   ],
-   "rules" : {
-      "rule_settings" : {
-         "type" : "multiple",
-         "allowedValues" : [
-            {
-               "value" : "comments",
-               "label" : "Kommentare zulassen",
-               "selected" : true
-            },
-            {
-               "value" : "print",
-               "label" : "Druckansicht",
-               "selected" : true
-            },
-            {
-               "value" : "rating",
-               "label" : "Bewertung zulassen",
-               "selected" : true
-            },
-            {
-               "value" : "socialbookmarks",
-               "label" : "Social Bookmarks",
-               "selected" : true
-            },
-            {
-               "value" : "recommend",
-               "label" : "Weiterempfehlen",
-               "selected" : true
+        },
+        "issue":{
+            "title":"Heft",
+            "type":"object",
+            "properties":{
+                "magazine":{
+                    "title":"Heft",
+                    "type":"string",
+                    "enum":["NG", "NG World", "NG Kids"]
+                },
+                "year":{
+                    "title":"Heft Jahr",
+                    "type":"integer"
+                },
+                "number":{
+                    "title":"Heftnummer",
+                    "type":"integer"
+                },
+                "pages":{
+                    "title":"Seiten",
+                    "type":"integer"
+                }
             }
-         ]
-      },
-      "rule_magazines" : {
-         "type" : "single",
-         "allowedValues" : [
-            {
-               "value" : "unspecified",
-               "label" : "Unspecified",
-               "selected" : true
-            },
-            {
-               "value" : "ng",
-               "label" : "NG"
-            },
-            {
-               "value" : "ngworld",
-               "label" : "NG World"
-            },
-            {
-               "value" : "ngkids",
-               "label" : "NG Kids"
-            }
-         ]
-      }
-   }
+        }
+    }
 }

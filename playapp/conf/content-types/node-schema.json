@@ -1,70 +1,63 @@
 {
-"rules":
-    {
-    },
-
-    "fields":[
-        {
-            "name":"title",
-            "label":"Titel",
-            "type":"title",
-            "len":"xxlarge"
+    "id":"node",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
         },
-        {
-            "name":"mutter_knoten",
-            "label":"Mutterknoten",
-            "type":"text",
-            "len":"xlarge"
+        "mutter_knoten":{
+            "title":"Mutterknoten",
+            "type":"string",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"pfad",
-            "label":"Pfad",
-            "type":"text",
-            "len":"xlarge"
+        "pfad":{
+            "title":"Pfad",
+            "type":"string",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"online",
-            "label":"Online?",
-            "type":"checkbox"
+        "online":{
+            "title":"Online?",
+            "type":"boolean"
         },
-        {
-            "name":"article_idref",
-            "label":"Default Artikel ID",
-            "type":"reference",
-            "len":"xlarge",
-            "callout":"/callouts/internal/article_reference",
-            "update_also":"article_title"
+        "article_idref":{
+            "title":"Default Article Reference",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_callout":"/callouts/internal/article_reference",
+            "ui_update":["article_idref", "article_title"],
+            "ui_width":"xlarge"
         },
-        {
-            "name":"article_title",
-            "label":"Default Artikel Title",
-            "type":"text",
-            "len":"xlarge"
+        "article_title":{
+            "title":"Default Article Title",
+            "type":"string",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"adzone",
-            "label":"Ad-Zone/Belegungseinheit",
-            "type":"text",
-            "len":"xlarge"
+        "adzone":{
+            "title":"Ad-Zone/Belegungseinheit",
+            "type":"string",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"html_include",
-            "label":"HTML Include",
-            "type":"text",
-            "len":"xlarge"
+        "html_include":{
+            "title":"HTML Include",
+            "type":"string",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"sidebar_idref",
-            "label":"Sidebar",
-            "type":"reference",
-            "len":"xlarge",
-            "callout":"/callouts/internal/sidebar_reference"
+        "sidebar_idref":{
+            "title":"Sidebar",
+            "type":"string",
+            "ui_class":"reference",
+            "ui_callout":"/callouts/internal/sidebar_reference",
+            "ui_width":"xlarge"
         },
-        {
-            "name":"ivw",
-            "label":"IVW Themengebiet",
-            "type":"text",
-            "len":"xlarge"
+        "ivw":{
+            "title":"IVW Themengebiet",
+            "type":"string",
+            "ui_width":"xlarge"
         }
-    ]
+    }
 }

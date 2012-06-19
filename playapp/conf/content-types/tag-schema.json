@@ -1,9 +1,14 @@
 {
-"fields":
-    [
-        { "name": "title", "label": "Titel",
-          "type": "title", "len": "xxlarge"
+    "id":"tag",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
         }
-
-    ]
+    }
 }
