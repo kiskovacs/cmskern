@@ -158,6 +158,12 @@ angular.widget('my:form', function(element) {
 
                 fieldElStr += ' rows="8" cols="70"></textarea>';
             }
+            else if (field.type == 'object') {
+                fieldElStr = angular.element('<div class="subelements ' + fieldKey + '"></div>');
+                console.log("**** START " + fieldKey);
+                angular.forEach(field.properties, processField,
+                    {parentName: fieldKey, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
+            }
             // ~~ "normal" text input field
             else {
 
