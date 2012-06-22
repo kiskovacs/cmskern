@@ -1,0 +1,127 @@
+{
+    "id":"article",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "online":{
+            "title":"Online?",
+            "type":"boolean"
+        },
+        "online_date":{
+            "title":"Online Date",
+            "description":"Specify the publication date of this article (format: YYYY-MM-DD, example: 2012-03-19).",
+            "type":"string",
+            "format":"date",
+            "ui_width":"small"
+        },
+        "paras":{
+            "type":"array",
+            "title":"Paragraphs",
+            "items":{
+                "type":[
+                    {
+                        "id":"textpara",
+                        "type":"object",
+                        "title":"Text Paragraph",
+                        "additionalProperties":false,
+                        "properties":{
+                            "headline":{
+                                "title":"Headline",
+                                "type":"string",
+                                "ui_width":"xxlarge"
+                            },
+                            "text":{
+                                "title":"Text",
+                                "type":"string",
+                                "ui_class":"richtextarea",
+                                "ui_width":"xxlarge"
+                            },
+                            "childparas":{
+                                "type":"array",
+                                "title":"Child Paragraph",
+                                "items":[
+                                    {
+                                        "title":"Child Para",
+                                        "type":"object",
+                                        "properties":{
+                                            "subHeader":{
+                                                "title":"Sub-Headline",
+                                                "type":"string"
+                                            },
+                                            "subText":{
+                                                "title":"Sub-Text",
+                                                "type":"string",
+                                                "ui_class":"richtextarea"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id":"internal_image",
+                        "type":"object",
+                        "title":"Internal Image",
+                        "additionalProperties":false,
+                        "properties":{
+                            "image_idref":{
+                                "title":"Image (intern)",
+                                "description":"References an internal URL to a selected image.",
+                                "type":"string",
+                                "format":"uri",
+                                "ui_class":"reference",
+                                "ui_callout":"/callouts/internal/image_reference",
+                                "ui_update_also":"image_title",
+                                "ui_width":"xlarge"
+                            },
+                            "image_title":{
+                                "title":"Title",
+                                "type":"string",
+                                "ui_width":"xlarge"
+                            }
+                        }
+                    },
+                    {
+                        "id":"flickr_image",
+                        "type":"object",
+                        "title":"Flickr Image",
+                        "additionalProperties":false,
+                        "properties":{
+                            "flickr_url":{
+                                "title":"Image (flickr)",
+                                "description":"References URL from a selected photo (hosted on flickr.com).",
+                                "type":"string",
+                                "format":"uri",
+                                "ui_class":"reference",
+                                "ui_callout":"/callouts/external/flickr_photo_reference",
+                                "ui_width":"xlarge"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "source":{
+            "title":"News Source",
+            "type":"string",
+            "enum":["unspecified", "by Mail", "by Phone"],
+            "default":"unspecified"
+        },
+        "tags":{
+            "title":"Tags",
+            "type":"array",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
+            }
+        }
+    }
+}
