@@ -1,9 +1,11 @@
 package controllers.callouts;
 
 import models.ContentNode;
+import models.vo.RefValue;
 import play.Logger;
 import play.mvc.Controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,27 +43,30 @@ public class Callouts extends Controller {
             model.put("sidebars", ContentNode.findByTypeRaw("sidebar", 20));  // TODO: improve by using paging
         }
         else if (name.contains("/node_")) {
-            List dl = ContentNode.findByTypeRaw("node", 20);
-            model.put("nodes",dl );  // TODO: improve by using paging
+            List nodes = ContentNode.findByTypeRaw("node", 20);
+            model.put("nodes", nodes);  // TODO: improve by using paging
         }
 
-        String[] fieldnames = params.getAll("update_fields[]");
-        Logger.info("fieldnames: %s" , fieldnames);
+        // Prepare names of properties which should be updated by this callout
+        String[] srcPropNames    = params.getAll("src_properties[]");
+        String[] types           = params.getAll("src_types[]");
+        String[] values          = params.getAll("values[]");
+        String[] targetPropNames = params.getAll("update_fields[]");
 
-        model.put("fieldnames", fieldnames);
-        // Add parameters given to model, introduce simple name map
-        for (Map.Entry<String, String> param : params.allSimple().entrySet()) {
+        Logger.info("fieldnames: %s", Arrays.asList(targetPropNames));
+        // TODO: war model.put("fieldnames", targetPropNames);
 
-            String key = param.getKey();
-            if (key.startsWith("src_prop_")) {
-                Logger.info("Add to model: %s -> %s", key, param.getValue());
-                model.put(key, param.getValue());
-            }
+        // build field map to allow referencing from template
+        Map<String, RefValue> fields = new HashMap<String, RefValue>();
+        for (int i = 0; i < srcPropNames.length; i++) {
+            fields.put(srcPropNames[i], new RefValue(targetPropNames[i], types[i], values[i]));
         }
+        model.put("fields", fields);
+        Logger.info("    fields: " + fields);
 
         // Figure out proper template as defined in schema
         String templateName = "Callouts/" + name + ".html";
-        Logger.info("Going to render %s with params: %s ...", templateName, params.allSimple());
+        Logger.info("Going to render %s ...", templateName);
 
         renderTemplate(templateName, model);
     }

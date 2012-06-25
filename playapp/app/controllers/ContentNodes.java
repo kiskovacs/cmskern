@@ -2,7 +2,7 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
-import models.IdTitle;
+import models.vo.IdTitle;
 import play.mvc.With;
 
 import java.util.List;

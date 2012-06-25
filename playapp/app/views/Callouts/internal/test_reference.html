@@ -8,13 +8,13 @@
 
 <fieldset>
     <label for="id_field">Article ID</label>
-    <input type="text" id="id_field" name="value" value="${src_prop_id}" readonly="readonly" />
+    <input type="text" id="id_field" name="value" value="${fields['id'].value}" readonly="readonly" />
 
     <label for="title_field">Title</label>
-    <input type="text" id="title_field" name="title" value="${src_prop_title}" />
+    <input type="text" id="title_field" name="title" value="${fields['title'].value}" />
 
     <label for="teaser_field">Teaser</label>
-    <textarea id="teaser_field">${src_prop_teaser_text}</textarea>
+    <textarea id="teaser_field">${fields['teaser'].value}</textarea>
 </fieldset>
 
 
@@ -23,16 +23,14 @@
     var temp = new Array();
 
     function calloutGetSelectedValues() {
-        var params = new Array('${(fieldnames as String[]).join('\',\'')}');
-        var result = {};
-
-        for (idx in params) {
-            if (params[idx] && "" !== params[idx]) {
-                result[params[idx]] = temp[idx];
-            }
-        }
-        return result;
+        return {
+            '${fields['id'].targetFQName}': temp[0],
+            '${fields['title'].targetFQName}': temp[1],
+            '${fields['teaser'].targetFQName}': temp[2]
+        };
     }
+
+    // TODO: listen to changes on title and teaser values
 
     function updateRef(id, title, teaser) {
         $('#id_field').val(id);

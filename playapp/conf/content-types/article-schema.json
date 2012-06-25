@@ -193,27 +193,27 @@
             "type":"object",
             "properties":{
                 "comments":{
-                    "title":"Kommentare zulassen",
+                    "title":"Kommentare zulassen?",
                     "type":"boolean",
                     "default":true
                 },
                 "print":{
-                    "title":"Druckansicht",
+                    "title":"Druckansicht?",
                     "type":"boolean",
                     "default":true
                 },
                 "rating":{
-                    "title":"Bewertung zulassen",
+                    "title":"Bewertung zulassen?",
                     "type":"boolean",
                     "default":true
                 },
                 "socialbookmarks":{
-                    "title":"Social Bookmarks",
+                    "title":"Social Bookmarks?",
                     "type":"boolean",
                     "default":true
                 },
                 "recommend":{
-                    "title":"Weiterempfehlen",
+                    "title":"Weiterempfehlen?",
                     "type":"boolean",
                     "default":true
                 }

@@ -133,13 +133,13 @@ angular.widget('my:form', function(element) {
                 fieldElStr  = '<div class="reference input-append">';
                 fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
                 if (field.ui_callout.target_properties) {
-                    var fieldnames = "";
+                    var targetProperties = "";
                     for (i in field.ui_callout.target_properties) {
-                        fieldnames += this.fqName+ '.' + field.ui_callout.target_properties[i] + "#";
+                        targetProperties += this.fqName + '.' + field.ui_callout.target_properties[i] + "#";
                     }
+                    console.log("fields to update: " + targetProperties);
                     var srcPropNames = field.ui_callout.src_properties.join('#');
-                    console.log("fields to update: " + fieldnames);
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + fieldnames +'\',\'' + srcPropNames +'\'';
+                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + targetProperties +'\',\'' + srcPropNames +'\'';
                 } else {
                     // TODO: Should we require to specify: ui_update
                     fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + fullyQualifiedName + '\'';
@@ -162,7 +162,7 @@ angular.widget('my:form', function(element) {
                 //    fieldElStr += attribute + '="' + field[attribute] + '" ';
                 //});
 
-                fieldElStr += ' rows="10" cols="72"></textarea>';
+                fieldElStr += ' rows="12" cols="72"></textarea>';
             }
             else if (field.ui_editor == 'textarea') {
                 fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';

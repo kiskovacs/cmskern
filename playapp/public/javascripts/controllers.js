@@ -107,71 +107,31 @@ function EditContentNodeCtrl($xhr) {
 
     scope.helper = new CalloutDialogHelper();
 
-
-    // TODO: Delete as soon as simple_select_value is working properly
-    scope.DEPRECATED_select_value = function(callout_url, field_name, field_name_secondary) {
-        var fq_name = field_name;
-        var fq_name_sec = field_name_secondary;
-        // Special handling for array elements: insert position number
-        var cur_pos = this.$index;
-        if (typeof cur_pos != 'undefined') {
-            var dotPos = fq_name.lastIndexOf('.');
-            fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
-            if (field_name_secondary) {
-                dotPos = fq_name_sec.lastIndexOf('.');
-                fq_name_sec = fq_name_sec.substring(0, dotPos) + '.' + cur_pos + fq_name_sec.substring(dotPos);
-            }
-        }
-        var field_value = scope.$get(fq_name);
-        var field_value_sec = scope.$get(fq_name_sec);
-
-        var fields = {};
-        fields[fq_name] = field_value;
-        if (field_name_secondary) {
-            fields[fq_name_sec] = field_value_sec;
-        }
-
-        // Create Bootbox Modal with external selection form loaded as specified by callout URL
-        return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [
-            {
-                'label': 'Cancel'
-            },
-            {
-                'label': 'Save',
-                'class': 'btn-primary success',
-                'callback': function() {
-                    return scope.save_values(calloutGetSelectedValues());
-                }
-            }
-        ], {
-            "animate": false
-        });
-    };
-
-
     // Called by referencing input element (see widget.js)
-    scope.simple_select_value = function (callout_url, field_names, src_prop_names) {
-        var fn_arr = field_names.split('#');
-        var src_name_arr = src_prop_names ? src_prop_names.split('#') : [];
+    scope.simple_select_value = function (callout_url, target_prop_names, src_prop_names) {
+        var target_names = target_prop_names.split('#');
+        var src_names = src_prop_names ? src_prop_names.split('#') : [];
         var fields = {};
-        fields["update_fields"] = new Array();
+        fields['update_fields']  = new Array();
+        fields['values']         = new Array();
+        fields['src_types']      = new Array();
+        fields['src_properties'] = new Array();
 
-        for (i in fn_arr) {
-            var fq_name = fn_arr[i];
-            if (fq_name) {
+        for (i in target_names) {
+            var fq_target_name = target_names[i];
+            if (fq_target_name) {
                 // Special handling for array elements: insert position number
                 var cur_pos = this.$index;
                 if (typeof cur_pos != 'undefined') {
-                    var dotPos = fq_name.lastIndexOf('.');
-                    fq_name = fq_name.substring(0, dotPos) + '.' + cur_pos + fq_name.substring(dotPos);
+                    var dot_pos = fq_target_name.lastIndexOf('.');
+                    fq_target_name = fq_target_name.substring(0, dot_pos) + '.' + cur_pos + fq_target_name.substring(dot_pos);
                 }
 
-                var field_value = scope.$get(fq_name);
-                if (src_prop_names) {
-                    fields['src_prop_' + src_name_arr[i]] = field_value;
-                    console.log("  SET " + src_name_arr[i] + " ->>> " + field_value);
-                }
-                fields["update_fields"].push(fq_name);
+                fields['update_fields'].push(fq_target_name);
+                var cur_value = scope.$get(fq_target_name);
+                fields['values'].push(cur_value);
+                fields['src_types'].push('string');
+                fields['src_properties'].push(src_names[i]);
             }
         }
 
@@ -194,30 +154,30 @@ function EditContentNodeCtrl($xhr) {
 
 
     // Called after "Save" Button in Callout-Dialog is pressed
-    scope.save_values = function(doc_data) {
-    console.log("doc_data: " + dump(doc_data));
-        jQuery.each(doc_data, function(fieldname, val) {
-          if (fieldname && fieldname != "null")   {
-            if (endsWith(fieldname, "_idref")) {
-                console.log("convert " + val + " to int");
-                if (val && val.indexOf(",") != -1) {
-                    // dann ist das ein Array von IDs
-                    var retval = Array();
-                    values = val.split(",");
-                    for (v in values) {
-                        retval.push(parseInt(values[v]));
+    scope.save_values = function (doc_data) {
+        console.log("doc_data: " + dump(doc_data));
+        jQuery.each(doc_data, function (fieldname, val) {
+            if (fieldname && fieldname != "null") {
+                if (endsWith(fieldname, "_idref")) {
+                    console.log("convert " + val + " to int");
+                    if (val && val.indexOf(",") != -1) {
+                        // dann ist das ein Array von IDs
+                        var retval = Array();
+                        values = val.split(",");
+                        for (v in values) {
+                            retval.push(parseInt(values[v]));
+                        }
+                        scope.$set(fieldname, retval);
+                    } else {
+                        scope.$set(fieldname, parseInt(val));
                     }
-                    scope.$set(fieldname, retval);
+
                 } else {
-                    scope.$set(fieldname, parseInt(val));
+                    scope.$set(fieldname, val);
                 }
 
-            } else {
-                scope.$set(fieldname, val);
+                console.log("Updated " + fieldname + " to: " + val);
             }
-
-            console.log("Updated " + fieldname + " to: " + val);
-                        }
 
         });
         //scope.$set(fieldname, doc_data.value);

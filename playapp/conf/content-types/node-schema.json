@@ -10,12 +10,12 @@
             "required":true,
             "ui_width":"xxlarge"
         },
-        "mutter_knoten":{
+        "parent":{
             "title":"Mutterknoten",
             "type":"string",
             "ui_width":"xlarge"
         },
-        "pfad":{
+        "path":{
             "title":"Pfad",
             "type":"string",
             "ui_width":"xlarge"

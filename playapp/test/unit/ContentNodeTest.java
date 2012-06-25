@@ -1,7 +1,7 @@
 package unit;
 
 import models.ContentNode;
-import models.IdTitle;
+import models.vo.IdTitle;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.UnitTest;
