@@ -24,7 +24,7 @@
             "description":"Specify multiple keywords by separating entries with comma.",
             "type":"array",
             "ui_class":"compact",
-            "ui_width":"large",
+            "ui_width":"xlarge",
             "items":{
                 "type":"string",
                 "ui_query_type":"tags"
