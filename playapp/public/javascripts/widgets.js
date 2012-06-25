@@ -118,13 +118,13 @@ angular.widget('my:form', function(element) {
             else if (field.enum) {
                 fieldElStr  = '<ul ui:selectable-container class="selectBox">';
                 fieldElStr += '    <li ui:selectable="' + qualifiedName + '" ng:repeat="i in [';
-                for (idx in field.enum) {
+                for (var idx in field.enum) {
                     fieldElStr += '\'' + field.enum[idx] + '\'';
                     if (idx < field.enum.length-1) {
                         fieldElStr += ',';
                     }
                 }
-                fieldElStr += ']" data-value="{{i}}">';
+                fieldElStr += ']" data-value="{{i}}"  data-options="' + field.enum.join(',') + '">';
                 fieldElStr += '        <div class="name">{{i}}</div>';
                 fieldElStr += '    </li>';
                 fieldElStr += '</ul>';
@@ -200,6 +200,7 @@ angular.widget('my:form', function(element) {
              fieldElStr  = '<input type="textbox" class="autoComplete ' + lengthClassName + '"';
              fieldElStr += '  ui:autocomplete ui:options="{urls: {list: \'/tag/search?q=\'}}" ui:item="' + qualifiedName + '" />';
              */
+
             controlElem.append(fieldElStr);
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Render Field Type
 

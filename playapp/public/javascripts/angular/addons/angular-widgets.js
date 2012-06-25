@@ -30,13 +30,17 @@ angular.directive('ui:selectable', function(expr, el) {
         var currentScope = this;
         if (propExpr) {
             // init values on load (per each single element)
-            /*
-            var values = widgetUtils.getValue(currentScope, propExpr);
-            if (angular.Array.indexOf(values, el.value) < 0) {
-                angular.Array.add(values, el.value);
-            }
-            widgetUtils.setValue(currentScope, propExpr, values);
-            */
+            var existingValues = widgetUtils.getValue(currentScope, propExpr);
+            var allowedOptions = $(el).data('options').split(',');
+            //console.log("-----------> -> preset values: " + existingValues + ": ALL " + allowedOptions);
+
+            existingValues.forEach(function(e) {
+                var curPos = $(el).attr('ng:repeat-index');
+                var arrPos = allowedOptions.indexOf(e);
+                if (curPos == arrPos) {
+                    $(el).addClass('ui-selected');
+                }
+            });
 
             // binding called on select or unselect
             $(el).bind('_onSelectable', function(e, obj) {
@@ -59,6 +63,8 @@ angular.directive('ui:selectable', function(expr, el) {
                 //console.log("            *** " + values);
                 widgetUtils.setValue(currentScope, propExpr, values);
             });
+
+            // React on dynamic changes
             currentScope.$watch(propExpr.expression, function(value) {
                 var d = widgetUtils.formatValue(value, propExpr, currentScope);
                 var dataVal = $(el).data("value");
@@ -83,16 +89,18 @@ angular.directive('ui:selectable-container', function(expr, el) {
         filter: '*:first, *:first ~ *', //  dirty hack, to be optimized....
         selected: function(event, ui) {
             var value = $(ui.selected).data("value");
-            console.log("**** ui:selectable-container SELECTED: " + value);
+            //console.log("**** ui:selectable-container SELECTED: " + value);
             $(ui.selected).trigger('_onSelectable', { "operation": "selected", "value": value});
         },
         unselected: function(event, ui) {
             var value = $(ui.unselected).data("value");
-            console.log("**** ui:selectable-container UNSELECTED: " + value);
+            //console.log("**** ui:selectable-container UNSELECTED: " + value);
             $(ui.unselected).trigger('_onSelectable', { "operation": "unselected", "value": value});
         }
     };
+
     $(el).selectable(options);
+
     return function(el) {
 
     };
@@ -446,18 +454,19 @@ angular.widget('@ui:datepicker', function(expr, el, val) {
     return function(el) {
         var currentScope = this;
         var tagName = $(el)[0].tagName.toLowerCase();
-        if (tagName == 'input' || tagName == 'textarea')
-            events.onClose = function(date, ui){
+        if (tagName == 'input' || tagName == 'textarea') {
+            events.onClose = function(date, ui) {
                 var dt = $(el).datepicker('getDate'); // returns date object
                 var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
-        else
-            events.onSelect = function(date, ui){
+        } else {
+            events.onSelect = function(date, ui) {
                 var dt = $(el).datepicker('getDate');
                 var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
+        }
         $.extend(options, events);
         $(el).datepicker(options);
         currentScope.$watch(dateExpr.expression, function(val){
@@ -919,13 +928,16 @@ angular.widget('@ui:wysiwyg', function(expr, el, val) {
     };
 });
 
-
-// run once on compile (when ng:repeat turns this into a template)
+/**
+ * Use this directive for arrays which hold objects of different type.
+ *
+ * run once on compile (when ng:repeat turns this into a template)
+ */
 angular.directive('jq:autoremove', function(expression, templateElement) {
     return function(instanceElement) {
         // run on each instance, (when ng:repeat needs a new <li> to insert into the DOM)
         // instanceElement is already jQuery selector
-        console.log("now removing...");
+        //console.log("autoremove: now removing...");
         // if nothing yet selected only display first subgroup
         if (this.elementGroupsToRemove.length === 0) {
             instanceElement.children(".subelements:gt(0)").remove();
