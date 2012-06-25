@@ -21,11 +21,11 @@
                         "description":"References an internal URL to a selected image.",
                         "type":"string",
                         "format":"uri",
-                        "ui_class":"reference",
-                        "ui_callout":"/callouts/internal/image_reference",
-                        "ui_src_type":"image",
-                        "ui_src_properties":["id","title"],
-                        "ui_update":["image_idref", "image_title"],
+                        "ui_callout":{
+                            "url":"/callouts/internal/image_reference",
+                            "src_properties":["id","title"],
+                            "target_properties":["image_idref", "image_title"]
+                        },
                         "ui_width":"xlarge"
                     },
                     "image_title":{

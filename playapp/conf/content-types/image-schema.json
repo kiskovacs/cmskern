@@ -13,10 +13,11 @@
         "asset_ref":{
             "title":"Asset",
             "type":"string",
-            "ui_src_type":"asset",
-            "ui_src_properties":["id"],
-            "ui_callout":"/callouts/internal/asset_reference",
-            "ui_class":"reference",
+            "ui_callout":{
+                "url":"/callouts/internal/asset_reference",
+                "src_properties":["id"],
+                "target_properties":["asset_ref"]
+            },
             "ui_width":"xlarge"
         },
         "keywords":{

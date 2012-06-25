@@ -27,11 +27,11 @@
         "article_idref":{
             "title":"Default Article Ref.",
             "type":"string",
-            "ui_class":"reference",
-            "ui_src_type":"article",
-            "ui_src_properties":["id","title"],
-            "ui_callout":"/callouts/internal/article_reference",
-            "ui_update":["article_idref", "article_title"],
+            "ui_callout":{
+                "url":"/callouts/internal/article_reference",
+                "src_properties":["id","title"],
+                "target_properties":["article_idref", "article_title"]
+            },
             "ui_width":"xlarge"
         },
         "article_title":{
@@ -51,12 +51,12 @@
         },
         "sidebar_idref":{
             "title":"Sidebar",
-            "type":"string",
-            "ui_class":"reference",
-            "ui_src_type":"sidebar",
-            "ui_src_properties":["id"],
-            "ui_callout":"/callouts/internal/sidebar_reference",
-            "ui_update":["sidebar_idref"],
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/sidebar_reference",
+                "src_properties":["id"],
+                "target_properties":["sidebar_idref"]
+            },
             "ui_width":"xlarge"
         },
         "ivw":{

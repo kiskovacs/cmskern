@@ -40,7 +40,7 @@
                             "text":{
                                 "title":"Text",
                                 "type":"string",
-                                "ui_class":"richtextarea",
+                                "ui_editor":"richtext",
                                 "ui_width":"xxlarge"
                             },
                             "childparas":{
@@ -58,7 +58,7 @@
                                             "subText":{
                                                 "title":"Sub-Text",
                                                 "type":"string",
-                                                "ui_class":"richtextarea"
+                                                "ui_editor":"textarea"
                                             }
                                         }
                                     }
@@ -77,9 +77,11 @@
                                 "description":"References an internal URL to a selected image.",
                                 "type":"string",
                                 "format":"uri",
-                                "ui_class":"reference",
-                                "ui_callout":"/callouts/internal/image_reference",
-                                "ui_update_also":"image_title",
+                                "ui_callout":{
+                                    "url":"/callouts/internal/image_reference",
+                                    "src_properties":["id", "title"],
+                                    "target_properties":["image_idref", "image_title"]
+                                },
                                 "ui_width":"xlarge"
                             },
                             "image_title":{
@@ -100,8 +102,11 @@
                                 "description":"References URL from a selected photo (hosted on flickr.com).",
                                 "type":"string",
                                 "format":"uri",
-                                "ui_class":"reference",
-                                "ui_callout":"/callouts/external/flickr_photo_reference",
+                                "ui_callout":{
+                                    "url":"/callouts/external/flickr_photo_reference",
+                                    "src_properties":["flickr_url"],
+                                    "target_properties":["flickr_url"]
+                                },
                                 "ui_width":"xlarge"
                             }
                         }

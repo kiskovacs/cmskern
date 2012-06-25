@@ -129,20 +129,20 @@ angular.widget('my:form', function(element) {
                 fieldElStr += '    </li>';
                 fieldElStr += '</ul>';
             }
-            else if (field.ui_class == 'reference') {
+            else if (field.ui_callout) {
                 fieldElStr  = '<div class="reference input-append">';
                 fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
-                if (field.ui_update) {
+                if (field.ui_callout.target_properties) {
                     var fieldnames = "";
-                    for (i in field.ui_update) {
-                        fieldnames += this.fqName+ '.' + field.ui_update[i] + "#";
+                    for (i in field.ui_callout.target_properties) {
+                        fieldnames += this.fqName+ '.' + field.ui_callout.target_properties[i] + "#";
                     }
-                    var srcPropNames = field.ui_src_properties.join('#');
+                    var srcPropNames = field.ui_callout.src_properties.join('#');
                     console.log("fields to update: " + fieldnames);
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fieldnames +'\',\'' + srcPropNames +'\'';
+                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + fieldnames +'\',\'' + srcPropNames +'\'';
                 } else {
                     // TODO: Should we require to specify: ui_update
-                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout + '\',\'' + fullyQualifiedName + '\'';
+                    fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + fullyQualifiedName + '\'';
                 }
                 fieldElStr += ')"><i class="icon-edit"></i></span>';
                 fieldElStr += '</div>';
@@ -155,14 +155,23 @@ angular.widget('my:form', function(element) {
                 fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
                 fieldElStr += '</div>';
             }
-            else if (field.ui_class == 'richtextarea') {
+            else if (field.ui_editor == 'richtext') {
                 fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthCssClassName + '" name="' + qualifiedName + '" ';
 
                 //angular.forEach(field, function(attribute) {
                 //    fieldElStr += attribute + '="' + field[attribute] + '" ';
                 //});
 
-                fieldElStr += ' rows="8" cols="70"></textarea>';
+                fieldElStr += ' rows="10" cols="72"></textarea>';
+            }
+            else if (field.ui_editor == 'textarea') {
+                fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
+
+                //angular.forEach(field, function(attribute) {
+                //    fieldElStr += attribute + '="' + field[attribute] + '" ';
+                //});
+
+                fieldElStr += ' rows="8" cols="72"></textarea>';
             }
             else if (field.type == 'object') {
                 fieldElStr = angular.element('<div class="subelements ' + fieldKey + '"></div>');

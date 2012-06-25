@@ -34,13 +34,15 @@ angular.directive('ui:selectable', function(expr, el) {
             var allowedOptions = $(el).data('options').split(',');
             //console.log("-----------> -> preset values: " + existingValues + ": ALL " + allowedOptions);
 
-            existingValues.forEach(function(e) {
-                var curPos = $(el).attr('ng:repeat-index');
-                var arrPos = allowedOptions.indexOf(e);
-                if (curPos == arrPos) {
-                    $(el).addClass('ui-selected');
-                }
-            });
+            if (existingValues) {
+                existingValues.forEach(function(e) {
+                    var curPos = $(el).attr('ng:repeat-index');
+                    var arrPos = allowedOptions.indexOf(e);
+                    if (curPos == arrPos) {
+                        $(el).addClass('ui-selected');
+                    }
+                });
+            }
 
             // binding called on select or unselect
             $(el).bind('_onSelectable', function(e, obj) {

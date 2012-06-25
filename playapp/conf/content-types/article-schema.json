@@ -10,12 +10,12 @@
         },
         "node_idref":{
             "title":"Navigationsknoten",
-            "type":"string",
-            "ui_class":"reference",
-            "ui_callout":"/callouts/internal/node_reference",
-            "ui_src_type":"node",
-            "ui_src_properties":["id", "title"],
-            "ui_update":["node_idref", "node_title"],
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/node_reference",
+                "src_properties":["id", "title"],
+                "target_properties":["node_idref", "node_title"]
+            },
             "ui_width":"xlarge"
         },
         "node_title":{
@@ -24,7 +24,7 @@
             "ui_width":"xxlarge"
         },
         "title":{
-            "title":"Title",
+            "title":"Titel",
             "type":"string",
             "required":true,
             "ui_width":"xxlarge"
@@ -34,31 +34,42 @@
             "type":"string",
             "ui_width":"xxlarge"
         },
-        "teaser_title":{
-            "title":"Teaser Titel",
-            "type":"string",
-            "ui_width":"xxlarge"
-        },
-        "teaser_text":{
-            "title":"Teaser Text",
-            "type":"string",
-            "ui_class":"richtextarea",
-            "ui_width":"xxlarge"
-        },
-        "teaser_idref":{
-            "title":"Teaser Image",
-            "type":"string",
-            "ui_class":"reference",
-            "ui_callout":"/callouts/internal/image_reference",
-            "ui_src_type":"image",
-            "ui_src_properties":["id"],
-            "ui_update":["teaser_idref"],
-            "ui_width":"xlarge"
+        "teaser":{
+            "title":"Teaser",
+            "type":"object",
+            "properties":{
+                "title":{
+                    "title":"Teaser Titel",
+                    "type":"string",
+                    "ui_width":"xxlarge"
+                },
+                "text":{
+                    "title":"Teaser Text",
+                    "type":"string",
+                    "ui_editor":"textarea",
+                    "ui_width":"xxlarge"
+                },
+                "image_idref":{
+                    "title":"Image ID",
+                    "type":"integer",
+                    "ui_callout":{
+                        "url":"/callouts/internal/image_reference",
+                        "src_properties":["id", "title"],
+                        "target_properties":["image_idref", "image_title"]
+                    },
+                    "ui_width":"xlarge"
+                },
+                "image_title":{
+                    "title":"Image Titel",
+                    "type":"string",
+                    "ui_width":"xlarge"
+                }
+            }
         },
         "body":{
             "title":"Body Text",
             "type":"string",
-            "ui_class":"richtextarea",
+            "ui_editor":"richtext",
             "ui_width":"xxlarge"
         },
         "related_articles":{
@@ -70,13 +81,13 @@
                 "properties":{
                     "article_idref":{
                         "title":"Artikel",
-                        "type":"string",
+                        "type":"integer",
                         "description":"References an internal URL to a selected article.",
-                        "ui_callout":"/callouts/internal/test_reference",
-                        "ui_src_type":"article",
-                        "ui_src_properties":["id", "title", "teaser_text"],
-                        "ui_update":["article_idref", "headline", "teaser"],
-                        "ui_class":"reference",
+                        "ui_callout":{
+                            "url":"/callouts/internal/test_reference",
+                            "src_properties":["id", "title", "teaser_text"],
+                            "target_properties":["article_idref", "headline", "teaser"]
+                        },
                         "ui_width":"xlarge"
                     },
                     "headline":{
@@ -88,16 +99,22 @@
                         "title":"Text",
                         "type":"string",
                         "ui_width":"xxlarge",
-                        "ui_class":"richtextarea"
+                        "ui_editor":"textarea"
                     },
                     "image_idref":{
-                        "title":"Image",
+                        "title":"Image ID",
                         "description":"References an internal URL to a selected image.",
+                        "type":"integer",
+                        "ui_callout":{
+                            "url":"/callouts/internal/image_reference",
+                            "src_properties":["id", "title"],
+                            "target_properties":["image_idref", "image_title"]
+                        },
+                        "ui_width":"xlarge"
+                    },
+                    "image_title":{
+                        "title":"Image Titel",
                         "type":"string",
-                        "ui_callout":"/callouts/internal/image_reference",
-                        "ui_src_type":"image",
-                        "ui_src_properties":["id", "title"],
-                        "ui_update":["image_idref", "image_title"],
                         "ui_width":"xlarge"
                     }
                 }
@@ -158,12 +175,12 @@
         },
         "sidebar_idref":{
             "title":"Sidebar",
-            "type":"string",
-            "ui_class":"reference",
-            "ui_callout":"/callouts/internal/sidebar_reference",
-            "ui_src_type":"sidebar",
-            "ui_src_properties":["id"],
-            "ui_update":["sidebar_idref"],
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/sidebar_reference",
+                "src_properties":["id"],
+                "target_properties":["sidebar_idref"]
+            },
             "ui_width":"xlarge"
         },
         "adzone":{
