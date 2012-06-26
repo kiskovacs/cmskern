@@ -75,7 +75,7 @@
                             "image_idref":{
                                 "title":"Image (intern)",
                                 "description":"References an internal URL to a selected image.",
-                                "type":"string",
+                                "type":"integer",
                                 "format":"uri",
                                 "ui_callout":{
                                     "url":"/callouts/internal/image_reference",

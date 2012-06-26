@@ -12,7 +12,7 @@
         },
         "parent":{
             "title":"Mutterknoten",
-            "type":"string",
+            "type":"integer",
             "ui_width":"xlarge"
         },
         "path":{
@@ -26,7 +26,7 @@
         },
         "article_idref":{
             "title":"Default Article Ref.",
-            "type":"string",
+            "type":"integer",
             "ui_callout":{
                 "url":"/callouts/internal/article_reference",
                 "src_properties":["id","title"],

@@ -1,0 +1,56 @@
+{
+    "_id":133,
+    "data":{
+        "adzone":"my-ad-campaign",
+        "author":"Norbert Fuchs",
+        "body":"<p>Nun also zum eigentlichen</p>\n<p><strong>Hier</strong></p>",
+        "catchline":"Jede Menge Abenteuer",
+        "copyright":"-",
+        "dates":{
+            "embargo_date":"2012-06-26",
+            "expire_date":"2012-06-27",
+            "sort_date":"2012-06-28"
+        },
+        "issue":{
+            "magazine":[ "NG World"],
+            "number":"5",
+            "pages":"12-14",
+            "year":"2012"
+        },
+        "node_idref":131,
+        "node_title":"Artices",
+        "online":false,
+        "related_articles":[
+            {
+                "article_idref":"",
+                "headline":"",
+                "image_idref":"",
+                "image_title":"",
+                "teaser":""
+            }
+        ],
+        "settings":{
+            "comments":true,
+            "print":false,
+            "rating":true,
+            "recommend":true,
+            "socialbookmarks":true
+        },
+        "sidebar_idref":128,
+        "source":"unbekannt",
+        "tags":[ "nature" , "photography" , "alpin"],
+        "teaser":{
+            "image_idref":"",
+            "image_title":"",
+            "text":"der lange, aber nicht gestylte Teastext....",
+            "title":"Los gehts"
+        },
+        "title":"Toller Bericht"
+    },
+    "_type":"article",
+    "_version":1,
+    "_created":1340695684148,
+    "_creator":"admin",
+    "_modified":1340695684148,
+    "_modifier":"admin"
+}
