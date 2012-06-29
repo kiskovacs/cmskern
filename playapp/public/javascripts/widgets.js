@@ -26,8 +26,8 @@ angular.widget('my:form', function(element) {
             // has hierarchical subforms?
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
                 // if items is a singular value set it to an array to make the rest work
-                if (!jQuery.isArray(field.items)) {
-                    field.items = [ field.items ];
+                if (!jQuery.isArray(field.items.type)) {
+                    field.items.type = [ field.items.type ];
                 }
 
                 var childElem = fieldKey + 'Elem';
@@ -49,7 +49,7 @@ angular.widget('my:form', function(element) {
                 }
                 // ~~~~ FIXME: end (init array top-level)
 
-                // ~~~~~~ construct subform
+                // (A) subform header (with move up/down button)
                 var subform = angular.element('<div class="subform"></div>');
                 var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '" jq:autoremove=""></fieldset>');
 
@@ -58,6 +58,7 @@ angular.widget('my:form', function(element) {
                 // ~~ up button (only if not first element, see CSS selector)
                 var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
                 legendChild.append(moveUpButton);
+
                 // ~~ down button (only if not last element, see CSS selector)
                 var moveDownButton = angular.element('<a class="move_down" href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
                 legendChild.append(moveDownButton);
@@ -66,8 +67,9 @@ angular.widget('my:form', function(element) {
                 var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
-                jQuery.each(field.items, function (subIdx, subfield) {
-                    // ~~ render fields of subform
+
+                // (B) render individual fields of subform
+                jQuery.each(field.items.type, function (subIdx, subfield) {
                     var elGroup = angular.element('<div class="subelements ' + subfield.id + '"></div>');
                     angular.forEach(subfield.properties, processField,
                         {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: elGroup, childtype: subfield.id});
@@ -77,14 +79,14 @@ angular.widget('my:form', function(element) {
 
                 this.curDOMParent.append(subform);
 
-                // ~~
+                // (C) place add button for all available sibling types
                 var localScope = this;
                 var subfieldTypes = [];
-                jQuery.each(field.items, function (subIdx, subfield) {
+                jQuery.each(field.items.type, function (subIdx, subfield) {
                    subfieldTypes.push(subfield.id);
                 });
 
-                jQuery.each(field.items, function (subIdx, subfield) {
+                jQuery.each(field.items.type, function (subIdx, subfield) {
                     // ~~ add sub-entity button (available no matter how many already exist)
                     var addButton = angular.element('<div class="btn_add"><a href="#" ' +
                         ' ng:click="addChild({parent:'+ localScope.parentName +',' +

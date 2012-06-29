@@ -1,5 +1,5 @@
 {
-    "id":"article",
+    "id":"articleDiffParas",
     "$schema":"http://json-schema.org/draft-03/schema",
     "type":"object",
     "additionalProperties":false,
@@ -46,23 +46,25 @@
                             "childparas":{
                                 "type":"array",
                                 "title":"Child Paragraph",
-                                "items":[
-                                    {
-                                        "title":"Child Para",
-                                        "type":"object",
-                                        "properties":{
-                                            "subHeader":{
-                                                "title":"Sub-Headline",
-                                                "type":"string"
-                                            },
-                                            "subText":{
-                                                "title":"Sub-Text",
-                                                "type":"string",
-                                                "ui_editor":"textarea"
+                                "items":{
+                                    "type":[
+                                        {
+                                            "title":"Child Para",
+                                            "type":"object",
+                                            "properties":{
+                                                "subHeader":{
+                                                    "title":"Sub-Headline",
+                                                    "type":"string"
+                                                },
+                                                "subText":{
+                                                    "title":"Sub-Text",
+                                                    "type":"string",
+                                                    "ui_editor":"textarea"
+                                                }
                                             }
                                         }
-                                    }
-                                ]
+                                    ]
+                                }
                             }
                         }
                     },
@@ -123,6 +125,7 @@
         "tags":{
             "title":"Tags",
             "type":"array",
+            "ui_class":"compact",
             "items":{
                 "type":"string",
                 "ui_query_type":"tags"

@@ -11,6 +11,15 @@ ContentType(article):
     description: the central content type for an text article.
     jsonFormFromFile: conf/content-types/article-schema.json
 
+# ONLY TEMPORARY FOR TESTING PURPOSES
+ContentType(articleDiffParas):
+    group: editorial
+    sortkey: 12
+    slug: articleDiffParas
+    displayName: Flexible Article
+    description: article which allows different types of sub-paragraphs
+    jsonFormFromFile: conf/content-types/archive/articleDiffParas-schema.json
+
 ContentType(articleCollection):
     group: editorial
     sortkey: 20
