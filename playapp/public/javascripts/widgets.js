@@ -23,32 +23,24 @@ angular.widget('my:form', function(element) {
                 fieldElStr;
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
-            // has hierarchical subforms?
+            // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
-                // if items is a singular value set it to an array to make the rest work
-                //    expect either object with properties or type with map of different sub-types
-                if (field.items.type == 'object') {
-                    field.items.type = [ field.items ];
-                }
-
                 var childElem = fieldKey + 'Elem';
 
-                // ~~~~ FIXME: start (init array top-level)
+                // ~~~~ FIXME start (init array top-level)
                 var contentChilds = scope.$eval(qualifiedName);
                 if (!contentChilds) {
                     var propName = fullyQualifiedName.substr('contentNode'.length + 1);
-                    //console.log("WARN:  No content childs for " + propName);
+                    console.log("No content childs yet for " + propName);
                     var propNameArr = propName.split('.');
                     if (propNameArr.length == 1) {
-                        globalContentNode[propNameArr[0]] = [{}];
+                        console.log("... init array: " + propName);
+                        globalContentNode[propNameArr[0]] = [{"_type":field.items.type[0].id}];
                     } else {
-                        //console.log("*** WARN Unsupported nesting of arrays: " + propNameArr);
+                        console.log("============= WARN cannot initialize arrays: " + propNameArr);
                     }
-                } else {
-                    //console.log("      ----> fieldset ng:repeat=" + childElem + " in " + qualifiedName);
-                    // Nesting of ng:repeat must use relative variable reference names
                 }
-                // ~~~~ FIXME: end (init array top-level)
+                // ~~~~ FIXME end (init array top-level)
 
                 // (A) subform header (with move up/down button)
                 var subform = angular.element('<div class="subform"></div>');
@@ -71,6 +63,10 @@ angular.widget('my:form', function(element) {
 
                 // (B) render individual fields of subform
                 jQuery.each(field.items.type, function (subIdx, subfield) {
+                    if (typeof subfield.id == 'undefined') {
+                        subfield.id = subfield.title;
+                    }
+                    console.log("Add sub element for type: " + subfield.id);
                     var elGroup = angular.element('<div class="subelements ' + subfield.id + '"></div>');
                     angular.forEach(subfield.properties, processField,
                         {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: elGroup, childtype: subfield.id});

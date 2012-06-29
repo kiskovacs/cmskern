@@ -942,6 +942,7 @@ angular.directive('jq:autoremove', function(expression, templateElement) {
         //console.log("autoremove: now removing...");
         // if nothing yet selected only display first subgroup
         if (this.elementGroupsToRemove.length === 0) {
+            console.log("autoremove: remove elements except first one...");
             instanceElement.children(".subelements:gt(0)").remove();
         } else {
             this.elementGroupsToRemove.forEach(function(e) {

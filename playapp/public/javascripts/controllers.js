@@ -51,6 +51,7 @@ function EditContentNodeCtrl($xhr) {
             console.log("Add child (type: " + ctx.childtype + "): " + ctx.child);
             ctx.child.push({ _type: ctx.childtype });
         } else {
+            // TODO: never getting here
             console.log("Init child (type: " + ctx.childtype + "): " + ctx.childname);
             ctx.parent[ctx.childname] = [{ _type: ctx.childtype }];
         }
@@ -59,10 +60,10 @@ function EditContentNodeCtrl($xhr) {
         if (idx != -1) {
             scope.elementGroupsToRemove.splice(idx, 1);
         } else {
-            // by default remove first
+            // by default remove first element
             scope.elementGroupsToRemove.splice(0, 1);
         }
-        // hiding is done via directive in angular-widget.js
+        // item hiding via directive 'autoremove' (defined in angular-widget.js)
     };
 
     scope.moveDown = function(arr) {
