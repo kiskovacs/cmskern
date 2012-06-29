@@ -1,4 +1,8 @@
-A JSON based simple Content-Management Framework using Play!
+A simple web content-management framework based on JSON schema (http://json-schema.org/)
+definition. The forms are dynamically generated using AngularJS (http://angularjs.org/)
+and with some knowledge of the Play! Framework it should be fairly straight forward
+to customize this app to your specific needs.
+
 
 Requires:
 
