@@ -27,6 +27,12 @@ angular.widget('my:form', function(element) {
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
                 var childElem = fieldKey + 'Elem';
 
+                // if items is a singular value set it to an array to make the rest work
+                //    expect either object with properties or type with map of different sub-types
+                if (field.items.type == 'object') {
+                    field.items.type = [ field.items ];
+                }
+
                 // ~~~~ FIXME start (init array top-level)
                 var contentChilds = scope.$eval(qualifiedName);
                 if (!contentChilds) {
