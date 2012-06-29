@@ -20,6 +20,7 @@
             "type":"array",
             "items":{
                 "title":"Article",
+                "type":"object",
                 "properties":{
                     "article_idref":{
                         "title":"Reference",

@@ -26,8 +26,9 @@ angular.widget('my:form', function(element) {
             // has hierarchical subforms?
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
                 // if items is a singular value set it to an array to make the rest work
-                if (!jQuery.isArray(field.items.type)) {
-                    field.items.type = [ field.items.type ];
+                //    expect either object with properties or type with map of different sub-types
+                if (field.items.type == 'object') {
+                    field.items.type = [ field.items ];
                 }
 
                 var childElem = fieldKey + 'Elem';

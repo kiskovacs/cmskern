@@ -29,8 +29,8 @@
             "title":"Module",
             "type":"array",
             "items":{
-                "type":"object",
                 "title":"Paragraph",
+                "type":"object",
                 "properties":{
                     "headline":{
                         "title":"Headline",

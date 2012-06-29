@@ -15,6 +15,7 @@
             "title":"Image",
             "items":{
                 "title":"Image",
+                "type":"object",
                 "properties":{
                     "image_idref":{
                         "title":"Image (intern)",
