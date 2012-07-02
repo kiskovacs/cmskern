@@ -41,7 +41,7 @@ angular.widget('my:form', function(element) {
                     var propNameArr = propName.split('.');
                     if (propNameArr.length == 1) {
                         console.log("... init array: " + propName);
-                        globalContentNode[propNameArr[0]] = [{"_type":field.items.type[0].id}];
+                        globalContentNode[propNameArr[0]] = [{"_type":field.items.type[0].id}];  // TODO: really use first type as default?
                     } else {
                         console.log("============= WARN cannot initialize arrays: " + propNameArr);
                     }
@@ -50,7 +50,8 @@ angular.widget('my:form', function(element) {
 
                 // (A) subform header (with move up/down button)
                 var subform = angular.element('<div class="subform"></div>');
-                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName + '" jq:autoremove=""></fieldset>');
+                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName +
+                                                  '" jq:autoremove="" ui:items="' + qualifiedName + '"></fieldset>');
 
                 var legendChild = angular.element('<legend>' + field.title +'</legend>'); // Position: {{$index}}
 

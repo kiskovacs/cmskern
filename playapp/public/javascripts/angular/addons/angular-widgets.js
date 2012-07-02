@@ -499,7 +499,7 @@ angular.widget('ui:map', function(el) {
     defaults.map.center = new google.maps.LatLng(defaults.center.lat, defaults.center.lng);
     return function(el) {
         var currentScope = this;
-        $(elem).append('<div/>')
+        $(elem).append('<div/>');
         var div = ('div', elem).get(0);
         var map = new google.maps.Map(div,options.map);
         var marker = new google.maps.Marker({ position: map.center, map: map});
@@ -942,15 +942,25 @@ angular.widget('@ui:wysiwyg', function(expr, el, val) {
  */
 angular.directive('jq:autoremove', function(expression, templateElement) {
     return function(instanceElement) {
+        var scope = this;
+
         // run on each instance, (when ng:repeat needs a new <li> to insert into the DOM)
         // instanceElement is already jQuery selector
         //console.log("autoremove: now removing...");
         // if nothing yet selected only display first subgroup
-        if (this.elementGroupsToRemove.length === 0) {
-            console.log("autoremove: remove elements except first one...");
-            instanceElement.children(".subelements:gt(0)").remove();
+
+        // only remove DOM elements if they are not used by array elements
+        var curPos = scope.$index;
+
+        var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
+        var item = scope.$get(itemsExpr.expression)[curPos];
+        //console.log("    -----> " + curPos + " :: " + item);
+
+        if (scope.elementGroupsToRemove.length === 0) {
+            console.log("autoremove: remove elements except for type '" + item._type + "'...");
+            instanceElement.children(".subelements:not(." + item._type + ")").remove();
         } else {
-            this.elementGroupsToRemove.forEach(function(e) {
+            scope.elementGroupsToRemove.forEach(function(e) {
                 console.log("    * removing DOM element for: " + e);
                 instanceElement.children("." + e).remove();
             });
