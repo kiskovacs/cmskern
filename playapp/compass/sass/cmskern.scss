@@ -102,13 +102,12 @@ div.btn_add {
     text-align: right;
 }
 
-/* Hide out Move up/down buttons in positions it does not make sense */
-div.subform > fieldset:first-child > legend > a.move_up {
-    display: none;
-}
-
-div.subform > fieldset:last-child > legend > a.move_down {
-    display: none;
+ul.sortable li {
+  padding: 5px;
+  border: 1px solid #999;
+  background: #eee;
+  margin: 5px;
+  cursor: move;
 }
 
 .reference input {

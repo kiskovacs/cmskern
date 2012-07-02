@@ -941,6 +941,9 @@ angular.widget('@ui:wysiwyg', function(expr, el, val) {
  * run once on compile (when ng:repeat turns this into a template)
  */
 angular.directive('jq:autoremove', function(expression, templateElement) {
+
+    var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
+
     return function(instanceElement) {
         var scope = this;
 
@@ -952,18 +955,51 @@ angular.directive('jq:autoremove', function(expression, templateElement) {
         // only remove DOM elements if they are not used by array elements
         var curPos = scope.$index;
 
-        var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
         var item = scope.$get(itemsExpr.expression)[curPos];
         //console.log("    -----> " + curPos + " :: " + item);
 
         if (scope.elementGroupsToRemove.length === 0) {
             console.log("autoremove: remove elements except for type '" + item._type + "'...");
-            instanceElement.children(".subelements:not(." + item._type + ")").remove();
+            instanceElement.find(".subelements:not(." + item._type + ")").remove();
         } else {
             scope.elementGroupsToRemove.forEach(function(e) {
                 console.log("    * removing DOM element for: " + e);
-                instanceElement.children("." + e).remove();
+                instanceElement.find("." + e).remove();
             });
         }
     }
+});
+
+/**
+ * Allow user to reshuffle UL-LI structure by drag and drop.
+ */
+angular.directive('ui:sortable', function(expression, templateElement, val) {
+
+    var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
+
+    return function(instanceElement) {
+        var scope = this;
+        var defer = this.$service("$defer");
+
+        $(templateElement).sortable({
+            start: function(e, ui) {
+                ui.item.data('start', ui.item.index());
+            },
+            update: function(e, ui) {
+                var start = ui.item.data('start'),
+                    end = ui.item.index();
+
+                var items = scope.$get(itemsExpr.expression);
+                items.splice(end, 0, items.splice(start, 1)[0]);
+                // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
+                //setTimeout(function() {
+                //    scope.$eval();
+                //}, 100);
+                // ~~~ DID ALSO not HELP scope.$updateView();
+                scope.$eval();
+                //scope.$updateViews(); // TODO: makes no difference...
+            }
+        });
+    }
+
 });

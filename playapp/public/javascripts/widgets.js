@@ -26,10 +26,12 @@ angular.widget('my:form', function(element) {
             // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
                 var childElem = fieldKey + 'Elem';
+                var multiTyped = true;
 
                 // if items is a singular value set it to an array to make the rest work
                 //    expect either object with properties or type with map of different sub-types
                 if (field.items.type == 'object') {
+                    multiTyped = false;
                     field.items.type = [ field.items ];
                 }
 
@@ -49,19 +51,11 @@ angular.widget('my:form', function(element) {
                 // ~~~~ FIXME end (init array top-level)
 
                 // (A) subform header (with move up/down button)
-                var subform = angular.element('<div class="subform"></div>');
-                var subfieldset = angular.element('<fieldset ng:repeat="' + childElem + ' in ' + qualifiedName +
-                                                  '" jq:autoremove="" ui:items="' + qualifiedName + '"></fieldset>');
-
-                var legendChild = angular.element('<legend>' + field.title +'</legend>'); // Position: {{$index}}
-
-                // ~~ up button (only if not first element, see CSS selector)
-                var moveUpButton = angular.element('<a class="move_up" href="#" ng:click="moveUp(' + qualifiedName + ')"><i class="icon-arrow-up" title="Move up"></i></a>');
-                legendChild.append(moveUpButton);
-
-                // ~~ down button (only if not last element, see CSS selector)
-                var moveDownButton = angular.element('<a class="move_down" href="#" ng:click="moveDown(' + qualifiedName + ')"><i class="icon-arrow-down" title="Move down"></i></a>');
-                legendChild.append(moveDownButton);
+                var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '"></ul>');
+                var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
+                                               (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '"></li>');
+                var subfieldset = angular.element('<fieldset></fieldset>');
+                var legendChild = angular.element('<legend>' + field.title +'</legend>');
 
                 // ~~ remove (per individual child group)
                 var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
@@ -79,15 +73,15 @@ angular.widget('my:form', function(element) {
                         {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: elGroup, childtype: subfield.id});
                     subfieldset.append(elGroup);
                 });
-                subform.append(subfieldset);
-
+                repeater.append(subfieldset);
+                subform.append(repeater);
                 this.curDOMParent.append(subform);
 
-                // (C) place add button for all available sibling types
+                // (C) bottom: place add button for all available sibling types   TODO: transform into drop-downlist
                 var localScope = this;
                 var subfieldTypes = [];
                 jQuery.each(field.items.type, function (subIdx, subfield) {
-                   subfieldTypes.push(subfield.id);
+                    subfieldTypes.push(subfield.id);
                 });
 
                 jQuery.each(field.items.type, function (subIdx, subfield) {
