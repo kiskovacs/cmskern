@@ -68,13 +68,37 @@ function EditContentNodeCtrl($xhr) {
 
     scope.moveDown = function(arr) {
         var curPos = this.$index;
+        console.log("  move element (" + curPos + ") down ... ");
+
+        // (A) swap model data
         var tmp = arr[curPos+1];
         arr[curPos+1] = arr[curPos];
         arr[curPos] = tmp;
+
+        // (B) swap UI elements
+        var elems = this.$element.parent().children();
+
+        // Fix attribute 'ng:repeat-index'
+        //elems.eq(curPos+1).attr("ng:repeat-index", curPos);
+        //elems.eq(curPos).attr("ng:repeat-index", curPos+1);
+        // change order in DOM
+        elems.eq(curPos).insertBefore(elems.eq(curPos+1));
     };
 
     scope.moveUp = function(arr) {
-        var curPos = this.$index;
+        var curPos = this.$index; // TODO: does this work multiple times in a row?
+        console.log("  move element (" + curPos + ") up ... ");
+
+        // (B) swap UI elements
+        var elems = this.$element.parent().children();
+
+        // Fix attribute 'ng:repeat-index'
+        elems.eq(curPos-1).attr("ng:repeat-index", curPos);
+        elems.eq(curPos).attr("ng:repeat-index", curPos-1);
+        // change order in DOM
+        elems.eq(curPos).insertBefore(elems.eq(curPos-1));
+
+        // (A) swap model data
         var tmp = arr[curPos-1];
         arr[curPos-1] = arr[curPos];
         arr[curPos] = tmp;
