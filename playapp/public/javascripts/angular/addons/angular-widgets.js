@@ -795,66 +795,71 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     return function (el) {
         var currentScope = this;
 
-        //console.log("---> el : " + el[0].name);
+        //console.log("tinymce     ---> el : " + el[0].name);
         // get existing value, otherwise initialize
         var o = widgetUtils.getValue(currentScope, contentExpr) || '';
-        //console.log("---> o : " + o);
+        //console.log("tinymce     ---> o : " + o);
 
-        /*
-        events.onChange = function (theElem, ui) {
-            console.log("ON CHANGE");
-            var content = $(el).tinymce('getContent');
-            widgetUtils.setValue(currentScope, contentExpr, content);
-        };
-        $.extend(options, events);
-        */
+        function doInit() {
+            $(el).tinymce({
+                mode : "exact",
+                editor_selector : "mceRichText",
+                elements : "ajaxfilemanager",
+                theme : "advanced",
+                plugins : "advimage,advlink,contextmenu,autosave,imggallery",
+                theme_advanced_buttons1 : "bold,italic,underline,separator,"+
+                    "undo,redo,separator,"+
+                    "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
+                    "link,unlink,image,imggallery,separator,"+
+                    "code,cleanup",
+                theme_advanced_buttons2 : "",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
+                extended_valid_elements : "hr[class|width|size|noshade]",
+                file_browser_callback : "ajaxfilemanager",
+                paste_use_dialog : false,
+                theme_advanced_statusbar_location : 'bottom',
+                theme_advanced_path : false,
+                theme_advanced_resizing : true,
+                theme_advanced_resize_horizontal : true,
+                apply_source_formatting : true,
+                force_br_newlines : true,
+                force_p_newlines : false,
+                relative_urls : false,
 
-        $(el).tinymce({
-            mode : "specific_textareas",
-            editor_selector : "mceRichText",
-            elements : "ajaxfilemanager",
-            theme : "advanced",
-            plugins : "advimage,advlink,contextmenu,autosave,imggallery",
-            theme_advanced_buttons1 : "bold,italic,underline,separator,"+
-                                      "undo,redo,separator,"+
-                                      "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
-                                      "link,unlink,image,imggallery,separator,"+
-                                      "code,cleanup",
-            theme_advanced_buttons2 : "",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            extended_valid_elements : "hr[class|width|size|noshade]",
-            file_browser_callback : "ajaxfilemanager",
-            paste_use_dialog : false,
-            theme_advanced_statusbar_location : 'bottom',
-            theme_advanced_path : false,
-            theme_advanced_resizing : true,
-            theme_advanced_resize_horizontal : true,
-            apply_source_formatting : true,
-            force_br_newlines : true,
-            force_p_newlines : false,
-            relative_urls : false,
+                oninit: function(inst) {
+                    var inHTML = o;
+                    console.log("tinymce: ONINIT --> " + inHTML);
+                    inst.setContent(inHTML);
+                },
 
-            oninit: function(inst) {
-                var inHTML = o;
-                console.log("ONINIT --> " + inHTML);
-                inst.setContent(inHTML);
-            },
+                // Update Textarea and Trigger change event
+                onchange_callback: function(inst) {
+                    //console.log("tinymce: CALLBACK --> " + inst.getContent());
 
-            // Update Textarea and Trigger change event
-            onchange_callback: function(inst) {
-                console.log("CALLBACK --> " + inst.getContent());
-
-                if (inst.isDirty()) {
-                    console.log("CALLBACK DIRTY");
-                    inst.save();
-                    widgetUtils.setValue(currentScope, contentExpr, inst.getContent());
-                    el.trigger('change');
+                    if (inst.isDirty()) {
+                        // console.log("tinymce: CALLBACK DIRTY");
+                        inst.save();
+                        widgetUtils.setValue(currentScope, contentExpr, inst.getContent());
+                        el.trigger('change');
+                    }
+                    return true; // Continue handling
                 }
-                return true; // Continue handling
+            });
+            console.log("     tinymce: finished defered doInit.");
+        }
+
+        // Defer Richtext Editor initialization after angular has added the DOM element
+        var defer = this.$service("$defer");
+        currentScope.counter = 0;
+        currentScope.$onEval( function() {
+            if (currentScope.counter == 0) {
+                defer(doInit);
+                currentScope.counter++;
             }
         });
+
     };
 });
 
@@ -946,7 +951,7 @@ angular.directive('jq:autoremove', function(expression, templateElement) {
             instanceElement.children(".subelements:gt(0)").remove();
         } else {
             this.elementGroupsToRemove.forEach(function(e) {
-                console.log("    * removing " + e);
+                console.log("    * removing DOM element for: " + e);
                 instanceElement.children("." + e).remove();
             });
         }

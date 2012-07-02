@@ -44,7 +44,7 @@ function EditContentNodeCtrl($xhr) {
     };
 
     /**
-     * Triggered when user presses the "Add" Button (subform).
+     * Triggered when user presses the "Add" Button (sub elements in form).
      */
     scope.addChild = function(ctx) {
         if (ctx.child) {
