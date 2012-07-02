@@ -54,12 +54,14 @@
                                             "properties":{
                                                 "subHeader":{
                                                     "title":"Sub-Headline",
-                                                    "type":"string"
+                                                    "type":"string",
+                                                    "ui_width":"xxlarge"
                                                 },
                                                 "subText":{
                                                     "title":"Sub-Text",
                                                     "type":"string",
-                                                    "ui_editor":"textarea"
+                                                    "ui_editor":"textarea",
+                                                    "ui_width":"xxlarge"
                                                 }
                                             }
                                         }
