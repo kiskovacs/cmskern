@@ -979,23 +979,6 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
 
     return function(instanceElement) {
         var scope = this;
-        var defer = this.$service("$defer");
-
-        function doUpdate(start, end) {
-            console.log("-----------------> defered doUpdate from " + start + " to " + end);
-            var items = scope.$get(itemsExpr.expression);
-            console.log("**** BEFORE: " + dump(items, 1));
-            items.splice(end, 0, items.splice(start, 1)[0]);
-            console.log("****   AFTER: " + dump(items, 1));
-            // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
-            //setTimeout(function() {
-            //    scope.$eval();
-            //}, 100);
-            // ~~~ DID ALSO not HELP scope.$updateView();
-            // include changing the index as part of 'ng:repeat-index' attribute
-            scope.$eval();
-            console.log("****        AFTER EVAL: " + dump(items, 1));
-        }
 
         $(templateElement).sortable({
             start: function(e, ui) {
@@ -1006,15 +989,18 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
                     end = ui.item.index();
                 console.log("Stop position from " + start + " to " + end);
 
-                var defer = scope.$service("$defer");
-                scope.counter = 0;
-                scope.$onEval( function() {
-                    console.log("HUHU ****************");
-                    if (scope.counter == 0) {
-                        defer(doUpdate(start, end));
-                        scope.counter++;
-                    }
-                });
+                var items = scope.$get(itemsExpr.expression);
+                console.log("**** BEFORE: " + dump(items, 1));
+                items.splice(end, 0, items.splice(start, 1)[0]);
+                console.log("****   AFTER: " + dump(items, 1));
+                // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
+                //setTimeout(function() {
+                //    scope.$eval();
+                //}, 100);
+                // ~~~ DID ALSO not HELP scope.$updateView();
+                // include changing the index as part of 'ng:repeat-index' attribute
+                scope.$eval();
+                console.log("****        AFTER EVAL: " + dump(items, 1));
                 //scope.$updateViews(); // TODO: makes no difference...
             }
         });
