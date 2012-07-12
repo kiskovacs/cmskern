@@ -53,7 +53,7 @@
                         </ul>
                         #{if session.username}
                         <p class="navbar-text pull-right">
-                            Logged in as ${session.username}
+                            Welcome ${session.username}
                             <a href="@{Secure.logout()}">(Log out)</a>
                         </p>
                         #{/if}
@@ -68,6 +68,7 @@
                     <div class="well sidebar-nav sidebar-nav-fixed">
 
                         <ul class="nav nav-list">
+                        <li class="thead">Inhalte bearbeiten</li>
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                             <li class="nav-header content active-header">
                             <div class="menu-arrow"></div>

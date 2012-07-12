@@ -1,0 +1,48 @@
+@import "compass";
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background:#eee;
+}
+#crud #crudHeader{
+border-bottom: 2px solid #FEBF62;
+}
+
+#crud #crudHeader h1,
+#crudBreadcrumb,
+.crudFlash,
+#crudContent,
+#crudFooter {
+    width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#crud #crudHeader h1 a,
+#crud #crudHeader small{
+    font-size: 13px;
+}
+#crud #crudHeader h1 a{
+	color:#fff;
+	background: transparent url(../images/admin-area-mo.png) left center no-repeat;
+  padding:0 0 0 20px;
+  margin-right:20px;
+  line-height:40px;
+}
+#crud #crudHeader h1 small a{
+	color:#999999;
+	padding-left: 50px; 
+	background: transparent url(../images/home.png) left center no-repeat;
+  padding:0 0 0 20px;
+  line-height:40px;
+}
+#crud #crudHeader h1 small a:hover{
+	background: transparent url(../images/home-mo.png) left center no-repeat;
+	color:#fff;
+}
+
+#crud #crudContent table thead tr {
+    background:black;
+    @include border-top-radius(7px);
+}

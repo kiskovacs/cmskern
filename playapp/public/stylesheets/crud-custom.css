@@ -1,23 +1,67 @@
+/* line 3, ../../compass/sass/crud-custom.scss */
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  background: #eee;
 }
 
+/* line 8, ../../compass/sass/crud-custom.scss */
+#crud #crudHeader {
+  border-bottom: 2px solid #FEBF62;
+}
+
+/* line 16, ../../compass/sass/crud-custom.scss */
 #crud #crudHeader h1,
 #crudBreadcrumb,
 .crudFlash,
 #crudContent,
 #crudFooter {
-    width: 820px;
-    margin-left: auto;
-    margin-right: auto;
+  width: 820px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#crud #crudHeader h1 {
-    font-size: 20px;
+/* line 23, ../../compass/sass/crud-custom.scss */
+#crud #crudHeader h1 a,
+#crud #crudHeader small {
+  font-size: 13px;
 }
 
-#crudHeader h1 small {
-    font-size: 13px;
-    padding-left: 50px;
+/* line 26, ../../compass/sass/crud-custom.scss */
+#crud #crudHeader h1 a {
+  color: #fff;
+  background: transparent url(../images/admin-area-mo.png) left center no-repeat;
+  padding: 0 0 0 20px;
+  margin-right: 20px;
+  line-height: 40px;
+}
+
+/* line 33, ../../compass/sass/crud-custom.scss */
+#crud #crudHeader h1 small a {
+  color: #999999;
+  padding-left: 50px;
+  background: transparent url(../images/home.png) left center no-repeat;
+  padding: 0 0 0 20px;
+  line-height: 40px;
+}
+
+/* line 40, ../../compass/sass/crud-custom.scss */
+#crud #crudHeader h1 small a:hover {
+  background: transparent url(../images/home-mo.png) left center no-repeat;
+  color: #fff;
+}
+
+/* line 45, ../../compass/sass/crud-custom.scss */
+#crud #crudContent table thead tr {
+  background: black;
+  -moz-border-radius-topleft: 7px;
+  -webkit-border-top-left-radius: 7px;
+  -ms-border-top-left-radius: 7px;
+  -o-border-top-left-radius: 7px;
+  border-top-left-radius: 7px;
+  -moz-border-radius-topright: 7px;
+  -webkit-border-top-right-radius: 7px;
+  -ms-border-top-right-radius: 7px;
+  -o-border-top-right-radius: 7px;
+  border-top-right-radius: 7px;
 }

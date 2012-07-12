@@ -1,4 +1,35 @@
 /* Override some defaults from bootstrap */
+@import "compass";
+
+$lead-color:#FEBF62;
+$link-color:#999;
+$lightest:#f5f5f5;
+$th-color:#9fb87f;
+
+@mixin triangle($width, $dir, $color){
+	@if $dir == up{
+	width:0; height:0;
+	border-left:$width solid transparent;
+	border-right:$width solid transparent;
+	border-bottom:$width solid $color;
+	} @else if $dir == down {
+	width:0; height:0;
+	border-left:$width solid transparent;
+	border-right:$width solid transparent;
+	border-top:$width solid $color;
+	} @else if $dir == right {
+	width:0; height:0;
+	border-top:$width solid transparent;
+	border-bottom:$width solid transparent;
+	border-left:$width solid $color;
+	}
+	@else if $dir == left {
+	width:0; height:0;
+	border-top:$width solid transparent;
+	border-bottom:$width solid transparent;
+	border-right:$width solid $color;
+	}
+}
 
 html, body {
     background-color: #eee;
@@ -19,33 +50,165 @@ h2 {
 
 h3 {
     font-weight: 400;
+    line-height:37px;
 }
 
 h3.contentTypeName {
-    border-top: 1px #808080 solid;
     margin-top: 25px;
 }
-
-
-/* ~~ Nav Bar ~~ */
-
-.sidebar-nav-fixed {
-    padding: 9px 0;
-    position: fixed;
-    left: 20px;
-    top: 60px;
-    width: 225px;
+h3.contentTypeName small a{
+	background:#9FB87F;
+	@include border-radius(20px);
+	@include box-shadow(grey 0 0 3px);
+	border:1px solid grey;
+	float: left;
+    height: 15px;
+    margin: 13px 0 0 5px;
+    position: absolute;
+    width: 15px;
+    .icon-plus {
+    margin:-10px 0 5px 1px;
+}
+}
+.btn_add a.ng-directive{
+	background:#9FB87F;
+	@include border-radius(20px);
+	@include box-shadow(grey 0 0 3px);
+	border:1px solid grey;
+    margin: 13px 0 0 5px;
+    padding: 4px;
+    float:left;
+    color:black;
+    .icon-plus{
+    margin:0;}
+}
+a.ng-directive.remove{
+	background:#9FB87F;
+	@include border-radius(20px);
+	@include box-shadow(grey 0 0 3px);
+	border:1px solid grey;
+    margin: 13px 0 0 5px;
+    padding:1px 4px;
+    color:black;
+    .icon-minus{
+    margin:2px 0 0 1px;}
+}
+a{
+color:$link-color;
+}
+/* -- Nav Bar Top horizontal --*/
+.navbar{
+border-bottom:2px solid $lead-color;
+}
+.navbar .brand{
+	text-align:center;
+	padding:8px 0;
+	margin:0;
+	float:none;
+	@include background-image(linear-gradient(#FFE7C3 5%, $lead-color 70%)); 
+	border-top:5px solid black;
+}
+.navbar .nav{
+margin-left:20px;
+}
+.navbar .navbar-text{
+margin-right:20px;
+}
+.navbar .nav > li.home > a{
+  background: transparent url(../images/home.png) left center no-repeat;
+  padding:0 0 0 20px;
+  line-height:40px;
+}
+.navbar .nav > li.home.active > a,
+.navbar .nav > li.home > a:hover{
+  background: transparent url(../images/home-mo.png) left center no-repeat;
+}
+.navbar .nav > li.admin-area > a {
+  background: transparent url(../images/admin-area.png) left center no-repeat;
+  padding:0 0 0 20px;
+  margin-left:20px;
+  line-height:40px;
+}
+.navbar .nav > li.admin-area.active > a,
+.navbar .nav > li.admin-area > a:hover{
+  background: transparent url(../images/admin-area-mo.png) left center no-repeat;
 }
 
+/* ~~ Nav Bar List ~~ */
+.well{
+@include border-top-radius(0px);
+}
+.sidebar-nav-fixed {
+    padding:0;
+    position: fixed;
+    left: 20px;
+    top: 100px;
+    width: 225px;
+}
 .row-fluid > .span-fixed-sidebar {
     margin-left: 290px;
 }
+.nav-list{
+background:white;
+@include border-top-radius(7px);
+@include box-shadow(#5f5f5f 0px 0px 5px);
+padding:0;
+margin:0;
+}
+.nav-list > li > a, .nav-list .nav-header, .nav-list .active > a{
+margin:0;
+text-shadow:none;
+padding-left:20px;
+}
+.nav-list .thead{
+color:white;
+background:black;
+@include border-top-radius(7px);
+padding:10px 10px 10px 20px;
+text-transform:uppercase;
+}
+.nav-list .nav-header {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #999999;
+  text-transform: uppercase;
+  margin-top:0;
+  padding-left:35px;
+  position:relative;
+}
+.nav-list > li + .nav-header{
+margin-top:0;
+}
+.menu-arrow { @include triangle(12px, right, $lead-color); position:absolute; top:1px; right:-12px; }
 
-.nav-list .nav-header  {
-    margin-top: 20px;
+.nav-list .nav-header.content {
+  background:url(../images/content.png) 10px center no-repeat;
+}
+.nav-list .nav-header.content.active-header {
+  background:#FEBF62 url(../images/content-mo.png) 20px center no-repeat;
+}
+.nav-list .nav-header.site {
+  background:url(../images/site.png) 20px center no-repeat;
+  margin-top:20px;
+}
+.nav-list .nav-header.admin-tasks {
+  background:#cfcdcd url(../images/admin.png) 20px center no-repeat;
+  margin-top:20px;
+}
+.nav-list .admin-tasks{
+background:#e1e0e0;
+}
+.nav-list .nav-header.active-header{
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+.sidebar-nav .nav-list .active > a {
+    background-color:transparent;
+    color: $lead-color;
 }
 
-.nav-list .nav-header:first-child  {
+.nav-list li:second-child  {
     margin-top: 0px;
 }
 
@@ -77,13 +240,17 @@ h3.contentTypeName {
 .content fieldset {
     margin-left: 25px;
 }
-
+fieldset{
+padding-bottom:25px;
+}
 legend {
     color: #808080;
     font-size: 16px;
     margin-bottom: 0px;
 }
-
+.subform{
+	background:#E1E0E0;
+	}
 legend .ng-directive {
     margin-left: 12px;
 }
@@ -101,7 +268,10 @@ div.btn_add {
     width: 100%;
     text-align: right;
 }
-
+.btn-primary {
+    /*@include background-image(linear-gradient(#9DD745, #69AF04));
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);*/
+}
 /* Hide out Move up/down buttons in positions it does not make sense */
 div.subform > fieldset:first-child > legend > a.move_up {
     display: none;
@@ -161,45 +331,55 @@ ul.selectBox {
 
 
 /* ~~ Table elements ~~ */
-
-th {
-    color: #b0c4de;
+.table{
+background:white;
+margin-bottom:50px;
 }
 
-.container > footer p {
+th {
+    color: $th-color;
+}
+
+footer p {
     text-align: center; /* center align it with the container */
+    margin-top:20px;
 }
 
 .container {
-    width: 820px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+    width: 100%; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+    margin:0;
 }
+.span12, .container{
+	width:none;
+	margin:none;
+}
+
 
 /* The white background content wrapper */
 .container > .content {
     background-color: #fff;
     padding: 20px;
     margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
-    -webkit-border-radius: 0 0 6px 6px;
-    -moz-border-radius: 0 0 6px 6px;
-    border-radius: 0 0 6px 6px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    @include border-bottom-radius(6px);
+    @include box-shadow(rgba(0,0,0,.15) 0 1px 2px);
 }
 
 /* Page header tweaks */
 .page-header {
-    background-color: #9DD53A;
-    padding: 20px 20px 10px;
-    margin: -20px -20px 10px;
+    background-color: transparent;
+    padding: 20px 0 10px 0;
+    margin: 30px 0;
 }
 
 .page-header h1 {
-    color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     margin-bottom: 0;
-}
-
+    margin-top:10px;
+    font-weight:normal;
+  }
+  
+  .row-fluid{
+  }
+  
 .metadata {
     color: #666666;
     font-size: 10px;
