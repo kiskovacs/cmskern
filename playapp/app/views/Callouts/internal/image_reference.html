@@ -10,37 +10,38 @@
 
 
 <fieldset>
-    <label for="select_value">Image ID</label>
-    <input type="text" id="select_value" name="value" value="${image_idref.value}" readonly="readonly" />
+    <label for="select_id">Image ID</label>
+    <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
 
     <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title" value="${image_title.value}" />
+    <input type="text" id="select_title" name="title" value="${fields['title'].value}"/>
 </fieldset>
 
 
 <script type="text/javascript">
 
     // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
-    var selectedValue = "";
+    var selectedId = "";
     var selectedTitle = "";
 
     function updateRef(val, title) {
-        selectedValue = val;
-        $("#select_value").val(val);
+        selectedId = val;
+        $("#select_id").val(val);
         selectedTitle = title;
         $("#select_title").val(title);
     }
 
-    $("#select_title").on("change", function(event) {
+    $("#select_title").on("change", function (event) {
         event.preventDefault();
         selectedTitle = $(this).val();
     });
 
     // Contract between Caller and Callout
+    //     returns [ID, TITLE]
     function calloutGetSelectedValues() {
         return {
-            '${image_idref.fieldname}':   selectedValue,
-            '${image_title.fieldname}': selectedTitle
+            '${fields['id'].targetFQName}': selectedId,
+            '${fields['title'].targetFQName}': selectedTitle
         };
     }
 

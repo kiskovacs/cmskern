@@ -7,6 +7,7 @@ import com.google.code.morphia.utils.LongIdEntity;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.*;
+import models.vo.IdTitle;
 import play.Logger;
 import utils.JsonUtils;
 import utils.MongoDbUtils;

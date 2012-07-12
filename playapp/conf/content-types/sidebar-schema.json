@@ -1,13 +1,50 @@
 {
-"fields":
-    [
-        { "name": "title", "label": "Titel",
-          "type": "title", "len": "xxlarge"
+    "id":"sidebar",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
         },
-
-        { "name": "online", "label": "Online?",
-          "type": "checkbox"
+        "parent_node_idref":{
+            "title":"Mutterknoten ID",
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/node_reference",
+                "src_properties":["id","title"],
+                "target_properties":["parent_node_idref", "parent_title"]
+            },
+            "ui_width":"xxlarge"
+        },
+        "parent_title":{
+            "title":"Mutterknoten",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "paras":{
+            "title":"Module",
+            "type":"array",
+            "items":{
+                "title":"Paragraph",
+                "type":"object",
+                "properties":{
+                    "headline":{
+                        "title":"Headline",
+                        "type":"string",
+                        "ui_width":"xxlarge"
+                    },
+                    "text":{
+                        "title":"Text",
+                        "type":"string",
+                        "ui_editor":"textarea",
+                        "ui_width":"xxlarge"
+                    }
+                }
+            }
         }
-
-    ]
+    }
 }

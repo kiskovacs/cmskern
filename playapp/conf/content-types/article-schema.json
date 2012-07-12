@@ -1,72 +1,246 @@
 {
-"rules":
-    {  "rule_news_source": { "type": "multiple",
-            "allowedValues": [
-                { "value": "unspecified", "label": "Unspecified", "selected": true },
-                { "value": "by_mail",     "label": "By Mail" },
-                { "value": "by_phone",    "label": "By Phone" }
-            ]
-        }
-    },
-
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xxlarge"
+    "id":"article",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "online":{
+            "title":"Online?",
+            "type":"boolean"
         },
-
-        { "name": "online", "label": "Online?",
-          "type": "checkbox"
+        "node_idref":{
+            "title":"Navigationsknoten",
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/node_reference",
+                "src_properties":["id", "title"],
+                "target_properties":["node_idref", "node_title"]
+            },
+            "ui_width":"xlarge"
         },
-
-        { "name": "online_date", "label": "Online Date",
-          "type": "date", "dateFormat": "dd-mm-yy", "len": "small",
-          "helptext": "Specify the publication date of this article (format: DD-MM-YYYY, example: 19-03-2012)."
+        "node_title":{
+            "title":"Nav.knoten Titel",
+            "type":"string",
+            "ui_width":"xxlarge"
         },
-
-        { "name": "paras", "label": "Paragraph", "type": "repeatable",
-            "min": "1",
-            "children": [
-                { "name": "headline", "label": "Headline",
-                  "type": "text", "len": "xxlarge"
+        "title":{
+            "title":"Titel",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "catchline":{
+            "title":"Spitzmarke",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "teaser":{
+            "title":"Teaser",
+            "type":"object",
+            "properties":{
+                "title":{
+                    "title":"Teaser Titel",
+                    "type":"string",
+                    "ui_width":"xxlarge"
                 },
-                { "name": "text", "label": "Text",
-                  "type": "textarea", "len": "xxlarge"
+                "text":{
+                    "title":"Teaser Text",
+                    "type":"string",
+                    "ui_editor":"textarea",
+                    "ui_width":"xxlarge"
                 },
-
-                { "name": "image_idref", "label": "Image (intern)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/internal/image_reference", "update_also": "image_title",
-                  "helptext": "References an internal URL to a selected image."
+                "image_idref":{
+                    "title":"Image ID",
+                    "type":"integer",
+                    "ui_callout":{
+                        "url":"/callouts/internal/image_reference",
+                        "src_properties":["id", "title"],
+                        "target_properties":["image_idref", "image_title"]
+                    },
+                    "ui_width":"xlarge"
                 },
-                { "name": "image_title", "label": "Title",
-                  "type": "text", "len": "xlarge"
-                },
-
-                { "name": "flickr_url", "label": "Image (flickr)",
-                  "type": "reference", "len": "xlarge",
-                  "callout": "/callouts/external/flickr_photo_reference",
-                  "helptext": "References URL from a selected photo (hosted on flickr.com)."
-                },
-
-                { "name": "childparas", "label": "Child Paragraph",
-                  "type": "repeatable", "min": "1", "children": [
-                      { "name": "subHeader", "label": "Sub-Headline",
-                        "type": "text" },
-                      { "name": "subText", "label": "Sub-Text",
-                        "type": "textarea" }
-                  ]
+                "image_title":{
+                    "title":"Image Titel",
+                    "type":"string",
+                    "ui_width":"xlarge"
                 }
-            ]
+            }
         },
-
-        { "name": "source", "label": "News Source",
-            "type": "select", "rule_ref": "rule_news_source"
+        "body":{
+            "title":"Body Text",
+            "type":"string",
+            "ui_editor":"richtext",
+            "ui_width":"xxlarge"
         },
-
-        { "name": "tags", "label": "Tags",
-          "type": "autoComplete", "query_type": "tags", "embed_value": true
+        "related_articles":{
+            "title":"Weiterführende Artikel",
+            "type":"array",
+            "items":{
+                "title":"Artikel",
+                "type":"object",
+                "properties":{
+                    "article_idref":{
+                        "title":"Artikel",
+                        "type":"integer",
+                        "description":"References an internal URL to a selected article.",
+                        "ui_callout":{
+                            "url":"/callouts/internal/test_reference",
+                            "src_properties":["id", "title", "teaser_text"],
+                            "target_properties":["article_idref", "headline", "teaser"]
+                        },
+                        "ui_width":"xlarge"
+                    },
+                    "headline":{
+                        "title":"Headline",
+                        "type":"string",
+                        "ui_width":"xxlarge"
+                    },
+                    "teaser":{
+                        "title":"Text",
+                        "type":"string",
+                        "ui_width":"xxlarge",
+                        "ui_editor":"textarea"
+                    },
+                    "image_idref":{
+                        "title":"Image ID",
+                        "description":"References an internal URL to a selected image.",
+                        "type":"integer",
+                        "ui_callout":{
+                            "url":"/callouts/internal/image_reference",
+                            "src_properties":["id", "title"],
+                            "target_properties":["image_idref", "image_title"]
+                        },
+                        "ui_width":"xlarge"
+                    },
+                    "image_title":{
+                        "title":"Image Titel",
+                        "type":"string",
+                        "ui_width":"xlarge"
+                    }
+                }
+            }
+        },
+        "dates":{
+            "title":"Datumseinträge",
+            "type":"object",
+            "properties":{
+                "embargo_date":{
+                    "title":"Embargo Date",
+                    "description":"Specify the embargo date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "expire_date":{
+                    "title":"Expire Date",
+                    "description":"Specify the expire date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "sort_date":{
+                    "title":"Sort Date",
+                    "description":"Specify the sort date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                }
+            }
+        },
+        "tags":{
+            "title":"Tags",
+            "description":"Multiple entries separated by comma (ie. aegypt,desert).",
+            "type":"array",
+            "ui_class":"compact",
+            "ui_width":"large",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
+            }
+        },
+        "author":{
+            "title":"Autor",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "copyright":{
+            "title":"Copyright",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "source":{
+            "title":"Source",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "sidebar_idref":{
+            "title":"Sidebar",
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/sidebar_reference",
+                "src_properties":["id"],
+                "target_properties":["sidebar_idref"]
+            },
+            "ui_width":"xlarge"
+        },
+        "adzone":{
+            "title":"Belegungseinheit",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "settings":{
+            "title":"Settings",
+            "type":"object",
+            "properties":{
+                "comments":{
+                    "title":"Kommentare zulassen?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "print":{
+                    "title":"Druckansicht?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "rating":{
+                    "title":"Bewertung zulassen?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "socialbookmarks":{
+                    "title":"Social Bookmarks?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "recommend":{
+                    "title":"Weiterempfehlen?",
+                    "type":"boolean",
+                    "default":true
+                }
+            }
+        },
+        "issue":{
+            "title":"Heft",
+            "type":"object",
+            "properties":{
+                "magazine":{
+                    "title":"Heft Name",
+                    "type":"string",
+                    "enum":["NG", "NG World", "NG Kids"]
+                },
+                "year":{
+                    "title":"Heft Jahr",
+                    "type":"string"
+                },
+                "number":{
+                    "title":"Heftnummer",
+                    "type":"string"
+                },
+                "pages":{
+                    "title":"Seiten",
+                    "type":"string"
+                }
+            }
         }
-
-    ]
+    }
 }

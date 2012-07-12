@@ -10,22 +10,27 @@
 
 
 <fieldset>
-    <label for="select_value">Asset Reference</label>
-    <input type="text" id="select_value" name="value" value="${asset_ref.value}" class="input-xxlarge"/>
+    <label for="select_ref">Asset Reference</label>
+    <input type="text" id="select_ref" name="value" value="${fields['id'].value}" class="input-xxlarge"/>
 </fieldset>
 
 <script type="text/javascript">
-    var selectedValue = "";
+    var selectedRef = "";
 
-    $("#select_value").on("change", function(event) {
+    $(document).ready(function() {
+        selectedRef = $('#select_ref').val();
+        refreshList();
+    });
+
+    $("#select_ref").on("change", function(event) {
         event.preventDefault();
-        selectedValue = $(this).val();
+        selectedRef = $(this).val();
     });
 
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${asset_ref.fieldname}': selectedValue
+            '${fields['id'].targetFQName}': selectedRef
         };
     }
 
@@ -44,19 +49,15 @@
         }
     });
 
-    $(document).ready(function() {
-        refreshList();
-    });
-
     function refreshList() {
         $.get('/blobs', function(data) {
             $('#asset_list').html(data);
             console.log('List was retrieved.');
             $("a.thumbnail").on("click", function(event) {
                 event.preventDefault();
-                selectedValue = $("img:first-child", this).data("objectid");
-                console.log('Set value to ' + selectedValue);
-                $("#select_value").val(selectedValue);
+                selectedRef = $("img:first-child", this).data("objectid");
+                console.log('Set value to ' + selectedRef);
+                $("#select_ref").val(selectedRef);
             });
         });
     }

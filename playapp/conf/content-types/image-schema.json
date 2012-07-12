@@ -1,15 +1,35 @@
 {
-"fields":
-    [
-        { "name": "title", "label": "Title",
-          "type": "title", "len": "xlarge"
+    "id":"image",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "title":{
+            "title":"Title",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
         },
-        { "name": "asset_ref", "label": "Asset",
-          "type": "reference", "callout": "/callouts/internal/asset_reference", "len": "xlarge"
+        "asset_ref":{
+            "title":"Asset",
+            "type":"string",
+            "ui_callout":{
+                "url":"/callouts/internal/asset_reference",
+                "src_properties":["id"],
+                "target_properties":["asset_ref"]
+            },
+            "ui_width":"xlarge"
         },
-        { "name": "keywords", "label": "Keywords",
-          "type": "text", "len": "xlarge",
-          "helptext": "Specify multiple keywords by separating entries with comma."
+        "keywords":{
+            "title":"Keywords",
+            "description":"Specify multiple keywords by separating entries with comma.",
+            "type":"array",
+            "ui_class":"compact",
+            "ui_width":"xlarge",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
+            }
         }
-    ]
+    }
 }

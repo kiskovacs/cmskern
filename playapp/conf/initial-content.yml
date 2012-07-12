@@ -1,19 +1,40 @@
 ContentNode(a_n1):
   creator: admin
   type: article
-  jsonContent: "{'title':'Start with N1', 'undzwo':'nochwa'}"
+  jsonContent: "{'title':'Start with N1', 'undzwo':'nochwas'}"
 
-ContentNode(t_nature):
-  creator: admin
-  type: tag
-  jsonContent: "{'title':'Nature'}"
 
-ContentNode(t_mountains):
+ContentNode(s_summer):
   creator: admin
-  type: tag
-  jsonContent: "{'title':'Mountains'}"
+  type: sidebar
+  jsonContent: "{'title':'Summer in Canada'}"
 
-ContentNode(t_oceans):
+ContentNode(s_winter):
   creator: admin
-  type: tag
-  jsonContent: "{'title':'Oceans'}"
+  type: sidebar
+  jsonContent: "{'title':'Winter'}"
+
+ContentNode(s_vacation):
+  creator: admin
+  type: sidebar
+  jsonContent: "{'title':'Vacation Special'}"
+
+
+ContentNode(n_root):
+  creator: admin
+  type: node
+  jsonContent: "{'title':'Root', 'path':'/', 'online':true }"
+
+ContentNode(n_articles):
+  creator: admin
+  type: node
+  jsonContent: "{'title':'Artices', 'path':'/articles', 'online':true }"
+
+ContentNode(n_travelreports):
+  creator: admin
+  type: node
+  jsonContent: "{'title':'Travel Reports', 'path':'/travel', 'online':true }"
+
+
+# TODO: How can be associate content to each other since IDs are created dynamically
+

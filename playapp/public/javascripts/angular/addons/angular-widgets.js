@@ -30,13 +30,19 @@ angular.directive('ui:selectable', function(expr, el) {
         var currentScope = this;
         if (propExpr) {
             // init values on load (per each single element)
-            /*
-            var values = widgetUtils.getValue(currentScope, propExpr);
-            if (angular.Array.indexOf(values, el.value) < 0) {
-                angular.Array.add(values, el.value);
+            var existingValues = widgetUtils.getValue(currentScope, propExpr);
+            var allowedOptions = $(el).data('options').split(',');
+            //console.log("-----------> -> preset values: " + existingValues + ": ALL " + allowedOptions);
+
+            if (existingValues) {
+                existingValues.forEach(function(e) {
+                    var curPos = $(el).attr('ng:repeat-index');
+                    var arrPos = allowedOptions.indexOf(e);
+                    if (curPos == arrPos) {
+                        $(el).addClass('ui-selected');
+                    }
+                });
             }
-            widgetUtils.setValue(currentScope, propExpr, values);
-            */
 
             // binding called on select or unselect
             $(el).bind('_onSelectable', function(e, obj) {
@@ -59,6 +65,8 @@ angular.directive('ui:selectable', function(expr, el) {
                 //console.log("            *** " + values);
                 widgetUtils.setValue(currentScope, propExpr, values);
             });
+
+            // React on dynamic changes
             currentScope.$watch(propExpr.expression, function(value) {
                 var d = widgetUtils.formatValue(value, propExpr, currentScope);
                 var dataVal = $(el).data("value");
@@ -83,16 +91,18 @@ angular.directive('ui:selectable-container', function(expr, el) {
         filter: '*:first, *:first ~ *', //  dirty hack, to be optimized....
         selected: function(event, ui) {
             var value = $(ui.selected).data("value");
-            console.log("**** ui:selectable-container SELECTED: " + value);
+            //console.log("**** ui:selectable-container SELECTED: " + value);
             $(ui.selected).trigger('_onSelectable', { "operation": "selected", "value": value});
         },
         unselected: function(event, ui) {
             var value = $(ui.unselected).data("value");
-            console.log("**** ui:selectable-container UNSELECTED: " + value);
+            //console.log("**** ui:selectable-container UNSELECTED: " + value);
             $(ui.unselected).trigger('_onSelectable', { "operation": "unselected", "value": value});
         }
     };
+
     $(el).selectable(options);
+
     return function(el) {
 
     };
@@ -446,18 +456,19 @@ angular.widget('@ui:datepicker', function(expr, el, val) {
     return function(el) {
         var currentScope = this;
         var tagName = $(el)[0].tagName.toLowerCase();
-        if (tagName == 'input' || tagName == 'textarea')
-            events.onClose = function(date, ui){
+        if (tagName == 'input' || tagName == 'textarea') {
+            events.onClose = function(date, ui) {
                 var dt = $(el).datepicker('getDate'); // returns date object
                 var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
-        else
-            events.onSelect = function(date, ui){
+        } else {
+            events.onSelect = function(date, ui) {
                 var dt = $(el).datepicker('getDate');
                 var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
+        }
         $.extend(options, events);
         $(el).datepicker(options);
         currentScope.$watch(dateExpr.expression, function(val){
@@ -488,7 +499,7 @@ angular.widget('ui:map', function(el) {
     defaults.map.center = new google.maps.LatLng(defaults.center.lat, defaults.center.lng);
     return function(el) {
         var currentScope = this;
-        $(elem).append('<div/>')
+        $(elem).append('<div/>');
         var div = ('div', elem).get(0);
         var map = new google.maps.Map(div,options.map);
         var marker = new google.maps.Marker({ position: map.center, map: map});
@@ -654,12 +665,15 @@ var widgetUtils = {
         return this.parseExpr(attr);
     },
     setValue: function (scope, attrExpr, value){
+        console.log("000");
         if(!attrExpr || !attrExpr.expression)
             return;
         var v = value;
         v = this.parseValue(v, attrExpr, scope);
         scope.$set(attrExpr.expression, v);
+        console.log("111");
         scope.$parent.$eval();
+        console.log("222");
     },
     getValue: function (scope, attrExpr){
         if(!attrExpr || !attrExpr.expression)
@@ -696,6 +710,31 @@ var widgetUtils = {
 // Added on top of Łukasz Twarogowski stuff
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+// custom widget transforming comma-separated string to Array
+angular.widget('@ui:valueArray', function(expr, el, val) {
+    var compiler = this;
+    var events = {};
+    var options = {};
+    var itemExpr = widgetUtils.parseAttrExpr(el, 'ui:item');
+    return function(el) {
+        var currentScope = this;
+        $(el).change(function() {
+            var csvStr = $(this).val();
+            var arrStr = $.map(csvStr.split(","), $.trim);
+            widgetUtils.setValue(currentScope, itemExpr, arrStr);
+        });
+        // call-in from Angular
+        currentScope.$watch(itemExpr.expression, function(val) {
+            // $(el).datepicker('setDate', val);
+            if (typeof val == 'undefined') {
+                val = '';
+            }
+            // expects value from already to be comma-separated
+            $(el).val(val);
+        }, null, true);
+    };
+});
 
 // --- Custom TinyMCE Service (works only with 10.5)
 // TinyMCE angular integration by Dean Sofer: http://deansofer.com/posts/view/14/AngularJs-Tips-and-Tricks
@@ -759,66 +798,71 @@ angular.widget('@ui:tinymce', function(expr, el, val) {
     return function (el) {
         var currentScope = this;
 
-        console.log("---> el : " + el[0].name);
+        //console.log("tinymce     ---> el : " + el[0].name);
         // get existing value, otherwise initialize
         var o = widgetUtils.getValue(currentScope, contentExpr) || '';
-        console.log("---> o : " + o);
+        //console.log("tinymce     ---> o : " + o);
 
-        /*
-        events.onChange = function (theElem, ui) {
-            console.log("ON CHANGE");
-            var content = $(el).tinymce('getContent');
-            widgetUtils.setValue(currentScope, contentExpr, content);
-        };
-        $.extend(options, events);
-        */
+        function doInit() {
+            $(el).tinymce({
+                mode : "exact",
+                editor_selector : "mceRichText",
+                elements : "ajaxfilemanager",
+                theme : "advanced",
+                plugins : "advimage,advlink,contextmenu,autosave,imggallery",
+                theme_advanced_buttons1 : "bold,italic,underline,separator,"+
+                    "undo,redo,separator,"+
+                    "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
+                    "link,unlink,image,imggallery,separator,"+
+                    "code,cleanup",
+                theme_advanced_buttons2 : "",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
+                extended_valid_elements : "hr[class|width|size|noshade]",
+                file_browser_callback : "ajaxfilemanager",
+                paste_use_dialog : false,
+                theme_advanced_statusbar_location : 'bottom',
+                theme_advanced_path : false,
+                theme_advanced_resizing : true,
+                theme_advanced_resize_horizontal : true,
+                apply_source_formatting : true,
+                force_br_newlines : true,
+                force_p_newlines : false,
+                relative_urls : false,
 
-        $(el).tinymce({
-            mode : "specific_textareas",
-            editor_selector : "mceRichText",
-            elements : "ajaxfilemanager",
-            theme : "advanced",
-            plugins : "advimage,advlink,contextmenu,autosave,imggallery",
-            theme_advanced_buttons1 : "bold,italic,underline,separator,"+
-                                      "undo,redo,separator,"+
-                                      "justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,"+
-                                      "link,unlink,image,imggallery,separator,"+
-                                      "code,cleanup",
-            theme_advanced_buttons2 : "",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            extended_valid_elements : "hr[class|width|size|noshade]",
-            file_browser_callback : "ajaxfilemanager",
-            paste_use_dialog : false,
-            theme_advanced_statusbar_location : 'bottom',
-            theme_advanced_path : false,
-            theme_advanced_resizing : true,
-            theme_advanced_resize_horizontal : true,
-            apply_source_formatting : true,
-            force_br_newlines : true,
-            force_p_newlines : false,
-            relative_urls : false,
+                oninit: function(inst) {
+                    var inHTML = o;
+                    console.log("tinymce: ONINIT --> " + inHTML);
+                    inst.setContent(inHTML);
+                },
 
-            oninit: function(inst) {
-                var inHTML = o;
-                console.log("ONINIT --> " + inHTML);
-                inst.setContent(inHTML);
-            },
+                // Update Textarea and Trigger change event
+                onchange_callback: function(inst) {
+                    //console.log("tinymce: CALLBACK --> " + inst.getContent());
 
-            // Update Textarea and Trigger change event
-            onchange_callback: function(inst) {
-                console.log("CALLBACK --> " + inst.getContent());
-
-                if (inst.isDirty()) {
-                    console.log("CALLBACK DIRTY");
-                    inst.save();
-                    widgetUtils.setValue(currentScope, contentExpr, inst.getContent());
-                    el.trigger('change');
+                    if (inst.isDirty()) {
+                        // console.log("tinymce: CALLBACK DIRTY");
+                        inst.save();
+                        widgetUtils.setValue(currentScope, contentExpr, inst.getContent());
+                        el.trigger('change');
+                    }
+                    return true; // Continue handling
                 }
-                return true; // Continue handling
+            });
+            console.log("     tinymce: finished defered doInit.");
+        }
+
+        // Defer Richtext Editor initialization after angular has added the DOM element
+        var defer = this.$service("$defer");
+        currentScope.counter = 0;
+        currentScope.$onEval( function() {
+            if (currentScope.counter == 0) {
+                defer(doInit);
+                currentScope.counter++;
             }
         });
+
     };
 });
 
@@ -894,5 +938,86 @@ angular.widget('@ui:wysiwyg', function(expr, el, val) {
     };
 });
 
+/**
+ * Use this directive for arrays which hold objects of different type.
+ *
+ * run once on compile (when ng:repeat turns this into a template)
+ */
+angular.directive('jq:autoremove', function(expression, templateElement) {
 
+    var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
 
+    return function(instanceElement) {
+        var scope = this;
+
+        // run on each instance, (when ng:repeat needs a new <li> to insert into the DOM)
+        // instanceElement is already jQuery selector
+        //console.log("autoremove: now removing...");
+        // if nothing yet selected only display first subgroup
+
+        // only remove DOM elements if they are not used by array elements
+        var curPos = scope.$index;
+
+        var item = scope.$get(itemsExpr.expression)[curPos];
+        //console.log("    -----> " + curPos + " :: " + item);
+
+        if (scope.elementGroupsToRemove.length === 0) {
+            console.log("autoremove: remove elements except for type '" + item._type + "'...");
+            instanceElement.find(".subelements:not(." + item._type + ")").remove();
+        } else {
+            scope.elementGroupsToRemove.forEach(function(e) {
+                console.log("    * removing DOM element for: " + e);
+                instanceElement.find("." + e).remove();
+            });
+        }
+    }
+});
+
+/**
+ * Allow user to reshuffle UL-LI structure by drag and drop.
+ */
+angular.directive('ui:sortable', function(expression, templateElement, val) {
+
+    var itemsExpr = widgetUtils.parseAttrExpr(templateElement, 'ui:items');
+
+    return function(instanceElement) {
+        var scope = this;
+
+        $(templateElement).sortable({
+            start: function(e, ui) {
+                ui.item.data('start', ui.item.index());
+            },
+            stop: function(e, ui) {
+                var start = ui.item.data('start'),
+                    end = ui.item.index();
+                console.log("Stop position from " + start + " to " + end);
+
+                var items = scope.$get(itemsExpr.expression);
+                console.log("**** BEFORE: " + dump(items, 1));
+                items.splice(end, 0, items.splice(start, 1)[0]);
+                console.log("****    AFTER: " + dump(items, 1));
+                scope.$set(itemsExpr.expression, items);
+                scope.$parent.$eval();  // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt
+                // QUASI gleichbedeutend: widgetUtils.setValue(scope, itemsExpr, items); // FIXME: hier im eval wird Reihenfolge wieder zurückgesetzt
+
+                // Weitere Lösungsansätze:
+                //      (1) DOM Order manipulieren
+                //      (2) Array Manipulation mehr in einem angularJS Stil?
+
+                // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
+                //setTimeout(function() {
+                //    scope.$eval();
+                //}, 100);
+                // ~~~ DID ALSO not HELP scope.$updateView();
+                // include changing the index as part of 'ng:repeat-index' attribute
+
+                //scope.$tryEval(itemsExpr.expression, templateElement);
+                // KLAPPT NICHT: e.stopPropagation();
+
+//                console.log("****        AFTER EVAL: " + dump(items, 1));
+                //scope.$updateView(); // TODO: makes no difference...
+            }
+        });
+    }
+
+});

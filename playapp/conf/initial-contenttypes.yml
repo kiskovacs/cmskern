@@ -5,15 +5,24 @@
 
 ContentType(article):
     group: editorial
-    sortkey: 1
+    sortkey: 10
     slug: article
     displayName: Article
     description: the central content type for an text article.
     jsonFormFromFile: conf/content-types/article-schema.json
 
+# ONLY TEMPORARY FOR TESTING PURPOSES
+ContentType(articleDiffParas):
+    group: editorial
+    sortkey: 12
+    slug: articleDiffParas
+    displayName: Flexible Article
+    description: article which allows different types of sub-paragraphs
+    jsonFormFromFile: conf/content-types/archive/articleDiffParas-schema.json
+
 ContentType(articleCollection):
     group: editorial
-    sortkey: 2
+    sortkey: 20
     slug: articleCollection
     displayName: Article Collection
     description: holding links to one or more articles.
@@ -21,7 +30,7 @@ ContentType(articleCollection):
 
 ContentType(image):
     group: editorial
-    sortkey: 3
+    sortkey: 30
     slug: image
     displayName: Image
     description: the asset as also some metadata for an image.
@@ -29,23 +38,16 @@ ContentType(image):
 
 ContentType(imageGallery):
     group: editorial
-    sortkey: 4
+    sortkey: 40
     slug: imageGallery
     displayName: Image Gallery
     description: referencing multiple images at a time.
     jsonFormFromFile: conf/content-types/imageGallery-schema.json
 
-ContentType(tag):
-    group: editorial
-    sortkey: 5
-    slug: tag
-    displayName: Tag
-    description: a keyword summarizing the relevant information.
-    jsonFormFromFile: conf/content-types/tag-schema.json
 
 ContentType(sidebar):
     group: site
-    sortkey: 1
+    sortkey: 100
     slug: sidebar
     displayName: Sidebar
     description: an area displaying or teaser other side content.
@@ -53,7 +55,7 @@ ContentType(sidebar):
 
 ContentType(node):
     group: site
-    sortkey: 2
+    sortkey: 110
     slug: node
     displayName: Navigation Node
     description: containing links to articles and sidebars.

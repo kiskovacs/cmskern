@@ -1,16 +1,18 @@
-<!-- Select one of the existing image galleries or TODO: create a new one (on-the-fly) -->
-
-<h3>Select Image Gallery</h3>
+<!-- Select one existing articles -->
+<h3>Select Node</h3>
 
 <ul>
-#{list items: imageGalleries, as:'imageGallery'}
-    <li><a href="#" onclick="updateRef('${imageGallery._id}', '${imageGallery.data.title}')">${imageGallery.data.title}</a></li>
+#{list items: nodes, as:'node'}
+    <li><a href="#"
+           onclick="updateRef('${node._id}', '${node.data.title}')">${node.data.title}</a>
+        (Path: ${node.data.path}, Parent: ${node.data.parent})
+    </li>
 #{/list}
 </ul>
 
 
 <fieldset>
-    <label for="select_id">Image Gallery ID</label>
+    <label for="select_id">Node ID</label>
     <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly" />
 
     <label for="select_title">Title</label>
@@ -19,9 +21,7 @@
 
 
 <script type="text/javascript">
-
-    // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
-    var selectedId = -1;
+    var selectedId    = -1;
     var selectedTitle = "";
 
     $(function() {
@@ -41,12 +41,11 @@
         selectedTitle = $(this).val();
     });
 
-    // Contract between Caller and Callout
+    // contract: returns [ID, TITLE]
     function calloutGetSelectedValues() {
         return {
             '${fields['id'].targetFQName}': selectedId,
             '${fields['title'].targetFQName}': selectedTitle
         };
     }
-
 </script>
