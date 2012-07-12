@@ -1,0 +1,219 @@
+{
+    "id":"indexpage",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "type":"object",
+    "additionalProperties":false,
+    "properties":{
+        "online":{
+            "title":"Online?",
+            "type":"boolean"
+        },
+        "node_idref":{
+            "title":"Navigationsknoten",
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/node_reference",
+                "src_properties":["id", "title"],
+                "target_properties":["node_idref", "node_title"]
+            },
+            "ui_width":"xlarge"
+        },
+        "node_title":{
+            "title":"Nav.knoten Titel",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "title":{
+            "title":"Titel",
+            "type":"string",
+            "required":true,
+            "ui_width":"xxlarge"
+        },
+        "catchline":{
+            "title":"Spitzmarke",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "teaser":{
+            "title":"Teaser",
+            "type":"object",
+            "properties":{
+                "title":{
+                    "title":"Teaser Titel",
+                    "type":"string",
+                    "ui_width":"xxlarge"
+                },
+                "text":{
+                    "title":"Teaser Text",
+                    "type":"string",
+                    "ui_editor":"textarea",
+                    "ui_width":"xxlarge"
+                },
+                "image_idref":{
+                    "title":"Image ID",
+                    "type":"integer",
+                    "ui_callout":{
+                        "url":"/callouts/internal/image_reference",
+                        "src_properties":["id", "title"],
+                        "target_properties":["image_idref", "image_title"]
+                    },
+                    "ui_width":"xlarge"
+                },
+                "image_title":{
+                    "title":"Image Titel",
+                    "type":"string",
+                    "ui_width":"xlarge"
+                }
+            }
+        },
+        "body":{
+            "title":"Body Text",
+            "type":"string",
+            "ui_editor":"richtext",
+            "ui_width":"xxlarge"
+        },
+        "paras":{
+            "title":"Sections",
+            "type":"array",
+            "items":{
+                "type":[
+                    {
+                        "id":"rawhtml",
+                        "type":"string",
+                        "title":"Raw HTML",
+						"ui_editor":"textarea",
+                        "ui_width":"xxlarge"
+                },
+                    {
+                        "id":"query",
+                        "type":"string",
+                        "title":"Query",
+			            "ui_width":"xxlarge"
+                    }
+                ]
+            }
+        },
+        "dates":{
+            "title":"Datumseinträge",
+            "type":"object",
+            "properties":{
+                "embargo_date":{
+                    "title":"Embargo Date",
+                    "description":"Specify the embargo date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "expire_date":{
+                    "title":"Expire Date",
+                    "description":"Specify the expire date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                },
+                "sort_date":{
+                    "title":"Sort Date",
+                    "description":"Specify the sort date of this article (format: YYYY-MM-DD).",
+                    "type":"string",
+                    "format":"date",
+                    "ui_width":"small"
+                }
+            }
+        },
+        "tags":{
+            "title":"Tags",
+            "description":"Multiple entries separated by comma (ie. aegypt,desert).",
+            "type":"array",
+            "ui_class":"compact",
+            "ui_width":"large",
+            "items":{
+                "type":"string",
+                "ui_query_type":"tags"
+            }
+        },
+        "author":{
+            "title":"Autor",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "copyright":{
+            "title":"Copyright",
+            "type":"string",
+            "ui_width":"xxlarge"
+        },
+        "source":{
+            "title":"Source",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "sidebar_idref":{
+            "title":"Sidebar",
+            "type":"integer",
+            "ui_callout":{
+                "url":"/callouts/internal/sidebar_reference",
+                "src_properties":["id"],
+                "target_properties":["sidebar_idref"]
+            },
+            "ui_width":"xlarge"
+        },
+        "adzone":{
+            "title":"Belegungseinheit",
+            "type":"string",
+            "ui_width":"large"
+        },
+        "settings":{
+            "title":"Settings",
+            "type":"object",
+            "properties":{
+                "comments":{
+                    "title":"Kommentare zulassen?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "print":{
+                    "title":"Druckansicht?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "rating":{
+                    "title":"Bewertung zulassen?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "socialbookmarks":{
+                    "title":"Social Bookmarks?",
+                    "type":"boolean",
+                    "default":true
+                },
+                "recommend":{
+                    "title":"Weiterempfehlen?",
+                    "type":"boolean",
+                    "default":true
+                }
+            }
+        },
+        "issue":{
+            "title":"Heft",
+            "type":"object",
+            "properties":{
+                "magazine":{
+                    "title":"Heft Name",
+                    "type":"string",
+                    "enum":["NG", "NG World", "NG Kids"]
+                },
+                "year":{
+                    "title":"Heft Jahr",
+                    "type":"string"
+                },
+                "number":{
+                    "title":"Heftnummer",
+                    "type":"string"
+                },
+                "pages":{
+                    "title":"Seiten",
+                    "type":"string"
+                }
+            }
+        }
+    }
+}

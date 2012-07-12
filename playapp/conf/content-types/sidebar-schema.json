@@ -10,21 +10,10 @@
             "required":true,
             "ui_width":"xxlarge"
         },
-        "parent_node_idref":{
-            "title":"Mutterknoten ID",
-            "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/node_reference",
-                "src_properties":["id","title"],
-                "target_properties":["parent_node_idref", "parent_title"]
-            },
-            "ui_width":"xxlarge"
-        },
-        "parent_title":{
-            "title":"Mutterknoten",
-            "type":"string",
-            "ui_width":"xxlarge"
-        },
+        "online":{
+              "title":"Online?",
+              "type":"boolean"
+          },
         "paras":{
             "title":"Module",
             "type":"array",

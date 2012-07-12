@@ -10,11 +10,21 @@
             "required":true,
             "ui_width":"xxlarge"
         },
-        "parent":{
-            "title":"Mutterknoten",
-            "type":"integer",
-            "ui_width":"xlarge"
-        },
+         "parent_idref":{
+                    "title":"Mutterknoten",
+                    "type":"integer",
+                    "ui_callout":{
+                        "url":"/callouts/internal/node_reference",
+                        "src_properties":["id", "title"],
+                        "target_properties":["parent_idref", "parent_title"]
+                    },
+                    "ui_width":"xlarge"
+                },
+                "parent_title":{
+                    "title":"Nav.knoten Titel",
+                    "type":"string",
+                    "ui_width":"xxlarge"
+                },
         "path":{
             "title":"Pfad",
             "type":"string",
