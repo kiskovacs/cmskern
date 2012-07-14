@@ -1951,10 +1951,18 @@ function createScope(parent, providers, instanceCache) {
      *
      */
     $watch: function(watchExp, listener, exceptionHandler, initRun) {
+
+        console.log("watchexp: " + watchExp);
+        console.log("listener: " + listener);
+
       var watch = expressionCompile(watchExp),
           last = watch.call(instance);
+        console.log("watch: " +  watch);
+
       listener = expressionCompile(listener);
-      function watcher(firstRun){
+        console.log("comp listener: " + listener);
+
+        function watcher(firstRun){
         var value = watch.call(instance),
             // we have to save the value because listener can call ourselves => inf loop
             lastValue = last;

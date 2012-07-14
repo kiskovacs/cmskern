@@ -8,6 +8,7 @@ syntax: regexp
 .*\.ipr
 .*\.iws
 .*\.pyc
+\.idea
 \.svn
 eclipse
 api-archive
