@@ -961,11 +961,11 @@ angular.directive('jq:autoremove', function(expression, templateElement) {
         var item = scope.$get(itemsExpr.expression)[curPos];
         //console.log("    -----> " + curPos + " :: " + item);
 
-        if (scope.elementGroupsToRemove.length === 0) {
+        if (scope.$parent.elementGroupsToRemove.length === 0) {
             console.log("autoremove: remove elements except for type '" + item._type + "'...");
             instanceElement.find(".subelements:not(." + item._type + ")").remove();
         } else {
-            scope.elementGroupsToRemove.forEach(function(e) {
+            scope.$parent.elementGroupsToRemove.forEach(function(e) {
                 console.log("    * removing DOM element for: " + e);
                 instanceElement.find("." + e).remove();
             });
@@ -984,6 +984,7 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
         var scope = this;
 
         $(templateElement).sortable({
+            axis: 'y',
             start: function(e, ui) {
                 ui.item.data('start', ui.item.index());
             },
@@ -993,11 +994,11 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
                 console.log("Stop position from " + start + " to " + end);
 
                 // wir kopieren uns die items
-                var items = scope.$get(itemsExpr.expression);
+                var items = scope.$get(itemsExpr.expression).slice();
 
                 // loesen das binding auf
                 scope.$set(itemsExpr.expression, []);
-                scope.$parent.$eval();
+                scope.$eval();
 
                 console.log("**** BEFORE: " + dump(items, 1));
                 items.splice(end, 0, items.splice(start, 1)[0]);
@@ -1006,7 +1007,11 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
 
                 // setzen das manipulierte item wieder ein
                 scope.$set(itemsExpr.expression, items);
-                scope.$parent.$eval();
+                scope.$eval();
+                var curPos = scope.$index;
+
+                var item = scope.$get(itemsExpr.expression)[curPos];
+                //console.log("    -----> " + curPos + " :: " + item);
 
 
                 // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt

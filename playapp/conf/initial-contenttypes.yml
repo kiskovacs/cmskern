@@ -20,6 +20,15 @@ ContentType(articleDiffParas):
     description: article which allows different types of sub-paragraphs
     jsonFormFromFile: conf/content-types/archive/articleDiffParas-schema.json
 
+ContentType(indexPage):
+    group: editorial
+    sortkey: 12
+    slug: indexpage
+    displayName: Index Page
+    description: article which allows different types of sub-paragraphs
+    jsonFormFromFile: conf/content-types/indexpage-schema.json
+
+
 ContentType(articleCollection):
     group: editorial
     sortkey: 20

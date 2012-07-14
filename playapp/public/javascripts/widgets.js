@@ -9,15 +9,7 @@ angular.widget('my:form', function(element) {
     this.directives(true);  // compiler will process directives
 
     return function(element) {
-
-        var scope = this,
-            schema = scope.$eval(element.attr('schema')),
-            data = element.attr('data'),
-            fieldset = angular.element('<fieldset class="root"></fieldset>');
-
-        // process every field as specified in the JSON schema definition
-        //                               context object: {parentName, fqName, curDOMParent, childtype}
-        angular.forEach(schema, function processField(field, fieldKey) {
+        function processField(field, fieldKey) {
             var qualifiedName = this.parentName + '.' + fieldKey,
                 fullyQualifiedName = this.fqName + '.' + fieldKey,
                 fieldElStr;
@@ -53,12 +45,13 @@ angular.widget('my:form', function(element) {
                 // (A) subform header (with move up/down button)
                 var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '"></ul>');
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
-                                               (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '"></li>');
+                    (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
                 var legendChild = angular.element('<legend>' + field.title +'</legend>');
 
                 // ~~ remove (per individual child group)
-                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem + ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
+                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem +
+                    ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
 
@@ -220,7 +213,15 @@ angular.widget('my:form', function(element) {
             controlGroup.append(controlElem);
             this.curDOMParent.append(controlGroup);
 
-        }, {parentName: data, fqName: data, curDOMParent: fieldset});
+        };
+        var scope = this,
+            schema = scope.$eval(element.attr('schema')),
+            data = element.attr('data'),
+            fieldset = angular.element('<fieldset class="root"></fieldset>');
+
+        // process every field as specified in the JSON schema definition
+        //                               context object: {parentName, fqName, curDOMParent, childtype}
+        angular.forEach(schema, processField, {parentName: data, fqName: data, curDOMParent: fieldset});
 
         angular.compile(fieldset)(scope);
         element.append(fieldset);

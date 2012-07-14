@@ -48,13 +48,15 @@ function EditContentNodeCtrl($xhr) {
      */
     scope.addChild = function(ctx) {
         if (ctx.child) {
-            console.log("Add child (type: " + ctx.childtype + "): " + ctx.child);
+            console.log("Add child (type: " + ctx.childtype + "): " + ctx.child + " parent: " + dump(ctx.parent, 1));
             ctx.child.push({ _type: ctx.childtype });
+
         } else {
             // TODO: never getting here
             console.log("Init child (type: " + ctx.childtype + "): " + ctx.childname);
             ctx.parent[ctx.childname] = [{ _type: ctx.childtype }];
         }
+        /*
         scope.elementGroupsToRemove = ctx.allChildtypes.split(',');
         var idx = scope.elementGroupsToRemove.indexOf(ctx.childtype);
         if (idx != -1) {
@@ -63,6 +65,7 @@ function EditContentNodeCtrl($xhr) {
             // by default remove first element
             scope.elementGroupsToRemove.splice(0, 1);
         }
+        */
         // item hiding via directive 'autoremove' (defined in angular-widget.js)
     };
 
