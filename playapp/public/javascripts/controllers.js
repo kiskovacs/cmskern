@@ -1,12 +1,6 @@
 /* App Controllers */
 
 // ~~~~~~
-EditContentNodeCtrl.prototype = {
-    initializeSortableLists: function(listElement) {
-        var self = this;
-        initializeSortableListFramework(self, listElement);
-    }
-};
 
 function EditContentNodeCtrl($xhr) {
     var scope;
@@ -181,14 +175,6 @@ CalloutDialogHelper = (function() {
 
 })();
 
-function logChange(e) {
-                console.log("**** CHANGED: " +e);
-}
-
-function moveUp(e) {
-            console.log(" moveUp clicked: " +e);
-
-}
 
 // TODO: move to a helper lib
 function dump(arr, level) {

@@ -51,9 +51,9 @@ angular.widget('my:form', function(element) {
                 // ~~~~ FIXME end (init array top-level)
 
                 // (A) subform header (with move up/down button)
-                var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '" id="' + qualifiedName +'"></ul>');
+                var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '"></ul>');
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
-                                               (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" id="' + qualifiedName + '{{$index}}"></li>');
+                                               (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
                 var legendChild = angular.element('<legend>' + field.title +'</legend>');
 
@@ -190,7 +190,7 @@ angular.widget('my:form', function(element) {
             }
             // ~~ "normal" text input field
             else {
-                fieldElStr = '<input onChange="logChange()" class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
+                fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
                 angular.forEach(field, function(value, attribute) {
                     if (attribute != 'tag') {
                         fieldElStr += attribute + '="' + value + '" ';

@@ -973,16 +973,6 @@ angular.directive('jq:autoremove', function(expression, templateElement) {
     }
 });
 
-angular.directive("ng:moveup", function() {
-                      return function(scope, element, attrs) {
-                                // scope.$parent.$eval();
-
-                                  scope.on('click', function() {
-                            //          alert ("clk");
-                                  })            ;
-                                   };
-                               });
-
 /**
  * Allow user to reshuffle UL-LI structure by drag and drop.
  */
@@ -993,75 +983,41 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
     return function(instanceElement) {
         var scope = this;
 
-
-
-        var updateItems = function (key, val) {
-            scope.$set(key, val);
-            scope.$eval();
-            scope.$set(key, val);
-
-        }
-
         $(templateElement).sortable({
-                    start: function(e, ui) {
-                        ui.item.data('start', ui.item.index());
-                    },
-                    stop: function(e, ui) {
-                        var start = ui.item.data('start'),
-                            end = ui.item.index();
-                        console.log("Stop position from " + start + " to " + end);
-/*
-                        var sortedOrder = templateElement.sortable("toArray");
-                        var listArray = scope.$eval(itemsExpr.expression);
+            start: function(e, ui) {
+                ui.item.data('start', ui.item.index());
+            },
+            stop: function(e, ui) {
+                var start = ui.item.data('start'),
+                    end = ui.item.index();
+                console.log("Stop position from " + start + " to " + end);
 
-                        var sortedArray = [];
+                var items = scope.$get(itemsExpr.expression);
+                console.log("**** BEFORE: " + dump(items, 1));
+                items.splice(end, 0, items.splice(start, 1)[0]);
+                console.log("****    AFTER: " + dump(items, 1));
+                scope.$set(itemsExpr.expression, items);
+                scope.$parent.$eval();  // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt
+                // QUASI gleichbedeutend: widgetUtils.setValue(scope, itemsExpr, items); // FIXME: hier im eval wird Reihenfolge wieder zurückgesetzt
 
-                        // Set fields from the event.
-                        scope.listOrder = sortedOrder;
-                        var i;
-                        for (i=0; i < listArray.length; i++) {
-                            sortedArray.push(listArray[sortedOrder[i].replace(itemsExpr.expression, "")]);
-                        }
- var emptyArray=[];
- scope.$set(itemsExpr.expression, emptyArray);
- scope.$eval();
- scope.$set(itemsExpr.expression, sortedArray);
- scope.$eval();
+                // Weitere Lösungsansätze:
+                //      (1) DOM Order manipulieren
+                //      (2) Array Manipulation mehr in einem angularJS Stil?
 
- */
+                // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
+                //setTimeout(function() {
+                //    scope.$eval();
+                //}, 100);
+                // ~~~ DID ALSO not HELP scope.$updateView();
+                // include changing the index as part of 'ng:repeat-index' attribute
 
-                        //var items = scope.$get(itemsExpr.expression);
-                        var items = scope.$get(itemsExpr.expression).slice();
-                        console.log("**** BEFORE: " + dump(items, 1));
-                        items.splice(end, 0, items.splice(start, 1)[0]);
-                        console.log("****    AFTER: " + dump(items, 1));
-//                        updateItems(itemsExpr.expression, items);
+                //scope.$tryEval(itemsExpr.expression, templateElement);
+                // KLAPPT NICHT: e.stopPropagation();
 
-                        scope.$set(itemsExpr.expression, []);
-                        scope.$parent.$eval();
-                        scope.$set(itemsExpr.expression, items);
-                        scope.$parent.$eval();  // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt
-                        // QUASI gleichbedeutend: widgetUtils.setValue(scope, itemsExpr, items); // FIXME: hier im eval wird Reihenfolge wieder zurückgesetzt
-
-                        // Weitere Lösungsansätze:
-                        //      (1) DOM Order manipulieren
-                        //      (2) Array Manipulation mehr in einem angularJS Stil?
-
-                        // ~~ TODO: how to solve the timing issues for syncing changed model to update view?
-                        //setTimeout(function() {
-                        //    scope.$eval();
-                        //}, 100);
-                        // ~~~ DID ALSO not HELP scope.$updateView();
-                        // include changing the index as part of 'ng:repeat-index' attribute
-
-                        //scope.$tryEval(itemsExpr.expression, templateElement);
-                        // KLAPPT NICHT: e.stopPropagation();
-
-        //                console.log("****        AFTER EVAL: " + dump(items, 1));
-                        //scope.$updateView(); // TODO: makes no difference...
-                    }
-                });
-
+//                console.log("****        AFTER EVAL: " + dump(items, 1));
+                //scope.$updateView(); // TODO: makes no difference...
+            }
+        });
     }
 
 });
