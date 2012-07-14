@@ -9,6 +9,7 @@ syntax: regexp
 .*\.iws
 .*\.pyc
 \.svn
+\.idea
 eclipse
 api-archive
 ^playapp/eclipse
