@@ -992,12 +992,24 @@ angular.directive('ui:sortable', function(expression, templateElement, val) {
                     end = ui.item.index();
                 console.log("Stop position from " + start + " to " + end);
 
+                // wir kopieren uns die items
                 var items = scope.$get(itemsExpr.expression);
+
+                // loesen das binding auf
+                scope.$set(itemsExpr.expression, []);
+                scope.$parent.$eval();
+
                 console.log("**** BEFORE: " + dump(items, 1));
                 items.splice(end, 0, items.splice(start, 1)[0]);
                 console.log("****    AFTER: " + dump(items, 1));
+
+
+                // setzen das manipulierte item wieder ein
                 scope.$set(itemsExpr.expression, items);
-                scope.$parent.$eval();  // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt
+                scope.$parent.$eval();
+
+
+                // HIER DURCH WIRD REIHENFOLGE IM MODELL RICHTIG EINGESTELLT, ABER im UI wieder verstellt
                 // QUASI gleichbedeutend: widgetUtils.setValue(scope, itemsExpr, items); // FIXME: hier im eval wird Reihenfolge wieder zurückgesetzt
 
                 // Weitere Lösungsansätze:
