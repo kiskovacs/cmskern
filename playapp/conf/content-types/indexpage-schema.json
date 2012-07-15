@@ -78,6 +78,62 @@
             "items":{
                 "type":[
                     {
+                        "id":"manual",
+                        "type":"array",
+                        "title":"Manual Article List",
+                        "additionalProperties":false,
+                        "properties": {
+                            "related_articles":{
+                                "title":"Weiterführende Artikel",
+                                "type":"array",
+                                "items":{
+                                    "title":"Artikel",
+                                    "type":"object",
+                                    "properties":{
+                                        "article_idref":{
+                                            "title":"Artikel",
+                                            "type":"integer",
+                                            "description":"References an internal URL to a selected article.",
+                                            "ui_callout":{
+                                                "url":"/callouts/internal/test_reference",
+                                                "src_properties":["id", "title", "teaser_text"],
+                                                "target_properties":["article_idref", "headline", "teaser"]
+                                            },
+                                            "ui_width":"xlarge"
+                                        },
+                                        "headline":{
+                                            "title":"Headline",
+                                            "type":"string",
+                                            "ui_width":"xxlarge"
+                                        },
+                                        "teaser":{
+                                            "title":"Text",
+                                            "type":"string",
+                                            "ui_width":"xxlarge",
+                                            "ui_editor":"textarea"
+                                        },
+                                        "image_idref":{
+                                            "title":"Image ID",
+                                            "description":"References an internal URL to a selected image.",
+                                            "type":"integer",
+                                            "ui_callout":{
+                                                "url":"/callouts/internal/image_reference",
+                                                "src_properties":["id", "title"],
+                                                "target_properties":["image_idref", "image_title"]
+                                            },
+                                            "ui_width":"xlarge"
+                                        },
+                                        "image_title":{
+                                            "title":"Image Titel",
+                                            "type":"string",
+                                            "ui_width":"xlarge"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
                         "id":"raw",
                         "type":"object",
                         "title":"Raw HTML Section",

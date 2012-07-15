@@ -50,8 +50,16 @@ angular.widget('my:form', function(element) {
                 var legendChild = angular.element('<legend>' + field.title +'</legend>');
 
                 // ~~ remove (per individual child group)
-                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + childElem +
+
+                var removeButton = angular.element('<a class="remove" href="#" ng:click="removeChild({' +
+                    " parent:'" + qualifiedName + "', elem:" + childElem + '}' +
                     ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
+
+/*
+                var removeButton = angular.element('<a class="remove" href="#" ng:click="' + qualifiedName + '.$remove(' + qualifiedName +"[$index]"+
+                    ')"><i class="icon-minus" title="Remove ' + field.title + '"></i></a>');
+*/
+
                 legendChild.append(removeButton);
                 subfieldset.append(legendChild);
 
