@@ -48,8 +48,10 @@
     function calloutGetSelectedValues() {
         return {
             '${fields['id'].targetFQName}': selectedId,
-            '${fields['title'].targetFQName}': selectedTitle,
-            '${fields['teaser_text'].targetFQName}': selectedTeaser
+            '${fields['title'].targetFQName}': selectedTitle
+            #{if fields['teaser_text']}
+                ,'${fields['teaser_text'].targetFQName}': selectedTeaser
+            #{/if}
         };
     }
 
