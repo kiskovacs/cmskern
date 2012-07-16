@@ -52,10 +52,17 @@
                             <!-- li><a href="#contact">Contact</a></li -->
                         </ul>
                         #{if session.username}
-                        <p class="navbar-text pull-right">
-                            Welcome ${session.username}
-                            <a href="@{Secure.logout()}">(Log out)</a>
-                        </p>
+                            <div class="btn-group pull-right">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="icon-user"></i> ${session.username}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="@{Secure.logout()}">Log Out</a></li>
+                                </ul>
+                            </div>
                         #{/if}
                     </div><!--/.nav-collapse -->
                 </div>
