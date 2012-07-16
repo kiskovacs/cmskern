@@ -167,10 +167,14 @@ angular.widget('my:form', function(element) {
                 else if (field.format == 'date') {
                     fieldElStr  = '<div class="reference">';
                     fieldElStr += '<input type="text" class="datepicker ' + lengthCssClassName + '"';
-                    // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
-                    fieldElStr += '  ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'yy-mm-dd\', showOn: \'both\',';
-                    fieldElStr += '                        buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}">';
-                    fieldElStr += '</div>';
+                    if (field.ui_class == 'readonly') {
+                        fieldElStr += ' readonly="readonly"';
+                    } else {
+                        // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
+                        fieldElStr += ' ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'yy-mm-dd\', showOn: \'both\',';
+                        fieldElStr += '                       buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}"';
+                    }
+                    fieldElStr += '></div>';
                 }
                 else if (field.ui_editor == 'richtext') {
                     fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthCssClassName + '" name="' + qualifiedName + '" ';
@@ -183,7 +187,9 @@ angular.widget('my:form', function(element) {
                 }
                 else if (field.ui_editor == 'textarea') {
                     fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
-
+                    if (field.ui_class == 'readonly') {
+                        fieldElStr += ' readonly="readonly"';
+                    }
                     //angular.forEach(field, function(attribute) {
                     //    fieldElStr += attribute + '="' + field[attribute] + '" ';
                     //});
@@ -192,7 +198,7 @@ angular.widget('my:form', function(element) {
                 }
                 else if (field.type == 'object') {
                     fieldElStr = angular.element('<div class="subelements ' + fieldKey + '"></div>');
-                    console.log("**** START " + fieldKey);
+                    //console.log("**** Include sub-object structure for " + fieldKey);
                     angular.forEach(field.properties, processField,
                         {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
                 }
@@ -202,6 +208,9 @@ angular.widget('my:form', function(element) {
                     // should set default value?
                     if (globalContentNodeId == -1 && field.default == true) {
                         fieldElStr += ' checked="checked"';
+                    }
+                    if (field.ui_class == 'readonly') {
+                        fieldElStr += ' readonly="readonly"';
                     }
                     fieldElStr += '>';
                 }
@@ -213,11 +222,13 @@ angular.widget('my:form', function(element) {
                             fieldElStr += attribute + '="' + value + '" ';
                         }
                     });
-                    // should set default value?
+                    // set default value for freshly created content
                     if (globalContentNodeId == -1 && field.default) {
                         fieldElStr += ' value="' + field.default + '"';
                     }
-
+                    if (field.ui_class == 'readonly') {
+                        fieldElStr += ' readonly="readonly"';
+                    }
                     fieldElStr += '>';
                 }
 
