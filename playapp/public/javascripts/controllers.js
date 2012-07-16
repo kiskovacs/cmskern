@@ -1,44 +1,79 @@
 /* App Controllers */
 
 // ~~~~~~
+String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 
 function EditContentNodeCtrl($xhr) {
     var scope;
     scope = this;
 
     // define data we are working with
-    this.contentType   = globalContentType;
+    this.contentType = globalContentType;
     this.contentSchema = globalContentSchema;
-    this.schemaRules   = globalSchemaRules;
-    this.contentNode   = globalContentNode;      // will probably be empty
+    this.schemaRules = globalSchemaRules;
+    this.contentNode = globalContentNode;      // will probably be empty
     this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
 
     this.elementGroupsToRemove = [];
 
+    function convertIdRefToInt(obj) {
 
-    this.submit = function() {
+        for (var item in obj) {
+            var value = obj[item];
+
+            if (typeof value == "object") {
+                convertIdRefToInt(value);
+            } else {
+                if (item.endsWith("_idref")) {
+                    if (typeof value == "string") {
+                        if (value && value.indexOf(",") != -1) {
+                            // dann ist das ein Array von IDs
+                            var retval = Array();
+                            var vals = value.split(",");
+                            for (v in vals) {
+                                retval.push(parseInt(vals[v]));
+                            }
+                            obj[item] = retval;
+                        } else {
+                            obj[item] = parseInt(value);
+                        }
+                    }
+                }
+            }
+
+        }
+        scope.$eval();
+    }
+
+    this.submit = function () {
+
+        convertIdRefToInt(this.contentNode);
+
         // check whether content already exists or not
         if (this.contentNodeId < 0) {
             console.log("Going to create content ...");
-            $xhr('POST', "/" + this.contentType, this.contentNode, function(code, response) {
-                window.location.href =  "/?highlightId=" + response.id;
-            }, function(code, response) {
+            $xhr('POST', "/" + this.contentType, this.contentNode, function (code, response) {
+                window.location.href = "/?highlightId=" + response.id;
+            }, function (code, response) {
                 alert("PROBLEM: " + response);
             });
             return false;
         } else {
             // content already exists
             console.log("Updating content node " + this.contentNodeId + " ...");
-            $xhr('PUT', "/" + this.contentType + "/" + this.contentNodeId, this.contentNode, function(code, response) {
-                window.location.href =  "/?highlightId=" + response.id;
-            }, function(code, response) {
+            $xhr('PUT', "/" + this.contentType + "/" + this.contentNodeId, this.contentNode, function (code, response) {
+                window.location.href = "/?highlightId=" + response.id;
+            }, function (code, response) {
                 alert("PROBLEM: " + response);
             });
             return false;
         }
     };
 
-    this.cancel = function() {
+    this.cancel = function () {
         console.log("Cancel form ...");
         window.history.back();
     };
@@ -46,15 +81,17 @@ function EditContentNodeCtrl($xhr) {
     /**
      * Triggered when user presses the "Add" Button (sub elements in form).
      */
-    scope.addChild = function(ctx) {
+    scope.addChild = function (ctx) {
         if (ctx.child) {
             console.log("Add child (type: " + ctx.childtype + "): " + ctx.child + " parent: " + dump(ctx.parent, 1));
-            ctx.child.push({ _type: ctx.childtype });
+            ctx.child.push({ _type:ctx.childtype });
 
         } else {
             // TODO: never getting here
             console.log("Init child (type: " + ctx.childtype + "): " + ctx.childname);
-            ctx.parent[ctx.childname] = [{ _type: ctx.childtype }];
+            ctx.parent[ctx.childname] = [
+                { _type:ctx.childtype }
+            ];
         }
         /*
          scope.elementGroupsToRemove = ctx.allChildtypes.split(',');
@@ -73,9 +110,9 @@ function EditContentNodeCtrl($xhr) {
     /**
      * Triggered when user presses the "Remove" Button (sub elements in form).
      */
-    scope.removeChild = function(ctx) {
+    scope.removeChild = function (ctx) {
         if (ctx.parent && ctx.elem) {
-            console.log("remove child : " + dump(ctx.parent, 1) +   " $index: " + this.$index );
+            console.log("remove child : " + dump(ctx.parent, 1) + " $index: " + this.$index);
 
             // wir kopieren uns die items
             var items = scope.$get(ctx.parent).slice();
@@ -97,29 +134,30 @@ function EditContentNodeCtrl($xhr) {
             return suffix;
         }
         if (childObj.getAttribute(attrname) != undefined) {
-            suffix =childObj.getAttribute(attrname) +'.'+suffix ;
+            suffix = childObj.getAttribute(attrname) + '.' + suffix;
         }
         return findParentNode(attrname, childObj.parentNode, suffix);
     }
+
     // Called by referencing input element (see widget.js)
     scope.simple_select_value = function (callout_url, target_prop_names, src_prop_names) {
 
-        var parentfq = 'contentNode.'+ findParentNode('arrfq', this.$element[0], "");
+        var parentfq = 'contentNode.' + findParentNode('arrfq', this.$element[0], "");
 
 
         var target_names = target_prop_names.split('#');
         var src_names = src_prop_names ? src_prop_names.split('#') : [];
         var fields = {};
-        fields['update_fields']  = new Array();
-        fields['values']         = new Array();
-        fields['src_types']      = new Array();
+        fields['update_fields'] = new Array();
+        fields['values'] = new Array();
+        fields['src_types'] = new Array();
         fields['src_properties'] = new Array();
 
         for (i in target_names) {
             var fq_target_name = target_names[i];
             if (fq_target_name) {
                 // Special handling for array elements: insert position number
-                fq_target_name = parentfq +  fq_target_name;
+                fq_target_name = parentfq + fq_target_name;
                 fields['update_fields'].push(fq_target_name);
                 var cur_value = scope.$get(fq_target_name);
                 fields['values'].push(cur_value);
@@ -127,7 +165,7 @@ function EditContentNodeCtrl($xhr) {
                 fields['src_properties'].push(src_names[i]);
             }
         }
-        console.log("callout fields: " + dump(fields,1));
+        console.log("callout fields: " + dump(fields, 1));
 
         // Create Bootbox Modal with external selection form loaded as specified by callout URL
         return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [
@@ -152,27 +190,9 @@ function EditContentNodeCtrl($xhr) {
         console.log("doc_data: " + dump(doc_data));
         jQuery.each(doc_data, function (fieldname, val) {
             if (fieldname && fieldname != "null") {
-                if (endsWith(fieldname, "_idref")) {
-                    console.log("convert " + val + " to int");
-                    if (val && val.indexOf(",") != -1) {
-                        // dann ist das ein Array von IDs
-                        var retval = Array();
-                        values = val.split(",");
-                        for (v in values) {
-                            retval.push(parseInt(values[v]));
-                        }
-                        scope.$set(fieldname, retval);
-                    } else {
-                        scope.$set(fieldname, parseInt(val));
-                    }
-
-                } else {
-                    scope.$set(fieldname, val);
-                }
-
+                scope.$set(fieldname, val);
                 console.log("Updated " + fieldname + " to: " + val);
             }
-
         });
         //scope.$set(fieldname, doc_data.value);
         //scope.$set('contentNode.title', doc_data.title);
@@ -188,15 +208,16 @@ EditContentNodeCtrl.$inject = ['$xhr'];
 
 // ~~~ ~~~ ~~~ Utilities ~~~ ~~~ ~~~
 
-CalloutDialogHelper = (function() {
+CalloutDialogHelper = (function () {
 
-    function CalloutDialogHelper() {}
+    function CalloutDialogHelper() {
+    }
 
-    CalloutDialogHelper.prototype.selection_form = function(callout_url, fields) {
+    CalloutDialogHelper.prototype.selection_form = function (callout_url, fields) {
         // Make AJAX GET to callout_url and put inside HTML form
-        setTimeout(function() {
+        setTimeout(function () {
             $.get(callout_url, fields,
-                function(responseForm) {
+                function (responseForm) {
                     $("#selection_form").html(responseForm);
                 });
         }, 1); // small delay to ensure form ID is available
@@ -215,7 +236,7 @@ function dump(arr, level) {
 
     //The padding given at the beginning of the line.
     var level_padding = "";
-    for (var j=0; j<level+1; j++) level_padding += "    ";
+    for (var j = 0; j < level + 1; j++) level_padding += "    ";
 
     if (typeof(arr) == 'object') { //Array/Hashes/Objects
         for (var item in arr) {
@@ -223,14 +244,13 @@ function dump(arr, level) {
 
             if (typeof(value) == 'object') { //If it is an array,
                 dumped_text += level_padding + "'" + item + "' ...\n";
-                dumped_text += dump(value, level+1);
+                dumped_text += dump(value, level + 1);
             } else {
                 dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
             }
         }
     } else { //Stings/Chars/Numbers etc.
-        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+        dumped_text = "===>" + arr + "<===(" + typeof(arr) + ")";
     }
     return dumped_text;
 }
-
