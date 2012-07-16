@@ -21,7 +21,8 @@
         "node_title":{
             "title":"Nav.knoten Titel",
             "type":"string",
-            "ui_width":"xxlarge"
+            "ui_width":"xxlarge",
+            "ui_class":"readonly"
         },
         "title":{
             "title":"Titel",
