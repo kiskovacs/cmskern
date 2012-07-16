@@ -272,14 +272,11 @@ div.btn_add {
     /*@include background-image(linear-gradient(#9DD745, #69AF04));
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);*/
 }
-/* Hide out Move up/down buttons in positions it does not make sense */
-div.subform > fieldset:first-child > legend > a.move_up {
-    display: none;
+
+ul.sortable {
+  list-style: none;
 }
 
-div.subform > fieldset:last-child > legend > a.move_down {
-    display: none;
-}
 ul.sortable li {
   padding: 5px;
   border: 1px solid #999;
