@@ -189,7 +189,6 @@ public class ContentNode {
         Logger.info("Query for %s", searchTerm);
         final List<DBObject> nodes = dbCur.toArray();
         Logger.info("... %d total matches", dbCur.count());
-        Logger.info("... nodes %s", nodes);
 
         return nodes;
     }
