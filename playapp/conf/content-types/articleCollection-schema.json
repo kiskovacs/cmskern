@@ -23,7 +23,7 @@
         "legacy_title":{
             "title":"Title (Legacy System)",
             "type":"string",
-            "ui_width":"readonly"
+            "ui_class":"readonly"
         },
         "articles":{
             "title":"Articles",
