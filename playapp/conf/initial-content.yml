@@ -1,8 +1,36 @@
-ContentNode(a_n1):
+ContentNode(a_1):
   creator: admin
   type: article
-  jsonContent: "{'title':'Start with N1', 'undzwo':'nochwas'}"
+  jsonContent: >
+               {
+                 'title':'Grundrechte für Menschenaffen',
+                 'catchline':'Menschenaffen - Wie du und ich',
+                 'teaser':{'title':'Menschenaffen', 'text':'Grundrechte für Menschenaffen'},
+                 'body':'Gerade noch hat Banjo gelangweilt auf dem Boden gesessen, seinen breiten Rücken den Menschen zugewandt, die sich im Stuttgarter Zoo Wilhelma vor seinem Gehege drängeln.'
+               }
 
+ContentNode(a_2):
+  creator: admin
+  type: article
+  jsonContent: >
+               {
+                 'title':'Jüngster Menschenaffe Europas entdeckt',
+                 'catchline':'',
+                 'teaser':{'title':'Jüngster Menschenaffe', 'text': 'Menschenaffen in Europa'},
+                 'body':'Auch in Europa lebten noch vor sieben Millionen Jahren Menschenaffen - und damit deutlich länger als bisher angenommen. Das belegt der Zahn eines Affen, den Wissenschaftler nahe der bulgarischen Stadt Chirpan gefunden haben.'
+               }
+
+ContentNode(a_3):
+  creator: admin
+  type: article
+  jsonContent: >
+               {
+                 'title':'Die Paschas der Berge',
+                 'teaser':{'title':'Pascha der Berge', 'text': 'Pascha Pete...'},
+                 'body':'Ein schrecklicher Tag für \"Pete\". Seine linke Hand ist geschwollen und eitert, so dass er auf den drei gesunden Gliedmaßen humpeln muss. Unter diesen Umständen etwas zu fressen zu finden ist schwierig; außerdem kann er seine vier Gefährtinnen nicht mehr kraulen. Und jetzt flirtet auch noch ein hübscher Junggeselle mit ihnen.'
+               }
+
+# -------------------------------------------------------------------------------
 
 ContentNode(s_summer):
   creator: admin
@@ -19,6 +47,7 @@ ContentNode(s_vacation):
   type: sidebar
   jsonContent: "{'title':'Vacation Special'}"
 
+# -------------------------------------------------------------------------------
 
 ContentNode(n_root):
   creator: admin
