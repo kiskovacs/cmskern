@@ -79,11 +79,61 @@
             "items":{
                 "type":[
                     {
+                        "id":"buehne",
+                        "title":"Bühne",
+                        "type":"object",
+                        "properties":{
+                            "title":{
+                                "title":"Section Titel",
+                                "type":"string",
+                                "ui_width":"xxlarge"
+                            },
+                            "articles":{
+                                "title":"Artikel",
+                                "type":"array",
+                                "items":{
+                                    "title":"Artikel",
+                                    "type":"object",
+                                    "properties":{
+                                        "article_idref":{
+                                            "title":"Artikel",
+                                            "type":"integer",
+                                            "description":"References an internal URL to a selected article.",
+                                            "ui_callout":{
+                                                "url":"/callouts/internal/article_reference",
+                                                "src_properties":["id", "title"],
+                                                "target_properties":["article_idref", "article_headline"]
+                                            },
+                                            "ui_width":"xlarge"
+                                        },
+                                        "article_headline":{
+                                            "title":"Headline",
+                                            "type":"string",
+                                            "ui_width":"xxlarge"
+                                        },
+                                        "image_idref":{
+                                            "title":"Image ID",
+                                            "description":"References an internal URL to a selected image.",
+                                            "type":"integer",
+                                            "ui_callout":{
+                                                "url":"/callouts/internal/image_reference",
+                                                "src_properties":["id", "title"],
+                                                "target_properties":["image_idref", "image_title"]
+                                            },
+                                            "ui_width":"xlarge"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+
                         "id":"manual",
                         "type":"array",
                         "title":"Manual Article List",
                         "additionalProperties":false,
-                        "properties": {
+                        "properties":{
                             "related_articles":{
                                 "title":"Weiterführende Artikel",
                                 "type":"array",

@@ -113,14 +113,20 @@ function EditContentNodeCtrl($xhr) {
     scope.removeChild = function (ctx) {
         if (ctx.parent && ctx.elem) {
             console.log("remove child : " + dump(ctx.parent, 1) + " $index: " + this.$index);
+            var parentfq = 'contentNode.' + findParentNode('arrfq', this.$element[0], "");
+            parentfq = parentfq.slice(0, -1);
+            parentfq = parentfq.slice(0, parentfq.lastIndexOf('.'));
+
+
+//            var elem = scope.$get(parentfq);
 
             // wir kopieren uns die items
-            var items = scope.$get(ctx.parent).slice();
-            scope.$set(ctx.parent, []);
+            var items = scope.$get(parentfq).slice();
+            scope.$set(parentfq, []);
             scope.$eval();
 
             angular.Array.remove(items, ctx.elem);
-            scope.$set(ctx.parent, items);
+            scope.$set(parentfq, items);
             scope.$eval();
 
         }
@@ -199,9 +205,6 @@ function EditContentNodeCtrl($xhr) {
         scope.$eval(); // force model update
     };
 
-    function endsWith(str, suffix) {
-        return str.indexOf(suffix, str.length - suffix.length) !== -1;
-    }
 }
 EditContentNodeCtrl.$inject = ['$xhr'];
 

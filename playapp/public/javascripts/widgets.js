@@ -20,8 +20,6 @@ angular.widget('my:form', function(element) {
             // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
 
-                var arridx = element.attr('arridx');
-
                 var childElem = fieldKey + 'Elem';
                 var multiTyped = true;
 
