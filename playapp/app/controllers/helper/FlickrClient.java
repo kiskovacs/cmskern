@@ -57,7 +57,7 @@ public class FlickrClient extends Controller {
                     p.get("id").getAsString(), p.get("secret").getAsString());
             photos.add(new Photo(p.get("id").getAsString(), p.get("title").getAsString(), flickrUrl));
         }
-        Logger.info("Found %d photos on flickr", photos.size());
+        Logger.info("Retrieved results from flickr and turned into %d photos", photos.size());
         
         renderTemplate("Callouts/helper/flickr_photo_list.html", photos);
     }
