@@ -9,13 +9,11 @@ import com.google.gson.JsonParser;
 import com.mongodb.*;
 import models.vo.IdTitle;
 import play.Logger;
-import utils.JsonUtils;
 import utils.MongoDbUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Capturing a content node which basically consists of a JSON sub-document
@@ -221,16 +219,6 @@ public class ContentNode {
             nodes.add(convert(dbObj));
         }
         return nodes;
-    }
-
-    // ~~
-
-    public static List<Map<String, Object>> convertToMap(List<ContentNode> nodes) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(nodes.size());
-        for (ContentNode node : nodes) {
-            result.add(JsonUtils.convertToMap(node.getJsonContent()));
-        }
-        return result;
     }
 
     // ~~

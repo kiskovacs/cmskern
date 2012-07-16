@@ -41,7 +41,7 @@
         event.preventDefault();
         var search_term = $("#search_term").val();
         console.log("Search for " + search_term);
-        $.get('/helper/searchFlickr', {query: search_term}, function(data) {
+        $.get('/helper/FlickrClient/search', {query: search_term}, function(data) {
             $('#search_results').html(data);
             console.log('Results were retrieved.');
             $("a.thumbnail").on("click", function(event) {

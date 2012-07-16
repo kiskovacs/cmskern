@@ -343,6 +343,10 @@ fieldset {
   padding-bottom: 25px;
 }
 
+#selection_form fieldset {
+    padding-bottom: 0px;
+}
+
 /* line 246, ../../compass/sass/cmskern.scss */
 legend {
   color: #808080;
