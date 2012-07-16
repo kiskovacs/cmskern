@@ -92,8 +92,21 @@ function EditContentNodeCtrl($xhr) {
 
     scope.helper = new CalloutDialogHelper();
 
+    function findParentNode(attrname, childObj, suffix) {
+        if (childObj.tagName == 'BODY') {
+            return suffix;
+        }
+        if (childObj.getAttribute(attrname) != undefined) {
+            suffix =childObj.getAttribute(attrname) +'.'+suffix ;
+        }
+        return findParentNode(attrname, childObj.parentNode, suffix);
+    }
     // Called by referencing input element (see widget.js)
     scope.simple_select_value = function (callout_url, target_prop_names, src_prop_names) {
+
+        var parentfq = 'contentNode.'+ findParentNode('arrfq', this.$element[0], "");
+
+
         var target_names = target_prop_names.split('#');
         var src_names = src_prop_names ? src_prop_names.split('#') : [];
         var fields = {};
@@ -106,12 +119,7 @@ function EditContentNodeCtrl($xhr) {
             var fq_target_name = target_names[i];
             if (fq_target_name) {
                 // Special handling for array elements: insert position number
-                var cur_pos = this.$index;
-                if (typeof cur_pos != 'undefined') {
-                    var dot_pos = fq_target_name.lastIndexOf('.');
-                    fq_target_name = fq_target_name.substring(0, dot_pos) + '.' + cur_pos + fq_target_name.substring(dot_pos);
-                }
-
+                fq_target_name = parentfq +  fq_target_name;
                 fields['update_fields'].push(fq_target_name);
                 var cur_value = scope.$get(fq_target_name);
                 fields['values'].push(cur_value);
@@ -119,6 +127,7 @@ function EditContentNodeCtrl($xhr) {
                 fields['src_properties'].push(src_names[i]);
             }
         }
+        console.log("callout fields: " + dump(fields,1));
 
         // Create Bootbox Modal with external selection form loaded as specified by callout URL
         return bootbox.dialog(scope.helper.selection_form(callout_url, fields), [

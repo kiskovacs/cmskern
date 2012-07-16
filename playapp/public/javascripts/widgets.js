@@ -13,10 +13,14 @@ angular.widget('my:form', function(element) {
             var qualifiedName = this.parentName + '.' + fieldKey,
                 fullyQualifiedName = this.fqName + '.' + fieldKey,
                 fieldElStr;
+            
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
             // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
             if (field.type == 'array' && field.items && field.ui_class != 'compact') {
+
+                var arridx = element.attr('arridx');
+
                 var childElem = fieldKey + 'Elem';
                 var multiTyped = true;
 
@@ -45,9 +49,9 @@ angular.widget('my:form', function(element) {
                 // (A) subform header (with move up/down button)
                 var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '"></ul>');
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
-                    (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '"></li>');
+                    (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" arrfq ="' + fieldKey + '.{{$index}}"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
-                var legendChild = angular.element('<legend>' + field.title +'</legend>');
+                var legendChild = angular.element('<legend>' + field.title + '{{$index}}</legend>');
 
                 // ~~ remove (per individual child group)
 
@@ -70,8 +74,18 @@ angular.widget('my:form', function(element) {
                     }
                     console.log("Add sub element for type: " + subfield.id);
                     var elGroup = angular.element('<div class="subelements ' + subfield.id + '"></div>');
+                    var arraySuffix = "";
+                    console.log("scope idx: " + scope.$index);
+
+                    var arr_level = scope.$get('arr_level');
+
+                    if (arr_level != undefined) {
+                        arraySuffix =  '.' + arr_level;
+                        console.log("array suffix: " + arraySuffix);
+
+                    }
                     angular.forEach(subfield.properties, processField,
-                        {parentName: childElem, fqName: fullyQualifiedName, curDOMParent: elGroup, childtype: subfield.id});
+                        {parentName: childElem, fqName: fullyQualifiedName + arraySuffix, curDOMParent: elGroup, childtype: subfield.id});
                     subfieldset.append(elGroup);
                 });
                 repeater.append(subfieldset);
@@ -136,7 +150,7 @@ angular.widget('my:form', function(element) {
                 if (field.ui_callout.target_properties) {
                     var targetProperties = "";
                     for (i in field.ui_callout.target_properties) {
-                        targetProperties += this.fqName + '.' + field.ui_callout.target_properties[i] + "#";
+                        targetProperties +=  field.ui_callout.target_properties[i] + "#";
                     }
                     console.log("fields to update: " + targetProperties);
                     var srcPropNames = field.ui_callout.src_properties.join('#');

@@ -84,7 +84,7 @@
                         "type":"integer",
                         "description":"References an internal URL to a selected article.",
                         "ui_callout":{
-                            "url":"/callouts/internal/test_reference",
+                            "url":"/callouts/internal/article_reference",
                             "src_properties":["id", "title", "teaser_text"],
                             "target_properties":["article_idref", "headline", "teaser"]
                         },

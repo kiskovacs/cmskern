@@ -53,7 +53,14 @@ public class Callouts extends Controller {
         String[] values          = params.getAll("values[]");
         String[] targetPropNames = params.getAll("update_fields[]");
 
-        Logger.info("fieldnames: %s", Arrays.asList(targetPropNames));
+        // values kann leer sein
+        if (values == null) {
+            values = new String[srcPropNames.length];
+        }
+        Logger.info("types: %s", Arrays.asList(types));
+        Logger.info("values: %s", Arrays.asList(values));
+        Logger.info("targetPropNames: %s", Arrays.asList(targetPropNames));
+        Logger.info("srcPropNames: %s", Arrays.asList(srcPropNames));
         // TODO: war model.put("fieldnames", targetPropNames);
 
         // build field map to allow referencing from template

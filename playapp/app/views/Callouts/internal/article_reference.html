@@ -4,7 +4,7 @@
 
 <ul>
   #{list items: articles, as:'article'}
-    <li><a href="#" onclick="updateRef('${article._id}', '${article.data.title}')">${article.data.title}</a></li>
+    <li><a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a></li>
   #{/list}
 </ul>
 
@@ -29,11 +29,14 @@
         selectedTitle = $('#select_title').val();
     });
 
-    function updateRef(val, title) {
+    function updateRef(val, title, teaser) {
         selectedId = val;
         $("#select_id").val(val);
         selectedTitle = title;
         $("#select_title").val(title);
+
+        selectedTeaser = teaser;
+        $("#select_teaser").val(teaser);
     }
 
     $("#select_title").on("change", function(event) {
@@ -45,7 +48,8 @@
     function calloutGetSelectedValues() {
         return {
             '${fields['id'].targetFQName}': selectedId,
-            '${fields['title'].targetFQName}': selectedTitle
+            '${fields['title'].targetFQName}': selectedTitle,
+            '${fields['teaser_text'].targetFQName}': selectedTeaser
         };
     }
 
