@@ -1,0 +1,28 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th width="10%">ID</th>
+        <th width="30%">Title</th>
+        <th width="50%">Teaser</th>
+        <th width="10%">Modified</th>
+    </tr>
+    </thead>
+    <tbody>
+    #{list items: articles, as:'article'}
+    <tr>
+        <td>
+        ${article._id}
+        </td>
+        <td>
+            <a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a>
+        </td>
+        <td>
+        ${article.data.teaser.text}
+        </td>
+        <td>
+            <span class="datetime">${new java.util.Date(article._modified).format('dd/MMM/yyyy HH:mm')}</span>
+        </td>
+    </tr>
+    #{/list}
+    </tbody>
+</table>

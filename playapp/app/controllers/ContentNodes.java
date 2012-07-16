@@ -16,10 +16,6 @@ import java.util.List;
 @With(Secure.class)
 public class ContentNodes extends Application {
 
-    public static void test() {
-        render();
-    }
-
     @Check("editor,admin")
     public static void blank(String type) {
         ContentType contentType = ContentType.findByName(type);
@@ -65,6 +61,7 @@ public class ContentNodes extends Application {
     /**
      * Returns JSON with simple data structure (id and title) of
      * content nodes which titles do match with the specified query string.
+     * This method can for exmaple be leveraged by AJAX auto-complete search box.
      */
     public static void search(String type, String q, int limit) {
         List<IdTitle> nodes = ContentNode.findByTypeAndTitleMinimal(type, q, false, 0, limit);

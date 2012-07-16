@@ -117,9 +117,6 @@ function EditContentNodeCtrl($xhr) {
             parentfq = parentfq.slice(0, -1);
             parentfq = parentfq.slice(0, parentfq.lastIndexOf('.'));
 
-
-//            var elem = scope.$get(parentfq);
-
             // wir kopieren uns die items
             var items = scope.$get(parentfq).slice();
             scope.$set(parentfq, []);
@@ -128,7 +125,6 @@ function EditContentNodeCtrl($xhr) {
             angular.Array.remove(items, ctx.elem);
             scope.$set(parentfq, items);
             scope.$eval();
-
         }
     };
 
@@ -232,7 +228,7 @@ CalloutDialogHelper = (function () {
 })();
 
 
-// TODO: move to a helper lib
+// TODO: move to a helper/utility lib
 function dump(arr, level) {
     var dumped_text = "";
     if (!level) level = 0;

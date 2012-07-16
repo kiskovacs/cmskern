@@ -300,6 +300,11 @@ ul.sortable li {
     cursor: pointer;
 }
 
+.bootbox.modal {
+  max-height: 760px;
+  width: 640px;
+}
+
 .selectBox {
     /* border: solid 2px #999; */
 }

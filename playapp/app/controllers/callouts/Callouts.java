@@ -25,8 +25,8 @@ public class Callouts extends Controller {
 
         // Find object types to refer to
         // TODO: this could also be handled by schema definition or made a bit more generic
-        if (name.contains("internal/article_")
-                || name.contains("internal/test_")) {
+        if (   name.contains("internal/article_")
+            || name.contains("internal/test_")) {
             // ~~ RAW access
             model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
         }

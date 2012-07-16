@@ -44,7 +44,7 @@ public class ContentTypesApi extends Controller {
      */
     public static void list() {
         List<ContentType> types = ContentType.findAll();
-        // TODO: sort / limit?
+        // TODO: use sort order
         render(types);
     }
 

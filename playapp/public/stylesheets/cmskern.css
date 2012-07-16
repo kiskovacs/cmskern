@@ -410,6 +410,11 @@ ul.sortable li {
   cursor: pointer;
 }
 
+.bootbox.modal {
+    max-height: 760px;
+    width: 640px;
+}
+
 /* line 293, ../../compass/sass/cmskern.scss */
 .selectBox {
   /* border: solid 2px #999; */

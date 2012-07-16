@@ -50,7 +50,7 @@ angular.widget('my:form', function(element) {
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
                     (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" arrfq ="' + fieldKey + '.{{$index}}"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
-                var legendChild = angular.element('<legend>' + field.title + '{{$index}}</legend>');
+                var legendChild = angular.element('<legend>' + field.title + ' #{{$index+1}}</legend>');
 
                 // ~~ remove (per individual child group)
 
