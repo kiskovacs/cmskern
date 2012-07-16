@@ -15,6 +15,16 @@
             "type":"string",
             "ui_width":"xlarge"
         },
+        "legacy_id":{
+            "title":"ID (Legacy System)",
+            "type":"string",
+            "ui_class":"hidden"
+        },
+        "legacy_title":{
+            "title":"Title (Legacy System)",
+            "type":"string",
+            "ui_width":"readonly"
+        },
         "articles":{
             "title":"Articles",
             "type":"array",
