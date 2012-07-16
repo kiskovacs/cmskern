@@ -63,7 +63,7 @@ public class ContentNode {
      * a human-readable string describing this content node.
      */
     public static final String ATTR_TITLE      = "title";
-    public static final String ATTR_TITLE_QUAL = ATTR_DATA + '.' + ATTR_TITLE;
+    public static final String Q_ATTR_TITLE    = ATTR_DATA + '.' + ATTR_TITLE;
 
     // ~
 
@@ -88,7 +88,7 @@ public class ContentNode {
 
     public static void createIndexes() {
         MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
-        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TITLE_QUAL);
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, Q_ATTR_TITLE);
         // Also indexes for the version collection
         MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
         // create also compound key
@@ -147,7 +147,7 @@ public class ContentNode {
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
-    public static DBObject rawFindById(String id) {
+    public static DBObject findByIdRaw(String id) {
         DBObject dbObj = null;
         try {
             dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
@@ -171,27 +171,6 @@ public class ContentNode {
         return nodes;
     }
 
-    public static List<IdTitle> findByTypeAndTitle(String type, String query, boolean matchCase, int max) {
-        List<IdTitle> nodes = new ArrayList<IdTitle>();
-        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-
-        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
-        if (matchCase) {
-            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query));
-        } else {
-            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query).append("$options", "i"));
-        }
-
-        DBCursor dbCur = dbColl.find(q, new BasicDBObject(ATTR_TITLE_QUAL, 1)).sort(new BasicDBObject(ATTR_TITLE_QUAL, 1)).limit(max);
-        Logger.info("Query for " + query);
-        while (dbCur.hasNext()) {
-            DBObject dbObj = dbCur.next();
-            Logger.info("---> " + dbObj);
-            nodes.add(new IdTitle((Long) dbObj.get(ATTR_ID), (String) ((DBObject) dbObj.get(ATTR_DATA)).get(ATTR_TITLE)));
-        }
-        return nodes;
-    }
-
     // TODO: Temporary to figure out if this is the right access
     public static List<DBObject> findByTypeRaw(String type, int max) {
         List<DBObject> nodes = new ArrayList<DBObject>();
@@ -200,6 +179,32 @@ public class ContentNode {
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(dbObj);
+        }
+        return nodes;
+    }
+
+
+    /**
+     * Search all instances of the specified content type and query string in the document title.
+     * By default the result is sorted by the title alphabetically.
+     */
+    public static List<IdTitle> findByTypeAndTitleMinimal(String type, String query, boolean matchCase, int max) {
+        List<IdTitle> nodes = new ArrayList<IdTitle>();
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+
+        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
+        if (matchCase) {
+            q.append(Q_ATTR_TITLE, new BasicDBObject("$regex", query));
+        } else {
+            q.append(Q_ATTR_TITLE, new BasicDBObject("$regex", query).append("$options", "i"));
+        }
+
+        // Only fetch title (and implictly ID)
+        DBCursor dbCur = dbColl.find(q, new BasicDBObject(Q_ATTR_TITLE, 1)).sort(new BasicDBObject(Q_ATTR_TITLE, 1)).limit(max);
+        Logger.info("Query for %s", query);
+        while (dbCur.hasNext()) {
+            DBObject dbObj = dbCur.next();
+            nodes.add(new IdTitle((Long) dbObj.get(ATTR_ID), (String) ((DBObject) dbObj.get(ATTR_DATA)).get(ATTR_TITLE)));
         }
         return nodes;
     }
@@ -283,6 +288,9 @@ public class ContentNode {
 
     // ~~
 
+    /**
+     * Used by Bootstraper to setup initial content by means of YAML definition.
+     */
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent;
         create(this.creator);
