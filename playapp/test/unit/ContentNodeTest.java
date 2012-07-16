@@ -62,7 +62,7 @@ public class ContentNodeTest extends UnitTest {
         createContentNode("article", "{\"title\":\"Blumenthal (Schnauss)\"}");
         createContentNode("article", "{\"title\":\"Völlig ohne Bl... \"}");
 
-        List<IdTitle> result = ContentNode.findByTypeAndTitleMinimal("article", "blume", false, 0);
+        List<IdTitle> result = ContentNode.findByTypeAndTitleMinimal("article", "blume", false, 0, 20);
         assertEquals(2, result.size());
     }
 
