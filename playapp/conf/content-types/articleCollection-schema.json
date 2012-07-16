@@ -27,8 +27,8 @@
                         "type":"integer",
                         "ui_callout":{
                             "url":"/callouts/internal/article_reference",
-                            "src_properties":["id","title"],
-                            "target_properties":["article_idref", "article_title"]
+                            "src_properties":["id","title", "teaser_text"],
+                            "target_properties":["article_idref", "article_title", "article_teaser"]
                         },
                         "ui_width":"xlarge"
                     },
@@ -36,6 +36,12 @@
                         "title":"Title",
                         "type":"string",
                         "ui_width":"xlarge"
+                    },
+                    "article_teaser":{
+                        "title":"Text",
+                        "type":"string",
+                        "ui_width":"xxlarge",
+                        "ui_editor":"textarea"
                     }
                 }
             }
