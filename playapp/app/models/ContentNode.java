@@ -9,13 +9,11 @@ import com.google.gson.JsonParser;
 import com.mongodb.*;
 import models.vo.IdTitle;
 import play.Logger;
-import utils.JsonUtils;
 import utils.MongoDbUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Capturing a content node which basically consists of a JSON sub-document
@@ -63,7 +61,7 @@ public class ContentNode {
      * a human-readable string describing this content node.
      */
     public static final String ATTR_TITLE      = "title";
-    public static final String ATTR_TITLE_QUAL = ATTR_DATA + '.' + ATTR_TITLE;
+    public static final String Q_ATTR_TITLE    = ATTR_DATA + '.' + ATTR_TITLE;
 
     // ~
 
@@ -88,7 +86,7 @@ public class ContentNode {
 
     public static void createIndexes() {
         MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
-        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TITLE_QUAL);
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, Q_ATTR_TITLE);
         // Also indexes for the version collection
         MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
         // create also compound key
@@ -147,7 +145,7 @@ public class ContentNode {
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
-    public static DBObject rawFindById(String id) {
+    public static DBObject findByIdRaw(String id) {
         DBObject dbObj = null;
         try {
             dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
@@ -171,27 +169,6 @@ public class ContentNode {
         return nodes;
     }
 
-    public static List<IdTitle> findByTypeAndTitle(String type, String query, boolean matchCase, int max) {
-        List<IdTitle> nodes = new ArrayList<IdTitle>();
-        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-
-        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
-        if (matchCase) {
-            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query));
-        } else {
-            q.append(ATTR_TITLE_QUAL, new BasicDBObject("$regex", query).append("$options", "i"));
-        }
-
-        DBCursor dbCur = dbColl.find(q, new BasicDBObject(ATTR_TITLE_QUAL, 1)).sort(new BasicDBObject(ATTR_TITLE_QUAL, 1)).limit(max);
-        Logger.info("Query for " + query);
-        while (dbCur.hasNext()) {
-            DBObject dbObj = dbCur.next();
-            Logger.info("---> " + dbObj);
-            nodes.add(new IdTitle((Long) dbObj.get(ATTR_ID), (String) ((DBObject) dbObj.get(ATTR_DATA)).get(ATTR_TITLE)));
-        }
-        return nodes;
-    }
-
     // TODO: Temporary to figure out if this is the right access
     public static List<DBObject> findByTypeRaw(String type, int max) {
         List<DBObject> nodes = new ArrayList<DBObject>();
@@ -200,6 +177,40 @@ public class ContentNode {
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(dbObj);
+        }
+        return nodes;
+    }
+
+    public static List<DBObject> findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+
+        DBObject q = createQueryByTitle(type, searchTerm, matchCase);
+        DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
+        Logger.info("Query for %s", searchTerm);
+        final List<DBObject> nodes = dbCur.toArray();
+        Logger.info("... %d total matches", dbCur.count());
+
+        return nodes;
+    }
+
+
+
+    /**
+     * Search all instances of the specified content type and query string in the document title.
+     * By default the result is sorted by the last modified data in chronological order.
+     */
+    public static List<IdTitle> findByTypeAndTitleMinimal(String type, String searchTerm, boolean matchCase, int offset, int max) {
+        List<IdTitle> nodes = new ArrayList<IdTitle>();
+        DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
+
+        DBObject q = createQueryByTitle(type, searchTerm, matchCase);
+
+        // Only fetch title (and implictly ID)
+        DBCursor dbCur = dbColl.find(q, new BasicDBObject(Q_ATTR_TITLE, 1)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
+        Logger.info("Query for %s ...", searchTerm);
+        while (dbCur.hasNext()) {
+            DBObject dbObj = dbCur.next();
+            nodes.add(new IdTitle((Long) dbObj.get(ATTR_ID), (String) ((DBObject) dbObj.get(ATTR_DATA)).get(ATTR_TITLE)));
         }
         return nodes;
     }
@@ -220,15 +231,81 @@ public class ContentNode {
 
     // ~~
 
-    public static List<Map<String, Object>> convertToMap(List<ContentNode> nodes) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(nodes.size());
-        for (ContentNode node : nodes) {
-            result.add(JsonUtils.convertToMap(node.getJsonContent()));
-        }
-        return result;
+    /**
+     * ONLY Used by initial content data setup by means of YAML definition.
+     */
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent;
+        create(this.creator);
     }
 
-    // ~~
+    /**
+     * Returns pure JSON body without the metadata.
+     */
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public String getId() {
+        return id.toString();
+    }
+
+    public Date getCreated() {
+        return new Date(created);
+    }
+
+    /**
+     * ONLY Used by initial content data setup by means of YAML definition.
+     */
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public Date getModified() {
+        return new Date(modified);
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    /**
+     * ONLY Used by initial content data setup by means of YAML definition.
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        JsonParser parser = new JsonParser();
+        JsonObject jsonRoot = parser.parse(jsonContent).getAsJsonObject();
+        return jsonRoot.has(ATTR_TITLE) ? jsonRoot.get(ATTR_TITLE).getAsString() : null;
+    }
+
+    public Integer getVersion() {
+        return version != null ? version : 1;
+    }
+
+
+    // ~~ private helper methods
+
+    private static DBObject createQueryByTitle(String type, String searchTerm, boolean matchCase) {
+        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
+        if (matchCase) {
+            q.append(Q_ATTR_TITLE, new BasicDBObject("$regex", searchTerm));
+        } else {
+            q.append(Q_ATTR_TITLE, new BasicDBObject("$regex", searchTerm).append("$options", "i"));
+        }
+        return q;
+    }
 
     private static ContentNode convert(DBObject dbObj) {
         Long id = (Long) dbObj.get(ATTR_ID);
@@ -280,64 +357,6 @@ public class ContentNode {
         res = dbColl.update(MongoDbUtils.queryById(id), new BasicDBObject("$inc", new BasicDBObject(ContentNode.ATTR_VERSION, 1)));
         Logger.debug("~~ Incremented version, result %s", res.getLastError());
     }
-
-    // ~~
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent;
-        create(this.creator);
-    }
-
-    /**
-     * Returns pure JSON body without the metadata.
-     */
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public String getId() {
-        return id.toString();
-    }
-
-    public Date getCreated() {
-        return new Date(created);
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public Date getModified() {
-        return new Date(modified);
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getTitle() {
-        JsonParser parser = new JsonParser();
-        JsonObject jsonRoot = parser.parse(jsonContent).getAsJsonObject();
-        return jsonRoot.has(ATTR_TITLE) ? jsonRoot.get(ATTR_TITLE).getAsString() : null;
-    }
-
-    public Integer getVersion() {
-        return version != null ? version : 1;
-    }
-
-    // ~~
 
     private static Long generateLongId(String collName) {
         Datastore ds = MongoDbUtils.getDatastore();

@@ -2,19 +2,51 @@
 
 <h3>Select Article</h3>
 
-<ul>
-  #{list items: articles, as:'article'}
-    <li><a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a></li>
-  #{/list}
-</ul>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th width="10%">ID</th>
+        <th width="10%">Title</th>
+        <th width="70%">Teaser</th>
+        <th width="10%">Last Modified</th>
+    </tr>
+    </thead>
+    <tbody>
+    #{list items: articles, as:'article'}
+        <tr>
+            <td>
+                ${article._id}
+            </td>
+            <td>
+                <a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a>
+            </td>
+            <td>
+                ${article.data.teaser.text}
+            </td>
+            <td>
+                <span class="datetime">${new java.util.Date(article._modified).format('dd/MMM/yyyy HH:mm')}</span>
+            </td>
+        </tr>
+    #{/list}
+    </tbody>
+</table>
+
 
 
 <fieldset>
-    <label for="select_id">Article ID</label>
-    <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly" />
-
-    <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title" value="${fields['title'].value}" />
+    <div class="control-group">
+        <label class="control-label" for="select_id">Article ID</label>
+        <div class="controls">
+            <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="select_title">Title</label>
+        <div class="controls">
+            <input type="text" id="select_title" name="title" value="${fields['title'].value}" />
+        </div>
+    </div>
 </fieldset>
 
 

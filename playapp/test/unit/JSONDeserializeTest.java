@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import org.junit.Test;
 import play.Logger;
 import play.test.UnitTest;
-import utils.JsonUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +31,8 @@ public class JSONDeserializeTest extends UnitTest {
         // Serialize to JSON
         String json = gson.toJson(map);
         Logger.info("Serialized to: %s", json);
+        // Results in {"key1":"value1","key2":{"subKeyA":"valueA"},"key3":"value3"}
         assertThat(json, containsString("\"key2\":{\"subKeyA\":\"valueA\"}"));
-
-        // Deserialize JSON to Map
-        Map<String, Object> map2 = JsonUtils.convertToMap(json);
-        Logger.info("Deserialized to: %s", map2);
-        assertNotNull(map2.get("key2"));
-        Map<String, Object> subMap2 = (Map<String, Object>) map2.get("key2");
-        assertEquals("valueA", subMap2.get("subKeyA"));
     }
 
 }

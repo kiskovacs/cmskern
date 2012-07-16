@@ -18,7 +18,7 @@ public class ContentNodesApi extends Controller {
     }
 
     public static void getFull(String type, String id) {
-        DBObject obj = ContentNode.rawFindById(id);
+        DBObject obj = ContentNode.findByIdRaw(id);
         notFoundIfNull(obj, "Unknown content ID: " + id);
         Logger.info("Deliver raw %s for ID: %s ...", type, id);
         renderJSON(obj.toString());

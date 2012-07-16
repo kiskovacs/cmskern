@@ -18,11 +18,13 @@ GET     /schema                                 ContentTypesApi.list
 POST    /schema                                 ContentTypesApi.create
 DELETE  /schema/{id}                            ContentTypesApi.delete
 
-# ~~ Call-Outs (for dialog content)
+# ~~ Call-Outs (for dialog content and referencing other nodes)
 GET     /callouts/{<.*>name}                    callouts.Callouts.get
 
-# ~~ Helper for choosing references (call-out)
-GET     /helper/{action}                        callouts.ExternalAccess.{action}
+# ~~ Helper as used by the call-out workflow
+GET     /helper/{controller}/{action}           helper.{controller}.{action}
+
+# ~~ Access to binary objects (i.e. images)
 GET     /blobs                                  Blobs.listAssets
 GET     /blobs.json                             Blobs.list
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE

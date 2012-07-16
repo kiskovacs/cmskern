@@ -67,7 +67,7 @@ public class ContentNodes extends Application {
      * content nodes which titles do match with the specified query string.
      */
     public static void search(String type, String q, int limit) {
-        List<IdTitle> nodes = ContentNode.findByTypeAndTitle(type, q, false, limit);
+        List<IdTitle> nodes = ContentNode.findByTypeAndTitleMinimal(type, q, false, 0, limit);
         renderJSON(nodes);
     }
 

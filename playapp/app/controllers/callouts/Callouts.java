@@ -27,9 +27,6 @@ public class Callouts extends Controller {
         // TODO: this could also be handled by schema definition or made a bit more generic
         if (name.contains("internal/article_")
                 || name.contains("internal/test_")) {
-            // ~~ Convert to ContentNode and to generic Map structure
-            //List<ContentNode> articles = ContentNode.findByType("article", 20);
-            //model.put("articles", ContentNode.convertToMap(articles));
             // ~~ RAW access
             model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
         }
@@ -51,17 +48,15 @@ public class Callouts extends Controller {
         String[] srcPropNames    = params.getAll("src_properties[]");
         String[] types           = params.getAll("src_types[]");
         String[] values          = params.getAll("values[]");
-        String[] targetPropNames = params.getAll("update_fields[]");
-
-        // values kann leer sein
         if (values == null) {
             values = new String[srcPropNames.length];
         }
-        Logger.info("types: %s", Arrays.asList(types));
-        Logger.info("values: %s", Arrays.asList(values));
-        Logger.info("targetPropNames: %s", Arrays.asList(targetPropNames));
-        Logger.info("srcPropNames: %s", Arrays.asList(srcPropNames));
-        // TODO: war model.put("fieldnames", targetPropNames);
+        String[] targetPropNames = params.getAll("update_fields[]");
+
+        Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));
+        Logger.info("  types:           %s", Arrays.asList(types));
+        Logger.info("  values:          %s", Arrays.asList(values));
+        Logger.info("  targetPropNames: %s", Arrays.asList(targetPropNames));
 
         // build field map to allow referencing from template
         Map<String, RefValue> fields = new HashMap<String, RefValue>();
@@ -69,7 +64,7 @@ public class Callouts extends Controller {
             fields.put(srcPropNames[i], new RefValue(targetPropNames[i], types[i], values[i]));
         }
         model.put("fields", fields);
-        Logger.info("    fields: " + fields);
+        //Logger.info("    fields: %s", fields);
 
         // Figure out proper template as defined in schema
         String templateName = "Callouts/" + name + ".html";
