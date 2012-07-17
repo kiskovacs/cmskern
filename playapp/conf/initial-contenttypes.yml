@@ -23,10 +23,10 @@ ContentType(articleDiffParas):
 ContentType(articleCollection):
     group: editorial
     sortkey: 20
-    slug: indexpage
-    displayName: Index Page
+    slug: articleCollection
+    displayName: Article Collection
     description: holding links to one or more articles.
-    jsonFormFromFile: conf/content-types/index-page-schema.json
+    jsonFormFromFile: conf/content-types/articleCollection-schema.json
 
 ContentType(image):
     group: editorial
