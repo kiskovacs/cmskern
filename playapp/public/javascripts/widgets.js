@@ -50,7 +50,7 @@ angular.widget('my:form', function(element) {
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
                     (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" arrfq ="' + fieldKey + '.{{$index}}"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
-                var legendChild = angular.element('<legend>' + field.title + ' #{{$index+1}}</legend>');
+                var legendChild = angular.element('<legend' + ' context="' + qualifiedName+'">' + field.title + '{{$index}}</legend>');
 
                 // ~~ remove (per individual child group)
 
@@ -72,7 +72,7 @@ angular.widget('my:form', function(element) {
                         subfield.id = subfield.title;
                     }
                     console.log("Add sub element for type: " + subfield.id);
-                    var elGroup = angular.element('<div class="subelements ' + subfield.id + '"></div>');
+                    var elGroup = angular.element('<div class="subelements ' + subfield.id + '">' + subfield.title + '</div>');
                     var arraySuffix = "";
                     console.log("scope idx: " + scope.$index);
 
@@ -143,6 +143,16 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '        <div class="name">{{i}}</div>';
                     fieldElStr += '    </li>';
                     fieldElStr += '</ul>';
+
+
+                    // das ist provisorisch reingenommen, damit ich produktive CTs entwickeln kann und
+                    // selectable in sortable nicht funktioniert.
+                    for (var idx in field.enum) {
+                        fieldElStr += '<input type="radio" name="' + qualifiedName + '" value="' +field.enum[idx]+ '">' + field.enum[idx];
+                    }
+
+
+
                 }
                 else if (field.ui_callout) {
                     fieldElStr  = '<div class="reference input-append">';

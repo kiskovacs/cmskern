@@ -48,9 +48,19 @@ public class Callouts extends Controller {
         String[] srcPropNames    = params.getAll("src_properties[]");
         String[] types           = params.getAll("src_types[]");
         String[] values          = params.getAll("values[]");
-        if (values == null) {
-            values = new String[srcPropNames.length];
+
+        Logger.debug("values %s", values);
+
+        String[] tmpValues = new String[srcPropNames.length];
+        /*
+        for (int i =0; i < tmpValues.length; i++) {
+            tmpValues[i] = "";
         }
+        */
+        System.arraycopy(values, 0, tmpValues, 0, values.length);
+
+        values = tmpValues;
+
         String[] targetPropNames = params.getAll("update_fields[]");
 
         Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));

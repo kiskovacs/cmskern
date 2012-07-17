@@ -12,6 +12,7 @@
     #{script 'tinymce/tiny_mce.js' /}
     #{script 'tinymce/jquery.tinymce.js' /}
 
+
     *{-- Basic stuff --}*
     #{script 'misc/date.format.js' /}
     #{script 'misc/underscore-min.js' /}
@@ -55,5 +56,9 @@
             <button type="button" class="btn" ng:click="cancel()">Cancel</button>
         </div>
     </form>
+
+    <div id="model">
+        contentNode = <pre>{{contentNode}}</pre>
+    </div>
 
 </div>

@@ -79,14 +79,19 @@
             "items":{
                 "type":[
                     {
-                        "id":"buehne",
-                        "title":"Bühne",
+                        "id":"manual",
+                        "title":"Manual Article List",
                         "type":"object",
                         "properties":{
                             "title":{
                                 "title":"Section Titel",
                                 "type":"string",
                                 "ui_width":"xxlarge"
+                            },
+                            "teaser_type":{
+                                "title":"Teasertyp",
+                                "type":"string",
+                                "enum":["Bühne", "3er-Vertikal", "Gallery", "Horizontal"]
                             },
                             "articles":{
                                 "title":"Artikel",
@@ -101,15 +106,30 @@
                                             "description":"References an internal URL to a selected article.",
                                             "ui_callout":{
                                                 "url":"/callouts/internal/article_reference",
-                                                "src_properties":["id", "title"],
-                                                "target_properties":["article_idref", "article_headline"]
+                                                "src_properties":["id", "title", "teaser_text"],
+                                                "target_properties":["article_idref", "article_headline", "teaser"]
                                             },
                                             "ui_width":"xlarge"
                                         },
-                                        "article_headline":{
+                                        "spitzmarke":{
+                                            "title":"Spitzmarke",
+                                            "type":"string",
+                                            "ui_width":"xlarge"
+                                        },
+                                        "spitzmarke":{
+                                            "title":"Spitzmarke",
+                                            "type":"string",
+                                            "ui_width":"xlarge"
+                                        },
+                                        "title":{
                                             "title":"Headline",
                                             "type":"string",
                                             "ui_width":"xxlarge"
+                                        },
+                                        "teasertext":{
+                                            "title":"Teaser",
+                                            "type":"textarea",
+                                            "ui_width":"xlarge"
                                         },
                                         "image_idref":{
                                             "title":"Image ID",
@@ -128,59 +148,25 @@
                         }
                     },
                     {
-
-                        "id":"manual",
-                        "type":"array",
-                        "title":"Manual Article List",
+                        "id":"query",
+                        "type":"object",
+                        "title":"Query",
                         "additionalProperties":false,
                         "properties":{
-                            "related_articles":{
-                                "title":"Weiterführende Artikel",
-                                "type":"array",
-                                "items":{
-                                    "title":"Artikel",
-                                    "type":"object",
-                                    "properties":{
-                                        "article_idref":{
-                                            "title":"Artikel",
-                                            "type":"integer",
-                                            "description":"References an internal URL to a selected article.",
-                                            "ui_callout":{
-                                                "url":"/callouts/internal/article_reference",
-                                                "src_properties":["id", "title", "teaser_text"],
-                                                "target_properties":["article_idref", "article_headline", "article_teaser"]
-                                            },
-                                            "ui_width":"xlarge"
-                                        },
-                                        "article_headline":{
-                                            "title":"Headline",
-                                            "type":"string",
-                                            "ui_width":"xxlarge"
-                                        },
-                                        "article_teaser":{
-                                            "title":"Text",
-                                            "type":"string",
-                                            "ui_width":"xxlarge",
-                                            "ui_editor":"textarea"
-                                        },
-                                        "image_idref":{
-                                            "title":"Image ID",
-                                            "description":"References an internal URL to a selected image.",
-                                            "type":"integer",
-                                            "ui_callout":{
-                                                "url":"/callouts/internal/image_reference",
-                                                "src_properties":["id", "title"],
-                                                "target_properties":["image_idref", "image_title"]
-                                            },
-                                            "ui_width":"xlarge"
-                                        },
-                                        "image_title":{
-                                            "title":"Image Titel",
-                                            "type":"string",
-                                            "ui_width":"xlarge"
-                                        }
-                                    }
-                                }
+                            "query_title":{
+                                "title":"Title",
+                                "type":"string",
+                                "ui_width":"xlarge"
+                            },
+                            "teaser_type":{
+                                "title":"Teasertyp",
+                                "type":"string",
+                                "enum":["Bühne", "3er-Vertikal", "Gallery", "Horizontal"]
+                            },
+                            "query":{
+                                "title":"Query",
+                                "type":"string",
+                                "ui_width":"xxlarge"
                             }
                         }
                     },
@@ -197,26 +183,8 @@
                                 "ui_width":"xxlarge"
                             }
                         }
-                    },
-                    {
-                        "id":"query",
-                        "type":"object",
-                        "title":"Query",
-                        "additionalProperties":false,
-                        "properties":{
-                            "query_title":{
-                                "title":"Title",
-                                "type":"string",
-                                "ui_width":"xlarge"
-                            },
-
-                            "query":{
-                                "title":"Query",
-                                "type":"string",
-                                "ui_width":"xxlarge"
-                            }
-                        }
                     }
+
                 ]
             }
         },
