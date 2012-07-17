@@ -65,7 +65,7 @@ public class ContentNode {
 
     // ~
 
-    private Long id;
+    private Number id;
     private Integer version = 1;
 
     private Long created;
@@ -308,7 +308,7 @@ public class ContentNode {
     }
 
     private static ContentNode convert(DBObject dbObj) {
-        Long id = (Long) dbObj.get(ATTR_ID);
+        Number id = (Number) dbObj.get(ATTR_ID);
         //dbObj.removeField("_id");
         String type = (String) dbObj.get(ATTR_TYPE);
         //dbObj.removeField("_type");
