@@ -50,6 +50,9 @@ public class Callouts extends Controller {
         String[] values          = params.getAll("values[]");
 
         Logger.debug("values %s", values);
+        if (values == null ) {
+            values  = new String[]{};
+        }
 
         String[] tmpValues = new String[srcPropNames.length];
         /*

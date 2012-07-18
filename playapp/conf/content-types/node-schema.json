@@ -15,8 +15,8 @@
             "type":"integer",
             "ui_callout":{
                 "url":"/callouts/internal/node_reference",
-                "src_properties":["id","title"],
-                "target_properties":["parent_node_idref", "parent_title"]
+                "src_properties":["id","title", "ancestors"],
+                "target_properties":["parent_node_idref", "parent_title", "ancestors_idref"]
             },
             "ui_width":"xxlarge"
         },
@@ -27,6 +27,12 @@
             "ui_class":"readonly"
         },
 
+        "ancestors_idref":{
+            "title":"Vorfahren",
+            "type":"array",
+            "ui_width":"xxlarge",
+            "ui_class":"readonly"
+        },
         "path":{
             "title":"Pfad",
             "type":"string",
