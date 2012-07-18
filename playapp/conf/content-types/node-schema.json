@@ -33,6 +33,11 @@
             "ui_width":"xxlarge",
             "ui_class":"readonly"
         },
+        "order_value":{
+            "title":"Order",
+            "type":"string",
+            "ui_width":"xlarge"
+        },
         "path":{
             "title":"Pfad",
             "type":"string",
