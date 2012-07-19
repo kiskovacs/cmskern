@@ -1,0 +1,58 @@
+%{ nrPages = _totalCount.page(controllers.callouts.Callouts.getPageSize()) }%
+
+#{if nrPages > 1}
+    <p class="paginationPages">
+
+    %{
+        limit = (_limit != null ? _limit : 10)
+        start = _caller.page - (int)(limit/2) + (limit % 2 ? 0 : 1)
+        end   = _caller.page + (int)(limit/2)
+
+        if (start < 1) {
+            extra = 1 - start
+            end = (end + extra < nrPages ? end + extra : nrPages)
+            start = 1
+        } else if (end > nrPages) {
+            extra = end - nrPages
+            start = (start - extra > 1 ? start - extra : 1)
+            end = nrPages
+        }
+    }%
+
+    #{if _caller.page > 1}
+        <span class="previous">
+            <a href="javascript:displaySelectionPage(${_caller.page-1});">previous</a>
+        </span>
+    #{/if}
+
+    #{if start > 1}
+        <span class="first">
+            <a href="javascript:displaySelectionPage(1);">first</a>
+        </span>
+    #{/if}
+
+    %{ for (i in start..end) { }%
+        <span class="page">
+            #{if _caller.page == i}
+                <strong>${i}</strong>
+            #{/if}
+            #{else}
+                <a href="javascript:displaySelectionPage(${i});">${i}</a>
+            #{/else}
+        </span>
+    %{ } }%
+
+    #{if end < nrPages}
+        <span class="last">
+            <a href="javascript:displaySelectionPage(${nrPages});">last</a>
+        </span>
+    #{/if}
+
+    #{if _caller.page < nrPages}
+        <span class="next">
+            <a href="javascript:displaySelectionPage(${_caller.page+1});">next</a>
+        </span>
+    #{/if}
+
+</p>
+#{/if}

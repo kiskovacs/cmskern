@@ -1,16 +1,16 @@
-<!-- Select one existing articles -->
-
 <h3>Select Article</h3>
 
+<!-- Search mask -->
 <fieldset>
     <!-- label for="search_term"></label -->
     <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
     <button id="search_articles" class="btn">Search by Title</button>
-    <div id="search_results"></div>
 </fieldset>
 
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
 
-
+<!-- Filled by selection from table or manually edited -->
 <fieldset>
     <div class="control-group">
         <label class="control-label" for="select_id">Article ID</label>
@@ -65,11 +65,15 @@
     // Trigger article search, display HTML result
     $("#search_articles").click(function(event) {
         event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
         var search_term = $("#search_term").val();
-        console.log("Search for articles: " + search_term);
-        $.get('/helper/ContentNodeSelection/searchArticles', {query: search_term}, function(data) {
+        console.log("Search for articles: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/ContentNodeSelection/searchArticles', {query: search_term, page: pageNr}, function(data) {
             $('#search_results').html(data);
         });
-    });
+    }
 
 </script>

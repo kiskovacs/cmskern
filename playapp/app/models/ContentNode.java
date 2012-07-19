@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.*;
 import models.vo.IdTitle;
+import models.vo.SearchResult;
 import play.Logger;
 import utils.MongoDbUtils;
 
@@ -181,7 +182,7 @@ public class ContentNode {
         return nodes;
     }
 
-    public static List<DBObject> findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
+    public static SearchResult findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
         DBObject q = createQueryByTitle(type, searchTerm, matchCase);
@@ -190,7 +191,7 @@ public class ContentNode {
         final List<DBObject> nodes = dbCur.toArray();
         Logger.info("... %d total matches", dbCur.count());
 
-        return nodes;
+        return new SearchResult(nodes, dbCur.count());
     }
 
 

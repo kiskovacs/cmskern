@@ -3,6 +3,7 @@ package controllers.callouts;
 import models.ContentNode;
 import models.vo.RefValue;
 import play.Logger;
+import play.Play;
 import play.mvc.Controller;
 
 import java.util.Arrays;
@@ -19,7 +20,12 @@ import java.util.Map;
  * @since 20.02.2012
  */
 public class Callouts extends Controller {
-    
+
+    public static int getPageSize() {
+        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "20"));
+    }
+
+
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
 
@@ -28,19 +34,19 @@ public class Callouts extends Controller {
         if (   name.contains("internal/article_")
             || name.contains("internal/test_")) {
             // ~~ RAW access
-            model.put("articles", ContentNode.findByTypeRaw("article", 20));  // TODO: improve by using paging
+            model.put("articles", ContentNode.findByTypeRaw("article", getPageSize()));  // TODO: improve by using paging
         }
         else if (name.contains("/image_")) {
-            model.put("images", ContentNode.findByTypeRaw("image", 20));  // TODO: improve by using paging
+            model.put("images", ContentNode.findByTypeRaw("image", getPageSize()));  // TODO: improve by using paging
         }
         else if (name.contains("/imageGallery_")) {
-            model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", 20));  // TODO: improve by using paging
+            model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", getPageSize()));  // TODO: improve by using paging
         }
         else if (name.contains("/sidebar_")) {
-            model.put("sidebars", ContentNode.findByTypeRaw("sidebar", 20));  // TODO: improve by using paging
+            model.put("sidebars", ContentNode.findByTypeRaw("sidebar", getPageSize()));  // TODO: improve by using paging
         }
         else if (name.contains("/node_")) {
-            List nodes = ContentNode.findByTypeRaw("node", 20);
+            List nodes = ContentNode.findByTypeRaw("node", getPageSize());
             model.put("nodes", nodes);  // TODO: improve by using paging
         }
 
@@ -54,6 +60,7 @@ public class Callouts extends Controller {
             values  = new String[]{};
         }
 
+        // TODO: @syk wozu das?
         String[] tmpValues = new String[srcPropNames.length];
         /*
         for (int i =0; i < tmpValues.length; i++) {
@@ -61,7 +68,6 @@ public class Callouts extends Controller {
         }
         */
         System.arraycopy(values, 0, tmpValues, 0, values.length);
-
         values = tmpValues;
 
         String[] targetPropNames = params.getAll("update_fields[]");
@@ -77,6 +83,7 @@ public class Callouts extends Controller {
             fields.put(srcPropNames[i], new RefValue(targetPropNames[i], types[i], values[i]));
         }
         model.put("fields", fields);
+        model.put("count", 26);
         //Logger.info("    fields: %s", fields);
 
         // Figure out proper template as defined in schema
