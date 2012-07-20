@@ -1,3 +1,9 @@
+*{
+    Callout contract:
+    possible srcPropnames: id
+}*
+#{set calloutfields = ['id', 'title'] /}
+
 <h3>Select Sidebar</h3>
 
 <ul>
@@ -9,7 +15,10 @@
 
 <fieldset>
     <label for="select_id">Sidebar ID</label>
-    <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
+    <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}" readonly="readonly"/>
+    <label for="select_title">Title</label>
+    <input type="text" id="select_title" name="title"
+           value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}"/>
 </fieldset>
 
 
@@ -21,13 +30,20 @@
     function updateRef(val, title) {
         selectedId = val;
         $("#select_id").val(val);
+
+        selectedTitle = title;
+        $("#select_title").val(title);
+
     }
 
-    // Contract between Caller and Callout
+    // contract: returns only the fields, which are in srcPropNames
     function calloutGetSelectedValues() {
         return {
-            '${fields['id'].targetFQName}': selectedId
-        };
+          #{list items:calloutfields, as:'litem'}
+            #{if fields[litem]}
+            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+            #{/if}
+          #{/list}
+        }
     }
-
 </script>

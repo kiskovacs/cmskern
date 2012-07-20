@@ -84,7 +84,7 @@ public class Callouts extends Controller {
         }
         model.put("fields", fields);
         model.put("count", 26);
-        //Logger.info("    fields: %s", fields);
+        Logger.info("    fields: %s", fields);
 
         // Figure out proper template as defined in schema
         String templateName = "Callouts/" + name + ".html";

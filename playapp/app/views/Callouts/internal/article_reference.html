@@ -1,3 +1,9 @@
+*{
+    Callout contract:
+    possible srcPropnames: id, title, teaser, spitzmarke, teaserimg
+}*
+#{set calloutfields = ['id', 'title', 'teaser', 'spitzmarke', 'teaserimg'] /}
+
 <h3>Select Article</h3>
 
 <!-- Search mask -->
@@ -15,13 +21,13 @@
     <div class="control-group">
         <label class="control-label" for="select_id">Article ID</label>
         <div class="controls">
-            <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly" />
+            <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}" readonly="readonly" />
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="select_title">Title</label>
         <div class="controls">
-            <input type="text" id="select_title" name="title" value="${fields['title'].value}" />
+            <input type="text" id="select_title" name="title" value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}" />
         </div>
     </div>
 </fieldset>
@@ -53,15 +59,16 @@
         selectedTitle = $(this).val();
     });
 
-    // Contract between Caller and Callout
+    // contract: returns only the fields, which are in srcPropNames
     function calloutGetSelectedValues() {
         return {
-            '${fields['id'].targetFQName}': selectedId,
-            '${fields['title'].targetFQName}': selectedTitle,
-            '${fields['teaser_text'].targetFQName}': selectedTeaser
-        };
+            #{list items:calloutfields, as:'litem'}
+            #{if fields[litem]}
+            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+        #{/if}
+        #{/list}
     }
-
+    }
     // Trigger article search, display HTML result
     $("#search_articles").click(function(event) {
         event.preventDefault();

@@ -1,42 +1,52 @@
+*{
+    Callout contract:
+    possible srcPropnames: id, title, ancestors
+}*
+
+#{set calloutfields = ['id', 'title', 'ancestors'] /}
+
 <!-- Select one existing articles -->
 <h3>Select Node</h3>
 
 <ul>
-#{list items: nodes, as:'node'}
+    #{list items: nodes, as:'node'}
     <li><a href="#"
            onclick="updateNodeRef('${node._id}', '${node.data.title}', '${node.data.ancestors_idref}')">${node.data.title}</a>
+        *{ Auflistung der Felder stellt keine Kopplung zum srcPropNames oder targetPropNames dar }*
         (Path: ${node.data.path}, Parent: ${node.data.parent})
     </li>
-#{/list}
+    #{/list}
 </ul>
 
 
 <fieldset>
     <label for="select_id">Node ID</label>
-    <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly" />
-
+    <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}"
+           readonly="readonly"/>
     <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title" value="${fields['title'].value}" />
-    <label for="select_title">Title</label>
-    <input type="text" id="select_ancestors" name="title" value="${fields['ancestors'].value}" />
+    <input type="text" id="select_title" name="title"
+           value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}"/>
+    <label for="select_ancestors">Ancestors</label>
+    <input type="text" id="select_ancestors" name="ancestors"
+           value="#{if fields.containsKey('ancestors')}${fields['ancestors'].value}#{/if}"/>
 </fieldset>
 
-
 <script type="text/javascript">
-    var selectedId    = -1;
+    var selectedId = -1;
     var selectedTitle = "";
     var selectedAncestors = "";
 
-    $(function() {
+    $(function () {
         selectedId = $('#select_id').val();
         selectedTitle = $('#select_title').val();
         selectedAncestors = $('#select_ancestors').val() + ',' + selectedId;
     });
 
     function updateNodeRef(val, title, ancestors) {
-        console.log("updateNodeRefe(" + val + ", "+ title + ", " + ancestors);
+        console.log("updateNodeRefe(" + val + ", " + title + ", " + ancestors);
         selectedId = val;
         $("#select_id").val(val);
+
         selectedTitle = title;
         $("#select_title").val(title);
 
@@ -48,17 +58,19 @@
 
     }
 
-    $("#select_title").on("change", function(event) {
+    $("#select_title").on("change", function (event) {
         event.preventDefault();
         selectedTitle = $(this).val();
     });
 
-    // contract: returns [ID, TITLE]
+    // contract: returns only the fields, which are in srcPropNames
     function calloutGetSelectedValues() {
         return {
-            '${fields['id'].targetFQName}': selectedId,
-            '${fields['title'].targetFQName}': selectedTitle,
-            '${fields['ancestors'].targetFQName}': selectedAncestors
-        };
+            #{list items:calloutfields, as:'litem'}
+            #{if fields[litem]}
+            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+        #{/if}
+        #{/list}
+      }
     }
 </script>

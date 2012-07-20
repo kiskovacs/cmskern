@@ -85,7 +85,7 @@
                         "description":"References an internal URL to a selected article.",
                         "ui_callout":{
                             "url":"/callouts/internal/article_reference",
-                            "src_properties":["id", "title", "teaser_text"],
+                            "src_properties":["id", "title", "teaser"],
                             "target_properties":["article_idref", "headline", "teaser"]
                         },
                         "ui_width":"xlarge"
