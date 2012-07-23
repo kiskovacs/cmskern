@@ -69,11 +69,11 @@ public class Callouts extends Controller {
         System.arraycopy(values, 0, tmpValues, 0, values.length);
         values = tmpValues;
 
-        String[] targetPropNames = params.getAll("update_fields[]");
+        String[] targetPropNames = params.getAll("target_properties[]");
 
         Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));
-        Logger.info("  values:          %s", Arrays.asList(values));
         Logger.info("  targetPropNames: %s", Arrays.asList(targetPropNames));
+        Logger.info("  values:          %s", Arrays.asList(values));
 
         // build field map to allow referencing from template
         Map<String, RefValue> fields = new HashMap<String, RefValue>();

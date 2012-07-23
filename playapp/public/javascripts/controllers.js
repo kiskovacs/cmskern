@@ -142,26 +142,33 @@ function EditContentNodeCtrl($xhr) {
     }
 
     // Called by referencing input element (see widgets.js)
-    scope.simple_select_value = function (callout_url, target_prop_names, src_prop_names) {
+    scope.select_ref_value = function (callout_url, fq_name, src_prop_names, target_prop_names) {
+        var parentArrNode = findParentNode('arrfq', this.$element[0], "");
+        var parentfq;
+        // For scalar objects which are not an array we have a different handling
+        if (parentArrNode != '') {
+            parentfq = 'contentNode.' + parentArrNode;  // contains index number
+        } else {
+            parentfq = fq_name.substr(0, fq_name.lastIndexOf('.') + 1);
+        }
+        //console.log("---> parentfq: " + parentfq);
 
-        var parentfq = 'contentNode.' + findParentNode('arrfq', this.$element[0], "");
-
-        var target_names = target_prop_names.split('#');
         var src_names = src_prop_names ? src_prop_names.split('#') : [];
+        var target_names = target_prop_names.split('#');
         var fields = {};
-        fields['update_fields'] = new Array();
-        fields['values'] = new Array();
-        fields['src_properties'] = new Array();
+        fields['src_properties']    = new Array();
+        fields['target_properties'] = new Array();
+        fields['values']            = new Array();
 
-        for (i in target_names) {
+        for (var i in target_names) {
             var fq_target_name = target_names[i];
             if (fq_target_name) {
                 // Special handling for array elements: insert position number
                 fq_target_name = parentfq + fq_target_name;
-                fields['update_fields'].push(fq_target_name);
+                fields['src_properties'].push(src_names[i]);
+                fields['target_properties'].push(fq_target_name);
                 var cur_value = scope.$get(fq_target_name);
                 fields['values'].push(cur_value);
-                fields['src_properties'].push(src_names[i]);
             }
         }
         console.log("callout fields: " + dump(fields, 1));

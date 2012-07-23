@@ -48,7 +48,7 @@ angular.widget('my:form', function(element) {
                 // (A) subform header (with move up/down button)
                 var subform = angular.element('<ul ui:sortable class="sortable subform" ui:items="' + qualifiedName + '"></ul>');
                 var repeater = angular.element('<li ng:repeat="' + childElem + ' in ' + qualifiedName + '" ' +
-                    (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" arrfq ="' + fieldKey + '.{{$index}}"></li>');
+                    (multiTyped ? 'jq:autoremove' : '') + ' ui:items="' + qualifiedName + '" arrfq="' + fieldKey + '.{{$index}}"></li>');
                 var subfieldset = angular.element('<fieldset></fieldset>');
                 var legendChild = angular.element('<legend' + ' context="' + qualifiedName+'">' + field.title + '{{$index}}</legend>');
 
@@ -156,19 +156,15 @@ angular.widget('my:form', function(element) {
                 else if (field.ui_callout) {
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
-                    if (field.ui_callout.target_properties) {
-                        var targetProperties = "";
-                        for (i in field.ui_callout.target_properties) {
-                            targetProperties += field.ui_callout.target_properties[i] + "#";
-                        }
-                        console.log("fields to update: " + targetProperties);
-                        var srcPropNames = field.ui_callout.src_properties.join('#');
-                        fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + targetProperties +'\',\'' + srcPropNames +'\'';
-                    } else {
-                        // TODO: Should we require to specify: ui_update
-                        fieldElStr += '  <span class="add-on" ng:click="simple_select_value(\'' + field.ui_callout.url + '\',\'' + fullyQualifiedName + '\'';
+                    var targetProperties = "";
+                    for (var i in field.ui_callout.target_properties) {
+                        targetProperties += field.ui_callout.target_properties[i] + "#";
                     }
-                    fieldElStr += ')"><i class="icon-edit"></i></span>';
+                    console.log("fields to update: " + targetProperties);
+                    var srcPropNames = field.ui_callout.src_properties.join('#');
+                    fieldElStr += '  <span class="add-on" ng:click="select_ref_value(\'' + field.ui_callout.url + '\',' +
+                        '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
+                    fieldElStr += '<i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                 }
                 else if (field.format == 'date') {
