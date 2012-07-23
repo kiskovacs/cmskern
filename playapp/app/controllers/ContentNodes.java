@@ -26,7 +26,7 @@ public class ContentNodes extends Application {
     }
 
     @Check("editor,admin")
-    public static void edit(String type, String id) {
+    public static void edit(String type, Long id) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown type: " + type);
         ContentNode contentNode = ContentNode.findById(id);
@@ -36,7 +36,7 @@ public class ContentNodes extends Application {
     }
 
     @Check("admin")
-    public static void delete(String type, String id) {
+    public static void delete(String type, Long id) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown type: " + type);
         ContentNode contentNode = ContentNode.findById(id);
@@ -47,7 +47,7 @@ public class ContentNodes extends Application {
     }
 
     @Check("editor,admin")
-    public static void versions(String type, String id) {
+    public static void versions(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown node ID: " + id);
         List<ContentNode> versions = ContentNode.findVersionsForId(id);

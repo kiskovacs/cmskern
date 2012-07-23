@@ -73,23 +73,23 @@ public final class MongoDbUtils {
         dbColl.insert(object);
     }
 
-    public static void update(final String collectionName, final String id, DBObject object) {
+    public static void update(final String collectionName, final Number id, DBObject object) {
         DBCollection dbColl = getDBCollection(collectionName);
         dbColl.update(queryById(id), object);
     }
 
-    public static void delete(final String collectionName, final String id) {
+    public static void delete(final String collectionName, final Number id) {
         DBCollection dbColl = getDBCollection(collectionName);
         dbColl.remove(queryById(id));
     }
 
-    public static DBObject getById(final String collectionName, final String id) {
+    public static DBObject getById(final String collectionName, final Number id) {
         DBCollection dbColl = getDBCollection(collectionName);
         return dbColl.findOne(queryById(id));
     }
 
-    public static DBObject queryById(final String id) {
-        return new BasicDBObject("_id", Long.valueOf(id));
+    public static DBObject queryById(final Number id) {
+        return new BasicDBObject("_id", id);
     }
 
     public static long count(String collectionName) {

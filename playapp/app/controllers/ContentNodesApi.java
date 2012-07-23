@@ -10,14 +10,14 @@ import play.mvc.With;
 @With(Secure.class)
 public class ContentNodesApi extends Controller {
 
-    public static void getBody(String type, String id) {
+    public static void getBody(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
         Logger.info("Deliver body with ID: %s (%s)", contentNode.getId(), type);
         renderJSON(contentNode.getJsonContent());
     }
 
-    public static void getFull(String type, String id) {
+    public static void getFull(String type, Long id) {
         DBObject obj = ContentNode.findByIdRaw(id);
         notFoundIfNull(obj, "Unknown content ID: " + id);
         Logger.info("Deliver raw %s for ID: %s ...", type, id);
@@ -38,7 +38,7 @@ public class ContentNodesApi extends Controller {
     }
 
     @Check("editor,admin")
-    public static void update(String type, String id, String body) {
+    public static void update(String type, Long id, String body) {
         // TODO: filter also by type?  Check if already exists?
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
@@ -49,10 +49,10 @@ public class ContentNodesApi extends Controller {
     }
 
     @Check("admin")
-    public static void delete(String type, String id) {
+    public static void delete(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
-        Logger.info("Going to delete %s ...", id);
+        Logger.info("Going to delete %s with id %s ...", type, id);
         contentNode.delete();
     }
 

@@ -135,7 +135,7 @@ public class ContentNode {
 
     // ~~
 
-    public static ContentNode findById(String id) {
+    public static ContentNode findById(Number id) {
         DBObject dbObj = null;
         try {
             dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
@@ -146,7 +146,7 @@ public class ContentNode {
         return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
     }
 
-    public static DBObject findByIdRaw(String id) {
+    public static DBObject findByIdRaw(Number id) {
         DBObject dbObj = null;
         try {
             dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
@@ -219,7 +219,7 @@ public class ContentNode {
     /**
      * Returns the most recent revisions related to this origin content node.
      */
-    public static List<ContentNode> findVersionsForId(String id) {
+    public static List<ContentNode> findVersionsForId(Number id) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME);
         DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_IDREF, id)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(20);
@@ -247,8 +247,8 @@ public class ContentNode {
         return jsonContent;
     }
 
-    public String getId() {
-        return id.toString();
+    public Number getId() {
+        return id;
     }
 
     public Date getCreated() {
@@ -334,7 +334,7 @@ public class ContentNode {
     }
 
     private static void updateWithMetadata(final String username, long timestamp,
-                                           final String id, DBObject contentData) {
+                                           final Number id, DBObject contentData) {
         contentData.removeField(""); // TODO: fix earlier in call chain
         // Logger.debug("~~ Update MongoDB with values: %s", contentData.toString());
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);

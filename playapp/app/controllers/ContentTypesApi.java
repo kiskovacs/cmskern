@@ -2,7 +2,6 @@ package controllers;
 
 import models.ContentNode;
 import models.ContentType;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.mvc.Controller;
@@ -23,11 +22,11 @@ public class ContentTypesApi extends Controller {
      * @param name the name of the content type
      * @param contentId (optional) if content already exists (edit mode)
      */
-    public static void asFormDescriptor(String name, String contentId) throws IOException {
+    public static void asFormDescriptor(String name, Long contentId) throws IOException {
         ContentType type = ContentType.findByName(name);
         notFoundIfNull(type, "Unknown type name: " + name);
 
-        if (StringUtils.isNotEmpty(contentId)) {
+        if (contentId == null) {
             Logger.info("JSON edit form for type [%s] filled with content ID %s", name, contentId);
             ContentNode contentNode = ContentNode.findById(contentId);
             notFoundIfNull(contentNode, "Unknown node ID: " + contentId);
