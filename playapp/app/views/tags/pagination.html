@@ -1,4 +1,4 @@
-%{ nrPages = _totalCount.page(controllers.callouts.Callouts.getPageSize()) }%
+%{ nrPages = _totalCount.page(_pageSize) }%
 
 #{if nrPages > 1}
     <ul>
@@ -21,34 +21,34 @@
 
     #{if start > 1}
         <li>
-            <a href="javascript:displaySelectionPage(1);" title="first">&larr;</a>
+            #{a @list(_caller.params.typeName).add('page', 1)}&larr;#{/a}
         </li>
     #{/if}
 
     #{if _caller.page > 1}
         <li>
-            <a href="javascript:displaySelectionPage(${_caller.page-1});" title="previous">«</a>
+            #{a @list(_caller.params.typeName).add('page', _caller.page-1)}«#{/a}
         </li>
     #{/if}
 
-
     %{ for (i in start..end) { }%
         <li class="#{if _caller.page == i}disabled#{/if}">
-            <a href="javascript:displaySelectionPage(${i});">${i}</a>
+            #{a @list(_caller.params.typeName).add('page', i)}${i}#{/a}
         </li>
     %{ } }%
 
+
     #{if _caller.page < nrPages}
         <li>
-            <a href="javascript:displaySelectionPage(${_caller.page+1});" title="next">»</a>
+            #{a @list(_caller.params.typeName).add('page', _caller.page+1), title: 'next'}»#{/a}
         </li>
     #{/if}
 
     #{if end < nrPages}
         <li>
-            <a href="javascript:displaySelectionPage(${nrPages});" title="last">&rarr;</a>
+            #{a @list(_caller.params.typeName).add('page', nrPages)}&rarr;#{/a}
         </li>
     #{/if}
 
-</ul>
+    </ul>
 #{/if}

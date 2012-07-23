@@ -36,7 +36,7 @@
         </tr>
     </thead>
     <tbody>
-        #{list items:entry.value, as:'node'}
+        #{list items:entry.value.objects, as:'node'}
         <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
             <td>
                #{secure.check 'editor,admin'}<a href="@{ContentNodes.edit(node.type, node.id)}">#{/secure.check}

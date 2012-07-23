@@ -159,7 +159,7 @@ public class ContentNode {
     /**
      * Returns lately modified content nodes of the speicified type.
      */
-    public static List<ContentNode> findByType(String type, int max) {
+    public static SearchResult<ContentNode> findByType(String type, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
         DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
@@ -167,7 +167,7 @@ public class ContentNode {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
         }
-        return nodes;
+        return new SearchResult(nodes, dbCur.count());
     }
 
     // TODO: Temporary to figure out if this is the right access
@@ -182,7 +182,7 @@ public class ContentNode {
         return nodes;
     }
 
-    public static SearchResult findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
+    public static SearchResult<DBObject> findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
         DBObject q = createQueryByTitle(type, searchTerm, matchCase);

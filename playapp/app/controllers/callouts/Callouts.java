@@ -8,7 +8,6 @@ import play.mvc.Controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +24,7 @@ public class Callouts extends Controller {
         return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "20"));
     }
 
+    // ~~
 
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
@@ -46,8 +46,7 @@ public class Callouts extends Controller {
             model.put("sidebars", ContentNode.findByTypeRaw("sidebar", getPageSize()));  // TODO: improve by using paging
         }
         else if (name.contains("/node_")) {
-            List nodes = ContentNode.findByTypeRaw("node", getPageSize());
-            model.put("nodes", nodes);  // TODO: improve by using paging
+            model.put("nodes", ContentNode.findByTypeRaw("node", getPageSize()));  // TODO: improve by using paging
         }
 
         // Prepare names of properties which should be updated by this callout

@@ -3,6 +3,7 @@ package controllers;
 import models.ContentNode;
 import models.ContentType;
 import models.vo.IdTitle;
+import models.vo.SearchResult;
 import play.mvc.With;
 
 import java.util.List;
@@ -50,11 +51,11 @@ public class ContentNodes extends Application {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown node ID: " + id);
         List<ContentNode> versions = ContentNode.findVersionsForId(id);
-        render(contentNode, versions);
+        render(type, contentNode, versions);
     }
 
     public static void list(String type) {
-        List<ContentNode> nodes = ContentNode.findByType(type, 50);
+        SearchResult<ContentNode> nodes = ContentNode.findByType(type, 0, Application.getPageSize());
         render(nodes);
     }
 
