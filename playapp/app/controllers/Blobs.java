@@ -85,9 +85,16 @@ public class Blobs extends Controller {
         renderBinary(dbFile.getInputStream());
     }
 
+    // IMPORTANT: this is the id of the original asset
     public static void getThumbById(String id) {
-        // we might want to split this into an own GridFS collection...
-        getOriginalById(id);
+        // TODO: we might want to split the thumbnails into an own GridFS collection...
+        Logger.info("Lookup thumbnail asset by original id: %s", id);
+        GridFSDBFile dbFile = MongoDbUtils.getThumbFileByOrigId(id);
+        notFoundIfNull(dbFile, "Unable to retrieve GridFS thumbnail file for asset "+ id);
+        Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
+
+        response.contentType = dbFile.getContentType();
+        renderBinary(dbFile.getInputStream());
     }
 
     public static void getByName(String name) {

@@ -45,8 +45,8 @@ public class Thumbnailer extends Job {
         GridFSInputFile thumb = gfs.createFile(targetFile);
         thumb.setFilename(orig.getFilename());
         thumb.setContentType(orig.getContentType());
-        thumb.setMetaData(new BasicDBObject(Asset.ORIGINAL_REF, orig.getId()));
-        thumb.setMetaData(new BasicDBObject(Asset.THUMBNAIL_FLAG, true));
+        thumb.setMetaData(new BasicDBObject(Asset.ORIGINAL_REF, orig.getId())
+                          .append(Asset.THUMBNAIL_FLAG, true));
         thumb.save();
         
         // Referencing from original file to freshly created thumbnail

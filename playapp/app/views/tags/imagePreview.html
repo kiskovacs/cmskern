@@ -1,0 +1,4 @@
+%{ imgNode = models.ContentNode.findByIdRaw(_id) }%
+#{if imgNode?.data?.asset_ref}
+  <img src="${imgNode.data.asset_ref.thumbnailUrl()}" alt="${imgNode.data?.title}">
+#{/if}

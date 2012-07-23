@@ -36,12 +36,14 @@ public class Asset {
     /**
      * Name of the metadata key referring from the original to the related thumbnail
      */
-    public static final String THUMB_REF = "thumb_ref";
+    public static final String THUMB_REF   = "thumb_ref";
+    public static final String Q_THUMB_REF = METADATA + ".thumb_ref";
 
     /**
      * Name of the metadata key Referring from the thumbnail to the original asset
      */
-    public static final String ORIGINAL_REF = "orig_ref";
+    public static final String ORIGINAL_REF   = "orig_ref";
+    public static final String Q_ORIGINAL_REF = METADATA + ".orig_ref";
 
     // ~~
 
@@ -65,7 +67,8 @@ public class Asset {
 
     public static Collection<Asset> findAllOriginals() {
         GridFS gfs = MongoDbUtils.getGridFS();
-        DBCursor cursor = gfs.getFileList(new BasicDBObject(METADATA + '.' + THUMBNAIL_FLAG, new BasicDBObject("$exists", false)));
+        DBCursor cursor = gfs.getFileList(new BasicDBObject(METADATA + '.' + THUMBNAIL_FLAG,
+                                                            new BasicDBObject("$exists", false)));
         Collection<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
             assets.add(fromDBObject(cursor.next()));
@@ -81,7 +84,7 @@ public class Asset {
         DBObject metadata = (DBObject) dbObj.get(METADATA);
         String thumbUrl = null;
         if (metadata != null && metadata.get(THUMB_REF) != null) {
-            argMap.put("id", metadata.get(THUMB_REF));
+            argMap.put("id", dbObj.get(ID));
             thumbUrl = Router.getFullUrl("Blobs.getThumbById", argMap);
         }
         return new Asset(url, thumbUrl, (String) dbObj.get(FILENAME),
