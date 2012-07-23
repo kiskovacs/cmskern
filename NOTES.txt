@@ -1,3 +1,9 @@
+[niko, 23-Jul-2012]
+
+Play! 1.2.x seems not be able to bind a number (e.g. 125) to a java.lang.Number
+but only subclasses as Long, Integer, etc.
+
+
 [niko, 11-Jun-2012]
 
 ng-repeat does not work with primitive types
