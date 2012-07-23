@@ -12,12 +12,10 @@ import java.io.Serializable;
 public class RefValue implements Serializable {
 
     public String targetFQName;
-    public String type;
     public Object value;
 
-    public RefValue(String targetFQName, String type, Object value) {
+    public RefValue(String targetFQName, Object value) {
         this.value = value;
-        this.type = type;
         this.targetFQName = targetFQName;
     }
 
@@ -26,7 +24,6 @@ public class RefValue implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append("RefValue");
         sb.append("{targetFQName='").append(targetFQName).append('\'');
-        sb.append(", type='").append(type).append('\'');
         sb.append(", value='").append(value).append('\'');
         sb.append('}');
         return sb.toString();

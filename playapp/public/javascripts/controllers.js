@@ -141,18 +141,16 @@ function EditContentNodeCtrl($xhr) {
         return findParentNode(attrname, childObj.parentNode, suffix);
     }
 
-    // Called by referencing input element (see widget.js)
+    // Called by referencing input element (see widgets.js)
     scope.simple_select_value = function (callout_url, target_prop_names, src_prop_names) {
 
         var parentfq = 'contentNode.' + findParentNode('arrfq', this.$element[0], "");
-
 
         var target_names = target_prop_names.split('#');
         var src_names = src_prop_names ? src_prop_names.split('#') : [];
         var fields = {};
         fields['update_fields'] = new Array();
         fields['values'] = new Array();
-        fields['src_types'] = new Array();
         fields['src_properties'] = new Array();
 
         for (i in target_names) {
@@ -163,7 +161,6 @@ function EditContentNodeCtrl($xhr) {
                 fields['update_fields'].push(fq_target_name);
                 var cur_value = scope.$get(fq_target_name);
                 fields['values'].push(cur_value);
-                fields['src_types'].push('string');
                 fields['src_properties'].push(src_names[i]);
             }
         }

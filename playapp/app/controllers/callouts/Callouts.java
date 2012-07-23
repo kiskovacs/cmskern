@@ -52,7 +52,6 @@ public class Callouts extends Controller {
 
         // Prepare names of properties which should be updated by this callout
         String[] srcPropNames    = params.getAll("src_properties[]");
-        String[] types           = params.getAll("src_types[]");
         String[] values          = params.getAll("values[]");
 
         Logger.debug("values %s", values);
@@ -73,14 +72,13 @@ public class Callouts extends Controller {
         String[] targetPropNames = params.getAll("update_fields[]");
 
         Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));
-        Logger.info("  types:           %s", Arrays.asList(types));
         Logger.info("  values:          %s", Arrays.asList(values));
         Logger.info("  targetPropNames: %s", Arrays.asList(targetPropNames));
 
         // build field map to allow referencing from template
         Map<String, RefValue> fields = new HashMap<String, RefValue>();
         for (int i = 0; i < srcPropNames.length; i++) {
-            fields.put(srcPropNames[i], new RefValue(targetPropNames[i], types[i], values[i]));
+            fields.put(srcPropNames[i], new RefValue(targetPropNames[i], values[i]));
         }
         model.put("fields", fields);
         model.put("count", 26);

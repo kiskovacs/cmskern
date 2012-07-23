@@ -145,12 +145,11 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</ul>';
 
 
-                    // das ist provisorisch reingenommen, damit ich produktive CTs entwickeln kann und
+                    // FIXME: das ist provisorisch reingenommen, damit ich produktive CTs entwickeln kann und
                     // selectable in sortable nicht funktioniert.
                     for (var idx in field.enum) {
                         fieldElStr += '<input type="radio" name="' + qualifiedName + '" value="' +field.enum[idx]+ '">' + field.enum[idx];
                     }
-
 
 
                 }
@@ -160,7 +159,7 @@ angular.widget('my:form', function(element) {
                     if (field.ui_callout.target_properties) {
                         var targetProperties = "";
                         for (i in field.ui_callout.target_properties) {
-                            targetProperties +=  field.ui_callout.target_properties[i] + "#";
+                            targetProperties += field.ui_callout.target_properties[i] + "#";
                         }
                         console.log("fields to update: " + targetProperties);
                         var srcPropNames = field.ui_callout.src_properties.join('#');

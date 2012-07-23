@@ -21,13 +21,13 @@
     <div class="control-group">
         <label class="control-label" for="select_id">Article ID</label>
         <div class="controls">
-            <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}" readonly="readonly" />
+            <input type="text" id="select_id" name="value" value="${fields['id']?.value}" readonly="readonly" />
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="select_title">Title</label>
         <div class="controls">
-            <input type="text" id="select_title" name="title" value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}" />
+            <input type="text" id="select_title" name="title" value="${fields['title']?.value}" />
         </div>
     </div>
 </fieldset>
@@ -63,11 +63,11 @@
     function calloutGetSelectedValues() {
         return {
             #{list items:calloutfields, as:'litem'}
-            #{if fields[litem]}
-            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
-        #{/if}
-        #{/list}
-    }
+              #{if fields[litem]}
+                '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+              #{/if}
+            #{/list}
+        }
     }
     // Trigger article search, display HTML result
     $("#search_articles").click(function(event) {
