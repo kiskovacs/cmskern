@@ -46,7 +46,7 @@ public class Application extends Controller {
 
     public static void list(String typeName, int page) {
         ContentType type = ContentType.findByName(typeName);
-        notFoundIfNull(type);
+        notFoundIfNull(type, "Unknown type: " + typeName);
 
         if (page <= 0) {
             page = 1;
