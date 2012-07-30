@@ -86,7 +86,7 @@ public class Blobs extends Controller {
     }
 
     // IMPORTANT: this is the id of the original asset
-    public static void getThumbById(String id) {
+    public static void getThumbByOriginalId(String id) {
         // TODO: we might want to split the thumbnails into an own GridFS collection...
         Logger.info("Lookup thumbnail asset by original id: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getThumbFileByOrigId(id);

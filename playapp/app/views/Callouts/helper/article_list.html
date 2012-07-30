@@ -1,39 +1,45 @@
 <div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th width="5%">ID</th>
-            <th width="15%">Title</th>
-            <th width="15%">Catchline</th>
-            <th width="50%">Teaser Text</th>
-            <th width="15%">Teaser Image</th>
-        </tr>
-        </thead>
-        <tbody>
-        #{list items: articles.objects, as:'article'}
-        <tr>
-            <td>
-                ${article._id}
-            </td>
-            <td>
-                <a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a>
-            </td>
-            <td>
-                ${article.data.catchline}
-            </td>
-            <td>
-                ${article.data.teaser.text}
-            </td>
-            <td>
-                #{imagePreview id: article.data.teaser.image_idref /}
-            </td>
-        </tr>
-        #{/list}
-        </tbody>
-    </table>
+    #{if articles.objects}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th width="15%">Title</th>
+                <th width="15%">Catchline</th>
+                <th width="50%">Teaser Text</th>
+                <th width="15%">Teaser Image</th>
+            </tr>
+            </thead>
+            <tbody>
+            #{list items: articles.objects, as:'article'}
+            <tr>
+                <td>
+                    ${article._id}
+                </td>
+                <td>
+                    <a href="#" onclick="updateRef('${article._id}', '${article.data.title}', '${article.data.teaser_text}')">${article.data.title}</a>
+                </td>
+                <td>
+                    ${article.data.catchline}
+                </td>
+                <td>
+                    ${article.data.teaser.text}
+                </td>
+                <td>
+                    #{imagePreview id: article.data.teaser.image_idref /}
+                </td>
+            </tr>
+            #{/list}
+            </tbody>
+        </table>
 
-    <div class="pagination">
-        #{callout.pagination totalCount: articles.totalCount /}
-    </div>
-
+        #{if nrPages > 1}
+        <div class="pagination">
+            #{callout.pagination totalCount: articles.totalCount /}
+        </div>
+        #{/if}
+    #{/if}
+    #{else}
+       No results found for <em>${query}</em>.
+    #{/else}
 </div>

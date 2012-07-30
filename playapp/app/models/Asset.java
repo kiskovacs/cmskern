@@ -32,6 +32,7 @@ public class Asset {
      * Signals, that this asset is a thumbnail
      */
     public static final String THUMBNAIL_FLAG = "is_thumbnail";
+    public static final String Q_THUMBNAIL_FLAG = METADATA + ".is_thumbnail";
 
     /**
      * Name of the metadata key referring from the original to the related thumbnail
@@ -67,7 +68,7 @@ public class Asset {
 
     public static Collection<Asset> findAllOriginals() {
         GridFS gfs = MongoDbUtils.getGridFS();
-        DBCursor cursor = gfs.getFileList(new BasicDBObject(METADATA + '.' + THUMBNAIL_FLAG,
+        DBCursor cursor = gfs.getFileList(new BasicDBObject(Q_THUMBNAIL_FLAG,
                                                             new BasicDBObject("$exists", false)));
         Collection<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
@@ -85,7 +86,7 @@ public class Asset {
         String thumbUrl = null;
         if (metadata != null && metadata.get(THUMB_REF) != null) {
             argMap.put("id", dbObj.get(ID));
-            thumbUrl = Router.getFullUrl("Blobs.getThumbById", argMap);
+            thumbUrl = Router.getFullUrl("Blobs.getThumbByOriginalId", argMap);
         }
         return new Asset(url, thumbUrl, (String) dbObj.get(FILENAME),
                          (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));

@@ -120,7 +120,7 @@ public final class MongoDbUtils {
 
     public static GridFSDBFile getThumbFileByOrigId(String id) {
         GridFS gfs = MongoDbUtils.getGridFS();
-        DBObject query = new BasicDBObject(Asset.Q_ORIGINAL_REF, new ObjectId(id)); // implict thumbnail
+        DBObject query = new BasicDBObject(Asset.Q_THUMBNAIL_FLAG, true).append(Asset.Q_ORIGINAL_REF, new ObjectId(id));
         return gfs.findOne(query);
     }
 

@@ -29,7 +29,7 @@ GET     /blobs                                  Blobs.listAssets
 GET     /blobs.json                             Blobs.list
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
 GET     /blobs/o/{id}                           Blobs.getOriginalById
-GET     /blobs/t/{id}                           Blobs.getThumbById
+GET     /blobs/t/{id}                           Blobs.getThumbByOriginalId
 GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 

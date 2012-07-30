@@ -456,13 +456,13 @@ ul.selectBox {
 /* line 328, ../../compass/sass/cmskern.scss */
 #search_results {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* ~~ Table elements ~~ */
 /* line 334, ../../compass/sass/cmskern.scss */
 .table {
   background: white;
-  margin-bottom: 50px;
 }
 
 /* line 339, ../../compass/sass/cmskern.scss */
