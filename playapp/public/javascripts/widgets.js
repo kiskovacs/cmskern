@@ -166,6 +166,9 @@ angular.widget('my:form', function(element) {
                         '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
                     fieldElStr += '<i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
+                    if (field.ui_class == 'image_thumbnail') {
+                        fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/t?propertyName=asset_ref"/> ';
+                    }
                 }
                 else if (field.format == 'date') {
                     fieldElStr  = '<div class="reference">';

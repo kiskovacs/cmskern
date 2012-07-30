@@ -18,6 +18,7 @@
         <label class="control-label" for="select_id">Image ID</label>
         <div class="controls">
             <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
+            <img class="image_thumbnail" id="select_thumb" src="/image/${fields['id'].value}/img/t?propertyName=asset_ref" />
         </div>
     </div>
     <div class="control-group">
@@ -34,10 +35,12 @@
     // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
     var selectedId = "";
     var selectedTitle = "";
+    const THUMB_URL = "/image/ID/img/t?propertyName=asset_ref";
 
     function updateRef(val, title) {
         selectedId = val;
         $("#select_id").val(val);
+        $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, val));
         selectedTitle = title;
         $("#select_title").val(title);
     }

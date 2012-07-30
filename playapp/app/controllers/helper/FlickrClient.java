@@ -15,17 +15,16 @@ import java.util.List;
 /**
  * Helper functionality to query Flickr, used as an example from call-out dialog boxes.
  *
+ * Alternative to Flickr:
+ *   Google Images: https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=query
+ *
  * @author Niko Schmuck
  * @since 20.02.2012
  */
-
-// Alternative to Flickr:
-// https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=query
-
 public class FlickrClient extends Controller {
 
     public final static String BASE_URL   = "http://api.flickr.com/services/rest/";
-    public final static String API_KEY    = "614389d986e3e62952b0891d0c2e3aa1";
+    public final static String API_KEY    = "614389d986e3e62952b0891d0c2e3aa1";    // DO NOT USE FOR PRODUCTION
     public final static String FORMAT     = "json";
     public final static String METHOD     = "flickr.photos.search";
     public final static int    MAX_PHOTOS = 10;

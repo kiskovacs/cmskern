@@ -291,6 +291,12 @@ public class ContentNode {
         return jsonRoot.has(ATTR_TITLE) ? jsonRoot.get(ATTR_TITLE).getAsString() : null;
     }
 
+    public String getProperty(String propertyName) {
+        JsonParser parser = new JsonParser();
+        JsonObject jsonRoot = parser.parse(jsonContent).getAsJsonObject();
+        return jsonRoot.has(propertyName) ? jsonRoot.get(propertyName).getAsString() : null;
+    }
+
     public Integer getVersion() {
         return version != null ? version : 1;
     }

@@ -80,7 +80,7 @@ public class Asset {
     private static Asset fromDBObject(DBObject dbObj) {
         Map<String, Object> argMap = new HashMap<String, Object>(1);
         argMap.put("id", dbObj.get(ID));
-        String url = Router.getFullUrl("Blobs.getOriginalById", argMap);
+        String url = Router.getFullUrl("Blobs.getFullsizeById", argMap);
 
         DBObject metadata = (DBObject) dbObj.get(METADATA);
         String thumbUrl = null;

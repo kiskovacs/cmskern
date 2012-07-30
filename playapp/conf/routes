@@ -28,7 +28,7 @@ GET     /helper/{controller}/{action}           helper.{controller}.{action}
 GET     /blobs                                  Blobs.listAssets
 GET     /blobs.json                             Blobs.list
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
-GET     /blobs/o/{id}                           Blobs.getOriginalById
+GET     /blobs/o/{id}                           Blobs.getFullsizeById
 GET     /blobs/t/{id}                           Blobs.getThumbByOriginalId
 GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
@@ -38,11 +38,12 @@ POST    /blobs                                  Blobs.upload
 *       /admin                                  module:crud
 
 # ~~ REST API for content
-GET     /nodes/test                             ContentNodes.test
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank
 GET     /{type}/{id}/full                       ContentNodesApi.getFull
+GET     /{type}/{id}/img/o                      ContentNodesApi.getAsFullsizeImage
+GET     /{type}/{id}/img/t                      ContentNodesApi.getAsThumbnailImage
 GET     /{type}/{id}                            ContentNodesApi.getBody
 PUT     /{type}/{id}                            ContentNodesApi.update
 # GET     /{type}                                 ContentNodesApi.list
@@ -50,7 +51,6 @@ POST    /{type}                                 ContentNodesApi.create
 # DELETE  /{type}/{id}                            ContentNodesApi.delete
 GET     /{type}/{id}/versions                     ContentNodes.versions
 GET     /{type}/{id}/delete                       ContentNodes.delete
-GET     /test                                    Application.test
 
 
 # ~~ Ignore favicon requests

@@ -1007,7 +1007,6 @@ angular.directive('ui:sortable', function (expression, templateElement, val) {
         };
 
         $(templateElement).sortable(options);
-}
+    }
 
-})
-;
+});

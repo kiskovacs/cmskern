@@ -6,6 +6,7 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.With;
+import utils.PlayExtensions;
 
 @With(Secure.class)
 public class ContentNodesApi extends Controller {
@@ -22,6 +23,24 @@ public class ContentNodesApi extends Controller {
         notFoundIfNull(obj, "Unknown content ID: " + id);
         Logger.info("Deliver raw %s for ID: %s ...", type, id);
         renderJSON(obj.toString());
+    }
+
+    public static void getAsFullsizeImage(String type, Long id, String propertyName) {
+        ContentNode imageNode = ContentNode.findById(id);
+        notFoundIfNull(imageNode, "Unknown content ID: " + id);
+        String imgUrl = imageNode.getProperty(propertyName);
+        notFoundIfNull(imgUrl, "Property " + propertyName + " not available");
+        Logger.info("Redirecting to: %s...", imgUrl);
+        redirect(imgUrl);
+    }
+
+    public static void getAsThumbnailImage(String type, Long id, String propertyName) {
+        ContentNode imageNode = ContentNode.findById(id);
+        notFoundIfNull(imageNode, "Unknown content ID: " + id);
+        String imgUrl = PlayExtensions.thumbnailUrl(imageNode.getProperty(propertyName));
+        notFoundIfNull(imgUrl, "Property " + propertyName + " not available");
+        Logger.info("Redirecting to: %s...", imgUrl);
+        redirect(imgUrl);
     }
 
     @Check("editor,admin")

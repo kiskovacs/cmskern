@@ -74,8 +74,7 @@ public class Blobs extends Controller {
         render(assets);
     }
 
-
-    public static void getOriginalById(String id) {
+    public static void getFullsizeById(String id) {
         Logger.info("Lookup asset by id: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for asset "+ id);
