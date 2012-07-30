@@ -2,19 +2,30 @@
 
 <h3>Select Image</h3>
 
-<ul>
-#{list items: images, as:'image'}
-    <li><a href="#" onclick="updateRef('${image._id}', '${image.data.title}')">${image.data.title}</a></li>
-#{/list}
-</ul>
-
-
+<!-- Search mask -->
 <fieldset>
-    <label for="select_id">Image ID</label>
-    <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
+    <!-- label for="search_term"></label -->
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <button id="search_images" class="btn">Search by Title</button>
+</fieldset>
 
-    <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title" value="${fields['title'].value}"/>
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
+
+<!-- Filled by selection from table or manually edited -->
+<fieldset>
+    <div class="control-group">
+        <label class="control-label" for="select_id">Image ID</label>
+        <div class="controls">
+            <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="select_title">Title</label>
+        <div class="controls">
+            <input type="text" id="select_title" name="title" value="${fields['title'].value}"/>
+        </div>
+    </div>
 </fieldset>
 
 
@@ -43,6 +54,20 @@
             '${fields['id'].targetFQName}': selectedId,
             '${fields['title'].targetFQName}': selectedTitle
         };
+    }
+
+    // Trigger search and display HTML result
+    $("#search_images").click(function(event) {
+        event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
+        var search_term = $("#search_term").val();
+        console.log("Search for images: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/ContentNodeSelection/searchByTitle', {type: 'image', query: search_term, page: pageNr}, function(data) {
+            $('#search_results').html(data);
+        });
     }
 
 </script>

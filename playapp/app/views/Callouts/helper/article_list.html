@@ -1,5 +1,5 @@
 <div>
-    #{if articles.objects}
+    #{if result.objects}
         <table class="table table-striped">
             <thead>
             <tr>
@@ -11,7 +11,7 @@
             </tr>
             </thead>
             <tbody>
-            #{list items: articles.objects, as:'article'}
+            #{list items: result.objects, as:'article'}
             <tr>
                 <td>
                     ${article._id}
@@ -35,7 +35,7 @@
 
         #{if nrPages > 1}
         <div class="pagination">
-            #{callout.pagination totalCount: articles.totalCount /}
+            #{callout.pagination totalCount: result.totalCount /}
         </div>
         #{/if}
     #{/if}

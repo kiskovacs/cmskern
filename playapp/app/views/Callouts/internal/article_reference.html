@@ -69,6 +69,7 @@
             #{/list}
         }
     }
+
     // Trigger article search, display HTML result
     $("#search_articles").click(function(event) {
         event.preventDefault();
@@ -78,7 +79,7 @@
     function displaySelectionPage(pageNr) {
         var search_term = $("#search_term").val();
         console.log("Search for articles: " + search_term + " (p. " + pageNr + ")");
-        $.get('/helper/ContentNodeSelection/searchArticles', {query: search_term, page: pageNr}, function(data) {
+        $.get('/helper/ContentNodeSelection/searchByTitle', {type: 'article', query: search_term, page: pageNr}, function(data) {
             $('#search_results').html(data);
         });
     }
