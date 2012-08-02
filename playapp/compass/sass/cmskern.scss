@@ -1,10 +1,11 @@
 /* Override some defaults from bootstrap */
 @import "compass";
 
-$lead-color:#FEBF62;
+$lead-color:#30a4b1;
+$btn-color:#f7941d;
 $link-color:#999;
 $lightest:#f5f5f5;
-$th-color:#9fb87f;
+$th-color:#27767F;
 
 @mixin triangle($width, $dir, $color){
 	@if $dir == up{
@@ -33,12 +34,25 @@ $th-color:#9fb87f;
 
 html, body {
     background-color: #eee;
+    background-image:url(../images/extra_clean_paper.png);
 }
 
 body {
     padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
 }
-
+a{
+color:$link-color;
+}
+a:hover{
+color:$lead-color;
+}
+.btn-primary:hover,
+.btn-warning:hover,
+.btn-danger:hover,
+.btn-success:hover,
+.btn-info:hover {
+    background:$lead-color;
+}
 h1 {
     color: #666666;
 }
@@ -51,62 +65,73 @@ h2 {
 h3 {
     font-weight: 400;
     line-height:37px;
-}
-
-h3.contentTypeName {
-    margin-top: 25px;
-}
-h3.contentTypeName small a{
-	background:#9FB87F;
-	@include border-radius(20px);
-	@include box-shadow(grey 0 0 3px);
-	border:1px solid grey;
-	float: left;
-    height: 15px;
-    margin: 13px 0 0 5px;
-    position: absolute;
-    width: 15px;
-    .icon-plus {
-    margin:-10px 0 5px 1px;
-}
+    &.contentTypeName {
+    	margin-top: 25px;
+	}
+	&.contentTypeName small a{
+		background:$btn-color;
+		@include border-radius(20px);
+		border:none;
+		float: left;
+    	height: 20px;
+    	margin: 10px 0 0 5px;
+    	position: absolute;
+    	width: 20px;
+    	.icon-plus {
+    		margin: -8px 0 5px 3px;
+		}
+		&:hover{
+		background:$lead-color;
+		}
+	}
 }
 .btn_add a.ng-directive{
-	background:#9FB87F;
-	@include border-radius(20px);
-	@include box-shadow(grey 0 0 3px);
-	border:1px solid grey;
-    margin: 13px 0 0 5px;
-    padding: 4px;
+	background:#f7941d;
+    margin: 13px 0 40px 5px;
+    padding: 5px 10px;
     float:left;
-    color:black;
+    color:#fff;
     .icon-plus{
-    margin:0;}
+    margin:0;
+    color:#fff;
+    }
+    &:hover{
+    background:$lead-color;
+    text-decoration:none;
+    }
+}
+button.ng-directive{
+background:#e1e1e1;
+}
+[class^="icon-"] {
+    background-image: url("../images/glyphicons-halflings-white.png");
 }
 a.ng-directive.remove{
-	background:#9FB87F;
+	background:$btn-color;
 	@include border-radius(20px);
-	@include box-shadow(grey 0 0 3px);
-	border:1px solid grey;
+	border:none;
     margin: 13px 0 0 5px;
     padding:1px 4px;
     color:black;
     .icon-minus{
     margin:2px 0 0 1px;}
+    &:hover{
+    background:$lead-color;
+    }
 }
-a{
-color:$link-color;
-}
+
 /* -- Nav Bar Top horizontal --*/
 .navbar{
-border-bottom:2px solid $lead-color;
-}
-.navbar .brand{
-	text-align:center;
-	padding:8px 0;
-	margin:0;
-	float:none;
-	@include background-image(linear-gradient(#FFE7C3 5%, $lead-color 70%)); 
-	border-top:5px solid black;
+	border-bottom:2px solid $lead-color;
+	.brand{
+		text-align:center;
+		padding:9px 0;
+		margin:0;
+		float:none;
+		@include background-image(linear-gradient(#27767F 10%, $lead-color 100%));
+		/*background:#27767F;*/
+		border-top:1px solid black;
+	}
 }
 .navbar .nav{
 margin-left:20px;
@@ -133,10 +158,44 @@ margin-right:20px;
 .navbar .nav > li.admin-area > a:hover{
   background: transparent url(../images/admin-area-mo.png) left center no-repeat;
 }
-
+.btn-navbar {
+    background-color: #2C2C2C;
+    
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.btn-navbar span.i-bar{
+	color:#fff;
+    }
+.navbar .btn-group .btn {
+    margin-top: 5px;
+    color:#fff;
+}
+.dropdown-menu{
+right:20px;
+}
+.btn-group .dropdown-toggle {
+    box-shadow:none;
+    padding: 0px;
+    background:transparent;
+}
+.btn-group .btn:first-child {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    margin-left: 0;
+}
+.btn-group .dropdown-toggle {
+    box-shadow: none;
+    padding: 0;
+}
+.btn-group .btn:last-child, .btn-group .dropdown-toggle {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
 /* ~~ Nav Bar List ~~ */
 .well{
-@include border-top-radius(0px);
+	background:transparent;
 }
 .sidebar-nav-fixed {
     padding:0;
@@ -149,16 +208,11 @@ margin-right:20px;
     margin-left: 290px;
 }
 .nav-list{
-background:white;
-@include border-top-radius(7px);
-@include box-shadow(#5f5f5f 0px 0px 5px);
-padding:0;
+background:rgba(255, 255, 255, 0.8);
+@include border-radius(5px);
+@include box-shadow(rgba(0, 0, 0, 0.2) 0px 0px 5px);
+padding:10px 0 0 0;
 margin:0;
-}
-.nav-list > li > a, .nav-list .nav-header, .nav-list .active > a{
-margin:0;
-text-shadow:none;
-padding-left:20px;
 }
 .nav-list .thead{
 color:white;
@@ -168,54 +222,77 @@ padding:10px 10px 10px 20px;
 text-transform:uppercase;
 }
 .nav-list .nav-header {
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 18px;
-  color: #999999;
-  text-transform: uppercase;
-  margin-top:0;
-  padding-left:35px;
-  position:relative;
+	color:#fff;
+  	background:#ccc;
+  	font-size: 11px;
+ 	font-weight: bold;
+  	line-height: 25px;
+ 	text-transform: uppercase;
+  	margin:15px 0 7px 0;
+  	padding:0 0 0 35px;
+  	position:relative;
+  	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  	&:first-child{
+  		margin-top:5px;
+  	}
+  	&.active-header {
+  		background-color:$lead-color;
+  		.menu-arrow { @include triangle(12px, right, $lead-color); position:absolute; top:1px; right:-12px; }
+	}
+  	&.content {
+  		background-image: url(../images/content-mo.png);
+  		background-repeat:no-repeat;
+  		background-position:18px center;
+	}
+	&.editorial {
+  		background-image: url(../images/content-mo.png);
+  		background-repeat:no-repeat;
+  		background-position:18px center;
+	}
+	&.site {
+  		background-image:url(../images/content-mo.png);
+  		background-repeat:no-repeat;
+  		background-position:18px center;
+	}
+	&.admin-tasks {
+  		background-image:url(../images/content-mo.png);
+  		background-repeat:no-repeat;
+  		background-position:18px center;
+	}
 }
-.nav-list > li + .nav-header{
-margin-top:0;
-}
-.menu-arrow { @include triangle(12px, right, $lead-color); position:absolute; top:1px; right:-12px; }
-
-.nav-list .nav-header.content {
-  background:url(../images/content.png) 10px center no-repeat;
-}
-.nav-list .nav-header.content.active-header {
-  background:#FEBF62 url(../images/content-mo.png) 20px center no-repeat;
-}
-.nav-list .nav-header.site {
-  background:url(../images/site.png) 20px center no-repeat;
-  margin-top:20px;
-}
-.nav-list .nav-header.admin-tasks {
-  background:#cfcdcd url(../images/admin.png) 20px center no-repeat;
-  margin-top:20px;
-}
-.nav-list .admin-tasks{
-background:#e1e0e0;
-}
-.nav-list .nav-header.active-header{
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+.nav-list{
+	li.contentType, li.newContentType, li.listContentType{
+		float:left;
+		margin-right:10px;
+		line-height:22px;
+		padding:0;
+	}
+	li.contentType{
+		margin-left:20px;
+	}
+	li a{
+	margin:0;
+	padding:0;
+	}
 }
 .sidebar-nav .nav-list .active > a {
     background-color:transparent;
     color: $lead-color;
 }
-
-.nav-list li:second-child  {
-    margin-top: 0px;
+.nav > li > a:hover{
+background:none;
 }
-
-.nav-list .separator {
-    margin-bottom: 5px;
+.nav-list .separator{
+	padding:0 0 10px 0;
+	&:after{
+    	clear:both;
+    	content:'.';
+    	display:block;
+    	visibility:hidden;
+    	height:0;
+    	font-size:0;
+	}
 }
-
 /*
 @media(max-width: 767px) {
     .sidebar-nav-fixed {
@@ -232,11 +309,6 @@ background:#e1e0e0;
 */
 
 /* ~~ Form elements ~~ */
-
-.input-xxlarge {
-    width: 500px;
-}
-
 .content fieldset {
     margin-left: 25px;
 }
@@ -253,9 +325,10 @@ legend {
     color: #808080;
     font-size: 16px;
     margin-bottom: 0px;
+    border:none;
 }
 .subform{
-	background:#E1E0E0;
+	background:rgba(217, 216, 216, 0.5);
 	}
 legend .ng-directive {
     margin-left: 12px;
@@ -264,12 +337,107 @@ legend .ng-directive {
 .form-horizontal .control-group {
     margin-bottom: 10px;
 }
+.form-horizontal .control-group > label {
+    float: none;
+    text-align: left;
+}
+.form-horizontal .controls {
+    margin-left: 0px;
+}
+.root > .control-group > .control-label:first-child{
+font-size:112%;
+font-weight:500;
+}
+.subelements{
+padding:20px;
+background:rgba(255, 255, 255, 0.5);
+}
+.subelements .control-group{
+padding:10px;
+}
+ul.sortable .subelements{
+background:rgba(255, 255, 255, 0.3);
+}
+.subelements.settings{
+padding:20px 40px;
+width:470px;
+}
+.root + .control-group{
+margin:0 0 0 -20px;
+} 
+.input-large,
+.input-xlarge,
+.input-xxlarge{
+
+}
+.input-append .input-xlarge{
+width:513px;
+}
+.input-append input[name="contentNode.teaser.image_idref"]{
+width:473px;
+}
+.input-prepend .add-on, .input-append .add-on{
+background-color:#d9d8d8;
+}
+.control-group .control-group .input-xxlarge{
+
+}
+input[type="checkbox"]{
+float:left;
+margin:-20px 0 0 -20px;
+}
+label[for="contentNode.online"]{
+margin-left:20px;
+}
+input[name="contentNode.online"]{
+margin-left:0px;
+}
+
+input[type="radio"]{
+margin:0 5px 0 20px;
+}
+ul.selectBox + input[type="radio"]{
+margin:0 5px 0 0px;
+}
+pre{
+background:#d9d8d8;
+border:none;
+}
+.form-actions{
+width:90%px;
+text-align:right;
+    background:rgba(255, 255, 255, 0.5);
+    border-top: none;
+    margin-bottom: 18px;
+    margin-top: 18px;
+}
+.form-horizontal .form-actions{
+padding-left:0;
+}
 
 img.ui-datepicker-trigger {
     margin-left: 10px;
     cursor: pointer;
 }
-
+/*----Buttons-----*/
+.btn {
+	background-image:none;
+	background-color:#d9d8d8;
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-radius:0px;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 10px 15px;
+    text-align: center;
+}
 div.btn_add {
     width: 100%;
     text-align: right;
@@ -278,19 +446,29 @@ div.btn_add {
     /*@include background-image(linear-gradient(#9DD745, #69AF04));
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);*/
 }
+.btn-primary {
+    background-color: $btn-color;
+    background-image: none;
+    background-repeat: none;
+    border-color: none;
+}
 
 ul.sortable {
   list-style: none;
+  margin:0;
 }
 
 ul.sortable li {
-  padding: 5px;
-  border: 1px solid #999;
-  background: #eee;
+  padding: 15px;
   margin: 5px;
   cursor: move;
 }
+ul.sortable li .subelements {
 
+}
+ul.sortable li .input-xxlarge {
+
+}
 .reference input {
     background-color: #fafad2;
     /* cursor: pointer; */
@@ -445,4 +623,12 @@ footer p {
         padding: 0;
         position: relative;
         width: 145px;
+}
+
+.pagination ul{
+background:rgba(255, 255, 255, 0.8);
+}
+.pagination a:hover,
+.pagination .active a{
+background:#d9d8d8;
 }

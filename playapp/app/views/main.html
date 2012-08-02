@@ -38,9 +38,7 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="i-bar"></span>
-                        <span class="i-bar"></span>
-                        <span class="i-bar"></span>
+                        <span class="i-bar">v</span>
                     </a>
                     <a class="brand" href="/">CMSkern</a>
                     <div class="nav-collapse">
@@ -75,41 +73,45 @@
                     <div class="well sidebar-nav sidebar-nav-fixed">
 
                         <ul class="nav nav-list">
-                        <li class="thead">Inhalte bearbeiten</li>
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                             <li class="nav-header content active-header">
                             <div class="menu-arrow"></div>
                             Content
                             </li>
                             *{ ~~ TODO retrieve via ContentType.findByGroup('content') ~~ }*
-                            <li class="active"><a href="@{Application.list('article')}">List articles</a></li>
-                            <li><a href="@{ContentNodes.blank('article')}">New article</a></li>
+                            	<li class="contentType">Article:</li>
+                            	<li class="active listContentType"><a href="@{Application.list('article')}">List</a></li>
+                            	<li class="newContentType"><a href="@{ContentNodes.blank('article')}">New</a></li>
+                            	<div class="separator"></div>
 
-                            <li class="nav-header">Editiorial Content</li>
+                            <li class="nav-header editorial">Editiorial Content</li>
                             #{list items:editorialTypes, as:'contentType'}
-                                <li class="content"><a href="@{Application.list(contentType.slug)}">List ${contentType.displayName}</a></li>
-                                <li class="content"><a href="@{ContentNodes.blank(contentType.slug)}">New ${contentType.displayName}</a></li>
+                                <li class="contentType">${contentType.displayName}:</li>
+                                <li class="listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li> 
+                                <li class="newContentType"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header">Site Structure</li>
+                            <li class="nav-header site">Site Structure</li>
                             #{list items:siteTypes, as:'contentType'}
-                                <li class="site"><a href="@{Application.list(contentType.slug)}">List ${contentType.displayName}</a></li>
-                                <li class="site"><a href="@{ContentNodes.blank(contentType.slug)}">New ${contentType.displayName}</a></li>
+                                <li class="contentType">${contentType.displayName}:</li>
+                                <li class="site listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li>
+                                <li class="site newContentType"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header">Admin Tasks</li>
-
-                            <li class="admin"><a href="@{ContentTypes.list()}">List Content Types</a></li>
-                            <li class="admin"><a href="@{ContentTypes.blank()}">New Content Type</a></li>
+                            <li class="nav-header admin-tasks">Admin Tasks</li>
+							<li class="contentType">Content Types:</li>
+                            <li class="admin listContentType"><a href="@{ContentTypes.list()}">List</a></li>
+                            <li class="admin newContentType"><a href="@{ContentTypes.blank()}">New</a></li>
                             <div class="separator"></div>
 
-                            <li class="admin"><a href="@{Users.list()}">List Users</a></li>
-                            <li class="admin"><a href="@{Users.blank()}">New User</a></li>
-
+							<li class="contentType">User:</li>
+                            <li class="admin listContentType"><a href="@{Users.list()}">List</a></li>
+                            <li class="admin newContentType"><a href="@{Users.blank()}">New</a></li>
+							<div class="separator"></div>
                         </ul>
                     </div>
                 </div>
