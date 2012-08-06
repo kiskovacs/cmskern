@@ -1,10 +1,10 @@
 #{extends 'main.html' /}
-#{set title: type.displayName /}
+#{set title: type.displayName + ' List' /}
 
 #{set 'moreScripts'}
-<script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
+  <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
+  <script type="text/javascript" src="@{'/public/javascripts/contentNodeDeleteDialog.js'}"></script>
 #{/set}
-
 
 <table class="table table-striped">
     <thead>
@@ -31,7 +31,7 @@
                     <a href="@{ContentNodes.versions(node.type, node.id)}"><i class="icon-road" title="Show Versions"></i></a>
                 #{/secure.check}
                 #{secure.check 'admin'}
-                    <a href="@{ContentNodes.delete(node.type, node.id)}"><i class="icon-trash" title="Delete"></i></a>
+                    <a href="#" class="deleteContentNode" data-id="${node.id}" data-type="${node.type}"><i class="icon-trash" title="Delete"></i></a>
                 #{/secure.check}
             </td>
             <td>

@@ -9,7 +9,8 @@ import play.mvc.With;
 import java.util.List;
 
 /**
- * Access to content nodes: the central entities of cmskern.
+ * Access to content nodes (the central entities of cmskern) via the editoiral UI,
+ * for direct access please leverage {@link ContentNodesApi} (via RESTful routes).
  *
  * @author Niko Schmuck
  * @since 23.01.2012
@@ -35,17 +36,6 @@ public class ContentNodes extends Application {
         render(contentNode, contentType);
     }
 
-    @Check("admin")
-    public static void delete(String type, Long id) {
-        ContentType contentType = ContentType.findByName(type);
-        notFoundIfNull(contentType, "Unknown type: " + type);
-        ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown node ID: " + id);
-
-        contentNode.delete();
-        redirect("Application.index");
-    }
-
     @Check("editor,admin")
     public static void versions(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
@@ -62,7 +52,7 @@ public class ContentNodes extends Application {
     /**
      * Returns JSON with simple data structure (id and title) of
      * content nodes which titles do match with the specified query string.
-     * This method can for exmaple be leveraged by AJAX auto-complete search box.
+     * This method can be leveraged by AJAX auto-complete search box for example.
      */
     public static void search(String type, String q, int limit) {
         List<IdTitle> nodes = ContentNode.findByTypeAndTitleMinimal(type, q, false, 0, limit);

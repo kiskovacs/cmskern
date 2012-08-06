@@ -8,6 +8,12 @@ import play.mvc.Http;
 import play.mvc.With;
 import utils.PlayExtensions;
 
+/**
+ * This class can be considered as the RESTful way to approach
+ * the content node repository.
+ *
+ * @author Niko Schmuck
+ */
 @With(Secure.class)
 public class ContentNodesApi extends Controller {
 
@@ -25,6 +31,10 @@ public class ContentNodesApi extends Controller {
         renderJSON(obj.toString());
     }
 
+    /**
+     * Redirects to the location of the fullsize image as
+     * refered by the given content node in the property field.
+     */
     public static void getAsFullsizeImage(String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
         notFoundIfNull(imageNode, "Unknown content ID: " + id);
@@ -34,6 +44,10 @@ public class ContentNodesApi extends Controller {
         redirect(imgUrl);
     }
 
+    /**
+     * Redirects to the location of the thumbnail image as
+     * refered by the given content node in the property field.
+     */
     public static void getAsThumbnailImage(String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
         notFoundIfNull(imageNode, "Unknown content ID: " + id);
@@ -71,7 +85,7 @@ public class ContentNodesApi extends Controller {
     public static void delete(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content ID: " + id);
-        Logger.info("Going to delete %s with id %s ...", type, id);
+        Logger.info("Going to delete %s with ID %s ...", type, id);
         contentNode.delete();
     }
 
