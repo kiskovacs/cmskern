@@ -74,19 +74,14 @@
                 <div class="span3">
                     <div class="well sidebar-nav sidebar-nav-fixed">
 
+                        <!-- Use active-header as class for selected li.nav-header element -->
+                        <!-- Use active        as class for selected li element -->
+
                         <ul class="nav nav-list">
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header content active-header">
-                            <div class="menu-arrow"></div>
-                            Content
+                            <li class="nav-header editorial active-header">
+                                <div class="menu-arrow"></div> Editiorial Content
                             </li>
-                            *{ ~~ TODO retrieve via ContentType.findByGroup('content') ~~ }*
-                            	<li class="contentType">Article:</li>
-                            	<li class="active listContentType"><a href="@{Application.list('article')}">List</a></li>
-                            	<li class="newContentType"><a href="@{ContentNodes.blank('article')}">New</a></li>
-                            	<div class="separator"></div>
-
-                            <li class="nav-header editorial">Editiorial Content</li>
                             #{list items:editorialTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
                                 <li class="listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li> 
@@ -95,7 +90,9 @@
                             #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header site">Site Structure</li>
+                            <li class="nav-header site">
+                                <div class="menu-arrow"></div> Site Structure
+                            </li>
                             #{list items:siteTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
                                 <li class="site listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li>
@@ -104,7 +101,9 @@
                             #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header admin-tasks">Admin Tasks</li>
+                            <li class="nav-header admin-tasks">
+                                <div class="menu-arrow"></div> Admin Tasks
+                            </li>
 							<li class="contentType">Content Types:</li>
                             <li class="admin listContentType"><a href="@{ContentTypes.list()}">List</a></li>
                             <li class="admin newContentType"><a href="@{ContentTypes.blank()}">New</a></li>
