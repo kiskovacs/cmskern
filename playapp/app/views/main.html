@@ -79,24 +79,24 @@
 
                         <ul class="nav nav-list">
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header editorial active-header">
+                            <li class="nav-header editorial #{isActiveSection types:editorialTypes /}">
                                 <div class="menu-arrow"></div> Editiorial Content
                             </li>
                             #{list items:editorialTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
-                                <li class="listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li> 
-                                <li class="newContentType"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
+                                <li class="listContentType #{isActiveEntry typeName:contentType.slug,action:'list' /}"><a href="@{Application.list(contentType.slug)}">List</a></li>
+                                <li class="newContentType #{isActiveEntry typeName:contentType.slug,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 
                             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                            <li class="nav-header site">
+                            <li class="nav-header site #{isActiveSection types:siteTypes /}">
                                 <div class="menu-arrow"></div> Site Structure
                             </li>
                             #{list items:siteTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
-                                <li class="site listContentType"><a href="@{Application.list(contentType.slug)}">List</a></li>
-                                <li class="site newContentType"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
+                                <li class="site listContentType #{isActiveEntry typeName:contentType.slug,action:'list' /}"><a href="@{Application.list(contentType.slug)}">List</a></li>
+                                <li class="site newContentType #{isActiveEntry typeName:contentType.slug,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 
@@ -105,13 +105,13 @@
                                 <div class="menu-arrow"></div> Admin Tasks
                             </li>
 							<li class="contentType">Content Types:</li>
-                            <li class="admin listContentType"><a href="@{ContentTypes.list()}">List</a></li>
-                            <li class="admin newContentType"><a href="@{ContentTypes.blank()}">New</a></li>
+                            <li class="admin listContentType #{isActiveEntry typeName:'contentType',action:'list' /}"><a href="@{ContentTypes.list()}">List</a></li>
+                            <li class="admin newContentType #{isActiveEntry typeName:'contentType',action:'edit' /}"><a href="@{ContentTypes.blank()}">New</a></li>
                             <div class="separator"></div>
 
 							<li class="contentType">User:</li>
-                            <li class="admin listContentType"><a href="@{Users.list()}">List</a></li>
-                            <li class="admin newContentType"><a href="@{Users.blank()}">New</a></li>
+                            <li class="admin listContentType #{isActiveEntry typeName:'user',action:'list' /}"><a href="@{Users.list()}">List</a></li>
+                            <li class="admin newContentType #{isActiveEntry typeName:'user',action:'edit' /}"><a href="@{Users.blank()}">New</a></li>
 							<div class="separator"></div>
                         </ul>
                     </div>
