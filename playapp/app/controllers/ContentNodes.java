@@ -4,6 +4,7 @@ import models.ContentNode;
 import models.ContentType;
 import models.vo.IdTitle;
 import models.vo.SearchResult;
+import play.Logger;
 import play.mvc.With;
 
 import java.util.List;
@@ -44,11 +45,16 @@ public class ContentNodes extends Application {
         render(type, contentNode, versions);
     }
 
-    public static void list(String type) {
+    public static void list(String type, int page) {
         int pageSize = Application.getPageSize();
-        SearchResult<ContentNode> nodes = ContentNode.findByType(type, 0, pageSize);
+        if (page <= 0) {
+            page = 1;
+            Logger.debug("Page number set to default: %d", page);
+        }
+        int offset = (page-1) * pageSize;
+        SearchResult<ContentNode> nodes = ContentNode.findByType(type, offset, pageSize);
         int totalCount = nodes.totalCount;
-        render(nodes, pageSize, totalCount);
+        render(nodes, page, pageSize, totalCount);
     }
 
     /**

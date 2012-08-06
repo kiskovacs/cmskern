@@ -51,7 +51,7 @@ public class Application extends Controller {
 
         if (page <= 0) {
             page = 1;
-            Logger.info("Page number set to default");
+            Logger.debug("Page number set to default: %d", page);
         }
         int pageSize = Callouts.getPageSize();
         int offset = (page-1) * pageSize;

@@ -162,7 +162,7 @@ public class ContentNode {
     public static SearchResult<ContentNode> findByType(String type, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
@@ -187,7 +187,7 @@ public class ContentNode {
 
         DBObject q = createQueryByTitle(type, searchTerm, matchCase);
         DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
-        Logger.info("Query for %s", searchTerm);
+        Logger.info("%s query for %s...", type, searchTerm);
         final List<DBObject> nodes = dbCur.toArray();
         Logger.info("... %d total matches", dbCur.count());
 
