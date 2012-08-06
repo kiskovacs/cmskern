@@ -21,7 +21,7 @@ import java.util.Map;
 public class Callouts extends Controller {
 
     public static int getPageSize() {
-        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "20"));
+        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "10"));
     }
 
     // ~~
