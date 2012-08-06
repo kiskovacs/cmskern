@@ -1,0 +1,33 @@
+<div>
+    #{if result.objects}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th width="95%">Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            #{list items: result.objects, as:'sidebar'}
+            <tr>
+                <td>
+                    ${sidebar._id}
+                </td>
+                <td>
+                    <a href="#" onclick="updateRef('${sidebar._id}', '${sidebar.data.title}')">${sidebar.data.title}</a>
+                </td>
+            </tr>
+            #{/list}
+            </tbody>
+        </table>
+
+        #{if nrPages > 1}
+        <div class="pagination">
+            #{callout.pagination totalCount: nodes.totalCount /}
+        </div>
+        #{/if}
+    #{/if}
+    #{else}
+       No results found for <em>${query}</em>.
+    #{/else}
+</div>

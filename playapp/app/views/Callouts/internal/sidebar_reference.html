@@ -6,19 +6,30 @@
 
 <h3>Select Sidebar</h3>
 
-<ul>
-#{list items: sidebars, as:'sidebar'}
-    <li><a href="#" onclick="updateRef('${sidebar._id}', '${sidebar.data.title}')">${sidebar.data.title}</a></li>
-#{/list}
-</ul>
-
-
+<!-- Search mask -->
 <fieldset>
-    <label for="select_id">Sidebar ID</label>
-    <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}" readonly="readonly"/>
-    <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title"
-           value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}"/>
+    <!-- label for="search_term"></label -->
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <button id="search_sidebars" class="btn">Search by Title</button>
+</fieldset>
+
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
+
+<!-- Filled by selection from table or manually edited -->
+<fieldset>
+    <div class="control-group">
+        <label class="control-label" for="select_id">Sidebar ID</label>
+        <div class="controls">
+            <input type="text" id="select_id" name="value" value="${fields['id']?.value}" readonly="readonly" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="select_title">Title</label>
+        <div class="controls">
+            <input type="text" id="select_title" name="title" value="${fields['title']?.value}" />
+        </div>
+    </div>
 </fieldset>
 
 
@@ -26,14 +37,13 @@
 
     // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
     var selectedId = "";
+    var selectedTitle = "";
 
     function updateRef(val, title) {
         selectedId = val;
         $("#select_id").val(val);
-
         selectedTitle = title;
         $("#select_title").val(title);
-
     }
 
     // contract: returns only the fields, which are in srcPropNames
@@ -41,9 +51,24 @@
         return {
           #{list items:calloutfields, as:'litem'}
             #{if fields[litem]}
-            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+             '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
             #{/if}
           #{/list}
         }
     }
+
+    // Trigger sidebar search, display HTML result
+    $("#search_sidebars").click(function(event) {
+        event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
+        var search_term = $("#search_term").val();
+        console.log("Search for sidebars: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/ContentNodeSelection/searchByTitle', {type: 'sidebar', query: search_term, page: pageNr}, function(data) {
+            $('#search_results').html(data);
+        });
+    }
+
 </script>
