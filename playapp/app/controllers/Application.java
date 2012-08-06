@@ -44,6 +44,7 @@ public class Application extends Controller {
         render(content);
     }
 
+    // TODO: sollte drüben in ContentNodes liegen
     public static void list(String typeName, int page) {
         ContentType type = ContentType.findByName(typeName);
         notFoundIfNull(type, "Unknown type: " + typeName);
@@ -52,10 +53,10 @@ public class Application extends Controller {
             page = 1;
             Logger.info("Page number set to default");
         }
-        int limit = Callouts.getPageSize();
-        int offset = (page-1) * limit;
-        SearchResult<ContentNode> contents = ContentNode.findByType(type.slug, offset, limit);
-        render(type, contents, page);
+        int pageSize = Callouts.getPageSize();
+        int offset = (page-1) * pageSize;
+        SearchResult<ContentNode> contents = ContentNode.findByType(type.slug, offset, pageSize);
+        render(type, contents, page, pageSize);
     }
 
 }

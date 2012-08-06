@@ -45,8 +45,10 @@ public class ContentNodes extends Application {
     }
 
     public static void list(String type) {
-        SearchResult<ContentNode> nodes = ContentNode.findByType(type, 0, Application.getPageSize());
-        render(nodes);
+        int pageSize = Application.getPageSize();
+        SearchResult<ContentNode> nodes = ContentNode.findByType(type, 0, pageSize);
+        int totalCount = nodes.totalCount;
+        render(nodes, pageSize, totalCount);
     }
 
     /**
