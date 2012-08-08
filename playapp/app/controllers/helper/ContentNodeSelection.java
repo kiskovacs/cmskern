@@ -25,8 +25,8 @@ public class ContentNodeSelection extends Controller {
     public static void searchByTitle(String type, String query, int page) {
         int pageSize = Callouts.getPageSize();
         int offset = (page-1) * pageSize;
-        int nrPages = JavaExtensions.page(page, pageSize);
         SearchResult result = ContentNode.findByTypeAndTitleRaw(type, query, false, offset, pageSize);
+        int nrPages = JavaExtensions.page(result.totalCount, pageSize);
 
         renderTemplate(String.format("Callouts/helper/%s_list.html", type), query, result, page, nrPages);
     }

@@ -75,7 +75,7 @@ public class Blobs extends Controller {
     }
 
     public static void getFullsizeById(String id) {
-        Logger.info("Lookup asset by id: %s", id);
+        Logger.info("Lookup asset by ID: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for asset "+ id);
         Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
@@ -87,7 +87,7 @@ public class Blobs extends Controller {
     // IMPORTANT: this is the id of the original asset
     public static void getThumbByOriginalId(String id) {
         // TODO: we might want to split the thumbnails into an own GridFS collection...
-        Logger.info("Lookup thumbnail asset by original id: %s", id);
+        Logger.info("Lookup thumbnail asset by original ID: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getThumbFileByOrigId(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS thumbnail file for asset "+ id);
         Logger.info("    ... return GridFS file: %s", dbFile.getFilename());

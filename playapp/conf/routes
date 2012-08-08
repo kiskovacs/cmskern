@@ -48,9 +48,8 @@ GET     /{type}/{id}                            ContentNodesApi.getBody
 PUT     /{type}/{id}                            ContentNodesApi.update
 # GET     /{type}                                 ContentNodesApi.list
 POST    /{type}                                 ContentNodesApi.create
-# DELETE  /{type}/{id}                            ContentNodesApi.delete
+DELETE  /{type}/{id}                            ContentNodesApi.delete
 GET     /{type}/{id}/versions                     ContentNodes.versions
-GET     /{type}/{id}/delete                       ContentNodes.delete
 
 
 # ~~ Ignore favicon requests

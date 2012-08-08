@@ -5,35 +5,45 @@
 
 #{set calloutfields = ['id', 'title', 'ancestors'] /}
 
-<!-- Select one existing articles -->
+<!-- Select one existing nodes -->
 <h3>Select Node</h3>
 
-<ul>
-    #{list items: nodes, as:'node'}
-    <li><a href="#"
-           onclick="updateNodeRef('${node._id}', '${node.data.title}', '${node.data.ancestors_idref}')">${node.data.title}</a>
-        *{ Auflistung der Felder stellt keine Kopplung zum srcPropNames oder targetPropNames dar }*
-        (Path: ${node.data.path}, Parent: ${node.data.parent})
-    </li>
-    #{/list}
-</ul>
-
-
+<!-- Search mask -->
 <fieldset>
-    <label for="select_id">Node ID</label>
-    <input type="text" id="select_id" name="value" value="#{if fields.containsKey('id')}${fields['id'].value}#{/if}"
-           readonly="readonly"/>
-    <label for="select_title">Title</label>
-    <input type="text" id="select_title" name="title"
-           value="#{if fields.containsKey('title')}${fields['title'].value}#{/if}"/>
-    <label for="select_ancestors">Ancestors</label>
-    <input type="text" id="select_ancestors" name="ancestors"
-           value="#{if fields.containsKey('ancestors')}${fields['ancestors'].value}#{/if}"/>
+    <!-- label for="search_term"></label -->
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <button id="search_nodes" class="btn">Search by Title</button>
 </fieldset>
 
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
+
+<!-- Filled by selection from table or manually edited -->
+<fieldset>
+    <div class="control-group">
+        <label class="control-label" for="select_id">Node ID</label>
+        <div class="controls">
+            <input type="text" id="select_id" name="value" value="${fields['id']?.value}" readonly="readonly" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="select_title">Title</label>
+        <div class="controls">
+            <input type="text" id="select_title" name="title" value="${fields['title']?.value}" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="select_ancestors">Ancestors</label>
+        <div class="controls">
+            <input type="text" id="select_ancestors" name="ancestors" value="${fields['ancestors']?.value}" />
+        </div>
+    </div>
+</fieldset>
+
+
 <script type="text/javascript">
-    var selectedId = -1;
-    var selectedTitle = "";
+    var selectedId        = -1;
+    var selectedTitle     = "";
     var selectedAncestors = "";
 
     $(function () {
@@ -42,8 +52,8 @@
         selectedAncestors = $('#select_ancestors').val() + ',' + selectedId;
     });
 
-    function updateNodeRef(val, title, ancestors) {
-        console.log("updateNodeRefe(" + val + ", " + title + ", " + ancestors);
+    function updateRef(val, title, ancestors) {
+        console.log("updateRef(" + val + ", " + title + ", " + ancestors);
         selectedId = val;
         $("#select_id").val(val);
 
@@ -67,10 +77,25 @@
     function calloutGetSelectedValues() {
         return {
             #{list items:calloutfields, as:'litem'}
-            #{if fields[litem]}
-            '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
-        #{/if}
-        #{/list}
-      }
+              #{if fields[litem]}
+                '${fields[litem].targetFQName}':selected${litem.capitalizeWords()},
+              #{/if}
+            #{/list}
+        }
     }
+
+    // Trigger node search, display HTML result
+    $("#search_nodes").click(function(event) {
+        event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
+        var search_term = $("#search_term").val();
+        console.log("Search for nodes: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/ContentNodeSelection/searchByTitle', {type: 'node', query: search_term, page: pageNr}, function(data) {
+            $('#search_results').html(data);
+        });
+    }
+
 </script>

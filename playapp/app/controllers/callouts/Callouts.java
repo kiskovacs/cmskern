@@ -21,7 +21,7 @@ import java.util.Map;
 public class Callouts extends Controller {
 
     public static int getPageSize() {
-        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "20"));
+        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "10"));
     }
 
     // ~~
@@ -80,8 +80,7 @@ public class Callouts extends Controller {
             fields.put(srcPropNames[i], new RefValue(targetPropNames[i], values[i]));
         }
         model.put("fields", fields);
-        model.put("count", 26);
-        Logger.info("    fields: %s", fields);
+        Logger.info("  --> fields:      %s", fields);
 
         // Figure out proper template as defined in schema
         String templateName = "Callouts/" + name + ".html";

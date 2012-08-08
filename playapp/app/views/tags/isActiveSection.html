@@ -1,0 +1,11 @@
+*{ Analyze whether current URL request path maps to current link section }*
+%{
+    pattern = java.util.regex.Pattern.compile("^/([a-zA-Z0-9_-]+?)/.*")
+    matcher = pattern.matcher(request.path)
+
+    def curType
+    if (matcher.find()) {
+        curType = matcher.group(1)
+    }
+}%
+#{if _types.collect{ it.slug }.contains(curType)}active-header#{/if}

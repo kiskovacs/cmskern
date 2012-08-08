@@ -2,6 +2,7 @@ package unit;
 
 import models.ContentNode;
 import models.vo.IdTitle;
+import models.vo.SearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.UnitTest;
@@ -57,14 +58,32 @@ public class ContentNodeTest extends UnitTest {
     }
 
     @Test
-    public void searchNodes() {
-        createContentNode("article", "{\"title\":\"Blumenwiese neben Autobahn (U. Schnauss)\"}");
+    public void searchNodes() throws InterruptedException {
+        createContentNode("article", "{\"title\":\"Blumenwiese (Nr. 1)\"}");
+        Thread.sleep(200); // to make sure modification order is safe for later comparision
         createContentNode("article", "{\"title\":\"Blumenthal (Schnauss)\"}");
+        Thread.sleep(200); // to make sure modification order is safe for later comparision
         createContentNode("article", "{\"title\":\"Völlig ohne Bl... \"}");
 
         List<IdTitle> result = ContentNode.findByTypeAndTitleMinimal("article", "blume", false, 0, 20);
         assertEquals(2, result.size());
+        assertEquals("Blumenthal (Schnauss)", result.get(0).title); // latest matching first
     }
+
+    @Test
+    public void searchNodesWithOffset() throws InterruptedException {
+        createContentNode("article", "{\"title\":\"Laugenstange\"}");
+        Thread.sleep(200); // to make sure modification order is safe for later comparision
+        createContentNode("article", "{\"title\":\"Brezel\"}");
+        Thread.sleep(200); // to make sure modification order is safe for later comparision
+        createContentNode("article", "{\"title\":\"Baguette\"}");
+
+        SearchResult<ContentNode> result = ContentNode.findByType("article", 1, 1);
+        assertEquals(3, result.totalCount);
+        assertEquals(1, result.objects.size());
+        assertEquals("Brezel", result.objects.get(0).getTitle());
+    }
+
 
     private void createContentNode(String type, String data) {
         ContentNode node = new ContentNode(type, data);
