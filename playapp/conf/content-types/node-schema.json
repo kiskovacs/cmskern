@@ -27,7 +27,7 @@
             "ui_class":"readonly"
         },
 
-        "ancestors_idref":{
+        "ancestors_idrefarr":{
             "title":"Vorfahren",
             "type":"array",
             "ui_width":"xxlarge",

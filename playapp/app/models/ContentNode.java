@@ -267,6 +267,9 @@ public class ContentNode {
     }
 
     public Date getModified() {
+        if (modified == null) {
+            return new Date();
+        }
         return new Date(modified);
     }
 
