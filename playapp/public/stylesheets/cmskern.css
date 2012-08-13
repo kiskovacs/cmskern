@@ -98,11 +98,6 @@ button.ng-directive {
   background: #e1e1e1;
 }
 
-/* line 110, ../../compass/sass/cmskern.scss */
-[class^="icon-"] {
-  background-image: url("../images/glyphicons-halflings-white.png");
-}
-
 /* line 113, ../../compass/sass/cmskern.scss */
 a.ng-directive.remove {
   background: #f7941d;

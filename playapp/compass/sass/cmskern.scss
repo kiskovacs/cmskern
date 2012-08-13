@@ -107,9 +107,6 @@ h3 {
 button.ng-directive{
 background:#e1e1e1;
 }
-[class^="icon-"] {
-    background-image: url("../images/glyphicons-halflings-white.png");
-}
 a.ng-directive.remove{
 	background:$btn-color;
 	@include border-radius(20px);
