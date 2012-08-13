@@ -37,6 +37,7 @@
         "teaser":{
             "title":"Teaser",
             "type":"object",
+            "ui_class":"compact",
             "properties":{
                 "title":{
                     "title":"Teaser Titel",

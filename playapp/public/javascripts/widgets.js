@@ -114,7 +114,8 @@ angular.widget('my:form', function(element) {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start Render Field Type
 
             if (field.ui_class != 'hidden') {
-                var controlGroup = angular.element('<div class="control-group"></div>');
+                
+                var controlGroup = angular.element('<div class="control-group'+ ((field.ui_class)?' ' +field.ui_class:'') + '"></div>');
 
                 // ~~ Label for input element
                 controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
