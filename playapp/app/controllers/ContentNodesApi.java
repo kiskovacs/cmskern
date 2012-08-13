@@ -35,10 +35,10 @@ public class ContentNodesApi extends Controller {
     }
 
     /**
-     * Redirects to the location of the fullsize image as
-     * refered by the given content node in the property field.
+     * Redirects to the location of the binary Blob as
+     * refered by the given content node in the specified property.
      */
-    public static void getAsFullsizeImage(String type, Long id, String propertyName) {
+    public static void redirectToBinary(String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
         notFoundIfNull(imageNode, "Unknown content ID: " + id);
         // ~~
@@ -47,7 +47,7 @@ public class ContentNodesApi extends Controller {
         // Construct Image URL
         Map<String, Object> argMap = new HashMap<String, Object>(1);
         argMap.put("id", refVal);
-        String url = Router.getFullUrl("Blobs.getFullsizeById", argMap);
+        String url = Router.getFullUrl("Blobs.getBinaryById", argMap);
         Logger.info("Redirecting to: %s...", url);
         redirect(url);
     }

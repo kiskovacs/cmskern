@@ -404,7 +404,6 @@ margin:0 0 0 -20px;
 
 }
 .input-append .input-xlarge{
-width:513px;
 }
 .input-append input[name="contentNode.teaser.image_idref"]{
 width:473px;
@@ -452,6 +451,11 @@ img.ui-datepicker-trigger {
     margin-left: 10px;
     cursor: pointer;
 }
+
+img.image_thumbnail {
+  width: 75px;
+}
+
 /*----Buttons-----*/
 .btn {
 	background-image:none;

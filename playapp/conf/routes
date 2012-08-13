@@ -28,7 +28,7 @@ GET     /helper/{controller}/{action}           helper.{controller}.{action}
 GET     /blobs                                  Blobs.listAssets
 GET     /blobs.json                             Blobs.list
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
-GET     /blobs/o/{id}                           Blobs.getFullsizeById
+GET     /blobs/o/{id}                           Blobs.getBinaryById
 GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 
@@ -41,7 +41,7 @@ GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank
 GET     /{type}/{id}/full                       ContentNodesApi.getFull
-GET     /{type}/{id}/img/o                      ContentNodesApi.getAsFullsizeImage
+GET     /{type}/{id}/img/o                      ContentNodesApi.redirectToBinary
 GET     /{type}/{id}                            ContentNodesApi.getBody
 PUT     /{type}/{id}                            ContentNodesApi.update
 # GET     /{type}                                 ContentNodesApi.list

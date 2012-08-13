@@ -65,7 +65,7 @@ public class Blobs extends Controller {
     }
 
     // TODO: rename
-    public static void getFullsizeById(String id) {
+    public static void getBinaryById(String id) {
         Logger.info("Lookup asset by ID: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for asset "+ id);

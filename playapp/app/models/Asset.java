@@ -58,7 +58,7 @@ public class Asset {
         Map<String, Object> argMap = new HashMap<String, Object>(1);
         String _id = "" + dbObj.get(ID);
         argMap.put("id", _id);
-        String url = Router.getFullUrl("Blobs.getFullsizeById", argMap);
+        String url = Router.getFullUrl("Blobs.getBinaryById", argMap);
 
         DBObject metadata = (DBObject) dbObj.get(METADATA);
         return new Asset(_id, url, (String) dbObj.get(FILENAME),
