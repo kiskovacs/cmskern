@@ -3,9 +3,7 @@ package controllers;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import jobs.Thumbnailer;
 import models.Asset;
-import org.bson.types.ObjectId;
 import play.Logger;
 import play.libs.MimeTypes;
 import play.mvc.Controller;
@@ -41,14 +39,6 @@ public class Blobs extends Controller {
             // Valid content type: try to store it
             dbFile.setContentType(contentType);
             dbFile.save();
-            // Start to generate thumbnailing job asynchronously
-            Thumbnailer thumbnailer = new Thumbnailer((ObjectId) dbFile.getId());
-            boolean runAsync = false; // TODO make configurable
-            if (runAsync) {
-                thumbnailer.now();
-            } else {
-                thumbnailer.doJob();
-            }
             renderJSON("{\"success\":true}");
         }
     }
@@ -56,40 +46,29 @@ public class Blobs extends Controller {
     @Check("editor,admin")
     public static void list() {
         Logger.info("Listing all assets (JSON) ...");
-        Collection<Asset> assets = Asset.findAllOriginals();
+        Collection<Asset> assets = Asset.findAll();
         renderJSON(assets);
     }
 
     @Check("editor,admin")
     public static void listAssets() {
         Logger.info("Listing assets ...");
-        Collection<Asset> assets = Asset.findAllOriginals();
+        Collection<Asset> assets = Asset.findAll();
         render(assets);
     }
 
     @Check("editor,admin")
     public static void listAssetsForTinyMCE() {
         Logger.info("Listing assets (for TinyMCE) ...");
-        Collection<Asset> assets = Asset.findAllOriginals();
+        Collection<Asset> assets = Asset.findAll();
         render(assets);
     }
 
+    // TODO: rename
     public static void getFullsizeById(String id) {
         Logger.info("Lookup asset by ID: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for asset "+ id);
-        Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
-
-        response.contentType = dbFile.getContentType();
-        renderBinary(dbFile.getInputStream());
-    }
-
-    // IMPORTANT: this is the id of the original asset
-    public static void getThumbByOriginalId(String id) {
-        // TODO: we might want to split the thumbnails into an own GridFS collection...
-        Logger.info("Lookup thumbnail asset by original ID: %s", id);
-        GridFSDBFile dbFile = MongoDbUtils.getThumbFileByOrigId(id);
-        notFoundIfNull(dbFile, "Unable to retrieve GridFS thumbnail file for asset "+ id);
         Logger.info("    ... return GridFS file: %s", dbFile.getFilename());
 
         response.contentType = dbFile.getContentType();

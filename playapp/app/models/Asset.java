@@ -1,6 +1,5 @@
 package models;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
@@ -17,9 +16,6 @@ import java.util.*;
  */
 public class Asset {
 
-    public static final int THUMBNAIL_WIDTH  = 75;
-    public static final int THUMBNAIL_HEIGHT = 75;
-
     // ~~ Names of keys
 
     public static final String ID           = "_id";
@@ -28,37 +24,19 @@ public class Asset {
     public static final String CONTENT_TYPE = "contentType";
     public static final String METADATA     = "metadata";
 
-    /**
-     * Signals, that this asset is a thumbnail
-     */
-    public static final String THUMBNAIL_FLAG = "is_thumbnail";
-    public static final String Q_THUMBNAIL_FLAG = METADATA + ".is_thumbnail";
-
-    /**
-     * Name of the metadata key referring from the original to the related thumbnail
-     */
-    public static final String THUMB_REF   = "thumb_ref";
-    public static final String Q_THUMB_REF = METADATA + ".thumb_ref";
-
-    /**
-     * Name of the metadata key Referring from the thumbnail to the original asset
-     */
-    public static final String ORIGINAL_REF   = "orig_ref";
-    public static final String Q_ORIGINAL_REF = METADATA + ".orig_ref";
-
     // ~~
 
+    public final String id;
     public final String url;
-    public final String thumbUrl;
     public final String filename;
     public final Date uploadDate;
     public final String contentType;
 
     // ~
 
-    public Asset(String url, String thumbUrl, String filename, Date uploadDate, String contentType) {
+    public Asset(String id, String url, String filename, Date uploadDate, String contentType) {
+        this.id = id;
         this.url = url;
-        this.thumbUrl = thumbUrl;
         this.filename = filename;
         this.uploadDate = uploadDate;
         this.contentType = contentType;
@@ -66,10 +44,9 @@ public class Asset {
 
     // ~~
 
-    public static Collection<Asset> findAllOriginals() {
+    public static Collection<Asset> findAll() {
         GridFS gfs = MongoDbUtils.getGridFS();
-        DBCursor cursor = gfs.getFileList(new BasicDBObject(Q_THUMBNAIL_FLAG,
-                                                            new BasicDBObject("$exists", false)));
+        DBCursor cursor = gfs.getFileList();  // TODO: add criteria or sorting
         Collection<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
             assets.add(fromDBObject(cursor.next()));
@@ -79,16 +56,12 @@ public class Asset {
 
     private static Asset fromDBObject(DBObject dbObj) {
         Map<String, Object> argMap = new HashMap<String, Object>(1);
-        argMap.put("id", dbObj.get(ID));
+        String _id = "" + dbObj.get(ID);
+        argMap.put("id", _id);
         String url = Router.getFullUrl("Blobs.getFullsizeById", argMap);
 
         DBObject metadata = (DBObject) dbObj.get(METADATA);
-        String thumbUrl = null;
-        if (metadata != null && metadata.get(THUMB_REF) != null) {
-            argMap.put("id", dbObj.get(ID));
-            thumbUrl = Router.getFullUrl("Blobs.getThumbByOriginalId", argMap);
-        }
-        return new Asset(url, thumbUrl, (String) dbObj.get(FILENAME),
+        return new Asset(_id, url, (String) dbObj.get(FILENAME),
                          (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));
     }
 

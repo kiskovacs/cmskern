@@ -167,7 +167,7 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '<i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
                     if (field.ui_class == 'image_thumbnail') {
-                        fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/t?propertyName=asset_ref"/> ';
+                        fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref" width="75"/> ';
                     }
                 }
                 else if (field.format == 'date') {

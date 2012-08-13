@@ -7,7 +7,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
-import models.Asset;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import play.Logger;
@@ -116,12 +115,6 @@ public final class MongoDbUtils {
     public static GridFSDBFile getFileById(String id) {
         GridFS gfs = MongoDbUtils.getGridFS();
         return gfs.findOne(new ObjectId(id));
-    }
-
-    public static GridFSDBFile getThumbFileByOrigId(String id) {
-        GridFS gfs = MongoDbUtils.getGridFS();
-        DBObject query = new BasicDBObject(Asset.Q_THUMBNAIL_FLAG, true).append(Asset.Q_ORIGINAL_REF, new ObjectId(id));
-        return gfs.findOne(query);
     }
 
 }

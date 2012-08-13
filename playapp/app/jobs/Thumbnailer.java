@@ -1,10 +1,7 @@
 package jobs;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSInputFile;
-import models.Asset;
 import org.bson.types.ObjectId;
 import play.Logger;
 import play.jobs.Job;
@@ -22,6 +19,9 @@ import java.io.IOException;
  */
 public class Thumbnailer extends Job {
 
+    public static final int THUMBNAIL_WIDTH  = 75;
+    public static final int THUMBNAIL_HEIGHT = 75;
+
     private ObjectId assetId;
 
     public Thumbnailer(ObjectId assetId) {
@@ -38,9 +38,10 @@ public class Thumbnailer extends Job {
         File origFile = File.createTempFile("orig", null);
         orig.writeTo(origFile);
         File targetFile = File.createTempFile("thumb", null);
-        Images.resize(origFile, targetFile, Asset.THUMBNAIL_WIDTH, Asset.THUMBNAIL_HEIGHT, true);
+        Images.resize(origFile, targetFile, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, true);
         Logger.info("Resized to thumbnail, now saving to DB ...");
 
+        /*
         // Saving new thumbnail to the DB
         GridFSInputFile thumb = gfs.createFile(targetFile);
         thumb.setFilename(orig.getFilename());
@@ -54,6 +55,7 @@ public class Thumbnailer extends Job {
         orig.save();
 
         Logger.info("Finished thumbnail generation for %s (thumb ID: %s).", orig.getFilename(), thumb.getId());
+        */
     }
 
 }

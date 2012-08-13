@@ -6,9 +6,4 @@ public class PlayExtensions extends play.templates.JavaExtensions {
 		return s.toUpperCase();
 	}
 
-    public static String thumbnailUrl(String s) {
-        return s.replaceAll("(.*)/o/(.*)", "$1/t/$2");
-    }
-
-    
 }

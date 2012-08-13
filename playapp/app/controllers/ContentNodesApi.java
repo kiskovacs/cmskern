@@ -5,8 +5,11 @@ import models.ContentNode;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
+import play.mvc.Router;
 import play.mvc.With;
-import utils.PlayExtensions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class can be considered as the RESTful way to approach
@@ -38,23 +41,15 @@ public class ContentNodesApi extends Controller {
     public static void getAsFullsizeImage(String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
         notFoundIfNull(imageNode, "Unknown content ID: " + id);
-        String imgUrl = imageNode.getProperty(propertyName);
-        notFoundIfNull(imgUrl, "Property " + propertyName + " not available");
-        Logger.info("Redirecting to: %s...", imgUrl);
-        redirect(imgUrl);
-    }
-
-    /**
-     * Redirects to the location of the thumbnail image as
-     * refered by the given content node in the property field.
-     */
-    public static void getAsThumbnailImage(String type, Long id, String propertyName) {
-        ContentNode imageNode = ContentNode.findById(id);
-        notFoundIfNull(imageNode, "Unknown content ID: " + id);
-        String imgUrl = PlayExtensions.thumbnailUrl(imageNode.getProperty(propertyName));
-        notFoundIfNull(imgUrl, "Property " + propertyName + " not available");
-        Logger.info("Redirecting to: %s...", imgUrl);
-        redirect(imgUrl);
+        // ~~
+        String refVal = imageNode.getProperty(propertyName);
+        notFoundIfNull(refVal, "Property " + propertyName + " not available");
+        // Construct Image URL
+        Map<String, Object> argMap = new HashMap<String, Object>(1);
+        argMap.put("id", refVal);
+        String url = Router.getFullUrl("Blobs.getFullsizeById", argMap);
+        Logger.info("Redirecting to: %s...", url);
+        redirect(url);
     }
 
     @Check("editor,admin")
