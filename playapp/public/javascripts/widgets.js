@@ -72,7 +72,7 @@ angular.widget('my:form', function(element) {
                         subfield.id = subfield.title;
                     }
                     console.log("Add sub element for type: " + subfield.id);
-                    var elGroup = angular.element('<div class="subelements ' + subfield.id + '">' + subfield.title + '</div>');
+                    var elGroup = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + subfield.id + '">' + subfield.title + '</div>');
                     var arraySuffix = "";
                     console.log("scope idx: " + scope.$index);
 
@@ -204,7 +204,7 @@ angular.widget('my:form', function(element) {
                     fieldElStr += ' rows="8" cols="72"></textarea>';
                 }
                 else if (field.type == 'object') {
-                    fieldElStr = angular.element('<div class="subelements ' + fieldKey + '"></div>');
+                    fieldElStr = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + fieldKey + '"></div>');
                     //console.log("**** Include sub-object structure for " + fieldKey);
                     angular.forEach(field.properties, processField,
                         {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});

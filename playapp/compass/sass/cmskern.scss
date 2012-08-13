@@ -121,6 +121,16 @@ a.ng-directive.remove{
     }
 }
 
+/* ---- control styles -- */
+div.mini {
+  legend {
+    float: left;
+  }
+  .control-group {
+    margin:0;
+    padding:0;
+}
+}
 /* -- Nav Bar Top horizontal --*/
 .navbar{
 	border-bottom:2px solid $lead-color;
@@ -677,3 +687,4 @@ footer p {
 .pagination .active a{
     background:#d9d8d8;
 }
+
