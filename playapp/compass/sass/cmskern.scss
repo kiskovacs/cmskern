@@ -658,10 +658,18 @@ footer p {
         width: 145px;
 }
 
+/* ~~~ Pagination ~~~ */
+
 .pagination ul{
-background:rgba(255, 255, 255, 0.8);
+    background:rgba(255, 255, 255, 0.8);
 }
+
+.pagination .disabled a, .pagination .disabled a:hover {
+  background: $lead-color;
+  color: #ffffff;
+}
+
 .pagination a:hover,
 .pagination .active a{
-background:#d9d8d8;
+    background:#d9d8d8;
 }

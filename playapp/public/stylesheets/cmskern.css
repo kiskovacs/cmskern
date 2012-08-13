@@ -844,6 +844,11 @@ footer p {
   background: rgba(255, 255, 255, 0.8);
 }
 
+.pagination .disabled a, .pagination .disabled a:hover {
+    background: #30a4b1;
+    color: #ffffff;
+}
+
 /* line 668, ../../compass/sass/cmskern.scss */
 .pagination a:hover,
 .pagination .active a {
