@@ -30,6 +30,55 @@
                 "type":"string",
                 "ui_query_type":"tags"
             }
-        }
+        },
+        "copyright":{
+            "title":"Copyright",
+            "type":"string",
+            "ui_class":"compact",
+            "ui_width":"xlarge",
+        },        
+        "source":{
+            "title":"Quelle",
+            "type":"string",
+            "ui_class":"compact",
+            "ui_width":"xlarge",
+        },
+        "description":{
+            "title":"Bildunterschrift",
+            "type":"array",
+            "ui_width":"xxlarge",
+            "ui_editor": "textarea"            
+        },
+        "oldid":{
+            "title":"oldid",
+            "type":"string",
+            "ui_class":"compact",
+            "ui_width":"xlarge",
+        },  
+        "variants":{
+            "title":"Varianten",
+            "type":"array",
+            "items":{
+                "title":"Variante",
+                "type":"object",
+                "properties":{
+                    "format":{
+                        "title":"Format",
+                        "type":"string",
+                        "ui_width":"xxlarge"
+                    },
+                    "asset_ref":{
+                        "title":"Asset",
+                        "type":"string",
+                        "ui_callout":{
+                            "url":"/callouts/internal/asset_reference",
+                            "src_properties":["id"],
+                            "target_properties":["asset_ref"]
+                        },
+                        "ui_width":"xlarge"
+                    }
+                }
+            }   
+        }   
     }
 }

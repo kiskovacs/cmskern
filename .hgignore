@@ -43,3 +43,4 @@ api-archive
 ^playapp/bin$
 ^.*\.DS_Store$
 BACKUP
+nbproject
