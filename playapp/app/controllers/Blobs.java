@@ -1,20 +1,17 @@
 package controllers;
 
-import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSInputFile;
 import models.Asset;
+import models.vo.SearchResult;
 import play.Logger;
-import play.libs.MimeTypes;
 import play.mvc.Controller;
 import play.mvc.With;
 import utils.MongoDbUtils;
 
 import java.io.IOException;
-import java.util.Collection;
 
 /**
- * Access to files stored in the Blob store (currently making use
+ * Access to files stored in the Blob store (in this implementation making use
  * of GridFS provided by MongoDB).
  *
  * @author Niko Schmuck
@@ -26,45 +23,40 @@ public class Blobs extends Controller {
     @Check("editor,admin")
     public static void upload(String qqfile) throws IOException {
         Logger.info("Starting to upload %s ...", qqfile);
-
-        GridFS gfs = MongoDbUtils.getGridFS();
-        GridFSInputFile dbFile = gfs.createFile(request.body);
-        dbFile.setFilename(qqfile);
-        // guess content type from file name extension
-        String contentType = MimeTypes.getContentType(qqfile);
-        if (contentType == null || !contentType.startsWith("image/")) {
-            // No valid content type (TODO: could verify against list of allowed content types)
-            renderJSON("{\"error\":\"Invalid content type: " + contentType + " \"}");
-        } else {
-            // Valid content type: try to store it
-            dbFile.setContentType(contentType);
-            dbFile.save();
-            renderJSON("{\"success\":true}");
+        try {
+            Asset asset = Asset.create(qqfile, request.body);
+            renderJSON("{\"success\":true, \"id\": \"" + asset.id + "\"}");
+        } catch (Exception e) {
+            renderJSON("{\"success\":false, \"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
     @Check("editor,admin")
-    public static void list() {
-        Logger.info("Listing all assets (JSON) ...");
-        Collection<Asset> assets = Asset.findAll();
-        renderJSON(assets);
-    }
-
-    @Check("editor,admin")
-    public static void listAssets() {
+    public static void listAssets(int page) {
         Logger.info("Listing assets ...");
-        Collection<Asset> assets = Asset.findAll();
-        render(assets);
+        int pageSize = Application.getPageSize();
+        if (page <= 0) {
+            page = 1;
+            Logger.debug("Page number set to default: %d", page);
+        }
+        int offset = (page-1) * pageSize;
+        SearchResult<Asset> assets = Asset.findAll(offset, pageSize);
+        String format = params.get("format");
+        if (format != null && format.equalsIgnoreCase("JSON")) {
+            renderJSON(assets);
+        } else {
+            int totalCount = assets.totalCount;
+            render(assets, page, pageSize, totalCount);
+        }
     }
 
     @Check("editor,admin")
-    public static void listAssetsForTinyMCE() {
+    public static void listAssetsForTinyMCE() {  // TODO: integrate to listAssets with format=tinyMCE
         Logger.info("Listing assets (for TinyMCE) ...");
-        Collection<Asset> assets = Asset.findAll();
+        SearchResult<Asset> assets = Asset.findAll(0, Application.getPageSize());
         render(assets);
     }
 
-    // TODO: rename
     public static void getBinaryById(String id) {
         Logger.info("Lookup asset by ID: %s", id);
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);

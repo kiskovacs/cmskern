@@ -1,4 +1,4 @@
-ContentNode(a_1):
+ContentNode(article_1):
   creator: admin
   type: article
   jsonContent: >
@@ -9,7 +9,7 @@ ContentNode(a_1):
                  'body':'Gerade noch hat Banjo gelangweilt auf dem Boden gesessen, seinen breiten Rücken den Menschen zugewandt, die sich im Stuttgarter Zoo Wilhelma vor seinem Gehege drängeln.'
                }
 
-ContentNode(a_2):
+ContentNode(article_2):
   creator: admin
   type: article
   jsonContent: >
@@ -20,7 +20,7 @@ ContentNode(a_2):
                  'body':'Auch in Europa lebten noch vor sieben Millionen Jahren Menschenaffen - und damit deutlich länger als bisher angenommen. Das belegt der Zahn eines Affen, den Wissenschaftler nahe der bulgarischen Stadt Chirpan gefunden haben.'
                }
 
-ContentNode(a_3):
+ContentNode(article_3):
   creator: admin
   type: article
   jsonContent: >
@@ -65,5 +65,5 @@ ContentNode(n_travelreports):
   jsonContent: "{'title':'Travel Reports', 'path':'/travel', 'online':true }"
 
 
-# TODO: How can be associate content to each other since IDs are created dynamically
+# TODO: How can we associate content to each other since IDs are created dynamically
 

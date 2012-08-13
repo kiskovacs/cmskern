@@ -117,4 +117,9 @@ public final class MongoDbUtils {
         return gfs.findOne(new ObjectId(id));
     }
 
+    public static void dropFiles() {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        gfs.remove(new BasicDBObject());
+    }
+
 }

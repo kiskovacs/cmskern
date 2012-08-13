@@ -1,13 +1,11 @@
 package jobs;
 
-import models.ContentNode;
-import models.ContentType;
-import models.Role;
+import models.*;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.test.Fixtures;
+import play.test.MorphiaFixtures;
 import utils.MongoDbUtils;
 
 /**
@@ -24,17 +22,21 @@ public class Bootstrap extends Job {
         Logger.info("Starting cmskern bootstrap job (Play env: %s)...", Play.id);
         Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
-        if (Role.count() == 0L) {
+        if (Role.count() == 0L && User.count() == 0L) {
             Logger.info("Importing initial roles and users ...");
-            Fixtures.loadModels("initial-users_and_roles.yml");
+            MorphiaFixtures.loadModels("initial-users_and_roles.yml");
+        }
+        if (Asset.count() == 0L) {
+            Logger.info("Importing initial assets ...");
+            MorphiaFixtures.loadModels("initial-assets.yml");
         }
         if (ContentType.count() == 0L) {
             Logger.info("Importing initial content types ...");
-            Fixtures.loadModels("initial-contenttypes.yml");
+            MorphiaFixtures.loadModels("initial-contenttypes.yml");
         }
         if (ContentNode.count() == 0L) {
             Logger.info("Importing initial content nodes ...");
-            Fixtures.loadModels("initial-content.yml");
+            MorphiaFixtures.loadModels("initial-content.yml");
         }
 
         // ~~

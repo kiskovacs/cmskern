@@ -1,37 +1,65 @@
 <!-- Select one of the existing assets or upload a new one -->
 
-<h3>Select Asset</h3>
+<h3>Select Asset or Upload</h3>
 
+<div id="file-uploader">
+</div>
+
+<!-- Search mask -->
 <fieldset>
-    <div id="file-uploader">
+    <!-- label for="search_term"></label -->
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <button id="search_assets" class="btn">Search by Title</button>
+</fieldset>
+
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
+
+<!-- Filled by selection from table or manually edited -->
+<fieldset>
+    <div class="control-group">
+        <label class="control-label" for="select_id">Asset ID</label>
+        <div class="controls">
+            <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
+            <img class="image_thumbnail" id="select_thumb" src="/blobs/o/${fields['id'].value}">
+        </div>
     </div>
-    <div id="asset_list"></div>
 </fieldset>
 
-
-<fieldset>
-    <label for="select_ref">Asset Reference</label>
-    <input type="text" id="select_ref" name="value" value="${fields['id'].value}" class="input-xxlarge"/>
-</fieldset>
 
 <script type="text/javascript">
-    var selectedRef = "";
+    var selectedId = "";
+    var THUMB_URL = "/blobs/o/ID";
 
     $(document).ready(function() {
-        selectedRef = $('#select_ref').val();
+        selectedId = $('#select_id').val();
         refreshList();
     });
 
-    $("#select_ref").on("change", function(event) {
+    $("#select_id").on("change", function(event) {
         event.preventDefault();
-        selectedRef = $(this).val();
+        selectedId = $(this).val();
     });
 
     // Contract between Caller and Callout
     function calloutGetSelectedValues() {
         return {
-            '${fields['id'].targetFQName}': selectedRef
+            '${fields['id'].targetFQName}': selectedId
         };
+    }
+
+    // Trigger search and display HTML result
+    $("#search_assets").click(function(event) {
+        event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
+        var search_term = $("#search_term").val();
+        console.log("Search for asset: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/BlobSelection/searchByFilename', {query: search_term, page: pageNr}, function(data) {
+            $('#search_results').html(data);
+        });
     }
 
     // ~~
@@ -41,23 +69,23 @@
         element: document.getElementById('file-uploader'),
         // path to server-side upload
         action: '/blobs',
-        onComplete: function(id, fileName, responseJSON){
+        onComplete: function(id, fileName, responseJSON) {
             setTimeout(function(){
                 refreshList();
             }, 300);
-
         }
     });
 
     function refreshList() {
         $.get('/blobs', function(data) {
-            $('#asset_list').html(data);
+            $('#search_results').html(data);
             console.log('List was retrieved.');
             $("a.thumbnail").on("click", function(event) {
                 event.preventDefault();
-                selectedRef = $("img:first-child", this).data("objectid");
-                console.log('Set value to ' + selectedRef);
-                $("#select_ref").val(selectedRef);
+                selectedId = $("img:first-child", this).data("objectid");
+                //console.log('Set value to ' + selectedId);
+                $("#select_id").val(selectedId);
+                $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, selectedId));
             });
         });
     }
