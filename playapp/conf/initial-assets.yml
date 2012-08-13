@@ -1,0 +1,15 @@
+Asset(a_1):
+  file: test/data/assets/hase-des-jahres.jpg
+
+Asset(a_2):
+  file: test/data/assets/mars.jpg
+
+Asset(a_3):
+  file: test/data/assets/mexiko.jpg
+
+Asset(a_4):
+  file: test/data/assets/regenwald.jpg
+
+Asset(a_5):
+  file: test/data/assets/roter-panda-auch-katzenbaer-genannt.jpg
+

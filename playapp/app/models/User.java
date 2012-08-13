@@ -109,6 +109,4 @@ public class User extends Model {
         return this.userName;
     }
 
-
-
 }

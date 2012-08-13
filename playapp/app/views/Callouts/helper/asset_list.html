@@ -1,0 +1,22 @@
+<div>
+    #{if result.objects}
+        <ul class="thumbnails">
+            #{list items: result.objects, as:'asset'}
+                <li>
+                    <a href="#" onclick="updateRef('${asset.id}')">
+                        <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}">
+                    </a>
+                </li>
+            #{/list}
+        </ul>
+
+        #{if nrPages > 1}
+        <div class="pagination">
+            #{callout.pagination totalCount: result.totalCount /}
+        </div>
+        #{/if}
+    #{/if}
+    #{else}
+       No results found for <em>${query}</em>.
+    #{/else}
+</div>

@@ -1,8 +1,7 @@
 <ul class="thumbnails">
-#{list items: assets, as:'asset'}
+#{list items: assets.objects, as:'asset'}
     <li>
         <a href="#" class="thumbnail">
-           <!-- TODO: specify width and height -->
           <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}">
         </a>
     </li>

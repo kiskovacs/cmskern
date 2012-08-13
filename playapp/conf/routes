@@ -26,7 +26,6 @@ GET     /helper/{controller}/{action}           helper.{controller}.{action}
 
 # ~~ Access to binary objects (i.e. images)
 GET     /blobs                                  Blobs.listAssets
-GET     /blobs.json                             Blobs.list
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
 GET     /blobs/o/{id}                           Blobs.getBinaryById
 GET     /blobs/n/{name}                         Blobs.getByName
@@ -44,10 +43,9 @@ GET     /{type}/{id}/full                       ContentNodesApi.getFull
 GET     /{type}/{id}/img/o                      ContentNodesApi.redirectToBinary
 GET     /{type}/{id}                            ContentNodesApi.getBody
 PUT     /{type}/{id}                            ContentNodesApi.update
-# GET     /{type}                                 ContentNodesApi.list
 POST    /{type}                                 ContentNodesApi.create
 DELETE  /{type}/{id}                            ContentNodesApi.delete
-GET     /{type}/{id}/versions                     ContentNodes.versions
+GET     /{type}/{id}/versions                   ContentNodes.versions
 
 
 # ~~ Ignore favicon requests
@@ -55,4 +53,4 @@ GET     /favicon.ico                            404
 
 # ~~ Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
-GET     /test/                                staticDir:test
+GET     /test/                                  staticDir:test
