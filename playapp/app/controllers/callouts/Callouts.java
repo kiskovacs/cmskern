@@ -1,6 +1,5 @@
 package controllers.callouts;
 
-import models.ContentNode;
 import models.vo.RefValue;
 import play.Logger;
 import play.Play;
@@ -29,34 +28,14 @@ public class Callouts extends Controller {
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
 
-        // Find object types to refer to
-        // TODO: this could also be handled by schema definition or made a bit more generic
-        if (   name.contains("internal/article_")
-            || name.contains("internal/test_")) {
-            // ~~ RAW access
-            model.put("articles", ContentNode.findByTypeRaw("article", getPageSize()));  // TODO: improve by using paging
-        }
-        else if (name.contains("/image_")) {
-            model.put("images", ContentNode.findByTypeRaw("image", getPageSize()));  // TODO: improve by using paging
-        }
-        else if (name.contains("/imageGallery_")) {
-            model.put("imageGalleries", ContentNode.findByTypeRaw("imageGallery", getPageSize()));  // TODO: improve by using paging
-        }
-        else if (name.contains("/sidebar_")) {
-            model.put("sidebars", ContentNode.findByTypeRaw("sidebar", getPageSize()));  // TODO: improve by using paging
-        }
-        else if (name.contains("/node_")) {
-            model.put("nodes", ContentNode.findByTypeRaw("node", getPageSize()));  // TODO: improve by using paging
-        }
-
         // Prepare names of properties which should be updated by this callout
         String[] srcPropNames    = params.getAll("src_properties[]");
         String[] targetPropNames = params.getAll("target_properties[]");
         if (srcPropNames != null && targetPropNames != null) {
-            String[] values          = params.getAll("values[]");
+            String[] values = params.getAll("values[]");
 
             if (values == null ) {
-                values  = new String[]{};
+                values = new String[]{};
             }
 
             // TODO: @syk wozu das?
