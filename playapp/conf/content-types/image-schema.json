@@ -18,7 +18,8 @@
                 "src_properties":["id"],
                 "target_properties":["asset_ref"]
             },
-            "ui_width":"xlarge"
+            "ui_width":"xlarge",
+            "ui_class":"image_thumbnail"
         },
         "keywords":{
             "title":"Keywords",
@@ -35,13 +36,13 @@
             "title":"Copyright",
             "type":"string",
             "ui_class":"compact",
-            "ui_width":"xlarge",
+            "ui_width":"xlarge"
         },        
         "source":{
             "title":"Quelle",
             "type":"string",
             "ui_class":"compact",
-            "ui_width":"xlarge",
+            "ui_width":"xlarge"
         },
         "description":{
             "title":"Bildunterschrift",
@@ -53,7 +54,7 @@
             "title":"oldid",
             "type":"string",
             "ui_class":"compact",
-            "ui_width":"xlarge",
+            "ui_width":"xlarge"
         },  
         "variants":{
             "title":"Varianten",
