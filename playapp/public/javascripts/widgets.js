@@ -167,8 +167,15 @@ angular.widget('my:form', function(element) {
                         '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
                     fieldElStr += '<i class="icon-edit"></i></span>';
                     fieldElStr += '</div>';
+                    // Embedd image with dynamic bound image reference
                     if (field.ui_class == 'image_thumbnail') {
-                        fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref"> ';
+                        if (fieldKey == 'asset_ref') {
+                            // ... directly link to the asset
+                            fieldElStr += ' <img class="reference image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
+                        } else {
+                            // ... references an image object which itself must be resolved for the concrete asset
+                            fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref"> ';
+                        }
                     }
                 }
                 else if (field.format == 'date') {
