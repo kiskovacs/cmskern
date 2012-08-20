@@ -159,10 +159,10 @@ public class ContentNode {
     /**
      * Returns lately modified content nodes of the speicified type.
      */
-    public static SearchResult<ContentNode> findByType(String type, int offset, int max) {
+    public static SearchResult<ContentNode> findByType(String typeName, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, typeName)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
@@ -171,10 +171,10 @@ public class ContentNode {
     }
 
     // TODO: Temporary to figure out if this is the right access
-    public static List<DBObject> findByTypeRaw(String type, int max) {
+    public static List<DBObject> findByTypeRaw(String typeName, int max) {
         List<DBObject> nodes = new ArrayList<DBObject>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, type)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
+        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, typeName)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(dbObj);

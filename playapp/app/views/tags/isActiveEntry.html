@@ -1,13 +1,21 @@
 *{ Analyze whether current URL request path maps to current link entry }*
 %{
-    pattern = java.util.regex.Pattern.compile("^/([a-zA-Z0-9_-]+?)/(list|edit).*")
-    matcher = pattern.matcher(request.path)
-
     def curType
     def curAction
-    if (matcher.find()) {
-        curType = matcher.group(1)
-        curAction = matcher.group(2)
+
+    patternEdit = java.util.regex.Pattern.compile("^/([a-zA-Z0-9_-]+?)/edit.*")
+    matcherEdit = patternEdit.matcher(request.path)
+    if (matcherEdit.find()) {
+        curType = matcherEdit.group(1)
+        curAction = 'edit'
+    } else {
+        // (B) ... see if its an list action
+        patternList = java.util.regex.Pattern.compile("^/([a-zA-Z0-9_-]+)")
+        matcherList = patternList.matcher(request.path)
+        if (matcherList.find()) {
+            curType = matcherList.group(1)
+            curAction = 'list'
+        }
     }
 }%
 #{if curType == _typeName && curAction == _action}active#{/if}

@@ -81,8 +81,8 @@
                             </li>
                             #{list items:editorialTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
-                                <li class="listContentType #{isActiveEntry typeName:contentType.slug,action:'list' /}"><a href="@{Application.list(contentType.slug)}">List</a></li>
-                                <li class="newContentType #{isActiveEntry typeName:contentType.slug,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
+                                <li class="listContentType #{isActiveEntry typeName:contentType.name,action:'list' /}"><a href="@{ContentNodes.list(contentType.name)}">List</a></li>
+                                <li class="newContentType #{isActiveEntry typeName:contentType.name,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.name)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 
@@ -92,8 +92,8 @@
                             </li>
                             #{list items:siteTypes, as:'contentType'}
                                 <li class="contentType">${contentType.displayName}:</li>
-                                <li class="site listContentType #{isActiveEntry typeName:contentType.slug,action:'list' /}"><a href="@{Application.list(contentType.slug)}">List</a></li>
-                                <li class="site newContentType #{isActiveEntry typeName:contentType.slug,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.slug)}">New</a></li>
+                                <li class="site listContentType #{isActiveEntry typeName:contentType.name,action:'list' /}"><a href="@{ContentNodes.list(contentType.name)}">List</a></li>
+                                <li class="site newContentType #{isActiveEntry typeName:contentType.name,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.name)}">New</a></li>
                                 <div class="separator"></div>
                             #{/list}
 

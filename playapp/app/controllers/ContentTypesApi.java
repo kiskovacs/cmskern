@@ -61,10 +61,10 @@ public class ContentTypesApi extends Controller {
     // ~~ REST API (for admins)
 
     @Check("admin")
-    public static void create(String name, String body) {
+    public static void create(String name, String displayName, String body) {
         Logger.info("Going to create type: %s ... ", name);
 
-        ContentType type = new ContentType(name, name, body); // TODO distinguish between slug and displayName
+        ContentType type = new ContentType(name, displayName, body);
         type.save();
         response.status = Http.StatusCode.CREATED;
         response.setHeader("Location", request.getBase() + "/schema/" + type.getId());
@@ -74,7 +74,7 @@ public class ContentTypesApi extends Controller {
         ContentType type = ContentType.findById(id);
         notFoundIfNull(type, "Unknown type ID: " + id);
 
-        Logger.info("Retrieved: %s", type.slug);
+        Logger.info("Retrieved: %s", type.name);
         renderJSON(type.jsonForm);
     }
 
@@ -86,7 +86,7 @@ public class ContentTypesApi extends Controller {
         // check that body contains valid JSON
         com.mongodb.util.JSON.parse(body); // TODO: improve validation
         type.jsonForm = body;
-        type.slug = name;
+        type.name = name;
         type.save();
         // TODO: return HTTP status
         render(type);

@@ -30,11 +30,18 @@ public class ContentTypeTest extends UnitTest {
     }
 
     @Test
-    public void getByName() {
+    public void getArticleByName() {
         ContentType contentType = ContentType.findByName("article");
         assertNotNull(contentType);
         assertEquals("Article", contentType.displayName);
         assertThat(contentType.jsonForm, containsString("Weiterführende Artikel"));
+    }
+
+    @Test
+    public void getImageByName() {
+        ContentType contentType = ContentType.findByName("image");
+        assertNotNull(contentType);
+        assertEquals("Image", contentType.displayName);
     }
 
     @Test

@@ -2,6 +2,7 @@ package controllers;
 
 import com.mongodb.DBObject;
 import models.ContentNode;
+import models.ContentType;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -55,13 +56,16 @@ public class ContentNodesApi extends Controller {
     @Check("editor,admin")
     public static void create(String type, String body) {
         Logger.debug("Going to create: %s ... ", body);
-        ContentNode contentNode = new ContentNode(type, body);
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(contentType, "Unknown content type: " + type);
+
+        ContentNode contentNode = new ContentNode(contentType.name, body);
         String username = Security.connected();
         contentNode.create(username);
         // deliver back location of new content resource
         Logger.info("Created new content node with ID: %s", contentNode.getId());
         response.status = Http.StatusCode.CREATED;
-        response.setHeader("Location", request.getBase() + '/' + type + '/' + contentNode.getId());
+        response.setHeader("Location", String.format("%s/%s/%d", request.getBase(), type, contentNode.getId()));
         renderJSON("{\"id\": \"" + contentNode.getId() + "\"}");
     }
 
@@ -69,7 +73,7 @@ public class ContentNodesApi extends Controller {
     public static void update(String type, Long id, String body) {
         // TODO: filter also by type?  Check if already exists?
         ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown content ID: " + id);
+        notFoundIfNull(contentNode, "Unknown content node ID: " + id);
         Logger.info("Going to update %s with ID %s ...", type, id);
         String username = Security.connected();
         contentNode.update(username, body);
@@ -79,7 +83,7 @@ public class ContentNodesApi extends Controller {
     @Check("admin")
     public static void delete(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown content ID: " + id);
+        notFoundIfNull(contentNode, "Unknown content node ID: " + id);
         Logger.info("Going to delete %s with ID %s ...", type, id);
         contentNode.delete();
     }

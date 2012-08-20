@@ -22,7 +22,7 @@
 
 <h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}
     #{secure.check 'editor,admin'}
-      <a href="@{ContentNodes.blank(entry.key.slug)}"><i class="icon-plus"></i></a> </small>
+      <a href="@{ContentNodes.blank(entry.key.name)}"><i class="icon-plus"></i></a> </small>
     #{/secure.check}
 </h3>
 

@@ -28,7 +28,7 @@ public class ContentType extends Model {
 
     @Required
     @Indexed(unique = true)
-    public String slug;
+    public String name;
 
     @Required
     public String displayName;
@@ -40,7 +40,8 @@ public class ContentType extends Model {
     public String group;
 
     /**
-     * The sort key is only used for informational means.
+     * The sort key is only used for sorting in the same group,
+     * i.e. when displaying content types in the back-office.
      */
     public String sortkey;
 
@@ -58,16 +59,16 @@ public class ContentType extends Model {
 
     // ~~
 
-    public ContentType(String slug, String displayName, String jsonForm) {
-        this.slug = slug;
+    public ContentType(String name, String displayName, String jsonForm) {
+        this.name = name;
         this.displayName = displayName;
         this.jsonForm = jsonForm;
     }
 
     // ~~
 
-    public static ContentType findByName(final String slug) {
-        return ContentType.find("slug", slug).first();
+    public static ContentType findByName(final String name) {
+        return ContentType.find("name", name).first();
     }
 
     public static List<ContentType> findByGroup(final String group) {

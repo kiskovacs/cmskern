@@ -4,7 +4,6 @@
 
 # ~~ Home page
 GET     /                                       Application.index
-GET     /{typeName}/list                        Application.list
 
 # ~~ Import secure routes (for login/logout)
 *       /                                       module:secure
@@ -36,6 +35,7 @@ POST    /blobs                                  Blobs.upload
 *       /admin                                  module:crud
 
 # ~~ REST API for content
+GET     /{type}                                 ContentNodes.list
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank

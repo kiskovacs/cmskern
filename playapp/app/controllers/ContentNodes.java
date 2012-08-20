@@ -19,10 +19,11 @@ import java.util.List;
 @With(Secure.class)
 public class ContentNodes extends Application {
 
+
     @Check("editor,admin")
     public static void blank(String type) {
         ContentType contentType = ContentType.findByName(type);
-        notFoundIfNull(contentType, "Unknown type: " + type);
+        notFoundIfNull(contentType, "Unknown content type: " + type);
 
         render(contentType);
     }
@@ -30,9 +31,9 @@ public class ContentNodes extends Application {
     @Check("editor,admin")
     public static void edit(String type, Long id) {
         ContentType contentType = ContentType.findByName(type);
-        notFoundIfNull(contentType, "Unknown type: " + type);
+        notFoundIfNull(contentType, "Unknown content type: " + type);
         ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown node ID: " + id);
+        notFoundIfNull(contentNode, "Unknown content node ID: " + id);
 
         render(contentNode, contentType);
     }
@@ -40,21 +41,25 @@ public class ContentNodes extends Application {
     @Check("editor,admin")
     public static void versions(String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown node ID: " + id);
+        notFoundIfNull(contentNode, "Unknown content node ID: " + id);
         List<ContentNode> versions = ContentNode.findVersionsForId(id);
         render(type, contentNode, versions);
     }
 
     public static void list(String type, int page) {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(contentType, "Unknown content type: " + type);
+
         int pageSize = Application.getPageSize();
         if (page <= 0) {
             page = 1;
             Logger.debug("Page number set to default: %d", page);
         }
         int offset = (page-1) * pageSize;
-        SearchResult<ContentNode> nodes = ContentNode.findByType(type, offset, pageSize);
+        SearchResult<ContentNode> nodes = ContentNode.findByType(contentType.name, offset, pageSize);
         int totalCount = nodes.totalCount;
-        render(nodes, page, pageSize, totalCount);
+        Logger.info("Listing %s nodes: found %d total ...", contentType.name, totalCount);
+        render(contentType, nodes, page, pageSize, totalCount);
     }
 
     /**

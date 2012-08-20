@@ -2,7 +2,6 @@
 # For example, for French create a messages.fr file
 #
 
-slug=Short Name (URL)
 name=Name
 displayName=Display Name
 description=Description
