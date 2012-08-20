@@ -6,6 +6,11 @@
 <script type="text/javascript" src="@{'/public/javascripts/contentNodeDeleteDialog.js'}"></script>
 #{/set}
 
+<div id="nodeListSearch">
+  #{search /}
+</div>
+
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -20,7 +25,7 @@
     <tr #{if node.id == request.params.get("highlightId")}class="highlight"#{/if}>
         <td>
             #{secure.check 'editor,admin'}<a href="@{ContentNodes.edit(node.type, node.id)}">#{/secure.check}
-        ${node.title}
+                ${node.title}
             #{secure.check 'editor,admin'}</a>#{/secure.check}
         </td>
         <td>

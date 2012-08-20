@@ -157,12 +157,13 @@ public class ContentNode {
     }
 
     /**
-     * Returns lately modified content nodes of the speicified type.
+     * Returns lately modified content nodes of the specified type.
      */
-    public static SearchResult<ContentNode> findByType(String typeName, int offset, int max) {
+    public static SearchResult<ContentNode> findByType(String type, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, typeName)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
+        BasicDBObject q = createQuery(type);
+        DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
             nodes.add(convert(dbObj));
@@ -170,22 +171,27 @@ public class ContentNode {
         return new SearchResult(nodes, dbCur.count());
     }
 
-    // TODO: Temporary to figure out if this is the right access
-    public static List<DBObject> findByTypeRaw(String typeName, int max) {
-        List<DBObject> nodes = new ArrayList<DBObject>();
+    public static SearchResult<ContentNode> findByTypeAndTitle(String type, String searchTerm, boolean matchCase, int offset, int max) {
+        List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        DBCursor dbCur = dbColl.find(new BasicDBObject(ATTR_TYPE, typeName)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).limit(max);
+        BasicDBObject q = createQuery(type);
+        if (searchTerm != null) {
+            q = addQueryByTitle(q, searchTerm, matchCase);
+        }
+        DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
-            nodes.add(dbObj);
+            nodes.add(convert(dbObj));
         }
-        return nodes;
+        return new SearchResult(nodes, dbCur.count());
     }
 
+    // TODO: welche Variante ist besser? typisiert vs. untyped?
     public static SearchResult<DBObject> findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
-        DBObject q = createQueryByTitle(type, searchTerm, matchCase);
+        BasicDBObject q = createQuery(type);
+        q = addQueryByTitle(q, searchTerm, matchCase);
         DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         Logger.info("%s query for %s...", type, searchTerm);
         final List<DBObject> nodes = dbCur.toArray();
@@ -204,7 +210,8 @@ public class ContentNode {
         List<IdTitle> nodes = new ArrayList<IdTitle>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
-        DBObject q = createQueryByTitle(type, searchTerm, matchCase);
+        BasicDBObject q = createQuery(type);
+        q = addQueryByTitle(q, searchTerm, matchCase);
 
         // Only fetch title (and implictly ID)
         DBCursor dbCur = dbColl.find(q, new BasicDBObject(Q_ATTR_TITLE, 1)).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
@@ -307,8 +314,11 @@ public class ContentNode {
 
     // ~~ private helper methods
 
-    private static DBObject createQueryByTitle(String type, String searchTerm, boolean matchCase) {
-        BasicDBObject q = new BasicDBObject(ATTR_TYPE, type);
+    private static BasicDBObject createQuery(String type) {
+        return new BasicDBObject(ATTR_TYPE, type);
+    }
+
+    private static BasicDBObject addQueryByTitle(BasicDBObject q, String searchTerm, boolean matchCase) {
         if (matchCase) {
             q.append(Q_ATTR_TITLE, new BasicDBObject("$regex", searchTerm));
         } else {

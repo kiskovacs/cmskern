@@ -56,7 +56,8 @@ public class ContentNodes extends Application {
             Logger.debug("Page number set to default: %d", page);
         }
         int offset = (page-1) * pageSize;
-        SearchResult<ContentNode> nodes = ContentNode.findByType(contentType.name, offset, pageSize);
+        String searchTerm = params.get("search");
+        SearchResult<ContentNode> nodes = ContentNode.findByTypeAndTitle(contentType.name, searchTerm, false, offset, pageSize);
         int totalCount = nodes.totalCount;
         Logger.info("Listing %s nodes: found %d total ...", contentType.name, totalCount);
         render(contentType, nodes, page, pageSize, totalCount);
