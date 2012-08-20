@@ -20,7 +20,7 @@ public class JsonUtils {
     public static JsonNode enrich(ContentType contentType, ContentNode contentNode) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        ObjectNode root = mapper.readValue(contentType.jsonForm, ObjectNode.class);
+        ObjectNode root = mapper.readValue(contentType.jsonSchema, ObjectNode.class);
 
         Map<String, Object> values = mapper.readValue(contentNode.getJsonContent(), Map.class);
 

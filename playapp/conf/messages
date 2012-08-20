@@ -2,10 +2,11 @@
 # For example, for French create a messages.fr file
 #
 
+_id=ID
 name=Name
 displayName=Display Name
 description=Description
-jsonForm=Form Definition
+jsonSchema=Schema Definition
 
 fullName=Full Name
 userName=User Name

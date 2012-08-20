@@ -34,7 +34,7 @@ public class ContentTypesApi extends Controller {
             renderJSON(jsonRepresentation.toString());
         } else {
             Logger.info("Blank JSON edit form for type [%s]", name);
-            renderJSON(type.jsonForm);
+            renderJSON(type.jsonSchema);
         }
     }
 
@@ -75,7 +75,7 @@ public class ContentTypesApi extends Controller {
         notFoundIfNull(type, "Unknown type ID: " + id);
 
         Logger.info("Retrieved: %s", type.name);
-        renderJSON(type.jsonForm);
+        renderJSON(type.jsonSchema);
     }
 
     @Check("admin")
@@ -85,7 +85,7 @@ public class ContentTypesApi extends Controller {
         Logger.info("Going to update %s ...", id);
         // check that body contains valid JSON
         com.mongodb.util.JSON.parse(body); // TODO: improve validation
-        type.jsonForm = body;
+        type.jsonSchema = body;
         type.name = name;
         type.save();
         // TODO: return HTTP status

@@ -4,8 +4,8 @@
 <script type="text/javascript">
     // Enlarge Input Region for textarea
     $(document).ready(function() {
-        $('#object_jsonForm').attr('cols', '80');
-        $('#object_jsonForm').attr('rows', '20');
+        $('#object_jsonSchema').attr('cols', '80');
+        $('#object_jsonSchema').attr('rows', '20');
     });
 </script>
 
@@ -17,7 +17,7 @@
 
     <div class="objectForm">
     #{form action:@create(), enctype:'multipart/form-data'}
-        #{crud.form fields: ['name', 'displayName', 'description', 'jsonForm'] /}
+        #{crud.form fields: ['name', 'displayName', 'description', 'jsonSchema'] /}
         <p class="crudButtons">
             <input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
             <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />

@@ -9,7 +9,7 @@ ContentType(article):
     group: editorial
     sortkey: 10
     description: the central content type for an text article.
-    jsonFormFromFile: conf/content-types/article-schema.json
+    jsonSchemaFromFile: conf/content-types/article-schema.json
 
 # ONLY TEMPORARY FOR TESTING PURPOSES
 ContentType(articleDiffParas):
@@ -18,7 +18,7 @@ ContentType(articleDiffParas):
     group: editorial
     sortkey: 12
     description: article which allows different types of sub-paragraphs
-    jsonFormFromFile: conf/content-types/archive/articleDiffParas-schema.json
+    jsonSchemaFromFile: conf/content-types/archive/articleDiffParas-schema.json
 
 ContentType(indexPage):
     name: indexpage
@@ -26,7 +26,7 @@ ContentType(indexPage):
     group: editorial
     sortkey: 12
     description: article which allows different types of sub-paragraphs
-    jsonFormFromFile: conf/content-types/indexpage-schema.json
+    jsonSchemaFromFile: conf/content-types/indexpage-schema.json
 
 
 ContentType(articleCollection):
@@ -35,7 +35,7 @@ ContentType(articleCollection):
     group: editorial
     sortkey: 20
     description: holding links to one or more articles.
-    jsonFormFromFile: conf/content-types/articleCollection-schema.json
+    jsonSchemaFromFile: conf/content-types/articleCollection-schema.json
 
 ContentType(image):
     name: image
@@ -43,7 +43,7 @@ ContentType(image):
     group: editorial
     sortkey: 30
     description: the asset as also some metadata for an image.
-    jsonFormFromFile: conf/content-types/image-schema.json
+    jsonSchemaFromFile: conf/content-types/image-schema.json
 
 ContentType(imageGallery):
     name: imageGallery
@@ -51,7 +51,7 @@ ContentType(imageGallery):
     group: editorial
     sortkey: 40
     description: referencing multiple images at a time.
-    jsonFormFromFile: conf/content-types/imageGallery-schema.json
+    jsonSchemaFromFile: conf/content-types/imageGallery-schema.json
 
 
 ContentType(sidebar):
@@ -60,7 +60,7 @@ ContentType(sidebar):
     group: site
     sortkey: 100
     description: an area displaying or teaser other side content.
-    jsonFormFromFile: conf/content-types/sidebar-schema.json
+    jsonSchemaFromFile: conf/content-types/sidebar-schema.json
 
 ContentType(node):
     name: node
@@ -68,4 +68,4 @@ ContentType(node):
     group: site
     sortkey: 110
     description: containing links to articles and sidebars.
-    jsonFormFromFile: conf/content-types/node-schema.json
+    jsonSchemaFromFile: conf/content-types/node-schema.json

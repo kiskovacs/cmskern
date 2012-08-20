@@ -1,7 +1,7 @@
 ContentType(tag):
+    name: tag
     group: editorial
     sortkey: 5
-    slug: tag
     displayName: Tag
     description: a keyword summarizing the relevant information.
-    jsonFormFromFile: conf/content-types/tag-schema.json
+    jsonSchemaFromFile: conf/content-types/tag-schema.json

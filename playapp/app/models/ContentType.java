@@ -51,18 +51,19 @@ public class ContentType extends Model {
     public String description;
 
     /**
-     * The field definition of the content type as JSON.
+     * The field definition of the content type as JSON schema
+     * specified by: http://json-schema.org/draft-03/schema
      */
     @Required
     @MaxSize(20000)
-    public String jsonForm;
+    public String jsonSchema;
 
     // ~~
 
-    public ContentType(String name, String displayName, String jsonForm) {
+    public ContentType(String name, String displayName, String jsonSchema) {
         this.name = name;
         this.displayName = displayName;
-        this.jsonForm = jsonForm;
+        this.jsonSchema = jsonSchema;
     }
 
     // ~~
@@ -83,10 +84,10 @@ public class ContentType extends Model {
     /**
      * Called by Bootstrap definition.
      */
-    public void setJsonFormFromFile(String filename) throws IOException {
+    public void setJsonSchemaFromFile(String filename) throws IOException {
         File inputFile = Play.getFile(filename);
-        Logger.info("   ~ read form schema definition from %s", inputFile.getAbsolutePath());
-        jsonForm = IOUtils.toString(new FileReader(inputFile));
+        Logger.info("   ~ read schema definition from %s", inputFile.getAbsolutePath());
+        jsonSchema = IOUtils.toString(new FileReader(inputFile));
     }
 
     @Override
