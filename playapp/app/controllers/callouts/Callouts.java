@@ -51,36 +51,38 @@ public class Callouts extends Controller {
 
         // Prepare names of properties which should be updated by this callout
         String[] srcPropNames    = params.getAll("src_properties[]");
-        String[] values          = params.getAll("values[]");
-
-        Logger.debug("values %s", values);
-        if (values == null ) {
-            values  = new String[]{};
-        }
-
-        // TODO: @syk wozu das?
-        String[] tmpValues = new String[srcPropNames.length];
-        /*
-        for (int i =0; i < tmpValues.length; i++) {
-            tmpValues[i] = "";
-        }
-        */
-        System.arraycopy(values, 0, tmpValues, 0, values.length);
-        values = tmpValues;
-
         String[] targetPropNames = params.getAll("target_properties[]");
+        if (srcPropNames != null && targetPropNames != null) {
+            String[] values          = params.getAll("values[]");
 
-        Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));
-        Logger.info("  targetPropNames: %s", Arrays.asList(targetPropNames));
-        Logger.info("  values:          %s", Arrays.asList(values));
+            if (values == null ) {
+                values  = new String[]{};
+            }
 
-        // build field map to allow referencing from template
-        Map<String, RefValue> fields = new HashMap<String, RefValue>();
-        for (int i = 0; i < srcPropNames.length; i++) {
-            fields.put(srcPropNames[i], new RefValue(targetPropNames[i], values[i]));
+            // TODO: @syk wozu das?
+            String[] tmpValues = new String[srcPropNames.length];
+            /*
+            for (int i =0; i < tmpValues.length; i++) {
+                tmpValues[i] = "";
+            }
+            */
+            System.arraycopy(values, 0, tmpValues, 0, values.length);
+            values = tmpValues;
+
+            Logger.info("  srcPropNames:    %s", Arrays.asList(srcPropNames));
+            Logger.info("  targetPropNames: %s", Arrays.asList(targetPropNames));
+            Logger.info("  values:          %s", Arrays.asList(values));
+
+            // build field map to allow referencing from template
+            Map<String, RefValue> fields = new HashMap<String, RefValue>();
+            for (int i = 0; i < srcPropNames.length; i++) {
+                fields.put(srcPropNames[i], new RefValue(targetPropNames[i], values[i]));
+            }
+            model.put("fields", fields);
+            Logger.info("  --> fields:      %s", fields);
+        } else {
+            Logger.info(" No src resp. target property names specified");
         }
-        model.put("fields", fields);
-        Logger.info("  --> fields:      %s", fields);
 
         // Figure out proper template as defined in schema
         String templateName = "Callouts/" + name + ".html";
