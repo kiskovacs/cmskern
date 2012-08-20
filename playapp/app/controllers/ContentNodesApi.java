@@ -49,7 +49,7 @@ public class ContentNodesApi extends Controller {
         Map<String, Object> argMap = new HashMap<String, Object>(1);
         argMap.put("id", refVal);
         String url = Router.getFullUrl("Blobs.getBinaryById", argMap);
-        Logger.info("Redirecting to: %s...", url);
+        Logger.info("Redirecting %s to: %s...", type, url);
         redirect(url);
     }
 
@@ -71,9 +71,12 @@ public class ContentNodesApi extends Controller {
 
     @Check("editor,admin")
     public static void update(String type, Long id, String body) {
-        // TODO: filter also by type?  Check if already exists?
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(contentType, "Unknown content type: " + type);
+
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content node ID: " + id);
+
         Logger.info("Going to update %s with ID %s ...", type, id);
         String username = Security.connected();
         contentNode.update(username, body);

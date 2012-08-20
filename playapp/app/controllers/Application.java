@@ -1,15 +1,13 @@
 package controllers;
 
-import models.ContentNode;
 import models.ContentType;
-import models.vo.SearchResult;
 import play.Play;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Router;
 import play.mvc.With;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,20 +25,17 @@ public class Application extends Controller {
 
     @Before
     static void addDefaults() {
+        // prepare content types and make them available for the navigation bar
         renderArgs.put("editorialTypes", ContentType.findByGroup("editorial"));
         renderArgs.put("siteTypes", ContentType.findByGroup("site"));
     }
 
-    // TODO: only for the time being
+    // Redirect to article list
     public static void index() {
-        List<ContentType> types = ContentType.findAll();
-        // get some content lately modified to start with
-        Map<ContentType, SearchResult<ContentNode>> content = new HashMap<ContentType, SearchResult<ContentNode>>();
-        for (ContentType type : types) {
-            SearchResult<ContentNode> nodes = ContentNode.findByType(type.name, 0, getPageSize());
-            content.put(type, nodes);
-        }
-        render(content);
+        Map<String, Object> argMap = new HashMap<String, Object>(1);
+        argMap.put("type", "article");
+        String url = Router.getFullUrl("ContentNodes.list", argMap);
+        redirect(url);
     }
 
 }

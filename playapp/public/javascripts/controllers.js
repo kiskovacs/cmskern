@@ -50,13 +50,14 @@ function EditContentNodeCtrl($xhr) {
 
     this.submit = function () {
 
+        var contentType = this.contentType;
         convertIdRefToInt(this.contentNode);
 
         // check whether content already exists or not
         if (this.contentNodeId < 0) {
-            console.log("Going to create content ...");
+            console.log("Going to create content node on the server ...");
             $xhr('POST', "/" + this.contentType, this.contentNode, function (code, response) {
-                window.location.href = "/?highlightId=" + response.id;
+                window.location.href = "/" + contentType + "?highlightId=" + response.id;
             }, function (code, response) {
                 alert("PROBLEM: " + response);
             });
@@ -65,7 +66,7 @@ function EditContentNodeCtrl($xhr) {
             // content already exists
             console.log("Updating content node " + this.contentNodeId + " ...");
             $xhr('PUT', "/" + this.contentType + "/" + this.contentNodeId, this.contentNode, function (code, response) {
-                window.location.href = "/?highlightId=" + response.id;
+                window.location.href = "/" + contentType + "?highlightId=" + response.id;
             }, function (code, response) {
                 alert("PROBLEM: " + response);
             });
