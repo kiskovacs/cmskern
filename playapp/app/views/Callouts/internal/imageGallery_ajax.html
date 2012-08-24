@@ -1,7 +1,7 @@
 <ul>
 #{list items: imageGalleries, as:'imageGallery'}
     <li>
-        <a href="#" data-idref="${imageGallery._id}" class="in_dialog">${imageGallery.data.title}</a>
+        <a href="#" data-idref="${imageGallery.id}" class="in_dialog">${imageGallery.title}</a>
     </li>
 #{/list}
 </ul>

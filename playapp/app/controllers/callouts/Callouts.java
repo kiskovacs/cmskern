@@ -1,5 +1,6 @@
 package controllers.callouts;
 
+import models.ContentNode;
 import models.vo.RefValue;
 import play.Logger;
 import play.Play;
@@ -27,6 +28,10 @@ public class Callouts extends Controller {
 
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
+
+        if (name.contains("/imageGallery_")) {
+            model.put("imageGalleries", ContentNode.findByType("imageGallery", 0, getPageSize()).objects);  // TODO: improve by using paging
+        }
 
         // Prepare names of properties which should be updated by this callout
         String[] srcPropNames    = params.getAll("src_properties[]");
