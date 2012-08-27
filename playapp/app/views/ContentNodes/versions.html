@@ -6,50 +6,54 @@
 #{/set}
 
 
-<h3>Current Version: ${contentNode.version}
-    <a href="@{ContentNodes.edit(contentNode.type, contentNode.id)}"><i class="icon-pencil" title="Edit"></i></a>
-    <small>from <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span>
-    by <span class="author">${contentNode.modifier}</span></small>
-</h3>
+<div class="row-fluid">
 
-<pre id="rev_current"></pre>
-<script type="text/javascript">
-    var jsRaw = ${contentNode.jsonContent.raw()};
-    document.getElementById('rev_current').innerHTML = JSON.stringify(jsRaw, null, 4);
-</script>
+    <h3>Current Version: ${contentNode.version}
+        <a href="@{ContentNodes.edit(contentNode.type, contentNode.id)}"><i class="icon-pencil" title="Edit"></i></a>
+        <small>from <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span>
+        by <span class="author">${contentNode.modifier}</span></small>
+    </h3>
 
-#{if versions}
-    <h3>Older Versions</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th width="10%">Version</th>
-                <th width="10%">Modified</th>
-                <th width="10%">Modifier</th>
-                <th width="70%">Content</th>
-            </tr>
-        </thead>
-        <tbody>
-            #{list items:versions, as:'rev'}
-            <tr>
-                <td>
-                    <span class="version">${rev.version}</span>
-                </td>
-                <td>
-                    <span class="datetime">${rev.modified.format('dd/MMM/yyyy HH:mm')}</span>
-                </td>
-                <td>
-                    <span class="author">${rev.modifier}</span>
-                </td>
-                <td>
-                    <pre id="rev_${rev_index}"></pre>
-                    <script type="text/javascript">
-                        var jsRaw = ${rev.jsonContent.raw()};
-                        document.getElementById('rev_${rev_index}').innerHTML = JSON.stringify(jsRaw, null, 4);
-                    </script>
-                </td>
-            </tr>
-            #{/list}
-        </tbody>
-    </table>
-#{/if}
+    <pre id="rev_current"></pre>
+    <script type="text/javascript">
+        var jsRaw = ${contentNode.jsonContent.raw()};
+        document.getElementById('rev_current').innerHTML = JSON.stringify(jsRaw, null, 4);
+    </script>
+
+    #{if versions}
+        <h3>Older Versions</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="10%">Version</th>
+                    <th width="10%">Modified</th>
+                    <th width="10%">Modifier</th>
+                    <th width="70%">Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:versions, as:'rev'}
+                <tr>
+                    <td>
+                        <span class="version">${rev.version}</span>
+                    </td>
+                    <td>
+                        <span class="datetime">${rev.modified.format('dd/MMM/yyyy HH:mm')}</span>
+                    </td>
+                    <td>
+                        <span class="author">${rev.modifier}</span>
+                    </td>
+                    <td>
+                        <pre id="rev_${rev_index}"></pre>
+                        <script type="text/javascript">
+                            var jsRaw = ${rev.jsonContent.raw()};
+                            document.getElementById('rev_${rev_index}').innerHTML = JSON.stringify(jsRaw, null, 4);
+                        </script>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    #{/if}
+
+</div>

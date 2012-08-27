@@ -45,27 +45,30 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<div class="metadata">
-    <div class="idInfo">
-        <span class="version">#${contentNode.id}</span>
-    </div>
-    <div class="versionInfo">
-        Current Version: <span class="version">${contentNode.version}</span> <br />
-        edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
-        by <span class="author">${contentNode.modifier}</span>
-    </div>
-    <div style="clear: both;"></div>
-</div>
+<div class="row-fluid">
 
-<div ng:controller="EditContentNodeCtrl">
-
-    <form class="form-horizontal" ng:submit="submit()">
-        <my:form schema="contentSchema.properties" data="contentNode"></my:form>
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn" ng:click="cancel()">Cancel</button>
+    <div class="metadata">
+        <div class="idInfo">
+            <span class="version">#${contentNode.id}</span>
         </div>
-    </form>
+        <div class="versionInfo">
+            Current Version: <span class="version">${contentNode.version}</span> <br />
+            edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
+            by <span class="author">${contentNode.modifier}</span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
 
+    <div ng:controller="EditContentNodeCtrl">
+
+        <form class="form-horizontal" ng:submit="submit()">
+            <my:form schema="contentSchema.properties" data="contentNode"></my:form>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn" ng:click="cancel()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
 </div>

@@ -45,16 +45,18 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<div ng:controller="EditContentNodeCtrl">
+<div class="row-fluid">
+    <div ng:controller="EditContentNodeCtrl">
 
-    <!-- Main form for editing content -->
-    <form class="form-horizontal" ng:submit="submit()">
-        <my:form schema="contentSchema.properties" data="contentNode"></my:form>
+        <!-- Main form for editing content -->
+        <form class="form-horizontal" ng:submit="submit()">
+            <my:form schema="contentSchema.properties" data="contentNode"></my:form>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn" ng:click="cancel()">Cancel</button>
-        </div>
-    </form>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn" ng:click="cancel()">Cancel</button>
+            </div>
+        </form>
 
+    </div>
 </div>

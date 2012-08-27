@@ -69,9 +69,6 @@ h2 {
 h3 {
     font-weight: 400;
     line-height:37px;
-    &.contentTypeName {
-    	margin-top: 25px;
-	}
 	&.contentTypeName small a{
 		background:$btn-color;
 		@include border-radius(20px);

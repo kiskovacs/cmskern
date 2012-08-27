@@ -1,13 +1,15 @@
 package controllers;
 
+import models.ContentNode;
 import models.ContentType;
+import models.vo.SearchResult;
 import play.Play;
 import play.mvc.Before;
 import play.mvc.Controller;
-import play.mvc.Router;
 import play.mvc.With;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,12 +32,16 @@ public class Application extends Controller {
         renderArgs.put("siteTypes", ContentType.findByGroup("site"));
     }
 
-    // Redirect to article list
+    // Home page listing recently updated content
     public static void index() {
-        Map<String, Object> argMap = new HashMap<String, Object>(1);
-        argMap.put("type", "article");
-        String url = Router.getFullUrl("ContentNodes.list", argMap);
-        redirect(url);
+        List<ContentType> types = ContentType.findAll();
+        // get some content lately modified to start with
+        Map<ContentType, SearchResult<ContentNode>> content = new HashMap<ContentType, SearchResult<ContentNode>>();
+        for (ContentType type : types) {
+            SearchResult<ContentNode> nodes = ContentNode.findByType(type.name, 0, 10);
+            content.put(type, nodes);
+        }
+        render(content);
     }
 
 }

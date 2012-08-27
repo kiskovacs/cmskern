@@ -46,10 +46,6 @@ h3 {
   font-weight: 400;
   line-height: 37px;
 }
-/* line 72, ../../compass/sass/cmskern.scss */
-h3.contentTypeName {
-  margin-top: 25px;
-}
 /* line 75, ../../compass/sass/cmskern.scss */
 h3.contentTypeName small a {
   background: #f7941d;
