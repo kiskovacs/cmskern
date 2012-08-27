@@ -69,23 +69,29 @@ h2 {
 h3 {
     font-weight: 400;
     line-height:37px;
-	&.contentTypeName small a{
-		background:$btn-color;
-		@include border-radius(20px);
-		border:none;
-		float: left;
-    	height: 20px;
-    	margin: 10px 0 0 5px;
-    	position: absolute;
-    	width: 20px;
-    	.icon-plus {
-    		margin: -8px 0 5px 3px;
-		}
-		&:hover{
-		background:$lead-color;
-		}
-	}
 }
+
+.contentTypeName small a{
+  background:$btn-color;
+  @include border-radius(20px);
+  border:none;
+  float: left;
+  height: 20px;
+  margin: 10px 0 0 5px;
+  position: absolute;
+  width: 20px;
+  &:hover{
+    background:$lead-color;
+  }
+}
+h1.contentTypeName small a .icon-plus {
+  margin: 2px 3px 0;
+}
+h3.contentTypeName small a .icon-plus {
+  margin: -8px 0 5px 3px;
+}
+
+
 .btn_add a.ng-directive{
 	background:#f7941d;
     margin: 13px 0 40px 5px;
@@ -250,7 +256,7 @@ box-shadow:none;
 .nav-list{
 background:rgba(255, 255, 255, 0.8);
 @include border-radius(5px);
-@include box-shadow(rgba(0, 0, 0, 0.2) 0px 0px 5px);
+@include box-shadow(rgba(0, 0, 0, 0.1) 0px 0px 5px);
 padding:10px 0 0 0;
 margin:0;
 }

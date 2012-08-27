@@ -47,7 +47,7 @@ h3 {
   line-height: 37px;
 }
 /* line 75, ../../compass/sass/cmskern.scss */
-h3.contentTypeName small a {
+.contentTypeName small a {
   background: #f7941d;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -61,12 +61,18 @@ h3.contentTypeName small a {
   position: absolute;
   width: 20px;
 }
+
+h1.contentTypeName small a .icon-plus {
+    margin: 2px 3px 0;
+}
+
 /* line 84, ../../compass/sass/cmskern.scss */
 h3.contentTypeName small a .icon-plus {
   margin: -8px 0 5px 3px;
 }
+
 /* line 87, ../../compass/sass/cmskern.scss */
-h3.contentTypeName small a:hover {
+.contentTypeName small a:hover {
   background: #30a4b1;
 }
 
@@ -342,7 +348,7 @@ div.mini .control-group {
   margin: 15px 0 7px 0;
   padding: 0 0 0 35px;
   position: relative;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 /* line 278, ../../compass/sass/cmskern.scss */
 .nav-list .nav-header:first-child {

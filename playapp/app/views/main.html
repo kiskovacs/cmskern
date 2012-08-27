@@ -80,9 +80,9 @@
                                 <div class="menu-arrow"></div> Editiorial Content
                             </li>
                             #{list items:editorialTypes, as:'contentType'}
-                                <li class="contentType">${contentType.displayName}:</li>
-                                <li class="listContentType #{isActiveEntry typeName:contentType.name,action:'list' /}"><a href="@{ContentNodes.list(contentType.name)}">List</a></li>
-                                <li class="newContentType #{isActiveEntry typeName:contentType.name,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.name)}">New</a></li>
+                                <li class="contentType #{isActiveEntry typeName:contentType.name /}">
+                                    <a href="@{ContentNodes.list(contentType.name)}">${contentType.displayName}</a>
+                                </li>
                                 <div class="separator"></div>
                             #{/list}
 
@@ -91,9 +91,9 @@
                                 <div class="menu-arrow"></div> Site Structure
                             </li>
                             #{list items:siteTypes, as:'contentType'}
-                                <li class="contentType">${contentType.displayName}:</li>
-                                <li class="site listContentType #{isActiveEntry typeName:contentType.name,action:'list' /}"><a href="@{ContentNodes.list(contentType.name)}">List</a></li>
-                                <li class="site newContentType #{isActiveEntry typeName:contentType.name,action:'edit' /}"><a href="@{ContentNodes.blank(contentType.name)}">New</a></li>
+                                <li class="contentType #{isActiveEntry typeName:contentType.name /}">
+                                    <a href="@{ContentNodes.list(contentType.name)}">${contentType.displayName}</a>
+                                </li>
                                 <div class="separator"></div>
                             #{/list}
 
@@ -101,14 +101,14 @@
                             <li class="nav-header admin-tasks">
                                 <div class="menu-arrow"></div> Admin Tasks
                             </li>
-							<li class="contentType">Content Types:</li>
-                            <li class="admin listContentType #{isActiveEntry typeName:'contentType',action:'list' /}"><a href="@{ContentTypes.list()}">List</a></li>
-                            <li class="admin newContentType #{isActiveEntry typeName:'contentType',action:'edit' /}"><a href="@{ContentTypes.blank()}">New</a></li>
+							<li class="contentType #{isActiveEntry typeName:'contentType' /}">
+                                <a href="@{ContentTypes.list()}">Content Types</a>
+                            </li>
                             <div class="separator"></div>
 
-							<li class="contentType">User:</li>
-                            <li class="admin listContentType #{isActiveEntry typeName:'user',action:'list' /}"><a href="@{Users.list()}">List</a></li>
-                            <li class="admin newContentType #{isActiveEntry typeName:'user',action:'edit' /}"><a href="@{Users.blank()}">New</a></li>
+							<li class="contentType #{isActiveEntry typeName:'user' /}">
+                                <a href="@{Users.list()}">User</a>
+                            </li>
 							<div class="separator"></div>
                         </ul>
                     </div>
@@ -116,7 +116,10 @@
 
                 <div class="span9 span-fixed-sidebar"><!-- content -->
                     <div class="page-header">
-                        <h1>#{get 'title' /} <small></small></h1>
+                        #{if title}
+                            <h1>#{get 'title' /}</h1>
+                        #{/if}
+                        #{get 'pageHeader' /}
                     </div>
                     #{doLayout /}
                 </div>

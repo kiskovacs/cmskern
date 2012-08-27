@@ -1,5 +1,11 @@
 #{extends 'main.html' /}
-#{set title: contentType.displayName + ' List' /}
+#{set 'pageHeader'}
+    <h1 class="contentTypeName">${contentType.displayName} <small>${contentType.description}
+        #{secure.check 'editor,admin'}
+            <a href="@{blank(contentType.name)}"><i class="icon-plus"></i></a> </small>
+        #{/secure.check}
+    </h1>
+#{/set}
 
 #{set 'moreScripts'}
 <script type="text/javascript" src="@{'/public/javascripts/jquery/jquery-ui-1.8.18.custom.min.js'}"></script>
