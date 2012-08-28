@@ -21,32 +21,32 @@
 
     #{if start > 1}
         <li>
-            #{a @list(_caller.params.typeName).add('page', 1)}&larr;#{/a}
+            #{a @list(_caller.contentType.name).add('page', 1)}&larr;#{/a}
         </li>
     #{/if}
 
     #{if _caller.page > 1}
         <li>
-            #{a @list(_caller.params.typeName).add('page', _caller.page-1)}«#{/a}
+            #{a @list(_caller.contentType.name).add('page', _caller.page-1)}«#{/a}
         </li>
     #{/if}
 
     %{ for (i in start..end) { }%
         <li class="#{if _caller.page == i}disabled#{/if}">
-            #{a @list(_caller.params.typeName).add('page', i)}${i}#{/a}
+            #{a @list(_caller.contentType.name).add('page', i)}${i}#{/a}
         </li>
     %{ } }%
 
 
     #{if _caller.page < nrPages}
         <li>
-            #{a @list(_caller.params.typeName).add('page', _caller.page+1), title: 'next'}»#{/a}
+            #{a @list(_caller.contentType.name).add('page', _caller.page+1), title: 'next'}»#{/a}
         </li>
     #{/if}
 
     #{if end < nrPages}
         <li>
-            #{a @list(_caller.params.typeName).add('page', nrPages)}&rarr;#{/a}
+            #{a @list(_caller.contentType.name).add('page', nrPages)}&rarr;#{/a}
         </li>
     #{/if}
 
