@@ -30,6 +30,12 @@ GET     /blobs/o/{id}                           Blobs.getBinaryById
 GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 
+# ~~ Map static resources from the /app/public folder to the /public path
+GET     /image/img/o                            staticFile:public/images/missing.gif
+GET     /favicon.ico                            staticFile:public/favicon.ico
+GET     /public/                                staticDir:public
+GET     /test/                                  staticDir:test
+
 
 # ~~ Import CRUD routes (for admin area)
 *       /admin                                  module:crud
@@ -46,11 +52,3 @@ PUT     /{type}/{id}                            ContentNodesApi.update
 POST    /{type}                                 ContentNodesApi.create
 DELETE  /{type}/{id}                            ContentNodesApi.delete
 GET     /{type}/{id}/versions                   ContentNodes.versions
-
-
-# ~~ Ignore favicon requests
-GET     /favicon.ico                            404
-
-# ~~ Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-GET     /test/                                  staticDir:test
