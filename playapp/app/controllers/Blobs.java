@@ -59,6 +59,9 @@ public class Blobs extends Controller {
 
     public static void getBinaryById(String id) {
         Logger.info("Lookup asset by ID: %s", id);
+        if (!MongoDbUtils.isValidId(id)) {
+            notFound("Binary could not be found, invalid ID " + id);
+        }
         GridFSDBFile dbFile = MongoDbUtils.getFileById(id);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for asset "+ id);
         Logger.info("    ... return GridFS file: %s", dbFile.getFilename());

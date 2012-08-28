@@ -27,6 +27,10 @@ public final class MongoDbUtils {
 
     // ~~ Basics
 
+    public static boolean isValidId(String id) {
+        return ObjectId.isValid(id);
+    }
+
     public static String getDBServers() {
         return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
     }
