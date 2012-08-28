@@ -72,7 +72,7 @@ angular.widget('my:form', function(element) {
                         subfield.id = subfield.title;
                     }
                     console.log("Add sub element for type: " + subfield.id);
-                    var elGroup = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + subfield.id + '">' + subfield.title + '</div>');
+                    var elGroup = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + subfield.id + '"></div>');
                     var arraySuffix = "";
                     console.log("scope idx: " + scope.$index);
 
@@ -115,7 +115,7 @@ angular.widget('my:form', function(element) {
 
             if (field.ui_class != 'hidden') {
                 
-                var controlGroup = angular.element('<div class="control-group'+ ((field.ui_class)?' ' +field.ui_class:'') + '"></div>');
+                var controlGroup = angular.element('<div class="control-group ' + field.type + ' '+ ((field.ui_class)?' ' +field.ui_class:'') + '"></div>');
 
                 // ~~ Label for input element
                 controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
@@ -148,10 +148,11 @@ angular.widget('my:form', function(element) {
 
                     // FIXME: das ist provisorisch reingenommen, damit ich produktive CTs entwickeln kann und
                     // selectable in sortable nicht funktioniert.
+                    fieldElStr += '<div class="radiogroup">';
                     for (var idx in field.enum) {
                         fieldElStr += '<input type="radio" name="' + qualifiedName + '" value="' +field.enum[idx]+ '">' + field.enum[idx];
                     }
-
+                    fieldElStr += '</div>';
 
                 }
                 else if (field.ui_callout) {

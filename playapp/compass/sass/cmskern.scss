@@ -94,7 +94,7 @@ h3.contentTypeName small a .icon-plus {
 
 .btn_add a.ng-directive{
 	background:#f7941d;
-    margin: 13px 0 40px 5px;
+    margin: 5px 0 10px 5px;
     padding: 5px 10px;
     float:left;
     color:#fff;
@@ -359,7 +359,7 @@ background:none;
     margin-left: 25px;
 }
 fieldset {
-  padding-bottom:20px;
+  padding-bottom:5px;
 }
 
 form#selection_form {
@@ -400,60 +400,61 @@ legend .ng-directive {
 }
 
 .form-horizontal .control-group {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
+
+.form-horizontal .control-group:before {
+    clear: both;
+}
+
 .form-horizontal .control-group > label {
     text-align: left;
+    width: 170px;
 }
+
+.controls ul.ui-selectable,
+.controls .radiogroup {
+  margin-left: 170px;
+}
+
 .form-horizontal .controls {
-    margin-left: 0px;
+    margin-left: 0;
 }
+
+.help-block {
+  margin-left: 170px;
+  margin-top: 0;
+}
+
 .root > .control-group > .control-label:first-child{
-font-size:112%;
 font-weight:500;
 }
+
+.control-group.object > .controls {
+  clear: both;
+}
+
 .subelements{
 padding:20px;
 background:rgba(255, 255, 255, 0.5);
 }
-.subelements .control-group{
-padding:10px;
-}
+
 ul.sortable .subelements{
 background:rgba(255, 255, 255, 0.3);
 }
-.subelements.settings{
-padding:20px 40px;
-width:470px;
-}
 .root + .control-group{
 margin:0 0 0 -20px;
-} 
-.input-large,
-.input-xlarge,
-.input-xxlarge{
+}
 
+#nodeListSearch input {
+  margin-bottom: 0;
 }
-.input-append .input-xlarge{
-}
-.input-append input[name="contentNode.teaser.image_idref"]{
-width:473px;
-}
+
 .input-prepend .add-on, .input-append .add-on{
 background-color:#d9d8d8;
 }
-.control-group .control-group .input-xxlarge{
-
-}
-input[type="checkbox"]{
-float:left;
-margin:-20px 0 0 -20px;
-}
-label[for="contentNode.online"]{
-margin-left:20px;
-}
-input[name="contentNode.online"]{
-margin-left:0px;
+.input-prepend, .input-append {
+  margin-bottom: 0px;
 }
 
 input[type="radio"]{
@@ -467,9 +468,9 @@ background:#d9d8d8;
 border:none;
 }
 .form-actions{
-width:90%px;
-text-align:right;
-    background:rgba(255, 255, 255, 0.5);
+    width:90%;
+    text-align:right;
+    background: none;
     border-top: none;
     margin-bottom: 18px;
     margin-top: 18px;
@@ -527,7 +528,7 @@ ul.sortable {
 }
 
 ul.sortable li {
-  padding: 15px;
+  padding: 5px;
   margin: 5px;
   cursor: move;
 }
@@ -614,8 +615,8 @@ footer p {
     margin:0;
 }
 .span12, .container{
-	width:none;
-	margin:none;
+	width:0;
+	margin:0;
 }
 
 

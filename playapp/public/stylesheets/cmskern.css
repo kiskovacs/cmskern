@@ -79,7 +79,7 @@ h3.contentTypeName small a .icon-plus {
 /* line 92, ../../compass/sass/cmskern.scss */
 .btn_add a.ng-directive {
   background: #f7941d;
-  margin: 13px 0 40px 5px;
+  margin: 5px 0 10px 5px;
   padding: 5px 10px;
   float: left;
   color: #fff;
@@ -458,7 +458,7 @@ div.mini .control-group {
 
 /* line 358, ../../compass/sass/cmskern.scss */
 fieldset {
-  padding-bottom: 25px;
+  padding-bottom: 5px;
 }
 
 form#selection_form {
@@ -505,12 +505,22 @@ legend .ng-directive {
 
 /* line 380, ../../compass/sass/cmskern.scss */
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+}
+
+.form-horizontal .control-group:before {
+    clear: both;
 }
 
 /* line 383, ../../compass/sass/cmskern.scss */
 .form-horizontal .control-group > label {
   text-align: left;
+  width: 170px;
+}
+
+.controls ul.ui-selectable,
+.controls .radiogroup {
+    margin-left: 170px;
 }
 
 /* line 387, ../../compass/sass/cmskern.scss */
@@ -518,21 +528,24 @@ legend .ng-directive {
   margin-left: 0;
 }
 
+.help-block {
+  margin-left: 170px;
+  margin-top: 0;
+}
+
 /* line 390, ../../compass/sass/cmskern.scss */
 .root > .control-group > .control-label:first-child {
-  font-size: 112%;
   font-weight: 500;
+}
+
+.control-group.object > .controls {
+    clear: both;
 }
 
 /* line 394, ../../compass/sass/cmskern.scss */
 .subelements {
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
   background: rgba(255, 255, 255, 0.5);
-}
-
-/* line 398, ../../compass/sass/cmskern.scss */
-.subelements .control-group {
-  padding: 10px;
 }
 
 /* line 401, ../../compass/sass/cmskern.scss */
@@ -540,20 +553,13 @@ ul.sortable .subelements {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* line 404, ../../compass/sass/cmskern.scss */
-.subelements.settings {
-  padding: 20px 40px;
-  width: 470px;
-}
-
 /* line 408, ../../compass/sass/cmskern.scss */
 .root + .control-group {
   margin: 0 0 0 -20px;
 }
 
-/* line 418, ../../compass/sass/cmskern.scss */
-.input-append input[name="contentNode.teaser.image_idref"] {
-  width: 473px;
+#nodeListSearch input {
+    margin-bottom: 0;
 }
 
 /* line 421, ../../compass/sass/cmskern.scss */
@@ -561,20 +567,8 @@ ul.sortable .subelements {
   background-color: #d9d8d8;
 }
 
-/* line 427, ../../compass/sass/cmskern.scss */
-input[type="checkbox"] {
-  float: left;
-  margin: -20px 0 0 -20px;
-}
-
-/* line 431, ../../compass/sass/cmskern.scss */
-label[for="contentNode.online"] {
-  margin-left: 20px;
-}
-
-/* line 434, ../../compass/sass/cmskern.scss */
-input[name="contentNode.online"] {
-  margin-left: 0px;
+.input-prepend, .input-append {
+    margin-bottom: 0;
 }
 
 /* line 438, ../../compass/sass/cmskern.scss */
@@ -584,7 +578,7 @@ input[type="radio"] {
 
 /* line 441, ../../compass/sass/cmskern.scss */
 ul.selectBox + input[type="radio"] {
-  margin: 0 5px 0 0px;
+  margin: 0 5px 0 0;
 }
 
 /* line 444, ../../compass/sass/cmskern.scss */
@@ -595,9 +589,9 @@ pre {
 
 /* line 448, ../../compass/sass/cmskern.scss */
 .form-actions {
-  width: 90%px;
+  width: 90%;
   text-align: right;
-  background: rgba(255, 255, 255, 0.5);
+  background: none;
   border-top: none;
   margin-bottom: 18px;
   margin-top: 18px;
@@ -668,7 +662,7 @@ ul.sortable {
 
 /* line 508, ../../compass/sass/cmskern.scss */
 ul.sortable li {
-  padding: 15px;
+  padding: 5px;
   margin: 5px;
   cursor: move;
 }
