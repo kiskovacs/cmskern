@@ -1,6 +1,13 @@
 <!--suppress XmlUnboundNsPrefix -->
 #{extends 'main.html' /}
-#{set title: 'Edit ' + contentType.displayName /}
+#{set 'pageHeader'}
+    <h1>Edit ${contentType.displayName} <small>#${contentNode.id}</small></h1>
+    <div class="versionInfo">
+        Current Version: <span class="version">${contentNode.version}</span> <br />
+        edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
+        by <span class="author">${contentNode.modifier}</span>
+    </div>
+#{/set}
 
 #{set 'moreStyles'}
     #{stylesheet 'ui-lightness/jquery-ui-1.8.18.custom.css' /}
@@ -46,19 +53,6 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="row-fluid">
-
-    <div class="metadata">
-        <div class="idInfo">
-            <span class="version">#${contentNode.id}</span>
-        </div>
-        <div class="versionInfo">
-            Current Version: <span class="version">${contentNode.version}</span> <br />
-            edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
-            by <span class="author">${contentNode.modifier}</span>
-        </div>
-        <div style="clear: both;"></div>
-    </div>
-
     <div ng:controller="EditContentNodeCtrl">
 
         <form class="form-horizontal" ng:submit="submit()">

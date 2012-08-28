@@ -461,16 +461,35 @@ fieldset {
   padding-bottom: 25px;
 }
 
-/* line 362, ../../compass/sass/cmskern.scss */
+form#selection_form {
+    margin-bottom: 0;
+}
+
 #selection_form fieldset {
-  padding-bottom: 0px;
+    padding-bottom: 0;
+}
+
+/* line 362, ../../compass/sass/cmskern.scss */
+#selection_form h3 {
+    float: left;
+}
+#selection_form fieldset.search_box {
+  float: right;
+}
+
+#selection_form .pagination a {
+    line-height: 24px;
+}
+
+#selection_form .btn {
+    padding: 5px 10px;
 }
 
 /* line 367, ../../compass/sass/cmskern.scss */
 legend {
   color: #808080;
   font-size: 16px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   border: none;
 }
 
@@ -491,13 +510,12 @@ legend .ng-directive {
 
 /* line 383, ../../compass/sass/cmskern.scss */
 .form-horizontal .control-group > label {
-  float: none;
   text-align: left;
 }
 
 /* line 387, ../../compass/sass/cmskern.scss */
 .form-horizontal .controls {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* line 390, ../../compass/sass/cmskern.scss */
@@ -714,6 +732,7 @@ ul.selectBox {
 #search_results {
   margin-top: 20px;
   margin-bottom: 20px;
+  clear: both;
 }
 
 /* ~~ Table elements ~~ */

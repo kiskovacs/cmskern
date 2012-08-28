@@ -193,7 +193,7 @@ public class ContentNode {
         BasicDBObject q = createQuery(type);
         q = addQueryByTitle(q, searchTerm, matchCase);
         DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
-        Logger.info("%s query for %s...", type, searchTerm);
+        Logger.info("%s query for '%s' ...", type, searchTerm);
         final List<DBObject> nodes = dbCur.toArray();
         Logger.info("... %d total matches", dbCur.count());
 

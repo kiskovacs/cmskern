@@ -1,12 +1,12 @@
 <div>
     #{if result.objects}
-        <table class="table table-striped">
+        <table class="table table-striped table-condensed table-hover">
             <thead>
             <tr>
                 <th width="5%">ID</th>
-                <th width="15%">Title</th>
-                <th width="15%">Catchline</th>
-                <th width="50%">Teaser Text</th>
+                <th width="25%">Title</th>
+                <th width="20%">Catchline</th>
+                <th width="35%">Teaser Text</th>
                 <th width="15%">Teaser Image</th>
             </tr>
             </thead>
@@ -23,7 +23,7 @@
                     ${article.data.catchline}
                 </td>
                 <td>
-                    ${article.data.teaser?.text}
+                    ${article.data.teaser?.text?.abbreviate(30)}
                 </td>
                 <td>
                     #{imagePreview id: article.data.teaser?.image_idref /}

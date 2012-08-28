@@ -358,14 +358,33 @@ background:none;
 .content fieldset {
     margin-left: 25px;
 }
-fieldset{
-  padding-bottom:25px;
+fieldset {
+  padding-bottom:20px;
+}
+
+form#selection_form {
+  margin-bottom: 0;
 }
 
 #selection_form fieldset {
-  padding-bottom: 0px;
+  padding-bottom:0;
 }
 
+#selection_form h3 {
+  float: left;
+}
+
+#selection_form fieldset.search_box {
+  float: right;
+}
+
+#selection_form .pagination a {
+  line-height: 24px;
+}
+
+#selection_form .btn {
+  padding: 5px 10px;
+}
 
 legend {
     color: #808080;
@@ -384,7 +403,6 @@ legend .ng-directive {
     margin-bottom: 10px;
 }
 .form-horizontal .control-group > label {
-    float: none;
     text-align: left;
 }
 .form-horizontal .controls {
@@ -565,12 +583,10 @@ ul.selectBox {
     box-shadow: 0 0 5px #87B089;
 }
 
-
-
-
 #search_results {
     margin-top: 20px;
     margin-bottom:20px;
+    clear: both;
 }
 
 

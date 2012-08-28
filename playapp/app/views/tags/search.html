@@ -1,6 +1,6 @@
 #{form action:@list(_caller.contentType.name).remove('page'), method:'GET'}
-    <input type="text" name="search" value="${params.search?.escape()?.raw()}" /> <input type="submit" value="&{'crud.search'}" />
+    <input type="text" name="search" value="${params.search?.escape()?.raw()}" class="search-query" /> <input type="submit" value="&{'crud.search'}" />
     #{if _caller.params.search}
-        (<a href="@{list(_caller.contentType.name)}">&{'crud.list.totalSize', _caller.nodes.totalCount}</a>)
+        (&{'crud.list.totalSize', _caller.nodes.totalCount})
     #{/if}
 #{/form}

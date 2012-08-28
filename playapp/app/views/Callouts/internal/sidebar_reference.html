@@ -7,9 +7,9 @@
 <h3>Select Sidebar</h3>
 
 <!-- Search mask -->
-<fieldset>
+<fieldset class="search_box">
     <!-- label for="search_term"></label -->
-    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium search-query" />
     <button id="search_sidebars" class="btn">Search by Title</button>
 </fieldset>
 
@@ -38,6 +38,12 @@
     // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
     var selectedId = "";
     var selectedTitle = "";
+
+    $(function () {
+        selectedId = $('#select_id').val();
+        selectedTitle = $('#select_title').val();
+        displaySelectionPage(1);
+    });
 
     function updateRef(val, title) {
         selectedId = val;

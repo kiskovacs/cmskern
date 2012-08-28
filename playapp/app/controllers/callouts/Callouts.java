@@ -29,9 +29,11 @@ public class Callouts extends Controller {
     public static void get(String name) {
         Map<String, Object> model = new HashMap<String, Object>();
 
+        // Find object types to refer to
         if (name.contains("/imageGallery_")) {
             model.put("imageGalleries", ContentNode.findByType("imageGallery", 0, getPageSize()).objects);  // TODO: improve by using paging
         }
+        // ... for all the other content types AJAX calls are triggered
 
         // Prepare names of properties which should be updated by this callout
         String[] srcPropNames    = params.getAll("src_properties[]");

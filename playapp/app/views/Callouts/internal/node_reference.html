@@ -9,9 +9,9 @@
 <h3>Select Node</h3>
 
 <!-- Search mask -->
-<fieldset>
+<fieldset class="search_box">
     <!-- label for="search_term"></label -->
-    <input type="text" id="search_term" name="search_term" value="" class="input-medium" />
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium search-query" />
     <button id="search_nodes" class="btn">Search by Title</button>
 </fieldset>
 
@@ -50,6 +50,7 @@
         selectedId = $('#select_id').val();
         selectedTitle = $('#select_title').val();
         selectedAncestors = $('#select_ancestors').val() + ',' + selectedId;
+        displaySelectionPage(1);
     });
 
     function updateRef(val, title, ancestors) {
