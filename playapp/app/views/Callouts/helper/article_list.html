@@ -23,10 +23,10 @@
                     ${article.data.catchline}
                 </td>
                 <td>
-                    ${article.data.teaser.text}
+                    ${article.data.teaser?.text}
                 </td>
                 <td>
-                    #{imagePreview id: article.data.teaser.image_idref /}
+                    #{imagePreview id: article.data.teaser?.image_idref /}
                 </td>
             </tr>
             #{/list}
