@@ -684,6 +684,11 @@ ul.sortable li {
   cursor: pointer;
 }
 
+.modal {
+    top: 40%;
+    left: 40%;
+}
+
 /* line 528, ../../compass/sass/cmskern.scss */
 .bootbox.modal {
   max-height: 760px;

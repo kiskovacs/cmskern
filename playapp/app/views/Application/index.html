@@ -9,9 +9,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var origColor = $("tr.highlight > td").css('background-color');
-        $("tr.highlight > td").animate({backgroundColor: '#33ff33'});
-        $("tr.highlight > td").animate({backgroundColor: origColor});
+        highlight($("tr.highlight > td"));
     });
 </script>
 

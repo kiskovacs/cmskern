@@ -27,4 +27,10 @@ function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
     });
 
     confirmModal.modal('show');
-};
+}
+
+function highlight(jqelem) {
+    var origColor = jqelem.css('background-color');
+    jqelem.animate({backgroundColor: '#33ff33'});
+    jqelem.animate({backgroundColor: origColor});
+}

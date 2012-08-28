@@ -43,6 +43,7 @@
         $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, val));
         selectedTitle = title;
         $("#select_title").val(title);
+        highlight($("#select_id"));
     }
 
     $("#select_title").on("change", function (event) {
