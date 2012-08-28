@@ -3,5 +3,5 @@
 }*
 %{ if (!_node) _node = models.ContentNode.findByIdRaw(_id) }%
 #{if _node?.data?.asset_ref}
-  <img class="image_thumbnail" src="/blobs/o/${_node.data.asset_ref}" alt="${_node.data?.title}">
+  <img class="image_thumbnail" src="/blobs/o/${_node.data.asset_ref}" alt="${_node.data?.title}" title="${_node.data?.title}">
 #{/if}

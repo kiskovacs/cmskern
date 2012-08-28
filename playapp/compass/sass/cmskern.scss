@@ -363,6 +363,7 @@ fieldset {
 }
 
 form#selection_form {
+  /* Add border on top? */
   margin-bottom: 0;
 }
 
@@ -384,6 +385,10 @@ form#selection_form {
 
 #selection_form .btn {
   padding: 5px 10px;
+}
+
+#selection_form #select_id {
+  vertical-align: top;
 }
 
 legend {
@@ -486,6 +491,7 @@ img.ui-datepicker-trigger {
 
 img.image_thumbnail {
   width: 75px;
+  display: inline;
 }
 
 /*----Buttons-----*/
@@ -547,9 +553,17 @@ ul.sortable li .input-xxlarge {
     cursor: pointer;
 }
 
+.reference img.thumbnail {
+  margin-left: 10px;
+}
+
 .modal {
   top: 40%;
   left: 40%;
+}
+
+.modal-body {
+  padding-bottom: 0;
 }
 
 .bootbox.modal {
@@ -587,6 +601,11 @@ ul.selectBox {
 .selectBox li.ui-selected {
     background: #9CB89D;
     box-shadow: 0 0 5px #87B089;
+}
+
+#file-uploader {
+  float: left;
+  padding-left: 10px;
 }
 
 #search_results {
@@ -658,6 +677,7 @@ footer p {
 
 .versionInfo {
     float: right;
+    color: #999;
 }
 
 /* Styles you shouldn't keep as they are for displaying this base example only */

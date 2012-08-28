@@ -83,7 +83,7 @@ public class Asset {
         while (cursor.hasNext()) {
             assets.add(fromDBObject(cursor.next()));
         }
-        Logger.info("Returning %s files, offset: %d", assets, offset);
+        Logger.info("Returning %d files, offset: %d", assets.size(), offset);
         return new SearchResult<Asset>(assets, cursor.count());
     }
 

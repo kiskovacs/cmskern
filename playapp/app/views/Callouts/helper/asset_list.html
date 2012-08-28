@@ -4,7 +4,7 @@
             #{list items: result.objects, as:'asset'}
                 <li>
                     <a href="#" onclick="updateRef('${asset.id}')">
-                        <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}">
+                        <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}" title="${asset.filename}">
                     </a>
                 </li>
             #{/list}

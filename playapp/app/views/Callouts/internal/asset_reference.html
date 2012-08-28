@@ -1,6 +1,6 @@
 <!-- Select one of the existing assets or upload a new one -->
 
-<h3>Select Asset or Upload</h3>
+<h3>Select Asset or </h3>
 
 <div id="file-uploader">
 </div>
@@ -21,7 +21,7 @@
         <label class="control-label" for="select_id">Asset ID</label>
         <div class="controls">
             <input type="text" id="select_id" name="value" value="${fields['id'].value}" readonly="readonly"/>
-            <img class="image_thumbnail" id="select_thumb" src="/blobs/o/${fields['id'].value}">
+            <img class="thumbnail image_thumbnail" id="select_thumb" src="/blobs/o/${fields['id'].value}">
         </div>
     </div>
 </fieldset>
@@ -86,6 +86,7 @@
                 //console.log('Set value to ' + selectedId);
                 $("#select_id").val(selectedId);
                 $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, selectedId));
+                highlight($("#select_id"));
             });
         });
     }

@@ -167,17 +167,17 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '  <span class="add-on" ng:click="select_ref_value(\'' + field.ui_callout.url + '\',' +
                         '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
                     fieldElStr += '<i class="icon-edit"></i></span>';
-                    fieldElStr += '</div>';
                     // Embedd image with dynamic bound image reference
                     if (field.ui_class == 'image_thumbnail') {
                         if (fieldKey == 'asset_ref') {
                             // ... directly link to the asset
-                            fieldElStr += ' <img class="reference image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
+                            fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
                         } else {
                             // ... references an image object which itself must be resolved for the concrete asset
-                            fieldElStr += ' <img class="reference image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref"> ';
+                            fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref"> ';
                         }
                     }
+                    fieldElStr += '</div>';
                 }
                 else if (field.format == 'date') {
                     fieldElStr  = '<div class="reference">';
@@ -198,7 +198,7 @@ angular.widget('my:form', function(element) {
                     //    fieldElStr += attribute + '="' + field[attribute] + '" ';
                     //});
 
-                    fieldElStr += ' rows="12" cols="72"></textarea>';
+                    fieldElStr += ' rows="24" cols="90" style="width:740px"></textarea>';
                 }
                 else if (field.ui_editor == 'textarea') {
                     fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
