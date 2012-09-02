@@ -33,9 +33,15 @@
 <script type="text/javascript">
 
     // we need to hold the values in a separate variable, otherwise data is lost when the dialog is closed
-    var selectedId = "";
+    var selectedId    = "";
     var selectedTitle = "";
-    var THUMB_URL = "/image/ID/img/o?propertyName=asset_ref";
+    var THUMB_URL     = "/image/ID/img/o?propertyName=asset_ref";
+
+    $(function() {
+        selectedId = $('#select_id').val();
+        selectedTitle = $('#select_title').val();
+        displaySelectionPage(1);
+    });
 
     function updateRef(val, title) {
         selectedId = val;

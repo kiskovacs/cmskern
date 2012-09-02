@@ -19,10 +19,10 @@
                     <a href="#" onclick="updateRef('${image._id}', '${image.data.title}')">${image.data.title}</a>
                 </td>
                 <td>
-                    ${image.data.keywords}
+                    ${image.data.keywords?.join(', ')}
                 </td>
                 <td>
-                    #{imagePreview node: image /}
+                    <a href="#" onclick="updateRef('${image._id}', '${image.data.title}')">#{imagePreview node: image /}</a>
                 </td>
             </tr>
             #{/list}
