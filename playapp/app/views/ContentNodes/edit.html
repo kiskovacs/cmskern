@@ -64,5 +64,11 @@
             </div>
         </form>
 
+        #{if controllers.Application.isDebugMode()}
+            <div id="model">
+                contentNode = <pre>{{contentNode}}</pre>
+            </div>
+        #{/if}
     </div>
+
 </div>

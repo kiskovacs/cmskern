@@ -23,6 +23,10 @@ public class Application extends Controller {
         return Integer.parseInt(Play.configuration.getProperty("cmskern.editorial.pagesize", "50"));
     }
 
+    public static boolean isDebugMode() {
+        return Boolean.parseBoolean(Play.configuration.getProperty("cmskern.debugmode", "false"));
+    }
+
     // ~~
 
     @Before
