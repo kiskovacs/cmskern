@@ -17,8 +17,13 @@ angular.widget('my:form', function(element) {
             
             console.log("----> field: " + fullyQualifiedName + ", relative: " + qualifiedName);
 
+            // if no specific UI constraints set, at least initialize them
+            if (!field.ui) {
+                field.ui = {};
+            }
+
             // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
-            if (field.type == 'array' && field.items && field.ui_class != 'compact') {
+            if (field.type == 'array' && field.items && field.ui.class != 'compact') {
 
                 var childElem = fieldKey + 'Elem';
                 var multiTyped = true;
@@ -72,7 +77,7 @@ angular.widget('my:form', function(element) {
                         subfield.id = subfield.title;
                     }
                     console.log("Add sub element for type: " + subfield.id);
-                    var elGroup = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + subfield.id + '"></div>');
+                    var elGroup = angular.element('<div class="'+ ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + subfield.id + '"></div>');
                     var arraySuffix = "";
                     console.log("scope idx: " + scope.$index);
 
@@ -113,21 +118,21 @@ angular.widget('my:form', function(element) {
 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start Render Field Type
 
-            if (field.ui_class != 'hidden') {
+            if (field.ui.class != 'hidden') {
                 
-                var controlGroup = angular.element('<div class="control-group ' + field.type + ' '+ ((field.ui_class)?' ' +field.ui_class:'') + '"></div>');
+                var controlGroup = angular.element('<div class="control-group ' + field.type + ' '+ ((field.ui.class)?' ' +field.ui.class:'') + '"></div>');
 
                 // ~~ Label for input element
                 controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
                 var controlElem = angular.element('<div class="controls">');
 
                 var typeLength = "medium";
-                if (field.ui_width) {
-                    typeLength = field.ui_width;
+                if (field.ui.width) {
+                    typeLength = field.ui.width;
                 }
                 var lengthCssClassName = 'input-' + typeLength;
 
-                if (field.type == 'array' && field.ui_class == 'compact') {
+                if (field.type == 'array' && field.ui.class == 'compact') {
                     fieldElStr  = '<input type="text" class="valueArray ' + lengthCssClassName + '" ui:item="' + qualifiedName + '" ';
                     fieldElStr += ' ui:valueArray >';
                 }
@@ -155,20 +160,20 @@ angular.widget('my:form', function(element) {
                     fieldElStr += '</div>';
 
                 }
-                else if (field.ui_callout) {
+                else if (field.ui.callout) {
                     fieldElStr  = '<div class="reference input-append">';
                     fieldElStr += '  <input class="' + lengthCssClassName + '" name="' + qualifiedName + '">';
                     var targetProperties = "";
-                    for (var i in field.ui_callout.target_properties) {
-                        targetProperties += field.ui_callout.target_properties[i] + "#";
+                    for (var i in field.ui.callout.target_properties) {
+                        targetProperties += field.ui.callout.target_properties[i] + "#";
                     }
                     console.log("fields to update: " + targetProperties);
-                    var srcPropNames = field.ui_callout.src_properties.join('#');
-                    fieldElStr += '  <span class="add-on" ng:click="select_ref_value(\'' + field.ui_callout.url + '\',' +
+                    var srcPropNames = field.ui.callout.src_properties.join('#');
+                    fieldElStr += '  <span class="add-on" ng:click="select_ref_value(\'' + field.ui.callout.url + '\',' +
                         '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
                     fieldElStr += '<i class="icon-edit"></i></span>';
                     // Embedd image with dynamic bound image reference
-                    if (field.ui_class == 'image_thumbnail') {
+                    if (field.ui.class == 'image_thumbnail') {
                         if (fieldKey == 'asset_ref') {
                             // ... directly link to the asset
                             fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
@@ -182,7 +187,7 @@ angular.widget('my:form', function(element) {
                 else if (field.format == 'date') {
                     fieldElStr  = '<div class="reference">';
                     fieldElStr += '<input type="text" class="datepicker ' + lengthCssClassName + '"';
-                    if (field.ui_class == 'readonly') {
+                    if (field.ui.class == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     } else {
                         // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
@@ -191,7 +196,7 @@ angular.widget('my:form', function(element) {
                     }
                     fieldElStr += '></div>';
                 }
-                else if (field.ui_editor == 'richtext') {
+                else if (field.ui.editor == 'richtext') {
                     fieldElStr = '<textarea ui:tinymce class="mceRichText ' + lengthCssClassName + '" name="' + qualifiedName + '" ';
 
                     //angular.forEach(field, function(attribute) {
@@ -200,9 +205,9 @@ angular.widget('my:form', function(element) {
 
                     fieldElStr += ' rows="24" cols="90" style="width:740px"></textarea>';
                 }
-                else if (field.ui_editor == 'textarea') {
+                else if (field.ui.editor == 'textarea') {
                     fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
-                    if (field.ui_class == 'readonly') {
+                    if (field.ui.class == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     //angular.forEach(field, function(attribute) {
@@ -212,7 +217,7 @@ angular.widget('my:form', function(element) {
                     fieldElStr += ' rows="8" cols="72"></textarea>';
                 }
                 else if (field.type == 'object') {
-                    fieldElStr = angular.element('<div class="'+ ((field.ui_class)?field.ui_class + ' ':'') + 'subelements ' + fieldKey + '"></div>');
+                    fieldElStr = angular.element('<div class="'+ ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + fieldKey + '"></div>');
                     //console.log("**** Include sub-object structure for " + fieldKey);
                     angular.forEach(field.properties, processField,
                         {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
@@ -224,7 +229,7 @@ angular.widget('my:form', function(element) {
                     if (globalContentNodeId == -1 && field.default == true) {
                         fieldElStr += ' checked="checked"';
                     }
-                    if (field.ui_class == 'readonly') {
+                    if (field.ui.class == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     fieldElStr += '>';
@@ -241,7 +246,7 @@ angular.widget('my:form', function(element) {
                     if (globalContentNodeId == -1 && field.default) {
                         fieldElStr += ' value="' + field.default + '"';
                     }
-                    if (field.ui_class == 'readonly') {
+                    if (field.ui.class == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     fieldElStr += '>';

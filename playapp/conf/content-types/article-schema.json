@@ -11,68 +11,88 @@
         "node_idref":{
             "title":"Navigationsknoten",
             "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/node_reference",
-                "src_properties":["id", "title"],
-                "target_properties":["node_idref", "node_title"]
-            },
-            "ui_width":"xlarge"
+            "ui":{
+                "callout":{
+                    "url":"/callouts/internal/node_reference",
+                    "src_properties":["id", "title"],
+                    "target_properties":["node_idref", "node_title"]
+                },
+                "width":"xlarge"
+            }
         },
         "node_title":{
             "title":"Nav.knoten Titel",
             "type":"string",
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "title":{
             "title":"Titel",
             "type":"string",
             "required":true,
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "catchline":{
             "title":"Spitzmarke",
             "type":"string",
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "teaser":{
             "title":"Teaser",
             "type":"object",
-            "ui_class":"compact",
+            "ui":{
+                "class":"compact"
+            },
             "properties":{
                 "title":{
                     "title":"Teaser Titel",
                     "type":"string",
-                    "ui_width":"xxlarge"
+                    "ui":{
+                        "width":"xxlarge"
+                    }
                 },
                 "text":{
                     "title":"Teaser Text",
                     "type":"string",
-                    "ui_editor":"textarea",
-                    "ui_width":"xxlarge"
+                    "ui":{
+                        "editor":"textarea",
+                        "width":"xxlarge"
+                    }
                 },
                 "image_idref":{
                     "title":"Image ID",
                     "type":"integer",
-                    "ui_callout":{
-                        "url":"/callouts/internal/image_reference",
-                        "src_properties":["id", "title"],
-                        "target_properties":["image_idref", "image_title"]
-                    },
-                    "ui_width":"xlarge",
-                    "ui_class":"image_thumbnail"
+                    "ui":{
+                        "callout":{
+                            "url":"/callouts/internal/image_reference",
+                            "src_properties":["id", "title"],
+                            "target_properties":["image_idref", "image_title"]
+                        },
+                        "width":"xlarge",
+                        "class":"image_thumbnail"
+                    }
                 },
                 "image_title":{
                     "title":"Image Titel",
                     "type":"string",
-                    "ui_width":"xlarge"
+                    "ui":{
+                        "width":"xlarge"
+                    }
                 }
             }
         },
         "body":{
             "title":"Body Text",
             "type":"string",
-            "ui_editor":"richtext",
-            "ui_width":"xxlarge"
+            "ui":{
+                "editor":"richtext",
+                "width":"xxlarge"
+            }
         },
         "related_articles":{
             "title":"Weiterführende Artikel",
@@ -85,39 +105,49 @@
                         "title":"Artikel",
                         "type":"integer",
                         "description":"References an internal URL to a selected article.",
-                        "ui_callout":{
-                            "url":"/callouts/internal/article_reference",
-                            "src_properties":["id", "title", "teaser"],
-                            "target_properties":["article_idref", "headline", "teaser"]
-                        },
-                        "ui_width":"xlarge"
+                        "ui":{
+                            "callout":{
+                                "url":"/callouts/internal/article_reference",
+                                "src_properties":["id", "title", "teaser"],
+                                "target_properties":["article_idref", "headline", "teaser"]
+                            },
+                           "width":"xlarge"
+                        }
                     },
                     "headline":{
                         "title":"Headline",
                         "type":"string",
-                        "ui_width":"xxlarge"
+                        "ui":{
+                            "width":"xxlarge"
+                        }
                     },
                     "teaser":{
                         "title":"Text",
                         "type":"string",
-                        "ui_width":"xxlarge",
-                        "ui_editor":"textarea"
+                        "ui":{
+                            "width":"xxlarge",
+                            "editor":"textarea"
+                        }
                     },
                     "image_idref":{
                         "title":"Image ID",
                         "description":"References an internal URL to a selected image.",
                         "type":"integer",
-                        "ui_callout":{
-                            "url":"/callouts/internal/image_reference",
-                            "src_properties":["id", "title"],
-                            "target_properties":["image_idref", "image_title"]
-                        },
-                        "ui_width":"xlarge"
+                        "ui":{
+                            "callout":{
+                                "url":"/callouts/internal/image_reference",
+                                "src_properties":["id", "title"],
+                                "target_properties":["image_idref", "image_title"]
+                            },
+                            "width":"xlarge"
+                        }
                     },
                     "image_title":{
                         "title":"Image Titel",
                         "type":"string",
-                        "ui_width":"xlarge"
+                        "ui":{
+                            "width":"xlarge"
+                        }
                     }
                 }
             }
@@ -131,21 +161,27 @@
                     "description":"Specify the embargo date of this article (format: YYYY-MM-DD).",
                     "type":"string",
                     "format":"date",
-                    "ui_width":"small"
+                    "ui":{
+                        "width":"small"
+                    }
                 },
                 "expire_date":{
                     "title":"Expire Date",
                     "description":"Specify the expire date of this article (format: YYYY-MM-DD).",
                     "type":"string",
                     "format":"date",
-                    "ui_width":"small"
+                    "ui":{
+                        "width":"small"
+                    }
                 },
                 "sort_date":{
                     "title":"Sort Date",
                     "description":"Specify the sort date of this article (format: YYYY-MM-DD).",
                     "type":"string",
                     "format":"date",
-                    "ui_width":"small"
+                    "ui":{
+                        "width":"small"
+                    }
                 }
             }
         },
@@ -153,42 +189,56 @@
             "title":"Tags",
             "description":"Multiple entries separated by comma (ie. aegypt,desert).",
             "type":"array",
-            "ui_class":"compact",
-            "ui_width":"large",
+            "ui":{
+                "class":"compact",
+                "width":"large"
+            },
             "items":{
                 "type":"string",
-                "ui_query_type":"tags"
+                "ui":{
+                    "query_type":"tags"
+                }
             }
         },
         "author":{
             "title":"Autor",
             "type":"string",
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "copyright":{
             "title":"Copyright",
             "type":"string",
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "source":{
             "title":"Source",
             "type":"string",
-            "ui_width":"large"
+            "ui":{
+                "width":"large"
+            }
         },
         "sidebar_idref":{
             "title":"Sidebar",
             "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/sidebar_reference",
-                "src_properties":["id"],
-                "target_properties":["sidebar_idref"]
-            },
-            "ui_width":"xlarge"
+            "ui":{
+                "callout":{
+                    "url":"/callouts/internal/sidebar_reference",
+                    "src_properties":["id"],
+                    "target_properties":["sidebar_idref"]
+                },
+                "width":"xlarge"
+            }
         },
         "adzone":{
             "title":"Belegungseinheit",
             "type":"string",
-            "ui_width":"large"
+            "ui":{
+                "width":"large"
+            }
         },
         "settings":{
             "title":"Settings",

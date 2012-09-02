@@ -8,7 +8,9 @@
             "title":"Title",
             "type":"string",
             "required":true,
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "paras":{
             "title":"Module",
@@ -20,13 +22,17 @@
                     "headline":{
                         "title":"Headline",
                         "type":"string",
-                        "ui_width":"xxlarge"
+                        "ui":{
+                            "width":"xxlarge"
+                        }
                     },
                     "text":{
                         "title":"Text",
                         "type":"string",
-                        "ui_editor":"textarea",
-                        "ui_width":"xxlarge"
+                        "ui":{
+                            "editor":"textarea",
+                            "width":"xxlarge"
+                        }
                     }
                 }
             }

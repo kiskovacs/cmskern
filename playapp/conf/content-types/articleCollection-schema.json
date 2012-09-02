@@ -8,22 +8,30 @@
             "title":"Title",
             "type":"string",
             "required":true,
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "slug":{
             "title":"Slug",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "legacy_id":{
             "title":"ID (Legacy System)",
             "type":"string",
-            "ui_class":"hidden"
+            "ui":{
+                "class":"hidden"
+            }
         },
         "legacy_title":{
             "title":"Title (Legacy System)",
             "type":"string",
-            "ui_class":"readonly"
+            "ui":{
+                "class":"readonly"
+            }
         },
         "articles":{
             "title":"Articles",
@@ -35,23 +43,29 @@
                     "article_idref":{
                         "title":"Reference",
                         "type":"integer",
-                        "ui_callout":{
-                            "url":"/callouts/internal/article_reference",
-                            "src_properties":["id","title", "teaser_text"],
-                            "target_properties":["article_idref", "article_title", "article_teaser"]
-                        },
-                        "ui_width":"xlarge"
+                        "ui":{
+                            "callout":{
+                                "url":"/callouts/internal/article_reference",
+                                "src_properties":["id","title", "teaser_text"],
+                                "target_properties":["article_idref", "article_title", "article_teaser"]
+                            },
+                            "width":"xlarge"
+                        }
                     },
                     "article_title":{
                         "title":"Title",
                         "type":"string",
-                        "ui_width":"xlarge"
+                        "ui":{
+                            "width":"xlarge"
+                        }
                     },
                     "article_teaser":{
                         "title":"Text",
                         "type":"string",
-                        "ui_width":"xxlarge",
-                        "ui_editor":"textarea"
+                        "ui":{
+                            "width":"xxlarge",
+                            "editor":"textarea"
+                        }
                     }
                 }
             }

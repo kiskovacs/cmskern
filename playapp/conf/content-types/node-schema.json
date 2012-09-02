@@ -8,40 +8,52 @@
             "title":"Title",
             "type":"string",
             "required":true,
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "parent_node_idref":{
             "title":"Mutterknoten ID",
             "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/node_reference",
-                "src_properties":["id","title", "ancestors"],
-                "target_properties":["parent_node_idref", "parent_title", "ancestors_idref"]
-            },
-            "ui_width":"xxlarge"
+            "ui":{
+                "callout":{
+                    "url":"/callouts/internal/node_reference",
+                    "src_properties":["id","title", "ancestors"],
+                    "target_properties":["parent_node_idref", "parent_title", "ancestors_idref"]
+                },
+                "width":"xxlarge"
+            }
         },
         "parent_title":{
             "title":"Mutterknoten",
             "type":"string",
-            "ui_width":"xxlarge",
-            "ui_class":"readonly"
+            "ui":{
+                "width":"xxlarge",
+                "class":"readonly"
+            }
         },
 
         "ancestors_idrefarr":{
             "title":"Vorfahren",
             "type":"array",
-            "ui_width":"xxlarge",
-            "ui_class":"readonly"
+            "ui":{
+                "width":"xxlarge",
+                "class":"readonly"
+            }
         },
         "order_value":{
             "title":"Order",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "path":{
             "title":"Pfad",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "online":{
             "title":"Online?",
@@ -50,43 +62,54 @@
         "article_idref":{
             "title":"Default Article Ref.",
             "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/article_reference",
-                "src_properties":["id","title", "teaser_text"],
-                "target_properties":["article_idref", "article_title", "teaser"]
-            },
-            "ui_width":"xlarge"
+            "ui":{
+                "callout":{
+                    "url":"/callouts/internal/article_reference",
+                    "src_properties":["id","title", "teaser_text"],
+                    "target_properties":["article_idref", "article_title", "teaser"]
+                },
+                "width":"xlarge"
+            }
         },
         "article_title":{
             "title":"Default Article Title",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "adzone":{
             "title":"Ad-Zone/Belegungseinheit",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "html_include":{
             "title":"HTML Include",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         },
         "sidebar_idref":{
             "title":"Sidebar",
             "type":"integer",
-            "ui_callout":{
-                "url":"/callouts/internal/sidebar_reference",
-                "src_properties":["id"],
-                "target_properties":["sidebar_idref"]
-            },
-            "ui_width":"xlarge"
+            "ui":{
+                "callout":{
+                    "url":"/callouts/internal/sidebar_reference",
+                    "src_properties":["id"],
+                    "target_properties":["sidebar_idref"]
+                },
+                "width":"xlarge"
+            }
         },
-
         "ivw":{
             "title":"IVW Themengebiet",
             "type":"string",
-            "ui_width":"xlarge"
+            "ui":{
+                "width":"xlarge"
+            }
         }
     }
 }

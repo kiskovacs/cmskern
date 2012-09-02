@@ -8,7 +8,9 @@
             "title":"Title",
             "type":"string",
             "required":true,
-            "ui_width":"xxlarge"
+            "ui":{
+                "width":"xxlarge"
+            }
         },
         "online":{
             "title":"Online?",
@@ -19,7 +21,9 @@
             "description":"Specify the publication date of this article (format: YYYY-MM-DD, example: 2012-03-19).",
             "type":"string",
             "format":"date",
-            "ui_width":"small"
+            "ui":{
+                "width":"small"
+            }
         },
         "paras":{
             "title":"Paragraphs",
@@ -35,13 +39,17 @@
                             "headline":{
                                 "title":"Headline",
                                 "type":"string",
-                                "ui_width":"xxlarge"
+                                "ui":{
+                                    "width":"xxlarge"
+                                }
                             },
                             "text":{
                                 "title":"Text",
                                 "type":"string",
-                                "ui_editor":"richtext",
-                                "ui_width":"xxlarge"
+                                "ui":{
+                                    "editor":"richtext",
+                                    "width":"xxlarge"
+                                }
                             },
                             "childparas":{
                                 "title":"Child Paragraph",
@@ -55,13 +63,17 @@
                                                 "subHeader":{
                                                     "title":"Sub-Headline",
                                                     "type":"string",
-                                                    "ui_width":"xxlarge"
+                                                    "ui":{
+                                                        "width":"xxlarge"
+                                                    }
                                                 },
                                                 "subText":{
                                                     "title":"Sub-Text",
                                                     "type":"string",
-                                                    "ui_editor":"textarea",
-                                                    "ui_width":"xxlarge"
+                                                    "ui":{
+                                                        "editor":"textarea",
+                                                        "width":"xxlarge"
+                                                    }
                                                 }
                                             }
                                         }
@@ -81,17 +93,21 @@
                                 "description":"References an internal URL to a selected image.",
                                 "type":"integer",
                                 "format":"uri",
-                                "ui_callout":{
-                                    "url":"/callouts/internal/image_reference",
-                                    "src_properties":["id", "title"],
-                                    "target_properties":["image_idref", "image_title"]
-                                },
-                                "ui_width":"xlarge"
+                                "ui":{
+                                    "callout":{
+                                        "url":"/callouts/internal/image_reference",
+                                        "src_properties":["id", "title"],
+                                        "target_properties":["image_idref", "image_title"]
+                                    },
+                                    "width":"xlarge"
+                                }
                             },
                             "image_title":{
                                 "title":"Title",
                                 "type":"string",
-                                "ui_width":"xlarge"
+                                "ui":{
+                                    "width":"xlarge"
+                                }
                             }
                         }
                     },
@@ -106,12 +122,14 @@
                                 "description":"References URL from a selected photo (hosted on flickr.com).",
                                 "type":"string",
                                 "format":"uri",
-                                "ui_callout":{
-                                    "url":"/callouts/external/flickr_photo_reference",
-                                    "src_properties":["flickr_url"],
-                                    "target_properties":["flickr_url"]
-                                },
-                                "ui_width":"xlarge"
+                                "ui":{
+                                    "callout":{
+                                        "url":"/callouts/external/flickr_photo_reference",
+                                        "src_properties":["flickr_url"],
+                                        "target_properties":["flickr_url"]
+                                    },
+                                    "width":"xlarge"
+                                }
                             }
                         }
                     }
@@ -127,10 +145,14 @@
         "tags":{
             "title":"Tags",
             "type":"array",
-            "ui_class":"compact",
+            "ui":{
+                "class":"compact"
+            },
             "items":{
                 "type":"string",
-                "ui_query_type":"tags"
+                "ui":{
+                    "query_type":"tags"
+                }
             }
         }
     }
