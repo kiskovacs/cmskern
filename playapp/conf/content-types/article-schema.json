@@ -46,7 +46,7 @@
             "title":"Teaser",
             "type":"object",
             "ui":{
-                "class":"compact"
+                "mode":"compact"
             },
             "properties":{
                 "title":{
@@ -74,7 +74,7 @@
                             "target_properties":["image_idref", "image_title"]
                         },
                         "width":"xlarge",
-                        "class":"image_thumbnail"
+                        "mode":"image_thumbnail"
                     }
                 },
                 "image_title":{
@@ -190,7 +190,7 @@
             "description":"Multiple entries separated by comma (ie. aegypt,desert).",
             "type":"array",
             "ui":{
-                "class":"compact",
+                "mode":"compact",
                 "width":"large"
             },
             "items":{

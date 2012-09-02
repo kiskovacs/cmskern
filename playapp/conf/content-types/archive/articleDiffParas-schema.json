@@ -146,7 +146,7 @@
             "title":"Tags",
             "type":"array",
             "ui":{
-                "class":"compact"
+                "mode":"compact"
             },
             "items":{
                 "type":"string",

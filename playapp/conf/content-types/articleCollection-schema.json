@@ -23,14 +23,14 @@
             "title":"ID (Legacy System)",
             "type":"string",
             "ui":{
-                "class":"hidden"
+                "mode":"hidden"
             }
         },
         "legacy_title":{
             "title":"Title (Legacy System)",
             "type":"string",
             "ui":{
-                "class":"readonly"
+                "mode":"readonly"
             }
         },
         "articles":{

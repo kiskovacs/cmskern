@@ -23,7 +23,7 @@ angular.widget('my:form', function(element) {
             }
 
             // has hierarchical subforms? Must be declared in a type struct (single) or map (multi-typed)
-            if (field.type == 'array' && field.items && field.ui.class != 'compact') {
+            if (field.type == 'array' && field.items && field.ui.mode != 'compact') {
 
                 var childElem = fieldKey + 'Elem';
                 var multiTyped = true;
@@ -77,7 +77,7 @@ angular.widget('my:form', function(element) {
                         subfield.id = subfield.title;
                     }
                     console.log("Add sub element for type: " + subfield.id);
-                    var elGroup = angular.element('<div class="'+ ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + subfield.id + '"></div>');
+                    var elGroup = angular.element('<div class="'+ ((field.ui.mode)?field.ui.mode + ' ':'') + ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + subfield.id + '"></div>');
                     var arraySuffix = "";
                     console.log("scope idx: " + scope.$index);
 
@@ -118,9 +118,9 @@ angular.widget('my:form', function(element) {
 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start Render Field Type
 
-            if (field.ui.class != 'hidden') {
+            if (field.ui.mode != 'hidden') {
                 
-                var controlGroup = angular.element('<div class="control-group ' + field.type + ' '+ ((field.ui.class)?' ' +field.ui.class:'') + '"></div>');
+                var controlGroup = angular.element('<div class="control-group ' + field.type + ' ' + ((field.ui.mode)?' '+field.ui.mode:'') + ((field.ui.class)?' '+field.ui.class:'') + '"></div>');
 
                 // ~~ Label for input element
                 controlGroup.append(angular.element('<label class="control-label" for="' + qualifiedName + '">' + field.title + '</label>'));
@@ -132,7 +132,7 @@ angular.widget('my:form', function(element) {
                 }
                 var lengthCssClassName = 'input-' + typeLength;
 
-                if (field.type == 'array' && field.ui.class == 'compact') {
+                if (field.type == 'array' && field.ui.mode == 'compact') {
                     fieldElStr  = '<input type="text" class="valueArray ' + lengthCssClassName + '" ui:item="' + qualifiedName + '" ';
                     fieldElStr += ' ui:valueArray >';
                 }
@@ -173,7 +173,7 @@ angular.widget('my:form', function(element) {
                         '\'' + fullyQualifiedName + '\',\'' + srcPropNames +'\',\'' + targetProperties +'\')">';
                     fieldElStr += '<i class="icon-edit"></i></span>';
                     // Embedd image with dynamic bound image reference
-                    if (field.ui.class == 'image_thumbnail') {
+                    if (field.ui.mode == 'image_thumbnail') {
                         if (fieldKey == 'asset_ref') {
                             // ... directly link to the asset
                             fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
@@ -187,7 +187,7 @@ angular.widget('my:form', function(element) {
                 else if (field.format == 'date') {
                     fieldElStr  = '<div class="reference">';
                     fieldElStr += '<input type="text" class="datepicker ' + lengthCssClassName + '"';
-                    if (field.ui.class == 'readonly') {
+                    if (field.ui.mode == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     } else {
                         // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
@@ -207,7 +207,7 @@ angular.widget('my:form', function(element) {
                 }
                 else if (field.ui.editor == 'textarea') {
                     fieldElStr = '<textarea class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';
-                    if (field.ui.class == 'readonly') {
+                    if (field.ui.mode == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     //angular.forEach(field, function(attribute) {
@@ -217,7 +217,7 @@ angular.widget('my:form', function(element) {
                     fieldElStr += ' rows="8" cols="72"></textarea>';
                 }
                 else if (field.type == 'object') {
-                    fieldElStr = angular.element('<div class="'+ ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + fieldKey + '"></div>');
+                    fieldElStr = angular.element('<div class="'+ ((field.ui.mode)?field.ui.mode + ' ':'') + ((field.ui.class)?field.ui.class + ' ':'') + 'subelements ' + fieldKey + '"></div>');
                     //console.log("**** Include sub-object structure for " + fieldKey);
                     angular.forEach(field.properties, processField,
                         {parentName: fullyQualifiedName, fqName: fullyQualifiedName, curDOMParent: fieldElStr});
@@ -229,7 +229,7 @@ angular.widget('my:form', function(element) {
                     if (globalContentNodeId == -1 && field.default == true) {
                         fieldElStr += ' checked="checked"';
                     }
-                    if (field.ui.class == 'readonly') {
+                    if (field.ui.mode == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     fieldElStr += '>';
@@ -246,7 +246,7 @@ angular.widget('my:form', function(element) {
                     if (globalContentNodeId == -1 && field.default) {
                         fieldElStr += ' value="' + field.default + '"';
                     }
-                    if (field.ui.class == 'readonly') {
+                    if (field.ui.mode == 'readonly') {
                         fieldElStr += ' readonly="readonly"';
                     }
                     fieldElStr += '>';

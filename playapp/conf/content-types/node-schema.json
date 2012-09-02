@@ -29,7 +29,7 @@
             "type":"string",
             "ui":{
                 "width":"xxlarge",
-                "class":"readonly"
+                "mode":"readonly"
             }
         },
 
@@ -38,7 +38,7 @@
             "type":"array",
             "ui":{
                 "width":"xxlarge",
-                "class":"readonly"
+                "mode":"readonly"
             }
         },
         "order_value":{

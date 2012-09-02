@@ -31,7 +31,7 @@
                                 "target_properties":["image_idref", "image_title"]
                             },
                             "width":"xlarge",
-                            "class":"image_thumbnail"
+                            "mode":"image_thumbnail"
                         }
                     },
                     "image_title":{

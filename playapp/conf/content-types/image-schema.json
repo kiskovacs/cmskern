@@ -22,7 +22,7 @@
                     "target_properties":["asset_ref"]
                 },
                 "width":"xlarge",
-                "class":"image_thumbnail"
+                "mode":"image_thumbnail"
             }
         },
         "keywords":{
@@ -30,7 +30,7 @@
             "description":"Specify multiple keywords by separating entries with comma.",
             "type":"array",
             "ui":{
-                "class":"compact",
+                "mode":"compact",
                 "width":"xlarge"
             },
             "items":{
@@ -44,7 +44,7 @@
             "title":"Copyright",
             "type":"string",
             "ui":{
-                "class":"compact",
+                "mode":"compact",
                 "width":"xlarge"
             }
         },
@@ -52,7 +52,7 @@
             "title":"Quelle",
             "type":"string",
             "ui":{
-                "class":"compact",
+                "mode":"compact",
                 "width":"xlarge"
             }
         },
@@ -68,7 +68,7 @@
             "title":"oldid",
             "type":"string",
             "ui":{
-                "class":"readonly",
+                "mode":"readonly",
                 "width":"xlarge"
             }
         },
@@ -96,7 +96,7 @@
                                 "target_properties":["asset_ref"]
                             },
                             "width":"xlarge",
-                            "class":"image_thumbnail"
+                            "mode":"image_thumbnail"
                         }
                     }
                 }
