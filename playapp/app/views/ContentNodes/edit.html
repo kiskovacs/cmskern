@@ -1,7 +1,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 #{extends 'main.html' /}
 #{set 'pageHeader'}
-    <h1>Edit ${contentType.displayName} <small>#${contentNode.id}</small></h1>
+    <h1 class="pull-left">Edit ${contentType.displayName} <small>#${contentNode.id}</small></h1>
     <div class="versionInfo">
         Current Version: <span class="version">${contentNode.version}</span> <br />
         edited on <span class="datetime">${contentNode.modified.format('dd/MMM/yyyy HH:mm')}</span><br />
@@ -52,7 +52,7 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<div class="row-fluid">
+<div class="row-fluid" style="clear: both">
     <div ng:controller="EditContentNodeCtrl">
 
         <form class="form-horizontal" ng:submit="submit()">
