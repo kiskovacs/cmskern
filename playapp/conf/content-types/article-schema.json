@@ -158,29 +158,29 @@
             "properties":{
                 "embargo_date":{
                     "title":"Embargo Date",
-                    "description":"Specify the embargo date of this article (format: YYYY-MM-DD).",
+                    "description":"Specify the embargo date of this article (format: YYYY-MM-DDThh:mm:ssZ).",
                     "type":"string",
-                    "format":"date",
+                    "format":"date-time",
                     "ui":{
-                        "width":"small"
+                        "width":"large"
                     }
                 },
                 "expire_date":{
                     "title":"Expire Date",
-                    "description":"Specify the expire date of this article (format: YYYY-MM-DD).",
+                    "description":"Specify the expire date of this article.",
                     "type":"string",
-                    "format":"date",
+                    "format":"date-time",
                     "ui":{
-                        "width":"small"
+                        "width":"large"
                     }
                 },
                 "sort_date":{
                     "title":"Sort Date",
-                    "description":"Specify the sort date of this article (format: YYYY-MM-DD).",
+                    "description":"Specify the sort date of this article.",
                     "type":"string",
-                    "format":"date",
+                    "format":"date-time",
                     "ui":{
-                        "width":"small"
+                        "width":"large"
                     }
                 }
             }

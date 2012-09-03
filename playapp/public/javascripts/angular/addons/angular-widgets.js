@@ -440,10 +440,12 @@ angular.widget('@ui:autocomplete', function (expr, el, val) {
 // ui:datepicker widget
 // jQuery UI datepicker
 angular.widget('@ui:datepicker', function (expr, el, val) {
-    if (!$.datepicker)
+    if (!$.datepicker) {
+        console.log("WARN: No datepicker avail!");
         return;
+    }
     var compiler = this;
-    var defaults = {dateFormat:'dd-mm-yy'};
+    var defaults = {  dateFormat:'dd-mm-yy', separator: 'T', timeFormat: 'hh:mm:ss' };
     var options = widgetUtils.getOptions(el, defaults);
     var events = {};
     var dateExpr = widgetUtils.parseAttrExpr(el, 'ui:date');
@@ -452,26 +454,26 @@ angular.widget('@ui:datepicker', function (expr, el, val) {
         var tagName = $(el)[0].tagName.toLowerCase();
         if (tagName == 'input' || tagName == 'textarea') {
             events.onClose = function (date, ui) {
-                var dt = $(el).datepicker('getDate'); // returns date object
-                var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
+                var dt = $(el).datetimepicker('getDate'); // returns date object
+                var dtStr = $.datetime.formatDate(options.dateFormat, dt) + 'T' + $.datetime.formatTime(options.timeFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         } else {
             events.onSelect = function (date, ui) {
-                var dt = $(el).datepicker('getDate');
-                var dtStr = $.datepicker.formatDate(options.dateFormat, dt);
+                var dt = $(el).datetimepicker('getDate');
+                var dtStr = $.datetime.formatDate(options.dateFormat, dt) + 'T' + $.datetime.formatTime(options.timeFormat, dt);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         }
         $.extend(options, events);
-        $(el).datepicker(options);
+        $(el).datetimepicker(options);
         currentScope.$watch(dateExpr.expression, function (val) {
             if (val && val instanceof Date) {
                 // format Date to string
-                $(el).datepicker('setDate', widgetUtils.formatValue(val, dateExpr, currentScope));
+                $(el).datetimepicker('setDate', widgetUtils.formatValue(val, dateExpr, currentScope));
             } else {
                 // assume string is given in proper representation
-                $(el).datepicker('setDate', val);
+                $(el).datetimepicker('setDate', val);
             }
         }, null, true);
     };
@@ -656,15 +658,12 @@ var widgetUtils = {
         return this.parseExpr(attr);
     },
     setValue:function (scope, attrExpr, value) {
-        console.log("000");
         if (!attrExpr || !attrExpr.expression)
             return;
         var v = value;
         v = this.parseValue(v, attrExpr, scope);
         scope.$set(attrExpr.expression, v);
-        console.log("111");
         scope.$parent.$eval();
-        console.log("222");
     },
     getValue:function (scope, attrExpr) {
         if (!attrExpr || !attrExpr.expression)
@@ -682,7 +681,6 @@ var widgetUtils = {
             if (fm && fm.parse)
                 v = fm.parse.apply(scope, [v].concat(fm.arguments));
         }
-        ;
         return v;
     },
     formatValue:function (value, attrExpr, scope) {
@@ -694,7 +692,6 @@ var widgetUtils = {
             if (fm && fm.format)
                 v = fm.format.apply(scope, [v].concat(fm.arguments));
         }
-        ;
         return v;
     }
 };

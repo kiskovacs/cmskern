@@ -19,27 +19,28 @@
 <div id="search_results"></div>
 
 <!-- Filled by selection from table or manually edited -->
-<fieldset>
-    <div class="control-group">
-        <label class="control-label" for="select_id">Node ID</label>
-        <div class="controls">
-            <input type="text" id="select_id" name="value" value="${fields['id']?.value}" readonly="readonly" />
+<div id="reference_selected">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="select_id">Node ID</label>
+            <div class="controls">
+                <input type="text" id="select_id" name="value" value="${fields['id']?.value}" readonly="readonly" />
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="select_title">Title</label>
-        <div class="controls">
-            <input type="text" id="select_title" name="title" value="${fields['title']?.value}" />
+        <div class="control-group">
+            <label class="control-label" for="select_title">Title</label>
+            <div class="controls">
+                <input type="text" id="select_title" name="title" value="${fields['title']?.value}" />
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="select_ancestors">Ancestors</label>
-        <div class="controls">
-            <input type="text" id="select_ancestors" name="ancestors" value="${fields['ancestors']?.value}" />
+        <div class="control-group">
+            <label class="control-label" for="select_ancestors">Ancestors</label>
+            <div class="controls">
+                <input type="text" id="select_ancestors" name="ancestors" value="${fields['ancestors']?.value}" />
+            </div>
         </div>
-    </div>
-</fieldset>
-
+    </fieldset>
+</div>
 
 <script type="text/javascript">
     var selectedId        = -1;
