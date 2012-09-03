@@ -184,7 +184,7 @@ angular.widget('my:form', function(element) {
                     }
                     fieldElStr += '</div>';
                 }
-                else if (field.format == 'date') {
+                else if (field.format == 'date-time') {
                     fieldElStr  = '<div class="reference">';
                     fieldElStr += '<input type="text" class="datepicker ' + lengthCssClassName + '"';
                     if (field.ui.mode == 'readonly') {
