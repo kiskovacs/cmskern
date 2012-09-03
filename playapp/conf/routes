@@ -31,7 +31,6 @@ GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 
 # ~~ Map static resources from the /app/public folder to the /public path
-GET     /image/img/o                            staticFile:public/images/missing.gif
 GET     /favicon.ico                            staticFile:public/favicon.ico
 GET     /public/                                staticDir:public
 GET     /test/                                  staticDir:test
@@ -45,10 +44,12 @@ GET     /{type}                                 ContentNodes.list
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank
-GET     /{type}/{id}/full                       ContentNodesApi.getFull
-GET     /{type}/{id}/img/o                      ContentNodesApi.redirectToBinary
-GET     /{type}/{id}                            ContentNodesApi.getBody
+GET     /{type}/blob/{id}                       ContentNodesApi.redirectToBinary
+GET     /image/blob/                            staticFile:public/images/missing.gif
+GET     /{type}/{id}                            ContentNodesApi.get
 PUT     /{type}/{id}                            ContentNodesApi.update
 POST    /{type}                                 ContentNodesApi.create
 DELETE  /{type}/{id}                            ContentNodesApi.delete
 GET     /{type}/{id}/versions                   ContentNodes.versions
+
+GET     /image//img/o                           Application.test

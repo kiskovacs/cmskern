@@ -42,8 +42,8 @@
                    #{secure.check 'editor,admin'}</a>#{/secure.check}
                 </td>
                 <td>
-                    <a href="@{ContentNodesApi.getBody(node.type, node.id)}"><i class="icon-eye-open" title="View Content JSON"></i></a>
-                    <a href="@{ContentNodesApi.getFull(node.type, node.id)}"><i class="icon-info-sign" title="View Complete JSON"></i></a>
+                    <a href="@{ContentNodesApi.get(node.type, node.id, 'body')}"><i class="icon-eye-open" title="View Content JSON"></i></a>
+                    <a href="@{ContentNodesApi.get(node.type, node.id, 'raw')}"><i class="icon-info-sign" title="View Complete JSON"></i></a>
                     #{secure.check 'editor,admin'}
                       <a href="@{ContentNodes.edit(node.type, node.id)}"><i class="icon-pencil" title="Edit"></i></a>
                       <a href="@{ContentNodes.versions(node.type, node.id)}"><i class="icon-road" title="Show Versions"></i></a>

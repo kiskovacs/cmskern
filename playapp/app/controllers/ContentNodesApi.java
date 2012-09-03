@@ -21,18 +21,19 @@ import java.util.Map;
 @With(Secure.class)
 public class ContentNodesApi extends Controller {
 
-    public static void getBody(String type, Long id) {
-        ContentNode contentNode = ContentNode.findById(id);
-        notFoundIfNull(contentNode, "Unknown content ID: " + id);
-        Logger.info("Deliver body with ID: %s (%s)", contentNode.getId(), type);
-        renderJSON(contentNode.getJsonContent());
-    }
-
-    public static void getFull(String type, Long id) {
-        DBObject obj = ContentNode.findByIdRaw(id);
-        notFoundIfNull(obj, "Unknown content ID: " + id);
-        Logger.info("Deliver raw %s for ID: %s ...", type, id);
-        renderJSON(obj.toString());
+    public static void get(String type, Long id, String format) {
+        boolean deliverRaw = (format != null) && format.equalsIgnoreCase("raw");
+        if (!deliverRaw) {
+            ContentNode contentNode = ContentNode.findById(id);
+            notFoundIfNull(contentNode, "Unknown content ID: " + id);
+            Logger.info("Deliver body with ID: %s (%s)", contentNode.getId(), type);
+            renderJSON(contentNode.getJsonContent());
+        } else {
+            DBObject obj = ContentNode.findByIdRaw(id);
+            notFoundIfNull(obj, "Unknown content ID: " + id);
+            Logger.info("Deliver raw %s for ID: %s ...", type, id);
+            renderJSON(obj.toString());
+        }
     }
 
     /**

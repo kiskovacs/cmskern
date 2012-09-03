@@ -42,8 +42,7 @@ public class ContentTypesApi extends Controller {
      * Displays list of available content types.
      */
     public static void list() {
-        List<ContentType> types = ContentType.findAll();
-        // TODO: use sort order
+        List<ContentType> types = ContentType.findAll(); // TODO: use sort order and limit
         render(types);
     }
 
@@ -88,18 +87,19 @@ public class ContentTypesApi extends Controller {
         type.jsonSchema = body;
         type.name = name;
         type.save();
-        // TODO: return HTTP status
+
         render(type);
     }
 
     @Check("admin")
     public static void delete(String id) {
-        // TODO: this is a very critical operation, add more serious checks?
+        // TODO: this is a very critical operation, add check if still in use?
         ContentType type = ContentType.findById(id);
         notFoundIfNull(type, "Unknown type ID: " + id);
         Logger.info("Going to delete %s ...", id);
         type.delete();
-        // TODO: return HTTP status
+
+        ok();
     }
 
 }

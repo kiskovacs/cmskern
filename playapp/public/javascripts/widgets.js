@@ -179,7 +179,7 @@ angular.widget('my:form', function(element) {
                             fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/blobs/o/{{' + qualifiedName + '}}"> ';
                         } else {
                             // ... references an image object which itself must be resolved for the concrete asset
-                            fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/image/{{' + qualifiedName + '}}/img/o?propertyName=asset_ref"> ';
+                            fieldElStr += ' <img class="reference thumbnail image_thumbnail" src="/image/blob/{{' + qualifiedName + '}}?propertyName=asset_ref"> ';
                         }
                     }
                     fieldElStr += '</div>';
