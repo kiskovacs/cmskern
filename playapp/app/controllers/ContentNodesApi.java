@@ -26,12 +26,12 @@ public class ContentNodesApi extends Controller {
         if (!deliverRaw) {
             ContentNode contentNode = ContentNode.findById(id);
             notFoundIfNull(contentNode, "Unknown content ID: " + id);
-            Logger.info("Deliver body with ID: %s (%s)", contentNode.getId(), type);
+            Logger.info("Deliver content node ID: %s (%s)", id, type);
             renderJSON(contentNode.getJsonContent());
         } else {
             DBObject obj = ContentNode.findByIdRaw(id);
             notFoundIfNull(obj, "Unknown content ID: " + id);
-            Logger.info("Deliver raw %s for ID: %s ...", type, id);
+            Logger.info("Deliver raw content node ID: %s (%s)", id, type);
             renderJSON(obj.toString());
         }
     }
@@ -42,7 +42,7 @@ public class ContentNodesApi extends Controller {
      */
     public static void redirectToBinary(String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
-        notFoundIfNull(imageNode, "Unknown content ID: " + id);
+        notFoundIfNull(imageNode, "Unknown content node ID: " + id);
         // ~~
         String refVal = imageNode.getProperty(propertyName);
         notFoundIfNull(refVal, "Property " + propertyName + " not available");
@@ -64,7 +64,7 @@ public class ContentNodesApi extends Controller {
         String username = Security.connected();
         contentNode.create(username);
         // deliver back location of new content resource
-        Logger.info("Created new content node with ID: %s", contentNode.getId());
+        Logger.info("Created new content node with ID: %s (%s)", contentNode.getId(), type);
         response.status = Http.StatusCode.CREATED;
         response.setHeader("Location", String.format("%s/%s/%d", request.getBase(), type, contentNode.getId()));
         renderJSON("{\"id\": \"" + contentNode.getId() + "\"}");

@@ -191,8 +191,8 @@ angular.widget('my:form', function(element) {
                         fieldElStr += ' readonly="readonly"';
                     } else {
                         // dateFormat according to http://docs.jquery.com/UI/Datepicker/formatDate
-                        fieldElStr += ' ui:datepicker ui:date="' + qualifiedName + '" ui:options="{dateFormat: \'yy-mm-dd\', showOn: \'both\',';
-                        fieldElStr += '                       buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}"';
+                        fieldElStr += ' ui:datepicker ui:date="' + qualifiedName + '"';
+                        fieldElStr += '               ui:options="{showOn: \'both\', buttonImage: \'/public/images/calendar.gif\', buttonImageOnly: true, firstDay: 1, gotoCurrent: true}"';
                     }
                     fieldElStr += '></div>';
                 }

@@ -34,7 +34,7 @@ angular.directive('ui:selectable', function (expr, el) {
             var allowedOptions = $(el).data('options').split(',');
             //console.log("-----------> -> preset values: " + existingValues + ": ALL " + allowedOptions);
 
-            if (existingValues) {
+            if (existingValues && existingValues.constructor === Array) {
                 existingValues.forEach(function (e) {
                     var curPos = $(el).attr('ng:repeat-index');
                     var arrPos = allowedOptions.indexOf(e);
@@ -445,7 +445,8 @@ angular.widget('@ui:datepicker', function (expr, el, val) {
         return;
     }
     var compiler = this;
-    var defaults = {  dateFormat:'dd-mm-yy', separator: 'T', timeFormat: 'hh:mm:ss' };
+    var DATE_TIME_FMT = 'YYYY-MM-DD\THH:mm'; // Format specification according to momentjs
+    var defaults = {  dateFormat:'yy-mm-dd', separator: 'T', timeFormat: 'hh:mm' }; // format according jquery datetimepicker
     var options = widgetUtils.getOptions(el, defaults);
     var events = {};
     var dateExpr = widgetUtils.parseAttrExpr(el, 'ui:date');
@@ -455,13 +456,13 @@ angular.widget('@ui:datepicker', function (expr, el, val) {
         if (tagName == 'input' || tagName == 'textarea') {
             events.onClose = function (date, ui) {
                 var dt = $(el).datetimepicker('getDate'); // returns date object
-                var dtStr = $.datetime.formatDate(options.dateFormat, dt) + 'T' + $.datetime.formatTime(options.timeFormat, dt);
+                var dtStr = moment(dt).format(DATE_TIME_FMT);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         } else {
             events.onSelect = function (date, ui) {
-                var dt = $(el).datetimepicker('getDate');
-                var dtStr = $.datetime.formatDate(options.dateFormat, dt) + 'T' + $.datetime.formatTime(options.timeFormat, dt);
+                var dt = $(el).datetimepicker('getDate'); // returns date object
+                var dtStr = moment(dt).format(DATE_TIME_FMT);
                 widgetUtils.setValue(currentScope, dateExpr, dtStr);
             };
         }
@@ -473,7 +474,10 @@ angular.widget('@ui:datepicker', function (expr, el, val) {
                 $(el).datetimepicker('setDate', widgetUtils.formatValue(val, dateExpr, currentScope));
             } else {
                 // assume string is given in proper representation
-                $(el).datetimepicker('setDate', val);
+                if (val) {
+                    var dtStr = moment(val).format(DATE_TIME_FMT);
+                    $(el).datetimepicker('setDate', dtStr);
+                }
             }
         }, null, true);
     };
