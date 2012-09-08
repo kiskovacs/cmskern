@@ -11,16 +11,15 @@ function EditContentNodeCtrl($xhr) {
     scope = this;
 
     // define data we are working with
-    this.contentType = globalContentType;
+    this.contentType   = globalContentType;
     this.contentSchema = globalContentSchema;
-    this.schemaRules = globalSchemaRules;
-    this.contentNode = globalContentNode;      // will probably be empty
+    this.schemaRules   = globalSchemaRules;
+    this.contentNode   = globalContentNode;      // will probably be empty
     this.contentNodeId = globalContentNodeId;    // -1 if not yet saved
 
     this.elementGroupsToRemove = [];
 
     function convertIdRefToInt(obj) {
-
         for (var item in obj) {
             var value = obj[item];
 
@@ -30,7 +29,7 @@ function EditContentNodeCtrl($xhr) {
                 if (item.endsWith("_idref")) {
                     if (typeof value == "string") {
                         if (value && value.indexOf(",") != -1) {
-                            // dann ist das ein Array von IDs
+                            // assume that this is an Array of IDs
                             var retval = Array();
                             var vals = value.split(",");
                             for (v in vals) {
@@ -218,7 +217,7 @@ CalloutDialogHelper = (function () {
     }
 
     CalloutDialogHelper.prototype.selection_form = function (callout_url, fields) {
-        // Make AJAX GET to callout_url and put inside HTML form
+        // Make AJAX GET to callout_url and put result inside HTML form
         setTimeout(function () {
             $.get(callout_url, fields,
                 function (responseForm) {
