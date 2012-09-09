@@ -20,8 +20,14 @@ import java.util.Map;
  */
 public class Callouts extends Controller {
 
-    public static int getPageSize() {
-        return Integer.parseInt(Play.configuration.getProperty("cmskern.callout.pagesize", "10"));
+    public static final String CALLOUT_PAGESIZE = "cmskern.callout.pagesize";
+
+    public static int getPageSize(String type) {
+        if (Play.configuration.containsKey(CALLOUT_PAGESIZE + '.' + type)) {
+            return Integer.parseInt(Play.configuration.getProperty(CALLOUT_PAGESIZE + '.' + type, "10"));
+        } else {
+            return Integer.parseInt(Play.configuration.getProperty(CALLOUT_PAGESIZE, "10"));
+        }
     }
 
     // ~~
@@ -31,7 +37,7 @@ public class Callouts extends Controller {
 
         // Find object types to refer to
         if (name.contains("/imageGallery_")) {
-            model.put("imageGalleries", ContentNode.findByType("imageGallery", 0, getPageSize()).objects);  // TODO: improve by using paging
+            model.put("imageGalleries", ContentNode.findByType("imageGallery", 0, getPageSize("imageGallery")).objects);  // TODO: improve by using paging
         }
         // ... for all the other content types AJAX calls are triggered
 

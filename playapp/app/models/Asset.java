@@ -26,27 +26,29 @@ import java.util.*;
  */
 public class Asset {
 
-    // ~~ Names of keys
+    // ~~ Names of attribute keys
 
-    public static final String ID           = "_id";
-    public static final String FILENAME     = "filename";
-    public static final String UPLOAD_DATE  = "uploadDate";
-    public static final String CONTENT_TYPE = "contentType";
-    public static final String METADATA     = "metadata";
+    public static final String ATTR_ID           = "_id";
+    public static final String ATTR_FILENAME     = "filename";
+    public static final String ATTR_UPLOAD_DATE  = "uploadDate";
+    public static final String ATTR_UPLOADER     = "uploadUser";
+    public static final String ATTR_CONTENT_TYPE = "contentType";
+    public static final String ATTR_METADATA     = "metadata";
 
     // ~~
 
     public final String id;
     public final String filename;
     public final Date uploadDate;
+    public final String uploader;
     public final String contentType;
-    // TODO: add creator
 
     // ~
 
-    public Asset(String id, String filename, Date uploadDate, String contentType) {
+    public Asset(String id, String filename, String uploader, Date uploadDate, String contentType) {
         this.id = id;
         this.filename = filename;
+        this.uploader = uploader;
         this.uploadDate = uploadDate;
         this.contentType = contentType;
     }
@@ -72,12 +74,15 @@ public class Asset {
      */
     public void setFile(String filename) throws FileNotFoundException {
         File file = Play.getFile(filename);
-        create(filename, new FileInputStream(file));
+        create(filename, "admin", new FileInputStream(file));
     }
 
+    /**
+     * Returns all available assets, freshest uploaded first.
+     */
     public static SearchResult<Asset> findAll(int offset, int max) {
         GridFS gfs = MongoDbUtils.getGridFS();
-        DBCursor cursor = gfs.getFileList().sort(new BasicDBObject(FILENAME, 1)).skip(offset).limit(max);
+        DBCursor cursor = gfs.getFileList().sort(new BasicDBObject(ATTR_UPLOAD_DATE, -1)).skip(offset).limit(max);
 
         List<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
@@ -87,11 +92,14 @@ public class Asset {
         return new SearchResult<Asset>(assets, cursor.count());
     }
 
+    /**
+     * Returns all assets matching to the given filename (search as regular expression), freshest uploaded first.
+     */
     public static SearchResult<Asset> findByFilename(String filename, boolean matchCase, int offset, int max) {
         GridFS gfs = MongoDbUtils.getGridFS();
 
         DBObject q = createQueryByFilename(filename, matchCase);
-        DBCursor cursor = gfs.getFileList(q).sort(new BasicDBObject(FILENAME, 1)).skip(offset).limit(max);
+        DBCursor cursor = gfs.getFileList(q).sort(new BasicDBObject(ATTR_UPLOAD_DATE, -1)).skip(offset).limit(max);
 
         List<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
@@ -101,7 +109,7 @@ public class Asset {
         return new SearchResult<Asset>(assets, cursor.count());
     }
 
-    public static Asset create(String filename, InputStream content) {
+    public static Asset create(String filename, String creator, InputStream content) {
         GridFS gfs = MongoDbUtils.getGridFS();
         GridFSInputFile dbFile = gfs.createFile(content);
         dbFile.setFilename(filename);
@@ -111,10 +119,11 @@ public class Asset {
             // No valid content type (TODO: could verify against list of allowed content types)
             throw new IllegalArgumentException("Invalid content type: " + contentType + ", currently only image and video supported");
         } else {
+            dbFile.setMetaData(new BasicDBObject(ATTR_UPLOADER, creator));
             dbFile.setContentType(contentType);
             dbFile.save();
         }
-        return new Asset(dbFile.getId().toString(), filename, dbFile.getUploadDate(), contentType);
+        return new Asset(dbFile.getId().toString(), filename, creator, dbFile.getUploadDate(), contentType);
     }
 
     // ~~ private helper methods
@@ -122,19 +131,22 @@ public class Asset {
     private static DBObject createQueryByFilename(String filename, boolean matchCase) {
         BasicDBObject q;
         if (!matchCase) {
-            q = new BasicDBObject(FILENAME, new BasicDBObject("$regex", filename).append("$options", "i"));
+            q = new BasicDBObject(ATTR_FILENAME, new BasicDBObject("$regex", filename).append("$options", "i"));
         } else {
-            q = new BasicDBObject(FILENAME, new BasicDBObject("$regex", filename));
+            q = new BasicDBObject(ATTR_FILENAME, new BasicDBObject("$regex", filename));
         }
         return q;
     }
 
     private static Asset fromDBObject(DBObject dbObj) {
-        String _id = "" + dbObj.get(ID);
+        String _id = "" + dbObj.get(ATTR_ID);
 
-        DBObject metadata = (DBObject) dbObj.get(METADATA);
-        return new Asset(_id, (String) dbObj.get(FILENAME),
-                         (Date) dbObj.get(UPLOAD_DATE), (String) dbObj.get(CONTENT_TYPE));
+        DBObject metadata = (DBObject) dbObj.get(ATTR_METADATA);
+        return new Asset(_id,
+                         (String) dbObj.get(ATTR_FILENAME),
+                         metadata != null ? (String) metadata.get(ATTR_UPLOADER) : "N/A",
+                         (Date) dbObj.get(ATTR_UPLOAD_DATE),
+                         (String) dbObj.get(ATTR_CONTENT_TYPE));
     }
 
     // ~~

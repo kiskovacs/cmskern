@@ -23,7 +23,7 @@ public class ContentNodeSelection extends Controller {
      * @param page is one-based
       */
     public static void searchByTitle(String type, String query, int page) {
-        int pageSize = Callouts.getPageSize();
+        int pageSize = Callouts.getPageSize(type);
         if (page < 1) {
             page = 1;
         }

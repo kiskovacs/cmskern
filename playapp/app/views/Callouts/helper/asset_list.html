@@ -1,14 +1,39 @@
 <div>
     #{if result.objects}
-        <ul class="thumbnails">
-            #{list items: result.objects, as:'asset'}
-                <li>
-                    <a href="#" onclick="updateRef('${asset.id}')">
-                        <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}" title="${asset.filename}">
-                    </a>
-                </li>
-            #{/list}
-        </ul>
+        <table class="table table-striped table-condensed table-hover">
+            <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th width="35%">Filename</th>
+                <th width="35%">Image</th>
+                <th width="25%">Uploaded</th>
+                <th width="25%">Uploader</th>
+            </tr>
+            </thead>
+            <tbody>
+                #{list items: result.objects, as:'asset'}
+                <tr>
+                    <td>
+                        ${asset.id}
+                    </td>
+                    <td>
+                        <a href="#" onclick="updateRef('${asset.id}')">${asset.filename}</a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="updateRef('${asset.id}')">
+                            <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}" title="${asset.filename}">
+                        </a>
+                    </td>
+                    <td>
+                       ${asset.uploadDate?.format('dd/MMM/yyyy HH:mm')}
+                    </td>
+                    <td>
+                        ${asset.uploader}
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
 
         #{if nrPages > 1}
         <div class="pagination">

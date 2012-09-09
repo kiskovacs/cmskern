@@ -1,6 +1,8 @@
 <!-- Select one of the existing images or TODO: create a new one (on-the-fly) -->
 
 <h3>Select Image</h3>
+<div id="file-uploader" style="padding-left: 40px">
+</div>
 
 <!-- Search mask -->
 <fieldset class="search_box">
@@ -8,6 +10,7 @@
     <input type="text" id="search_term" name="search_term" value="" class="input-medium search-query" />
     <button id="search_images" class="btn">Search by Title</button>
 </fieldset>
+
 
 <!-- Filled by AJAX search response-->
 <div id="search_results"></div>
@@ -46,7 +49,43 @@
         selectedId = $('#select_id').val();
         selectedTitle = $('#select_title').val();
         displaySelectionPage(1);
+        createUploader();
     });
+
+    function createUploader() {
+        // initialize upload element
+        var uploader = new qq.FileUploader({
+            uploadButtonText: 'Create image on-the-fly',
+            // pass the DOM node (ex. $(selector)[0] for jQuery users)
+            element: document.getElementById('file-uploader'),
+            // path to server-side upload
+            action: '/blobs/content',
+            inputName: 'filename',
+            autoUpload: false,
+            // debug: true,
+            onSubmit: function(id, fileName) {
+                console.log(".... ask for title ....");
+                askForTitle();
+            },
+            onComplete: function(id, fileName, responseJSON) {
+                setTimeout(function() {
+                    displaySelectionPage(1);   // refresh list
+                }, 300);
+            }
+        });
+
+        function askForTitle() {
+            bootbox.prompt("What is the title?", function(result) {
+                if (result) {
+                    console.log("... the title: " + result);
+                    uploader.setParams({  'type': 'image', 'title': result, 'fieldName': 'asset_ref' });
+                    uploader.uploadStoredFiles();
+                }
+            });
+        }
+    }
+
+    // ~~
 
     function updateRef(val, title) {
         selectedId = val;

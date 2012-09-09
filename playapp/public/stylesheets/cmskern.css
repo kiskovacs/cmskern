@@ -476,7 +476,9 @@ form#selection_form {
     float: left;
 }
 #selection_form fieldset.search_box {
-  float: right;
+    float: right;
+    padding-top: 3px;
+    padding-bottom: 15px;
 }
 
 #selection_form .pagination a {
@@ -493,13 +495,16 @@ form#selection_form {
 
 #reference_selected {
     padding-top: 10px;
-    padding-bottom: 10px;
     width: 640px;
     float: left;
 }
 
+#reference_selected .pull-right {
+    margin-right: 30px;
+}
+
 #reference_selected fieldset {
-    width: 85%;
+    width: 80%;
 }
 
 
@@ -757,6 +762,14 @@ ul.selectBox {
 #file-uploader {
     float: left;
     padding-left: 10px;
+}
+
+.qq-upload-button {
+    width: 200px;
+}
+
+.qq-upload-list {
+    display: none;
 }
 
 /* line 568, ../../compass/sass/cmskern.scss */

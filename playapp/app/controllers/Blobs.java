@@ -1,7 +1,10 @@
 package controllers;
 
+import com.google.gson.Gson;
 import com.mongodb.gridfs.GridFSDBFile;
 import models.Asset;
+import models.ContentNode;
+import models.ContentType;
 import models.vo.SearchResult;
 import play.Logger;
 import play.mvc.Controller;
@@ -9,6 +12,8 @@ import play.mvc.With;
 import utils.MongoDbUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Access to files stored in the Blob store (in this implementation making use
@@ -21,10 +26,36 @@ import java.io.IOException;
 public class Blobs extends Controller {
 
     @Check("editor,admin")
-    public static void upload(String qqfile) throws IOException {
-        Logger.info("Starting to upload %s ...", qqfile);
+    public static void upload(String filename) throws IOException {
+        Logger.info("Starting to upload %s ...", filename);
         try {
-            Asset asset = Asset.create(qqfile, request.body);
+            String username = Security.connected();
+            Asset asset = Asset.create(filename, username, request.body);
+            renderJSON("{\"success\":true, \"id\": \"" + asset.id + "\"}");
+        } catch (Exception e) {
+            renderJSON("{\"success\":false, \"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @Check("editor,admin")
+    public static void uploadAndCreateContent(String filename, String type, String title, String fieldName) throws IOException {
+        Logger.info("Starting to upload %s ...", filename);
+        try {
+            // (A) create asset
+            String username = Security.connected();
+            Asset asset = Asset.create(filename, username, request.body);
+            // (B) check if content type exists
+            ContentType contentType = ContentType.findByName(type);
+            notFoundIfNull(contentType, "Unknown content type: " + type);
+            // (C) create content node ... and associate asset
+            Gson gson = new Gson();
+            Map<String, String> vals = new HashMap<String, String>();
+            vals.put("title", title);
+            vals.put(fieldName, asset.id);
+            ContentNode contentNode = new ContentNode(contentType.name, gson.toJson(vals));
+            contentNode.create(username);
+            Logger.info("CREATED: " + contentNode.getJsonContent());
+
             renderJSON("{\"success\":true, \"id\": \"" + asset.id + "\"}");
         } catch (Exception e) {
             renderJSON("{\"success\":false, \"error\":\"" + e.getMessage() + "\"}");

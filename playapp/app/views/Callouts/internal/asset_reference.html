@@ -29,13 +29,40 @@
 </div>
 
 <script type="text/javascript">
-    var selectedId = "";
-    var THUMB_URL = "/blobs/o/ID";
 
-    $(document).ready(function() {
+    var selectedId = "";
+    var THUMB_URL  = "/blobs/o/ID";
+
+    $(function() {
         selectedId = $('#select_id').val();
-        refreshList();
+        displaySelectionPage(1);
+        createUploader();
     });
+
+    function createUploader() {
+        // initialize upload element
+        var uploader = new qq.FileUploader({
+            // pass the DOM node (ex. $(selector)[0] for jQuery users)
+            element: document.getElementById('file-uploader'),
+            // path to server-side upload
+            action: '/blobs',
+            inputName: 'filename',
+            onComplete: function(id, fileName, responseJSON) {
+                setTimeout(function(){
+                    displaySelectionPage(1);   // refresh list
+                }, 300);
+            }
+        });
+    }
+
+    // ~~
+
+    function updateRef(val) {
+        selectedId = val;
+        $("#select_id").val(val);
+        $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, val));
+        highlight($("#select_id"));
+    }
 
     $("#select_id").on("change", function(event) {
         event.preventDefault();
@@ -57,38 +84,9 @@
 
     function displaySelectionPage(pageNr) {
         var search_term = $("#search_term").val();
-        console.log("Search for asset: " + search_term + " (p. " + pageNr + ")");
+        console.log("Search for assets: " + search_term + " (p. " + pageNr + ")");
         $.get('/helper/BlobSelection/searchByFilename', {query: search_term, page: pageNr}, function(data) {
             $('#search_results').html(data);
-        });
-    }
-
-    // ~~
-
-    var uploader = new qq.FileUploader({
-        // pass the DOM node (ex. $(selector)[0] for jQuery users)
-        element: document.getElementById('file-uploader'),
-        // path to server-side upload
-        action: '/blobs',
-        onComplete: function(id, fileName, responseJSON) {
-            setTimeout(function(){
-                refreshList();   // TODO: display in its own list
-            }, 300);
-        }
-    });
-
-    function refreshList() {
-        $.get('/blobs', function(data) {
-            $('#search_results').html(data);
-            console.log('List was retrieved.');
-            $("a.thumbnail").on("click", function(event) {
-                event.preventDefault();
-                selectedId = $("img:first-child", this).data("objectid");
-                //console.log('Set value to ' + selectedId);
-                $("#select_id").val(selectedId);
-                $("#select_thumb").attr("src", THUMB_URL.replace(/ID/, selectedId));
-                highlight($("#select_id"));
-            });
         });
     }
 

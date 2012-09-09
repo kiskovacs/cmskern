@@ -23,7 +23,7 @@ public class BlobSelection extends Controller {
      * @param page is one-based
       */
     public static void searchByFilename(String query, int page) {
-        int pageSize = Callouts.getPageSize();
+        int pageSize = Callouts.getPageSize("asset");
         if (page < 1) {
             page = 1;
         }

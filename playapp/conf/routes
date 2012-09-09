@@ -29,6 +29,7 @@ GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
 GET     /blobs/o/{id}                           Blobs.getBinaryById
 GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
+POST    /blobs/content                          Blobs.uploadAndCreateContent
 
 # ~~ Map static resources from the /app/public folder to the /public path
 GET     /favicon.ico                            staticFile:public/favicon.ico
