@@ -62,6 +62,10 @@ public class Blobs extends Controller {
         }
     }
 
+    /**
+     * Not in direct use, please better make use of
+     */
+    @Deprecated
     @Check("editor,admin")
     public static void listAssets(int page) {
         Logger.info("Listing assets ...");

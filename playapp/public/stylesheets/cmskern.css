@@ -456,6 +456,11 @@ div.mini .control-group {
   margin-left: 25px;
 }
 
+.mini .content fieldset {
+    border: none;
+    float: right;
+}
+
 /* line 358, ../../compass/sass/cmskern.scss */
 fieldset {
   padding-bottom: 5px;
@@ -764,6 +769,10 @@ ul.selectBox {
     padding-left: 10px;
 }
 
+.mini #file-uploader {
+    padding-left: 0px;
+}
+
 .qq-upload-button {
     width: 200px;
 }
@@ -834,6 +843,11 @@ footer p {
   background-color: transparent;
   padding: 20px 0 10px 0;
   margin: 30px 0;
+}
+
+.mini .page-header {
+    padding: 0;
+    margin: 0;
 }
 
 /* line 614, ../../compass/sass/cmskern.scss */

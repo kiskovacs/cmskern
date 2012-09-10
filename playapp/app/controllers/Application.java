@@ -36,7 +36,9 @@ public class Application extends Controller {
         renderArgs.put("siteTypes", ContentType.findByGroup("site"));
     }
 
-    // Home page listing recently updated content
+    /**
+     * Home page listing recently updated content.
+     */
     public static void index() {
         List<ContentType> types = ContentType.findAll();
         // get some content lately modified to start with

@@ -9,12 +9,69 @@
 #{/set}
 
 
-<ul class="thumbnails">
-#{list items: assets.objects, as:'asset'}
-    <li>
-        <a href="#" onclick="selectFile('${asset.url}')" class="thumbnail">
-            <img class="image_thumbnail" data-objectid="${asset.id}" src="${asset.url}" alt="${asset.filename}" title="${asset.filename}">
-        </a>
-    </li>
-#{/list}
-</ul>
+<!-- Select one of the existing assets or upload a new one -->
+
+<div id="file-uploader">
+</div>
+
+<!-- Search mask -->
+<fieldset class="search_box">
+    <!-- label for="search_term"></label -->
+    <input type="text" id="search_term" name="search_term" value="" class="input-medium search-query" />
+    <button id="search_assets" class="btn">Search by Title</button>
+</fieldset>
+
+<!-- Filled by AJAX search response-->
+<div id="search_results"></div>
+
+
+<script type="text/javascript">
+
+    var THUMB_URL  = "/blobs/o/ID";
+
+    $(function() {
+        displaySelectionPage(1);
+        createUploader();
+    });
+
+    function createUploader() {
+        // initialize upload element
+        var uploader = new qq.FileUploader({
+            // pass the DOM node (ex. $(selector)[0] for jQuery users)
+            element: document.getElementById('file-uploader'),
+            // path to server-side upload
+            action: '/blobs',
+            inputName: 'filename',
+            onComplete: function(id, fileName, responseJSON) {
+                setTimeout(function(){
+                    displaySelectionPage(1);   // refresh list
+                }, 300);
+            }
+        });
+    }
+
+    // ~~
+
+    function updateRef(val) {
+        // selectFile('asset.url')"
+        // var url = $(this).closest("tr").data("url");
+        var url = THUMB_URL.replace(/ID/, val);
+        console.log("---> " + val);
+        selectFile(url);
+    }
+
+    // Trigger search and display HTML result
+    $("#search_assets").click(function(event) {
+        event.preventDefault();
+        displaySelectionPage(1);
+    });
+
+    function displaySelectionPage(pageNr) {
+        var search_term = $("#search_term").val();
+        console.log("Search for assets: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/BlobSelection/searchByFilename', {query: search_term, page: pageNr}, function(data) {
+            $('#search_results').html(data);
+        });
+    }
+
+</script>
