@@ -26,10 +26,13 @@ import java.util.*;
  */
 public class Asset {
 
+    public static final String[] SUPPORTED_CONTENT_TYPES = Play.configuration.getProperty("cmskern.assets.contenttypes", "image/.*").split(",");
+
     // ~~ Names of attribute keys
 
     public static final String ATTR_ID           = "_id";
     public static final String ATTR_FILENAME     = "filename";
+    public static final String ATTR_LENGTH       = "length";
     public static final String ATTR_UPLOAD_DATE  = "uploadDate";
     public static final String ATTR_UPLOADER     = "uploadUser";
     public static final String ATTR_CONTENT_TYPE = "contentType";
@@ -42,15 +45,17 @@ public class Asset {
     public final Date uploadDate;
     public final String uploader;
     public final String contentType;
+    public final long length;
 
     // ~
 
-    public Asset(String id, String filename, String uploader, Date uploadDate, String contentType) {
+    private Asset(String id, String filename, String uploader, Date uploadDate, String contentType, long length) {
         this.id = id;
         this.filename = filename;
         this.uploader = uploader;
         this.uploadDate = uploadDate;
         this.contentType = contentType;
+        this.length = length;
     }
 
     // ~~
@@ -115,15 +120,25 @@ public class Asset {
         dbFile.setFilename(filename);
         // guess content type from file name extension
         String contentType = MimeTypes.getContentType(filename);
-        if (contentType == null || !(contentType.startsWith("image/") || contentType.startsWith("video/"))) {
-            // No valid content type (TODO: could verify against list of allowed content types)
-            throw new IllegalArgumentException("Invalid content type: " + contentType + ", currently only image and video supported");
+        if (contentType == null || !isSupportedContentType(contentType))  {
+            throw new IllegalArgumentException("Content type: " + contentType + " is not supported.");
         } else {
             dbFile.setMetaData(new BasicDBObject(ATTR_UPLOADER, creator));
             dbFile.setContentType(contentType);
             dbFile.save();
         }
-        return new Asset(dbFile.getId().toString(), filename, creator, dbFile.getUploadDate(), contentType);
+        return new Asset(dbFile.getId().toString(), filename, creator, dbFile.getUploadDate(), contentType, dbFile.getLength());
+    }
+
+    public static boolean isSupportedContentType(String contentType) {
+        boolean supported = false;
+        for (String allowedContentType : SUPPORTED_CONTENT_TYPES) {
+            if (contentType.matches(allowedContentType)) {
+                supported = true;
+                break;
+            }
+        }
+        return supported;
     }
 
     // ~~ private helper methods
@@ -146,7 +161,8 @@ public class Asset {
                          (String) dbObj.get(ATTR_FILENAME),
                          metadata != null ? (String) metadata.get(ATTR_UPLOADER) : "N/A",
                          (Date) dbObj.get(ATTR_UPLOAD_DATE),
-                         (String) dbObj.get(ATTR_CONTENT_TYPE));
+                         (String) dbObj.get(ATTR_CONTENT_TYPE),
+                         (Long) dbObj.get(ATTR_LENGTH));
     }
 
     // ~~
