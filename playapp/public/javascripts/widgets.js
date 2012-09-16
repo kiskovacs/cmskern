@@ -11,7 +11,7 @@ angular.widget('my:form', function(element) {
     return function(element) {
 
         function processField(field, fieldKey) {
-            var qualifiedName = this.parentName + '.' + fieldKey,
+            var qualifiedName = this.parentName + '.' + fieldKey ,
                 fullyQualifiedName = this.fqName + '.' + fieldKey,
                 fieldElStr;
             
@@ -234,6 +234,21 @@ angular.widget('my:form', function(element) {
                     }
                     fieldElStr += '>';
                 }
+                else if (field.type == 'integer') {
+                    fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" '+ 'ui:item="' + qualifiedName + '" ui:numberValue ';
+                    angular.forEach(field, function(value, attribute) {
+                            fieldElStr += attribute + '="' + value + '" ';
+                    });
+                    // set default value for freshly created content
+                    if (globalContentNodeId == -1 && field.default) {
+                        fieldElStr += ' value="' + field.default + '"';
+                    }
+                    if (field.ui.mode == 'readonly') {
+                        fieldElStr += ' readonly="readonly"';
+                    }
+                    fieldElStr += '>';
+                }
+
                 // ~~ "normal" text input field
                 else {
                     fieldElStr = '<input class="' + lengthCssClassName + '" name="' + qualifiedName + '" ';

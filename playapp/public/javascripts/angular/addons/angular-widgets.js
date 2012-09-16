@@ -704,6 +704,34 @@ var widgetUtils = {
 // Added on top of Łukasz Twarogowski stuff
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// custom widget transforming comma-separated string to Array
+angular.widget('@ui:numberValue', function (expr, el, val) {
+    var compiler = this;
+    var events = {};
+    var options = {};
+    var itemExpr = widgetUtils.parseAttrExpr(el, 'ui:item');
+    return function (el) {
+        var currentScope = this;
+        $(el).change(function () {
+            var valStr = $(this).val();
+            if (typeof valStr == "string") {
+                var numVal = parseInt(valStr);
+                widgetUtils.setValue(currentScope, itemExpr, numVal);
+            }
+        });
+        // call-in from Angular
+        currentScope.$watch(itemExpr.expression, function (val) {
+            // $(el).datepicker('setDate', val);
+            if (typeof val == 'undefined') {
+                val = '';
+            }
+            // expects value from already to be comma-separated
+            $(el).val(val);
+        }, null, true);
+    };
+});
+
+
 
 // custom widget transforming comma-separated string to Array
 angular.widget('@ui:valueArray', function (expr, el, val) {
