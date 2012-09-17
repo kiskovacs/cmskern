@@ -81,7 +81,7 @@
                     "title":"Image Titel",
                     "type":"string",
                     "ui":{
-                        "width":"xlarge"
+                        "width":"xxlarge"
                     }
                 }
             }
@@ -146,7 +146,7 @@
                         "title":"Image Titel",
                         "type":"string",
                         "ui":{
-                            "width":"xlarge"
+                            "width":"xxlarge"
                         }
                     }
                 }
@@ -191,7 +191,7 @@
             "type":"array",
             "ui":{
                 "mode":"compact",
-                "width":"large"
+                "width":"xxlarge"
             },
             "items":{
                 "type":"string",
@@ -218,7 +218,7 @@
             "title":"Source",
             "type":"string",
             "ui":{
-                "width":"large"
+                "width":"xlarge"
             }
         },
         "sidebar_idref":{
@@ -237,7 +237,7 @@
             "title":"Belegungseinheit",
             "type":"string",
             "ui":{
-                "width":"large"
+                "width":"xlarge"
             }
         },
         "settings":{
