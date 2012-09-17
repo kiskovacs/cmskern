@@ -1,5 +1,4 @@
 #{extends 'mini.html' /}
-#{set title: 'Asset list' /}
 
 #{set 'moreScripts'}
     #{script 'jquery/jquery-ui-1.8.23.custom.min.js' /}
@@ -9,16 +8,17 @@
 #{/set}
 
 
-<!-- Select one of the existing assets or upload a new one -->
+*{ Select one of the existing assets or upload a new one }*
 
-<div id="file-uploader">
+<h3>Select Image</h3>
+<div id="file-uploader" style="padding-left: 40px">
 </div>
 
 <!-- Search mask -->
 <fieldset class="search_box">
     <!-- label for="search_term"></label -->
     <input type="text" id="search_term" name="search_term" value="" class="input-medium search-query" />
-    <button id="search_assets" class="btn">Search by Title</button>
+    <button id="search_images" class="btn">Search by Title</button>
 </fieldset>
 
 <!-- Filled by AJAX search response-->
@@ -27,7 +27,7 @@
 
 <script type="text/javascript">
 
-    var THUMB_URL  = "/blobs/o/ID";
+    var THUMB_URL = "/image/blob/ID?propertyName=asset_ref";
 
     $(function() {
         displaySelectionPage(1);
@@ -37,39 +37,54 @@
     function createUploader() {
         // initialize upload element
         var uploader = new qq.FileUploader({
+            uploadButtonText: 'Create image on-the-fly',
             // pass the DOM node (ex. $(selector)[0] for jQuery users)
             element: document.getElementById('file-uploader'),
             // path to server-side upload
-            action: '/blobs',
+            action: '/blobs/content',
             inputName: 'filename',
+            autoUpload: false,
+            // debug: true,
+            onSubmit: function(id, fileName) {
+                console.log(".... ask for title ....");
+                askForTitle();
+            },
             onComplete: function(id, fileName, responseJSON) {
-                setTimeout(function(){
+                setTimeout(function() {
                     displaySelectionPage(1);   // refresh list
                 }, 300);
             }
         });
+
+        function askForTitle() {
+            bootbox.prompt("What is the title?", function(result) {
+                if (result) {
+                    console.log("... the title: " + result);
+                    uploader.setParams({  'type': 'image', 'title': result, 'fieldName': 'asset_ref' });
+                    uploader.uploadStoredFiles();
+                }
+            });
+        }
     }
 
     // ~~
 
     function updateRef(val) {
-        // selectFile('asset.url')"
-        // var url = $(this).closest("tr").data("url");
         var url = THUMB_URL.replace(/ID/, val);
         console.log("---> " + val);
         selectFile(url);
     }
 
     // Trigger search and display HTML result
-    $("#search_assets").click(function(event) {
+    $("#search_images").click(function(event) {
         event.preventDefault();
         displaySelectionPage(1);
     });
 
     function displaySelectionPage(pageNr) {
         var search_term = $("#search_term").val();
-        console.log("Search for assets: " + search_term + " (p. " + pageNr + ")");
-        $.get('/helper/BlobSelection/searchByFilename', {query: search_term, page: pageNr}, function(data) {
+        console.log("Search for images: " + search_term + " (p. " + pageNr + ")");
+        $.get('/helper/ContentNodeSelection/searchByTitle', {type: 'image', query: search_term, page: pageNr}, function(data) {
             $('#search_results').html(data);
         });
     }

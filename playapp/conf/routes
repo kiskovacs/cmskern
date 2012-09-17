@@ -3,12 +3,17 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ~~ Home page
+
 GET     /                                       Application.index
 
+
 # ~~ Import secure routes (for login/logout)
+
 *       /                                       module:secure
 
+
 # ~~ REST API for (content) types
+
 GET     /schema/{name}/form.json                ContentTypesApi.asFormDescriptor
 GET     /schema/{id}/edit                       ContentTypesApi.edit
 GET     /schema/{id}                            ContentTypesApi.get
@@ -17,13 +22,19 @@ GET     /schema                                 ContentTypesApi.list
 POST    /schema                                 ContentTypesApi.create
 DELETE  /schema/{id}                            ContentTypesApi.delete
 
+
 # ~~ Call-Outs (for dialog content and referencing other nodes)
+
 GET     /callouts/{<.*>name}                    callouts.Callouts.get
 
+
 # ~~ Helper as used by the call-out workflow
+
 GET     /helper/{controller}/{action}           helper.{controller}.{action}
 
+
 # ~~ Access to binary objects (i.e. images)
+
 GET     /blobs                                  Blobs.listAssets
 GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
 GET     /blobs/o/{id}                           Blobs.getBinaryById
@@ -31,26 +42,29 @@ GET     /blobs/n/{name}                         Blobs.getByName
 POST    /blobs                                  Blobs.upload
 POST    /blobs/content                          Blobs.uploadAndCreateContent
 
+
 # ~~ Map static resources from the /app/public folder to the /public path
+
 GET     /favicon.ico                            staticFile:public/favicon.ico
 GET     /public/                                staticDir:public
-GET     /test/                                  staticDir:test
 
 
 # ~~ Import CRUD routes (for admin area)
 *       /admin                                  module:crud
 
+
 # ~~ REST API for content
+
 GET     /{type}                                 ContentNodes.list
 GET     /{type}/{id}/edit                       ContentNodes.edit
 GET     /{type}/search                          ContentNodes.search
 GET     /{type}/edit                            ContentNodes.blank
+
 GET     /{type}/blob/{id}                       ContentNodesApi.redirectToBinary
 GET     /image/blob/                            staticFile:public/images/missing.gif
+
 GET     /{type}/{id}                            ContentNodesApi.get
 PUT     /{type}/{id}                            ContentNodesApi.update
 POST    /{type}                                 ContentNodesApi.create
 DELETE  /{type}/{id}                            ContentNodesApi.delete
 GET     /{type}/{id}/versions                   ContentNodes.versions
-
-GET     /image//img/o                           Application.test

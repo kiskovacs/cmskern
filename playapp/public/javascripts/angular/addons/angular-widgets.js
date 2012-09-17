@@ -905,8 +905,8 @@ function ajaxfilemanager(field_name, url, type, win) {
     }
     tinyMCE.activeEditor.windowManager.open({
         url:"/blobs/forTiny.html?refer=ajaxfilemanager&view=" + view,
-        width:782,
-        height:440,
+        width:800,
+        height:640,
         inline:"yes",
         close_previous:"no"
     }, {

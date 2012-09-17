@@ -1,4 +1,4 @@
-<!-- Select one of the existing images or TODO: create a new one (on-the-fly) -->
+*{ Select one of the existing images or TODO: create a new one (on-the-fly) }*
 
 <h3>Select Image</h3>
 <div id="file-uploader" style="padding-left: 40px">
@@ -31,6 +31,7 @@
             </div>
         </div>
     </fieldset>
+    *{ Reset button to unset the currently selected image }*
     <div class="pull-right">
         <img class="image_thumbnail" id="select_thumb" src="/image/blob/${fields['id'].value}?propertyName=asset_ref">
         <a href="#" onclick="javascript:updateRef('','');"><i class="icon-remove-circle"></i></a>
@@ -46,7 +47,7 @@
     var THUMB_URL     = "/image/blob/ID?propertyName=asset_ref";
 
     $(function() {
-        selectedId = $('#select_id').val();
+        selectedId    = $('#select_id').val();
         selectedTitle = $('#select_title').val();
         displaySelectionPage(1);
         createUploader();
