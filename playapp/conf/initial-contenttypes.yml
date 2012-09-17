@@ -12,19 +12,19 @@ ContentType(article):
     jsonSchemaFromFile: conf/content-types/article-schema.json
 
 # ONLY TEMPORARY FOR TESTING PURPOSES
-ContentType(articleDiffParas):
-    name: articleDiffPara
-    displayName: Flexible Article
-    group: editorial
-    sortkey: 12
-    description: article which allows different types of sub-paragraphs
-    jsonSchemaFromFile: conf/content-types/archive/articleDiffParas-schema.json
+#ContentType(articleDiffParas):
+#    name: articleDiffPara
+#    displayName: Flexible Article
+#    group: editorial
+#    sortkey: 12
+#    description: article which allows different types of sub-paragraphs
+#    jsonSchemaFromFile: conf/content-types/archive/articleDiffParas-schema.json
 
 ContentType(indexPage):
     name: indexpage
     displayName: Index Page
     group: editorial
-    sortkey: 12
+    sortkey: 15
     description: article which allows different types of sub-paragraphs
     jsonSchemaFromFile: conf/content-types/indexpage-schema.json
 
