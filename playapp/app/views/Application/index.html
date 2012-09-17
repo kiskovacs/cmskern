@@ -15,6 +15,7 @@
 
 
 #{list items:content.entrySet(), as:'entry'}
+#{if entry.value.objects}
 <div class="row-fluid">
 
     <h3 class="contentTypeName">${entry.key.displayName} <small>${entry.key.description}
@@ -65,5 +66,6 @@
     #{/if}
     </div>
 
+#{/if}
 #{/list}
 
