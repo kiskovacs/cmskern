@@ -41,6 +41,7 @@ api-archive
 ^playapp/public/secure$
 ^playapp/eclipse/classes$
 ^playapp/bin$
+^playapp/LOCAL$
 ^.*\.DS_Store$
 BACKUP
 nbproject
