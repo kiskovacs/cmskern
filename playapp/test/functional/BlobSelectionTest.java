@@ -3,18 +3,18 @@ package functional;
 import org.junit.Before;
 import org.junit.Test;
 import play.Logger;
+import play.modules.mongo.MongoFixtures;
 import play.mvc.Http.Response;
 import play.test.FunctionalTest;
-import play.test.MorphiaFixtures;
 import utils.MongoDbUtils;
 
 public class BlobSelectionTest extends FunctionalTest {
 
     @Before
     public void setUpData() {
-        MorphiaFixtures.deleteDatabase();
+        MongoFixtures.deleteDatabase();
         MongoDbUtils.dropFiles();
-        MorphiaFixtures.loadModels("initial-assets.yml");
+        MongoFixtures.loadModels("initial-assets.yml");
     }
 
     @Test

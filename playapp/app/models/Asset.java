@@ -8,14 +8,12 @@ import com.mongodb.gridfs.GridFSInputFile;
 import models.vo.SearchResult;
 import play.Logger;
 import play.Play;
+import play.db.Model;
 import play.libs.MimeTypes;
 import play.mvc.Router;
 import utils.MongoDbUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -24,7 +22,7 @@ import java.util.*;
  * @author Niko Schmuck
  * @since 23.04.2012
  */
-public class Asset {
+public class Asset implements Model {
 
     public static final String[] SUPPORTED_CONTENT_TYPES = Play.configuration.getProperty("cmskern.assets.contenttypes", "image/.*").split(",");
 
@@ -58,6 +56,32 @@ public class Asset {
         this.length = length;
     }
 
+    public static Asset create(String filename, String uploader, InputStream content) {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        GridFSInputFile dbFile = gfs.createFile(content);
+        dbFile.setFilename(filename);
+        // guess content type from file name extension
+        String contentType = MimeTypes.getContentType(filename);
+        if (contentType == null || !isSupportedContentType(contentType))  {
+            throw new IllegalArgumentException("Content type: " + contentType + " is not supported.");
+        } else {
+            dbFile.setMetaData(new BasicDBObject(ATTR_UPLOADER, uploader));
+            dbFile.setContentType(contentType);
+            dbFile.save();
+        }
+        return new Asset(dbFile.getId().toString(), filename, uploader, dbFile.getUploadDate(), contentType, dbFile.getLength());
+    }
+
+    private static Asset convert(DBObject dbObj) {
+        DBObject metadata = (DBObject) dbObj.get(ATTR_METADATA);
+        return new Asset("" + dbObj.get(ATTR_ID),
+                (String) dbObj.get(ATTR_FILENAME),
+                metadata != null ? (String) metadata.get(ATTR_UPLOADER) : "N/A",
+                (Date) dbObj.get(ATTR_UPLOAD_DATE),
+                (String) dbObj.get(ATTR_CONTENT_TYPE),
+                (Long) dbObj.get(ATTR_LENGTH));
+    }
+
     // ~~
 
     public static long count() {
@@ -72,15 +96,26 @@ public class Asset {
         return Router.getFullUrl("Blobs.getBinaryById", argMap);
     }
 
-    // ~~
+    public static boolean isSupportedContentType(String contentType) {
+        boolean supported = false;
+        for (String allowedContentType : SUPPORTED_CONTENT_TYPES) {
+            if (contentType.matches(allowedContentType)) {
+                supported = true;
+                break;
+            }
+        }
+        return supported;
+    }
 
     /**
-     * ONLY Used by initial data setup by means of YAML definition.
+     * ONLY Used by initial data setup by means of YAML definition as part of fixture.
      */
     public void setFile(String filename) throws FileNotFoundException {
         File file = Play.getFile(filename);
-        create(filename, "admin", new FileInputStream(file));
+        create(filename, "admin", new FileInputStream(file)); // TODO: smells: to create inside setter
     }
+
+    // ~~
 
     /**
      * Returns all available assets, freshest uploaded first.
@@ -91,7 +126,7 @@ public class Asset {
 
         List<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
-            assets.add(fromDBObject(cursor.next()));
+            assets.add(convert(cursor.next()));
         }
         Logger.info("Returning %d files, offset: %d", assets.size(), offset);
         return new SearchResult<Asset>(assets, cursor.count());
@@ -108,37 +143,10 @@ public class Asset {
 
         List<Asset> assets = new ArrayList<Asset>();
         while (cursor.hasNext()) {
-            assets.add(fromDBObject(cursor.next()));
+            assets.add(convert(cursor.next()));
         }
         Logger.info("Query for '%s' returned %d matching files", filename, cursor.count());
         return new SearchResult<Asset>(assets, cursor.count());
-    }
-
-    public static Asset create(String filename, String creator, InputStream content) {
-        GridFS gfs = MongoDbUtils.getGridFS();
-        GridFSInputFile dbFile = gfs.createFile(content);
-        dbFile.setFilename(filename);
-        // guess content type from file name extension
-        String contentType = MimeTypes.getContentType(filename);
-        if (contentType == null || !isSupportedContentType(contentType))  {
-            throw new IllegalArgumentException("Content type: " + contentType + " is not supported.");
-        } else {
-            dbFile.setMetaData(new BasicDBObject(ATTR_UPLOADER, creator));
-            dbFile.setContentType(contentType);
-            dbFile.save();
-        }
-        return new Asset(dbFile.getId().toString(), filename, creator, dbFile.getUploadDate(), contentType, dbFile.getLength());
-    }
-
-    public static boolean isSupportedContentType(String contentType) {
-        boolean supported = false;
-        for (String allowedContentType : SUPPORTED_CONTENT_TYPES) {
-            if (contentType.matches(allowedContentType)) {
-                supported = true;
-                break;
-            }
-        }
-        return supported;
     }
 
     // ~~ private helper methods
@@ -153,23 +161,27 @@ public class Asset {
         return q;
     }
 
-    private static Asset fromDBObject(DBObject dbObj) {
-        String _id = "" + dbObj.get(ATTR_ID);
-
-        DBObject metadata = (DBObject) dbObj.get(ATTR_METADATA);
-        return new Asset(_id,
-                         (String) dbObj.get(ATTR_FILENAME),
-                         metadata != null ? (String) metadata.get(ATTR_UPLOADER) : "N/A",
-                         (Date) dbObj.get(ATTR_UPLOAD_DATE),
-                         (String) dbObj.get(ATTR_CONTENT_TYPE),
-                         (Long) dbObj.get(ATTR_LENGTH));
-    }
-
     // ~~
 
     @Override
     public String toString() {
         return this.filename;
+    }
+
+    @Override
+    public void _save() {
+        // TODO: implement   create(filename, uploader, content ???);
+    }
+
+    @Override
+    public void _delete() {
+        GridFS gfs = MongoDbUtils.getGridFS();
+        gfs.remove(id);
+    }
+
+    @Override
+    public Object _key() {
+        return id;
     }
 
 }

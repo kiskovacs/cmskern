@@ -21,7 +21,7 @@ import java.util.Map;
 @With(Secure.class)
 public class ContentNodesApi extends Controller {
 
-    public static void get(String type, Long id, String format) {
+    public static void get(String repository, String type, Long id, String format) {
         boolean deliverRaw = (format != null) && format.equalsIgnoreCase("raw");
         if (!deliverRaw) {
             ContentNode contentNode = ContentNode.findById(id);
@@ -40,7 +40,7 @@ public class ContentNodesApi extends Controller {
      * Redirects to the location of the binary Blob as
      * refered by the given content node in the specified property.
      */
-    public static void redirectToBinary(String type, Long id, String propertyName) {
+    public static void redirectToBinary(String repository, String type, Long id, String propertyName) {
         ContentNode imageNode = ContentNode.findById(id);
         notFoundIfNull(imageNode, "Unknown content node ID: " + id);
         // ~~
@@ -55,12 +55,12 @@ public class ContentNodesApi extends Controller {
     }
 
     @Check("editor,admin")
-    public static void create(String type, String body) {
+    public static void create(String repository, String type, String body) {
         Logger.debug("Going to create: %s ... ", body);
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown content type: " + type);
 
-        ContentNode contentNode = new ContentNode(contentType.name, body);
+        ContentNode contentNode = new ContentNode(repository, contentType.name, body);
         String username = Security.connected();
         contentNode.create(username);
         // deliver back location of new content resource
@@ -71,7 +71,7 @@ public class ContentNodesApi extends Controller {
     }
 
     @Check("editor,admin")
-    public static void update(String type, Long id, String body) {
+    public static void update(String repository, String type, Long id, String body) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown content type: " + type);
 
@@ -85,7 +85,7 @@ public class ContentNodesApi extends Controller {
     }
 
     @Check("admin")
-    public static void delete(String type, Long id) {
+    public static void delete(String repository, String type, Long id) {
         ContentNode contentNode = ContentNode.findById(id);
         notFoundIfNull(contentNode, "Unknown content node ID: " + id);
         Logger.info("Going to delete %s with ID %s ...", type, id);

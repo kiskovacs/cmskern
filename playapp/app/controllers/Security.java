@@ -28,23 +28,26 @@ public class Security extends Secure.Security {
     static boolean check(String groupname) {
         String username = connected();
     	if (username == null) {
-    		Logger.warn("User is not logged in, cannot check group membership.");
+    		Logger.warn("User can not be logged in, cannot check group membership.");
     		return false;
     	}
         // TODO: cache user info to avoid look up on every single secure.cache tag
         User user = User.findByUserName(username);
         Logger.debug("check if user %s is member of group %s", user, groupname);
-        if (user != null) {
-            String[] reqGroup = groupname.split(",");
-            if (user.isMemberOfAtLeastOne(reqGroup)) {
-            	return true;
-            } else {
-        		// Logger.debug("User '%s' is not assigned to group '%s': %s", username, groupname, request.path);
+        boolean found = false;
+        if (user != null && user.role != null) {
+            String[] roles = groupname.split(",");
+            for (String role : roles) {
+                if (user.role.equals(role)) {
+                    found = true;
+                    break;
+                }
             }
+
         } else {
-    		Logger.warn("Unknown user name '%s' specified: %s", username, request.path);
+    		Logger.warn("User '%s' is not allowed to access: %s", username, request.path);
         }
-        return false;
+        return found;
     }
     
     static void onDisconnected() {

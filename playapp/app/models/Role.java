@@ -1,9 +1,8 @@
 package models;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Indexed;
 import play.data.validation.Required;
-import play.modules.morphia.Model;
+
+import java.io.Serializable;
 
 /**
  * An authorization role which can be assigned to one or more users
@@ -12,11 +11,11 @@ import play.modules.morphia.Model;
  * @author Niko Schmuck
  * @since 02.04.2012
  */
-@Entity(value = "roles", noClassnameStored = true)
-public class Role extends Model {
+// @MongoEntity("roles")
+public class Role implements Serializable {
 
     @Required
-    @Indexed(unique = true)
+    // TODO @Indexed(unique = true)
     public String name;
 
     // ~~
@@ -25,9 +24,11 @@ public class Role extends Model {
         this.name = name;
     }
 
+    /*
     public static Role findByName(String name) {
-        return Role.find("name", name).first();
+        return Role.find("byName", name).first();
     }
+    */
 
     // ~~
 

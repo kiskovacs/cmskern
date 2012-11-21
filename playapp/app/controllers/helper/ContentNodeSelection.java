@@ -18,17 +18,18 @@ public class ContentNodeSelection extends Controller {
      * Search for content nodes with the given query term as part of title
      * and returns HTML fragment containing the resulting list.
      *
+     * @param repository the name of the repository used as workspace
      * @param type the name of the content type to search for
      * @param query the search term to lookup
      * @param page is one-based
       */
-    public static void searchByTitle(String type, String query, int page) {
+    public static void searchByTitle(String repository, String type, String query, int page) {
         int pageSize = Callouts.getPageSize(type);
         if (page < 1) {
             page = 1;
         }
         int offset = (page-1) * pageSize;
-        SearchResult result = ContentNode.findByTypeAndTitleRaw(type, query, false, offset, pageSize);
+        SearchResult result = ContentNode.findByTypeAndTitleRaw(repository, type, query, false, offset, pageSize);
         int nrPages = JavaExtensions.page(result.totalCount, pageSize);
 
         renderTemplate(String.format("Callouts/helper/%s_list.html", type), query, result, page, nrPages);

@@ -1,6 +1,5 @@
 package utils;
 
-import com.google.code.morphia.Datastore;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -11,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import play.Logger;
 import play.Play;
-import play.modules.morphia.MorphiaPlugin;
+import play.modules.mongo.MongoDB;
 
 import java.util.Arrays;
 
@@ -32,20 +31,15 @@ public final class MongoDbUtils {
     }
 
     public static String getDBServers() {
-        return StringUtils.join(MorphiaPlugin.ds().getDB().getMongo().getAllAddress(), ",");
-    }
-
-    public static Datastore getDatastore() {
-        return MorphiaPlugin.ds();
+        return StringUtils.join(MongoDB.db().getMongo().getAllAddress(), ",");
     }
 
     public static String getDBName() {
-        return MorphiaPlugin.ds().getDB().getName();
+        return MongoDB.db().getName();
     }
 
     public static DBCollection getDBCollection(final String collectionName) {
-        Datastore datastore = MorphiaPlugin.ds();
-        DB db = datastore.getDB();
+        DB db = MongoDB.db();
         return db.getCollection(collectionName);
     }
 
@@ -82,12 +76,17 @@ public final class MongoDbUtils {
         dbColl.update(queryById(id), object);
     }
 
+    public static void delete(final String collectionName, final DBObject query) {
+        DBCollection dbColl = getDBCollection(collectionName);
+        dbColl.remove(query);
+    }
+
     public static void delete(final String collectionName, final Number id) {
         DBCollection dbColl = getDBCollection(collectionName);
         dbColl.remove(queryById(id));
     }
 
-    public static DBObject getById(final String collectionName, final Number id) {
+    public static DBObject findById(final String collectionName, final Number id) {
         DBCollection dbColl = getDBCollection(collectionName);
         return dbColl.findOne(queryById(id));
     }
@@ -96,18 +95,49 @@ public final class MongoDbUtils {
         return new BasicDBObject("_id", id);
     }
 
+    public static DBObject findByKeyValue(final String collectionName, final String key, final Object value) {
+        DBCollection dbColl = getDBCollection(collectionName);
+        return dbColl.findOne(queryByKeyValue(key, value));
+    }
+
+    public static DBObject queryByKeyValue(final String name, final Object value) {
+        return new BasicDBObject(name, value);
+    }
+
+
     public static long count(String collectionName) {
         DBCollection dbColl = getDBCollection(collectionName);
         return dbColl.count();
     }
 
+    // ~~
+
+    public static Long generateLongId(String collName) {
+        DBCollection dbColl = getDBCollection("ids");
+
+        DBObject query = new BasicDBObject("_id", collName);
+        DBObject update = new BasicDBObject("$inc", new BasicDBObject("value", 1L));
+
+        DBObject newId = dbColl.findAndModify(query, null, null, false, update, true, true);
+        // since we do an upsert, there must be a result object available
+
+        Object val = newId.get("value");
+        if (val instanceof Double) {
+            return ((Double) val).longValue();
+        } else if (val instanceof Long) {
+            return (Long) val;
+        } else {
+            throw new RuntimeException("Invalid value for ids member for: " + collName);
+        }
+    }
+
+
     // ~~ GridFS
 
     public static GridFS getGridFS() {
-        Datastore datastore = MorphiaPlugin.ds();
-        DB db = datastore.getDB();
+        DB db = MongoDB.db();
         // name of collection to store assets in
-        String collectionName = Play.configuration.getProperty("morphia.collection.upload", "uploads");
+        String collectionName = Play.configuration.getProperty("mongo.collection.upload", "uploads");
         return new GridFS(db, collectionName);
     }
 

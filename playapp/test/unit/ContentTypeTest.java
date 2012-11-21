@@ -3,7 +3,7 @@ package unit;
 import models.ContentType;
 import org.junit.Before;
 import org.junit.Test;
-import play.test.MorphiaFixtures;
+import play.modules.mongo.MongoFixtures;
 import play.test.UnitTest;
 
 import java.util.List;
@@ -20,13 +20,13 @@ public class ContentTypeTest extends UnitTest {
 
     @Before
     public void setUpData() throws InterruptedException {
-        MorphiaFixtures.deleteDatabase();
-        MorphiaFixtures.loadModels("initial-contenttypes.yml");
+        MongoFixtures.deleteDatabase();
+        MongoFixtures.loadModels("initial-contenttypes.yml");
     }
 
     @Test
     public void count() {
-        assertEquals(7, ContentType.count());
+        assertEquals(9, ContentType.count());
     }
 
     @Test

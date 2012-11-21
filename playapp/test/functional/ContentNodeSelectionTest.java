@@ -3,16 +3,16 @@ package functional;
 import org.junit.Before;
 import org.junit.Test;
 import play.Logger;
+import play.modules.mongo.MongoFixtures;
 import play.mvc.Http.Response;
 import play.test.FunctionalTest;
-import play.test.MorphiaFixtures;
 
 public class ContentNodeSelectionTest extends FunctionalTest {
 
     @Before
     public void setUpData() {
-        MorphiaFixtures.deleteDatabase();
-        MorphiaFixtures.loadModels("initial-content.yml");
+        MongoFixtures.deleteDatabase();
+        MongoFixtures.loadModels("initial-content.yml");
     }
 
 

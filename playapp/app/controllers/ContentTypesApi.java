@@ -19,29 +19,29 @@ public class ContentTypesApi extends Controller {
      * Returns the JSON representation for this content type
      * to be used inside content creation / edit form.
      *
-     * @param name the name of the content type
+     * @param type the name of the content type
      * @param contentId (optional) if content already exists (edit mode)
      */
-    public static void asFormDescriptor(String name, Long contentId) throws IOException {
-        ContentType type = ContentType.findByName(name);
-        notFoundIfNull(type, "Unknown type name: " + name);
+    public static void asFormDescriptor(String repository, String type, Long contentId) throws IOException {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(type, "Unknown type name: " + type);
 
         if (contentId == null) {
-            Logger.info("JSON edit form for type [%s] filled with content ID %s", name, contentId);
+            Logger.info("JSON edit form for type [%s] filled with content ID %s", type, contentId);
             ContentNode contentNode = ContentNode.findById(contentId);
             notFoundIfNull(contentNode, "Unknown node ID: " + contentId);
-            JsonNode jsonRepresentation = JsonUtils.enrich(type, contentNode);
+            JsonNode jsonRepresentation = JsonUtils.enrich(contentType, contentNode);
             renderJSON(jsonRepresentation.toString());
         } else {
-            Logger.info("Blank JSON edit form for type [%s]", name);
-            renderJSON(type.jsonSchema);
+            Logger.info("Blank JSON edit form for type [%s]", type);
+            renderJSON(contentType.jsonSchema);
         }
     }
 
     /**
      * Displays list of available content types.
      */
-    public static void list() {
+    public static void list(String repository) {
         List<ContentType> types = ContentType.findAll(); // TODO: use sort order and limit
         render(types);
     }
@@ -49,55 +49,55 @@ public class ContentTypesApi extends Controller {
     /**
      * Displays form to allow to create/edit a content type
      */
-    public static void edit(String id) {
-        ContentType type = ContentType.findById(id);
-        notFoundIfNull(type, "Unknown type ID: " + id);
+    public static void edit(String repository, String type) {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(type, "Unknown type name: " + type);
 
-        render(type);
+        render(contentType);
     }
 
 
     // ~~ REST API (for admins)
 
     @Check("admin")
-    public static void create(String name, String displayName, String body) {
+    public static void create(String repository, String name, String displayName, String body) {
         Logger.info("Going to create type: %s ... ", name);
 
-        ContentType type = new ContentType(name, displayName, body);
-        type.save();
+        ContentType contentType = new ContentType(name, displayName, body);
+        contentType._save();
         response.status = Http.StatusCode.CREATED;
-        response.setHeader("Location", request.getBase() + "/schema/" + type.getId());
+        response.setHeader("Location", request.getBase() + "/schema/" + contentType._key());
     }
     
-    public static void get(String id) {
-        ContentType type = ContentType.findById(id);
-        notFoundIfNull(type, "Unknown type ID: " + id);
+    public static void get(String repository, String type) {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(type, "Unknown type name: " + type);
 
-        Logger.info("Retrieved: %s", type.name);
-        renderJSON(type.jsonSchema);
+        Logger.info("Retrieved: %s", type);
+        renderJSON(contentType.jsonSchema);
     }
 
     @Check("admin")
-    public static void update(String id, String name, String body) {
-        ContentType type = ContentType.findById(id);
-        notFoundIfNull(type, "Unknown type ID: " + id);
-        Logger.info("Going to update %s ...", id);
+    public static void update(String repository, String type, String name, String body) {
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(type, "Unknown type name: " + type);
+        Logger.info("Going to update %s ...", type);
         // check that body contains valid JSON
         com.mongodb.util.JSON.parse(body); // TODO: improve validation
-        type.jsonSchema = body;
-        type.name = name;
-        type.save();
+        contentType.jsonSchema = body;
+        contentType.name = name;
+        contentType._save();
 
-        render(type);
+        render(contentType);
     }
 
     @Check("admin")
-    public static void delete(String id) {
+    public static void delete(String repository, String type) {
         // TODO: this is a very critical operation, add check if still in use?
-        ContentType type = ContentType.findById(id);
-        notFoundIfNull(type, "Unknown type ID: " + id);
-        Logger.info("Going to delete %s ...", id);
-        type.delete();
+        ContentType contentType = ContentType.findByName(type);
+        notFoundIfNull(type, "Unknown type name: " + type);
+        Logger.info("Going to delete %s ...", type);
+        contentType._delete();
 
         ok();
     }

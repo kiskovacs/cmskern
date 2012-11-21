@@ -26,7 +26,7 @@ import java.util.Map;
 public class Blobs extends Controller {
 
     @Check("editor,admin")
-    public static void upload(String filename) throws IOException {
+    public static void upload(String repository, String filename) throws IOException {
         Logger.info("Starting to upload %s ...", filename);
         try {
             String username = Security.connected();
@@ -38,7 +38,7 @@ public class Blobs extends Controller {
     }
 
     @Check("editor,admin")
-    public static void uploadAndCreateContent(String filename, String type, String title, String fieldName) throws IOException {
+    public static void uploadAndCreateContent(String repository, String filename, String type, String title, String fieldName) throws IOException {
         Logger.info("Starting to upload %s ...", filename);
         try {
             // (A) create asset
@@ -52,7 +52,7 @@ public class Blobs extends Controller {
             Map<String, String> vals = new HashMap<String, String>();
             vals.put("title", title);
             vals.put(fieldName, asset.id);
-            ContentNode contentNode = new ContentNode(contentType.name, gson.toJson(vals));
+            ContentNode contentNode = new ContentNode(repository, contentType.name, gson.toJson(vals));
             contentNode.create(username);
             Logger.info("CREATED: " + contentNode.getJsonContent());
 
@@ -67,7 +67,7 @@ public class Blobs extends Controller {
      */
     @Deprecated
     @Check("editor,admin")
-    public static void listAssets(int page) {
+    public static void listAssets(String repository, int page) {
         Logger.info("Listing assets ...");
         int pageSize = Application.getPageSize();
         if (page <= 0) {
@@ -86,13 +86,13 @@ public class Blobs extends Controller {
     }
 
     @Check("editor,admin")
-    public static void listAssetsForTinyMCE() {  // TODO: integrate to listAssets with format=tinyMCE
+    public static void listAssetsForTinyMCE(String repository) {  // TODO: integrate to listAssets with format=tinyMCE
         Logger.info("Listing assets (for TinyMCE) ...");
         SearchResult<Asset> assets = Asset.findAll(0, Application.getPageSize());
         render(assets);
     }
 
-    public static void getBinaryById(String id) {
+    public static void getBinaryById(String repository, String id) {
         Logger.info("Lookup asset by ID: %s", id);
         if (!MongoDbUtils.isValidId(id)) {
             notFound("Binary could not be found, invalid ID " + id);
@@ -105,7 +105,7 @@ public class Blobs extends Controller {
         renderBinary(dbFile.getInputStream());
     }
 
-    public static void getByName(String name) {
+    public static void getByName(String repository, String name) {
         Logger.info("Lookup asset by name: %s", name);
         GridFSDBFile dbFile = MongoDbUtils.getFileByFilename(name);
         notFoundIfNull(dbFile, "Unable to retrieve GridFS file for name "+ name);

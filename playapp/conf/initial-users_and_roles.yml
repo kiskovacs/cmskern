@@ -20,25 +20,29 @@ User(u_hans):
   fullName:   Hans Müller
   passwd:     hans
   email:      hans@example.com
-  roleByName: guest
+  role:
+      name:   guest
 
 User(u_berta):
   userName:   berta
   fullName:   Berta Müller
   passwd:     berta
   email:      berta@example.com
-  roleByName: guest
+  role:
+      name:   guest
 
 User(u_axel):
   userName:   axel
   fullName:   Axel Meyer
   passwd:     axel
   email:      axel@example.com
-  roleByName: editor
+  role:
+      name:   editor
 
 User(u_admin):
   userName:   admin
   fullName:   Ruth Schmidt
   passwd:     admin
   email:      admin@example.com
-  roleByName: admin
+  role:
+      name:   admin

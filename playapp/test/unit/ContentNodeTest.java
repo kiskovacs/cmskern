@@ -24,13 +24,12 @@ public class ContentNodeTest extends UnitTest {
 
     @Before
     public void setUpData() {
-        // NOTE: ContentNode is not mapped via Morphia (because of custom schemas)
         ContentNode.deleteAll();
     }
 
     @Test
     public void updateNode() throws InterruptedException {
-        ContentNode node = new ContentNode("article", "{\"title\":\"foo\"}");
+        ContentNode node = new ContentNode("default", "article", "{\"title\":\"foo\"}");
         // creates version 1
         node.create("UnitTester");
         assertNotNull(node.getId());
@@ -65,7 +64,7 @@ public class ContentNodeTest extends UnitTest {
         Thread.sleep(200); // to make sure modification order is safe for later comparision
         createContentNode("article", "{\"title\":\"Völlig ohne Bl... \"}");
 
-        List<IdTitle> result = ContentNode.findByTypeAndTitleMinimal("article", "blume", false, 0, 20);
+        List<IdTitle> result = ContentNode.findByTypeAndTitleMinimal("default", "article", "blume", false, 0, 20);
         assertEquals(2, result.size());
         assertEquals("Blumenthal (Schnauss)", result.get(0).title); // latest matching first
     }
@@ -78,7 +77,7 @@ public class ContentNodeTest extends UnitTest {
         Thread.sleep(200); // to make sure modification order is safe for later comparision
         createContentNode("article", "{\"title\":\"Baguette\"}");
 
-        SearchResult<ContentNode> result = ContentNode.findByType("article", 1, 1);
+        SearchResult<ContentNode> result = ContentNode.findByType("default", "article", 1, 1);
         assertEquals(3, result.totalCount);
         assertEquals(1, result.objects.size());
         assertEquals("Brezel", result.objects.get(0).getTitle());
@@ -86,7 +85,7 @@ public class ContentNodeTest extends UnitTest {
 
 
     private void createContentNode(String type, String data) {
-        ContentNode node = new ContentNode(type, data);
+        ContentNode node = new ContentNode("default", type, data);
         node.create("UnitTester");
     }
 

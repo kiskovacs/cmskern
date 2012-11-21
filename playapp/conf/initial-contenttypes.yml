@@ -69,3 +69,20 @@ ContentType(node):
     sortkey: 110
     description: containing links to articles and sidebars.
     jsonSchemaFromFile: conf/content-types/node-schema.json
+
+
+ContentType(user):
+    name: user
+    displayName: User
+    group: admin
+    sortkey: 1000
+    description: a person accessing cmskern.
+    jsonSchemaFromFile: conf/content-types/user-schema.json
+
+ContentType(contentType):
+    name: contentType
+    displayName: Content Type
+    group: admin
+    sortkey: 1100
+    description: describing information units by a JSON schema.
+    jsonSchemaFromFile: conf/content-types/contentType-schema.json

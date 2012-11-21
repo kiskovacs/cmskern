@@ -1,15 +1,12 @@
 package models;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.query.Query;
-import com.google.code.morphia.query.UpdateOperations;
-import com.google.code.morphia.utils.LongIdEntity;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.*;
 import models.vo.IdTitle;
 import models.vo.SearchResult;
 import play.Logger;
+import play.db.Model;
 import utils.MongoDbUtils;
 
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ import java.util.List;
  * @author Niko Schmuck
  * @since 21.01.2012
  */
-public class ContentNode {
+public class ContentNode implements Model {
 
     /** Name of MongoDB collection for content */
     public static final String COLLECTION_NAME = "content";
@@ -37,8 +34,9 @@ public class ContentNode {
     /** Name of MongoDB collection for archived content (aka versions) */
     public static final String VERSION_COLLECTION_NAME = "versions";
 
-    // Metadata
+    // Name of field names in the collection
     public static final String ATTR_ID         = "_id";
+    public static final String ATTR_REPOSITORY = "_repository";
     public static final String ATTR_TYPE       = "_type";
     public static final String ATTR_CREATED    = "_created";
     public static final String ATTR_CREATOR    = "_creator";
@@ -66,6 +64,7 @@ public class ContentNode {
 
     // ~
 
+    private String repository = "default";
     private Number id;
     private Integer version = 1;
 
@@ -80,38 +79,65 @@ public class ContentNode {
 
     // ~~
 
-    public ContentNode(String type, String jsonContent) {
+    public ContentNode(String repository, String type, String jsonContent) {
+        this.repository = repository;
         this.type = type;
         this.jsonContent = jsonContent;
     }
 
     public static void createIndexes() {
-        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_TYPE);
-        MongoDbUtils.ensureIndexes(COLLECTION_NAME, Q_ATTR_TITLE);
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_REPOSITORY, ATTR_TYPE);
+        MongoDbUtils.ensureIndexes(COLLECTION_NAME, ATTR_REPOSITORY, Q_ATTR_TITLE);
         // Also indexes for the version collection
-        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF);
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_REPOSITORY, ATTR_IDREF);
         // create also compound key
-        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_IDREF, ATTR_VERSION);
+        MongoDbUtils.ensureIndexes(VERSION_COLLECTION_NAME, ATTR_REPOSITORY, ATTR_IDREF, ATTR_VERSION);
     }
 
     // ~~
 
-    public void create(String creatorUsername) {
+    public void create(String username) {
         DBObject dbObj = new BasicDBObject();
         // Logger.info(".... going to create new content node with: %s", jsonContent);
         DBObject contentObj = MongoDbUtils.convert(jsonContent);
         dbObj.put(ATTR_DATA, contentObj);
         // add metadata
+        dbObj.put(ATTR_REPOSITORY, repository);
         dbObj.put(ATTR_TYPE, type);
         dbObj.put(ATTR_VERSION, version = 1);
+        dbObj.put(ATTR_CREATOR, creator = username);
         dbObj.put(ATTR_CREATED, created = System.currentTimeMillis());
-        dbObj.put(ATTR_CREATOR, creator = creatorUsername);
+        dbObj.put(ATTR_MODIFIER, modifier = username);
         dbObj.put(ATTR_MODIFIED, modified = System.currentTimeMillis());
-        dbObj.put(ATTR_MODIFIER, modifier = creatorUsername);
-        dbObj.put(ATTR_ID, generateLongId(COLLECTION_NAME));
+        dbObj.put(ATTR_ID, MongoDbUtils.generateLongId(COLLECTION_NAME));
         Logger.debug("Going to create new (%s) content node '%s' ...", type, dbObj.get(ATTR_ID));
         MongoDbUtils.create(COLLECTION_NAME, dbObj);
         this.id = (Long) dbObj.get(ATTR_ID);
+    }
+
+    private static ContentNode convert(DBObject dbObj) {
+        Number id = (Number) dbObj.get(ATTR_ID);
+        //dbObj.removeField("_id");
+        String repository = (String) dbObj.get(ATTR_REPOSITORY);
+        String type = (String) dbObj.get(ATTR_TYPE);
+        //dbObj.removeField("_type");
+        Integer version = (Integer) dbObj.get(ATTR_VERSION);
+        Long created = (Long) dbObj.get(ATTR_CREATED);
+        String creator = (String) dbObj.get(ATTR_CREATOR);
+        //dbObj.removeField("_created");
+        Long modified = (Long) dbObj.get(ATTR_MODIFIED);
+        String modifier = (String) dbObj.get(ATTR_MODIFIER);
+        //dbObj.removeField("_modified");
+        String jsonContent = dbObj.get(ATTR_DATA).toString();
+        // ~~
+        ContentNode node = new ContentNode(repository, type, jsonContent);
+        node.id = id;
+        node.version = version;
+        node.created = created;
+        node.creator = creator;
+        node.modified = modified;
+        node.modifier = modifier;
+        return node;
     }
 
     public void update(String username, String jsonContent) {
@@ -129,6 +155,10 @@ public class ContentNode {
         MongoDbUtils.delete(COLLECTION_NAME, getId());
     }
 
+    public static void deleteRepository(String repository) {
+        MongoDbUtils.delete(COLLECTION_NAME, new BasicDBObject(ATTR_REPOSITORY, repository));
+    }
+
     public static void deleteAll() {
         MongoDbUtils.drop(COLLECTION_NAME);
     }
@@ -138,18 +168,18 @@ public class ContentNode {
     public static ContentNode findById(Number id) {
         DBObject dbObj = null;
         try {
-            dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
+            dbObj = MongoDbUtils.findById(COLLECTION_NAME, id);
         } catch (IllegalArgumentException e) {
             Logger.info("Invalid ID specified: %s", e.getMessage());
         }
 
-        return (dbObj != null ? convert(dbObj) : null);  // TODO: weg mit dem Doppel-konvertieren
+        return (dbObj != null ? convert(dbObj) : null);
     }
 
     public static DBObject findByIdRaw(Number id) {
         DBObject dbObj = null;
         try {
-            dbObj = MongoDbUtils.getById(COLLECTION_NAME, id);
+            dbObj = MongoDbUtils.findById(COLLECTION_NAME, id);
         } catch (IllegalArgumentException e) {
             Logger.info("Invalid ID specified: %s", e.getMessage());
         }
@@ -159,10 +189,10 @@ public class ContentNode {
     /**
      * Returns lately modified content nodes of the specified type.
      */
-    public static SearchResult<ContentNode> findByType(String type, int offset, int max) {
+    public static SearchResult<ContentNode> findByType(String repository, String type, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        BasicDBObject q = createQuery(type);
+        BasicDBObject q = createQuery(repository, type);
         DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         while (dbCur.hasNext()) {
             DBObject dbObj = dbCur.next();
@@ -171,10 +201,10 @@ public class ContentNode {
         return new SearchResult(nodes, dbCur.count());
     }
 
-    public static SearchResult<ContentNode> findByTypeAndTitle(String type, String searchTerm, boolean matchCase, int offset, int max) {
+    public static SearchResult<ContentNode> findByTypeAndTitle(String repository, String type, String searchTerm, boolean matchCase, int offset, int max) {
         List<ContentNode> nodes = new ArrayList<ContentNode>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
-        BasicDBObject q = createQuery(type);
+        BasicDBObject q = createQuery(repository, type);
         if (searchTerm != null) {
             q = addQueryByTitle(q, searchTerm, matchCase);
         }
@@ -187,10 +217,10 @@ public class ContentNode {
     }
 
     // TODO: welche Variante ist besser? typisiert vs. untyped?
-    public static SearchResult<DBObject> findByTypeAndTitleRaw(String type, String searchTerm, boolean matchCase, int offset, int max) {
+    public static SearchResult<DBObject> findByTypeAndTitleRaw(String repository, String type, String searchTerm, boolean matchCase, int offset, int max) {
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
-        BasicDBObject q = createQuery(type);
+        BasicDBObject q = createQuery(repository, type);
         q = addQueryByTitle(q, searchTerm, matchCase);
         DBCursor dbCur = dbColl.find(q).sort(new BasicDBObject(ATTR_MODIFIED, -1)).skip(offset).limit(max);
         Logger.info("%s query for '%s' ...", type, searchTerm);
@@ -201,16 +231,15 @@ public class ContentNode {
     }
 
 
-
     /**
      * Search all instances of the specified content type and query string in the document title.
      * By default the result is sorted by the last modified data in chronological order.
      */
-    public static List<IdTitle> findByTypeAndTitleMinimal(String type, String searchTerm, boolean matchCase, int offset, int max) {
+    public static List<IdTitle> findByTypeAndTitleMinimal(String repository, String type, String searchTerm, boolean matchCase, int offset, int max) {
         List<IdTitle> nodes = new ArrayList<IdTitle>();
         DBCollection dbColl = MongoDbUtils.getDBCollection(COLLECTION_NAME);
 
-        BasicDBObject q = createQuery(type);
+        BasicDBObject q = createQuery(repository, type);
         q = addQueryByTitle(q, searchTerm, matchCase);
 
         // Only fetch title (and implictly ID)
@@ -240,7 +269,7 @@ public class ContentNode {
     // ~~
 
     /**
-     * ONLY Used by initial content data setup by means of YAML definition.
+     * ONLY Used by initial content data setup by means of YAML definition as part of fixture.
      */
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent;
@@ -314,8 +343,8 @@ public class ContentNode {
 
     // ~~ private helper methods
 
-    private static BasicDBObject createQuery(String type) {
-        return new BasicDBObject(ATTR_TYPE, type);
+    private static BasicDBObject createQuery(String repository, String type) {
+        return new BasicDBObject(ATTR_REPOSITORY, repository).append(ATTR_TYPE, type);
     }
 
     private static BasicDBObject addQueryByTitle(BasicDBObject q, String searchTerm, boolean matchCase) {
@@ -327,31 +356,6 @@ public class ContentNode {
         return q;
     }
 
-    private static ContentNode convert(DBObject dbObj) {
-        Number id = (Number) dbObj.get(ATTR_ID);
-        //dbObj.removeField("_id");
-        String type = (String) dbObj.get(ATTR_TYPE);
-        //dbObj.removeField("_type");
-        Integer version = (Integer) dbObj.get(ATTR_VERSION);
-        Long created = (Long) dbObj.get(ATTR_CREATED);
-        String creator = (String) dbObj.get(ATTR_CREATOR);
-        //dbObj.removeField("_created");
-        Long modified = (Long) dbObj.get(ATTR_MODIFIED);
-        String modifier = (String) dbObj.get(ATTR_MODIFIER);
-        //dbObj.removeField("_modified");
-        String jsonContent = dbObj.get(ATTR_DATA).toString();
-        // ~~
-        ContentNode node = new ContentNode(type, jsonContent);
-        node.id = id;
-        node.type = type;
-        node.version = version;
-        node.created = created;
-        node.creator = creator;
-        node.modified = modified;
-        node.modifier = modifier;
-        return node;
-    }
-
     private static void updateWithMetadata(final String username, long timestamp,
                                            final Number id, DBObject contentData) {
         contentData.removeField(""); // TODO: fix earlier in call chain
@@ -360,7 +364,7 @@ public class ContentNode {
 
         // ~~ Get current version and save it to archive
         DBObject verObj = dbColl.findOne(MongoDbUtils.queryById(id));
-        verObj.put(ATTR_ID, generateLongId(VERSION_COLLECTION_NAME));
+        verObj.put(ATTR_ID, MongoDbUtils.generateLongId(VERSION_COLLECTION_NAME));
         verObj.put(ATTR_IDREF, id);
         MongoDbUtils.getDBCollection(VERSION_COLLECTION_NAME).save(verObj);
 
@@ -378,16 +382,18 @@ public class ContentNode {
         Logger.debug("~~ Incremented version, result %s", res.getLastError());
     }
 
-    private static Long generateLongId(String collName) {
-        Datastore ds = MongoDbUtils.getDatastore();
-        Query<LongIdEntity.StoredId> q = ds.find(LongIdEntity.StoredId.class, ATTR_ID, collName);
-        UpdateOperations<LongIdEntity.StoredId> uOps = ds.createUpdateOperations(LongIdEntity.StoredId.class).inc("value");
-        LongIdEntity.StoredId newId = ds.findAndModify(q, uOps);
-        if (newId == null) {
-            newId = new LongIdEntity.StoredId(collName);
-            ds.save(newId);
-        }
-        return newId.getValue();
+    @Override
+    public void _save() {
+        create(this.creator);
     }
 
+    @Override
+    public void _delete() {
+        delete();
+    }
+
+    @Override
+    public Object _key() {
+        return id;
+    }
 }

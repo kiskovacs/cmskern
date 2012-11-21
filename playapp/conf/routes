@@ -4,67 +4,63 @@
 
 # ~~ Home page
 
-GET     /                                       Application.index
+GET     /                                        Application.index
 
 
 # ~~ Import secure routes (for login/logout)
 
-*       /                                       module:secure
+*       /                                        module:secure
 
 
 # ~~ REST API for (content) types
 
-GET     /schema/{name}/form.json                ContentTypesApi.asFormDescriptor
-GET     /schema/{id}/edit                       ContentTypesApi.edit
-GET     /schema/{id}                            ContentTypesApi.get
-PUT     /schema/{id}                            ContentTypesApi.update
-GET     /schema                                 ContentTypesApi.list
-POST    /schema                                 ContentTypesApi.create
-DELETE  /schema/{id}                            ContentTypesApi.delete
+GET     /{repository}/schema/{type}/form.json    ContentTypesApi.asFormDescriptor
+GET     /{repository}/schema/{type}/edit         ContentTypesApi.edit
+GET     /{repository}/schema/{type}              ContentTypesApi.get
+PUT     /{repository}/schema/{type}              ContentTypesApi.update
+GET     /{repository}/schema                     ContentTypesApi.list
+POST    /{repository}/schema                     ContentTypesApi.create
+DELETE  /{repository}/schema/{type}              ContentTypesApi.delete
 
 
 # ~~ Call-Outs (for dialog content and referencing other nodes)
 
-GET     /callouts/{<.*>name}                    callouts.Callouts.get
+GET     /{repository}/callouts/{<.*>name}        callouts.Callouts.get
 
 
 # ~~ Helper as used by the call-out workflow
 
-GET     /helper/{controller}/{action}           helper.{controller}.{action}
+GET     /{repository}/helper/{controller}/{action}    helper.{controller}.{action}
 
 
 # ~~ Access to binary objects (i.e. images)
 
-GET     /blobs                                  Blobs.listAssets
-GET     /blobs/forTiny.html                     Blobs.listAssetsForTinyMCE
-GET     /blobs/o/{id}                           Blobs.getBinaryById
-GET     /blobs/n/{name}                         Blobs.getByName
-POST    /blobs                                  Blobs.upload
-POST    /blobs/content                          Blobs.uploadAndCreateContent
+GET     /{repository}/blobs                      Blobs.listAssets
+GET     /{repository}/blobs/forTiny.html         Blobs.listAssetsForTinyMCE
+GET     /{repository}/blobs/o/{id}               Blobs.getBinaryById
+GET     /{repository}/blobs/n/{name}             Blobs.getByName
+POST    /{repository}/blobs                      Blobs.upload
+POST    /{repository}/blobs/content              Blobs.uploadAndCreateContent
 
 
 # ~~ Map static resources from the /app/public folder to the /public path
 
-GET     /favicon.ico                            staticFile:public/favicon.ico
-GET     /public/                                staticDir:public
-
-
-# ~~ Import CRUD routes (for admin area)
-*       /admin                                  module:crud
+GET     /favicon.ico                             staticFile:public/favicon.ico
+GET     /public/                                 staticDir:public
 
 
 # ~~ REST API for content
 
-GET     /{type}                                 ContentNodes.list
-GET     /{type}/{id}/edit                       ContentNodes.edit
-GET     /{type}/search                          ContentNodes.search
-GET     /{type}/edit                            ContentNodes.blank
+GET     /{repository}/{type}                     ContentNodes.list
+GET     /{repository}/{type}/{id}/edit           ContentNodes.edit
+GET     /{repository}/{type}/search              ContentNodes.search
+GET     /{repository}/{type}/edit                ContentNodes.blank
 
-GET     /{type}/blob/{id}                       ContentNodesApi.redirectToBinary
-GET     /image/blob/                            staticFile:public/images/missing.gif
+GET     /{repository}/{type}/blob/{id}           ContentNodesApi.redirectToBinary
+GET     /r/.*/image/blob/                        staticFile:public/images/missing.gif
 
-GET     /{type}/{id}                            ContentNodesApi.get
-PUT     /{type}/{id}                            ContentNodesApi.update
-POST    /{type}                                 ContentNodesApi.create
-DELETE  /{type}/{id}                            ContentNodesApi.delete
-GET     /{type}/{id}/versions                   ContentNodes.versions
+GET     /{repository}/{type}/{id}                ContentNodesApi.get
+PUT     /{repository}/{type}/{id}                ContentNodesApi.update
+POST    /{repository}/{type}                     ContentNodesApi.create
+DELETE  /{repository}/{type}/{id}                ContentNodesApi.delete
+GET     /{repository}/{type}/{id}/versions       ContentNodes.versions

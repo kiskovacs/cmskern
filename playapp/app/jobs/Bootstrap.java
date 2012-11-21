@@ -5,7 +5,7 @@ import play.Logger;
 import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.test.MorphiaFixtures;
+import play.modules.mongo.MongoFixtures;
 import utils.MongoDbUtils;
 
 /**
@@ -19,29 +19,33 @@ import utils.MongoDbUtils;
 public class Bootstrap extends Job {
 
     public void doJob() {
-        Logger.info("Starting cmskern bootstrap job (Play env: %s)...", Play.id);
+        Logger.info("Starting cmskern bootstrap job (Play env: %s) ...", Play.id);
         Logger.info("     ... using database '%s' on MongoDB: %s", MongoDbUtils.getDBName(), MongoDbUtils.getDBServers());
 
-        if (Role.count() == 0L && User.count() == 0L) {
-            Logger.info("Importing initial roles and users ...");
-            MorphiaFixtures.loadModels("initial-users_and_roles.yml");
+        if (ContentType.count() == 0L) {
+            Logger.info("Importing initial content types ...");
+            MongoFixtures.loadModels("initial-contenttypes.yml");
         }
         if (Asset.count() == 0L) {
             Logger.info("Importing initial assets ...");
-            MorphiaFixtures.loadModels("initial-assets.yml");
-        }
-        if (ContentType.count() == 0L) {
-            Logger.info("Importing initial content types ...");
-            MorphiaFixtures.loadModels("initial-contenttypes.yml");
+            MongoFixtures.loadModels("initial-assets.yml");
         }
         if (ContentNode.count() == 0L) {
             Logger.info("Importing initial content nodes ...");
-            MorphiaFixtures.loadModels("initial-content.yml");
+            MongoFixtures.loadModels("initial-content.yml");
+            Logger.info("              *** content nodes: " + ContentNode.count());
+        }
+        if (User.count() == 0L) {
+            Logger.info("Importing initial roles and users ...");
+            MongoFixtures.loadModels("initial-users_and_roles.yml");
         }
 
         // ~~
         Logger.info("Ensure MongoDB indexes are set ...");
         ContentNode.createIndexes();
+        User.createIndexes();
+        // ContentType.createIndexes();
+        // Asset.createIndexes();
     }
 
 }

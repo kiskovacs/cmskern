@@ -34,6 +34,7 @@ public class Application extends Controller {
         // prepare content types and make them available for the navigation bar
         renderArgs.put("editorialTypes", ContentType.findByGroup("editorial"));
         renderArgs.put("siteTypes", ContentType.findByGroup("site"));
+        renderArgs.put("adminTypes", ContentType.findByGroup("admin"));
     }
 
     /**
@@ -44,7 +45,7 @@ public class Application extends Controller {
         // get some content lately modified to start with
         Map<ContentType, SearchResult<ContentNode>> content = new HashMap<ContentType, SearchResult<ContentNode>>();
         for (ContentType type : types) {
-            SearchResult<ContentNode> nodes = ContentNode.findByType(type.name, 0, 10);
+            SearchResult<ContentNode> nodes = ContentNode.findByType("default", type.name, 0, 10);
             content.put(type, nodes);
         }
         render(content);

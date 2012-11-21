@@ -19,7 +19,7 @@ import java.util.List;
 @With(Secure.class)
 public class ContentNodes extends Application {
 
-    public static void list(String type, int page) {
+    public static void list(String repository, String type, int page) {
         ContentType contentType = ContentType.findByName(type);
         notFoundIfNull(contentType, "Unknown content type: " + type);
 
@@ -30,7 +30,7 @@ public class ContentNodes extends Application {
         }
         int offset = (page-1) * pageSize;
         String searchTerm = params.get("search");
-        SearchResult<ContentNode> nodes = ContentNode.findByTypeAndTitle(contentType.name, searchTerm, false, offset, pageSize);
+        SearchResult<ContentNode> nodes = ContentNode.findByTypeAndTitle(repository, contentType.name, searchTerm, false, offset, pageSize);
         int totalCount = nodes.totalCount;
         Logger.info("Listing %s nodes, page %d (of %d total) ...", contentType.name, page, totalCount);
         render(contentType, nodes, page, pageSize, totalCount);
@@ -41,8 +41,8 @@ public class ContentNodes extends Application {
      * content nodes which titles do match with the specified query string.
      * This method can be leveraged by AJAX auto-complete search box for example.
      */
-    public static void search(String type, String q, int limit) {
-        List<IdTitle> nodes = ContentNode.findByTypeAndTitleMinimal(type, q, false, 0, limit);
+    public static void search(String repository, String type, String q, int limit) {
+        List<IdTitle> nodes = ContentNode.findByTypeAndTitleMinimal(repository, type, q, false, 0, limit);
         renderJSON(nodes);
     }
 

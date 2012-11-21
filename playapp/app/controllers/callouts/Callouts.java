@@ -32,12 +32,12 @@ public class Callouts extends Controller {
 
     // ~~
 
-    public static void get(String name) {
+    public static void get(String repository, String name) {
         Map<String, Object> model = new HashMap<String, Object>();
 
         // Find object types to refer to
         if (name.contains("/imageGallery_")) {
-            model.put("imageGalleries", ContentNode.findByType("imageGallery", 0, getPageSize("imageGallery")).objects);  // TODO: improve by using paging
+            model.put("imageGalleries", ContentNode.findByType(repository, "imageGallery", 0, getPageSize("imageGallery")).objects);  // TODO: improve by using paging
         }
         // ... for all the other content types AJAX calls are triggered
 

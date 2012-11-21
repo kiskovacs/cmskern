@@ -2,9 +2,5 @@
 
 require:
     - play
-    - play -> morphia 1.2.7
+    - play -> mongo 1.4
     - play -> secure
-    - play -> crud
-
-    # ~~ .less Files werden leider nicht übersetzt (2012-01-22)
-    # play -> less [0.3]
